@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WANDERLUX — Premium Travel Experiences</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#" class="nav-logo">WANDER<span>LUX</span></a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#destinations">Destinations</a></li>
+        <li><a href="#packages">Packages</a></li>
+        <li><a href="#why-us">Why Us</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+        <li><a href="#newsletter" class="nav-cta">Book Now</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header class="hero" id="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-tag">Explore the World with Confidence</p>
+      <h1 class="hero-title">Your Next<br>Adventure Starts Here</h1>
+      <p class="hero-desc">Handcrafted travel experiences to the world's most breathtaking destinations. Let us turn your dream trip into reality.</p>
+      <div class="hero-search">
+        <div class="search-field">
+          <label>Destination</label>
+          <input type="text" placeholder="Where to?">
+        </div>
+        <div class="search-field">
+          <label>Date</label>
+          <input type="text" placeholder="Select dates">
+        </div>
+        <div class="search-field">
+          <label>Travelers</label>
+          <select>
+            <option>2 Adults</option>
+            <option>1 Adult</option>
+            <option>3 Adults</option>
+            <option>4 Adults</option>
+            <option>Family</option>
+          </select>
+        </div>
+        <button class="search-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          Search
+        </button>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <span class="counter" data-target="120">0</span><span>+</span>
+        <p>Destinations</p>
+      </div>
+      <div class="hero-stat">
+        <span class="counter" data-target="15000">0</span><span>+</span>
+        <p>Happy Travelers</p>
+      </div>
+      <div class="hero-stat">
+        <span class="counter" data-target="98">0</span><span>%</span>
+        <p>Satisfaction Rate</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- Popular Destinations -->
+  <section class="destinations section" id="destinations">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">Popular Destinations</span>
+        <h2>Explore Top Destinations</h2>
+        <p>From tropical beaches to alpine peaks, discover the places our travelers love most.</p>
+      </div>
+      <div class="dest-grid">
+        <div class="dest-card reveal">
+          <div class="dest-image">
+            <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=500&q=80&fit=crop" alt="Bali, Indonesia" loading="lazy">
+            <div class="dest-overlay">
+              <span class="dest-price">From $1,299</span>
+            </div>
+          </div>
+          <div class="dest-info">
+            <h3>Bali, Indonesia</h3>
+            <p>Temples, rice terraces & beaches</p>
+          </div>
+        </div>
+        <div class="dest-card reveal">
+          <div class="dest-image">
+            <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=500&q=80&fit=crop" alt="Paris, France" loading="lazy">
+            <div class="dest-overlay">
+              <span class="dest-price">From $1,899</span>
+            </div>
+          </div>
+          <div class="dest-info">
+            <h3>Paris, France</h3>
+            <p>Art, culture & gastronomy</p>
+          </div>
+        </div>
+        <div class="dest-card reveal">
+          <div class="dest-image">
+            <img src="https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=500&q=80&fit=crop" alt="Santorini, Greece" loading="lazy">
+            <div class="dest-overlay">
+              <span class="dest-price">From $2,199</span>
+            </div>
+          </div>
+          <div class="dest-info">
+            <h3>Santorini, Greece</h3>
+            <p>Sunsets, villages & Aegean blue</p>
+          </div>
+        </div>
+        <div class="dest-card reveal">
+          <div class="dest-image">
+            <img src="https://images.unsplash.com/photo-1506929562872-bb421503ef21?w=500&q=80&fit=crop" alt="Maldives" loading="lazy">
+            <div class="dest-overlay">
+              <span class="dest-price">From $2,999</span>
+            </div>
+          </div>
+          <div class="dest-info">
+            <h3>Maldives</h3>
+            <p>Overwater villas & coral reefs</p>
+          </div>
+        </div>
+        <div class="dest-card reveal">
+          <div class="dest-image">
+            <img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=500&q=80&fit=crop" alt="Kyoto, Japan" loading="lazy">
+            <div class="dest-overlay">
+              <span class="dest-price">From $1,799</span>
+            </div>
+          </div>
+          <div class="dest-info">
+            <h3>Kyoto, Japan</h3>
+            <p>Zen gardens & ancient temples</p>
+          </div>
+        </div>
+        <div class="dest-card reveal">
+          <div class="dest-image">
+            <img src="https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=500&q=80&fit=crop" alt="Amalfi Coast, Italy" loading="lazy">
+            <div class="dest-overlay">
+              <span class="dest-price">From $2,499</span>
+            </div>
+          </div>
+          <div class="dest-info">
+            <h3>Amalfi Coast, Italy</h3>
+            <p>Coastal charm & Mediterranean flair</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Choose Us -->
+  <section class="why-us section" id="why-us">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">Why Wanderlux</span>
+        <h2>Travel with Confidence</h2>
+        <p>We handle every detail so you can focus on making memories.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <h3>Curated Trips</h3>
+          <p>Every itinerary is handcrafted by travel experts who've been there, done that, and know the hidden gems.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </div>
+          <h3>24/7 Support</h3>
+          <p>Our travel concierge team is available around the clock — from the moment you book until you're back home.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
+          <h3>Best Price Guarantee</h3>
+          <p>Found it cheaper elsewhere? We'll match it and give you an extra 5% off. No questions asked.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <h3>Local Guides</h3>
+          <p>Connect with vetted local guides who bring authentic, off-the-beaten-path experiences to every destination.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Packages -->
+  <section class="packages section" id="packages">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">Featured Packages</span>
+        <h2>Curated Experiences</h2>
+        <p>All-inclusive packages designed for the perfect getaway.</p>
+      </div>
+      <div class="packages-grid">
+        <div class="package-card reveal">
+          <div class="package-image">
+            <img src="https://images.unsplash.com/photo-1539367628448-4bc5c9d171c8?w=700&q=80&fit=crop" alt="Bali Escape" loading="lazy">
+            <span class="package-badge">Best Seller</span>
+          </div>
+          <div class="package-content">
+            <div class="package-meta">
+              <span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                7 Days
+              </span>
+              <span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+                2–6 People
+              </span>
+            </div>
+            <h3>Bali Serenity Escape</h3>
+            <p>Ubud rice terraces, Seminyak beach villa, private temple tours, traditional Balinese spa rituals, and sunset dining on the cliffs.</p>
+            <div class="package-footer">
+              <div class="package-price">
+                <span class="price-from">From</span>
+                <span class="price-amount">$1,299</span>
+                <span class="price-per">per person</span>
+              </div>
+              <a href="#" class="btn btn-primary">View Details</a>
+            </div>
+          </div>
+        </div>
+        <div class="package-card reveal">
+          <div class="package-image">
+            <img src="https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=700&q=80&fit=crop" alt="Swiss Alps" loading="lazy">
+            <span class="package-badge">Adventure</span>
+          </div>
+          <div class="package-content">
+            <div class="package-meta">
+              <span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                10 Days
+              </span>
+              <span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+                2–8 People
+              </span>
+            </div>
+            <h3>Swiss Alps Adventure</h3>
+            <p>Scenic train rides through Jungfrau, glacier hiking, luxury chalet stays, fondue evenings, and paragliding over Interlaken.</p>
+            <div class="package-footer">
+              <div class="package-price">
+                <span class="price-from">From</span>
+                <span class="price-amount">$3,499</span>
+                <span class="price-per">per person</span>
+              </div>
+              <a href="#" class="btn btn-primary">View Details</a>
+            </div>
+          </div>
+        </div>
+        <div class="package-card reveal">
+          <div class="package-image">
+            <img src="https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?w=700&q=80&fit=crop" alt="Santorini Retreat" loading="lazy">
+            <span class="package-badge">Romantic</span>
+          </div>
+          <div class="package-content">
+            <div class="package-meta">
+              <span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                5 Days
+              </span>
+              <span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+                2 People
+              </span>
+            </div>
+            <h3>Santorini Sunset Retreat</h3>
+            <p>Cave hotel in Oia, private catamaran cruise, wine tasting at volcanic vineyards, couple's spa, and legendary caldera sunsets.</p>
+            <div class="package-footer">
+              <div class="package-price">
+                <span class="price-from">From</span>
+                <span class="price-amount">$2,199</span>
+                <span class="price-per">per person</span>
+              </div>
+              <a href="#" class="btn btn-primary">View Details</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="reviews section" id="reviews">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">Testimonials</span>
+        <h2>What Travelers Say</h2>
+        <p>Real stories from real adventurers who trusted us with their journeys.</p>
+      </div>
+      <div class="reviews-grid">
+        <div class="review-card reveal">
+          <div class="review-stars">★★★★★</div>
+          <p>"Our Bali trip was absolutely flawless. Every hotel, every tour, every transfer — perfectly arranged. We didn't have to think about a single detail."</p>
+          <div class="review-author">
+            <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=80&q=80&fit=crop&crop=face" alt="Michelle K." loading="lazy">
+            <div>
+              <strong>Michelle K.</strong>
+              <span>Bali Serenity Escape</span>
+            </div>
+          </div>
+        </div>
+        <div class="review-card reveal">
+          <div class="review-stars">★★★★★</div>
+          <p>"The Swiss Alps package exceeded every expectation. The paragliding was life-changing and the local guide knew every secret trail. Already planning our next trip!"</p>
+          <div class="review-author">
+            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&q=80&fit=crop&crop=face" alt="David R." loading="lazy">
+            <div>
+              <strong>David R.</strong>
+              <span>Swiss Alps Adventure</span>
+            </div>
+          </div>
+        </div>
+        <div class="review-card reveal">
+          <div class="review-stars">★★★★★</div>
+          <p>"We booked Santorini for our honeymoon and it was pure magic. The cave hotel had the most incredible view, and the private cruise was the highlight of our trip."</p>
+          <div class="review-author">
+            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=80&q=80&fit=crop&crop=face" alt="Anna & Tom L." loading="lazy">
+            <div>
+              <strong>Anna & Tom L.</strong>
+              <span>Santorini Retreat</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter CTA -->
+  <section class="newsletter section" id="newsletter">
+    <div class="newsletter-bg"></div>
+    <div class="container">
+      <div class="newsletter-content reveal">
+        <span class="section-tag">Stay Inspired</span>
+        <h2>Get Travel Deals & Insider Tips</h2>
+        <p>Subscribe to our newsletter and be the first to know about exclusive offers, new destinations, and travel inspiration.</p>
+        <form class="newsletter-form" onsubmit="return false;">
+          <input type="email" placeholder="Enter your email address">
+          <button type="submit" class="btn btn-primary">Subscribe</button>
+        </form>
+        <span class="newsletter-note">No spam, ever. Unsubscribe anytime.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h3 class="footer-logo">WANDER<span>LUX</span></h3>
+          <p>Crafting unforgettable travel experiences since 2018. Your journey, our passion.</p>
+          <div class="social-links">
+            <a href="#" aria-label="Instagram">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
+            <a href="#" aria-label="Facebook">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            </a>
+            <a href="#" aria-label="Twitter">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4l11.733 16h4.267l-11.733 -16h-4.267z"/><path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772"/></svg>
+            </a>
+            <a href="#" aria-label="YouTube">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19.1c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/></svg>
+            </a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="#destinations">Destinations</a></li>
+            <li><a href="#packages">Packages</a></li>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Careers</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Top Destinations</h4>
+          <ul>
+            <li><a href="#">Bali, Indonesia</a></li>
+            <li><a href="#">Santorini, Greece</a></li>
+            <li><a href="#">Swiss Alps</a></li>
+            <li><a href="#">Amalfi Coast, Italy</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <ul>
+            <li>hello@wanderlux.com</li>
+            <li>(555) 789-2345</li>
+            <li>Mon–Fri: 9AM – 7PM</li>
+            <li>Sat–Sun: 10AM – 5PM</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Wanderlux Travel Co. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

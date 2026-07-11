@@ -1,0 +1,650 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+<meta name="theme-color" content="#0B0806"/>
+<meta name="description" content="AURA — Premium Single Origin Coffee. Sourced from the world's finest farms. Roasted with obsessive precision in Copenhagen."/>
+<meta name="keywords" content="premium coffee, single origin coffee, Ethiopian coffee, specialty coffee, Copenhagen coffee, third wave coffee"/>
+<meta name="author" content="AURA Coffee ApS"/>
+<meta name="robots" content="index, follow"/>
+<link rel="canonical" href="https://aura.coffee/"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://aura.coffee/"/>
+<meta property="og:title" content="AURA — Premium Single Origin Coffee"/>
+<meta property="og:description" content="Born in the highlands of Ethiopia. Roasted in silence. Served with intention. AURA is the art of the perfect cup."/>
+<meta property="og:image" content="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1200&q=90&fit=crop&auto=format"/>
+<meta property="og:site_name" content="AURA Coffee"/>
+<meta property="og:locale" content="en_US"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:site" content="@auracoffee"/>
+<meta name="twitter:title" content="AURA — Premium Single Origin Coffee"/>
+<meta name="twitter:description" content="Born in the highlands of Ethiopia. Roasted in silence. Served with intention."/>
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1200&q=90&fit=crop&auto=format"/>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%230B0806'/><text x='50%25' y='56%25' font-family='Georgia,serif' font-size='18' font-weight='300' fill='%23C49A56' text-anchor='middle' dominant-baseline='middle' letter-spacing='1'>A</text></svg>"/>
+<link rel="preload" as="image" href="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1920&q=90&fit=crop&auto=format" fetchpriority="high"/>
+<title>AURA — Premium Coffee</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+</head>
+<body>
+
+<!-- Skip navigation for keyboard/screen reader users -->
+<a href="#main-content" style="position:absolute;top:-100px;left:0;padding:12px 20px;background:var(--gold);color:var(--black);font-family:var(--f2);font-size:9px;letter-spacing:.16em;text-transform:uppercase;z-index:10000;transition:top .3s" onfocus="this.style.top='0'" onblur="this.style.top='-100px'">Skip to main content</a>
+
+<!-- PRELOADER -->
+<div id="pre">
+  <div class="pre-mark"><span>A</span><span>U</span><span>R</span><span>A</span></div>
+  <div class="pre-bar"><div class="pre-prog" id="pprog"></div></div>
+  <div class="pre-tag">Sourcing the finest origins</div>
+</div>
+
+<!-- CURSOR -->
+<div id="cursor">
+  <div class="cur-dot" id="cdot"></div>
+  <div class="cur-ring" id="cring"></div>
+</div>
+
+<!-- TOASTS -->
+<div id="toasts" role="status" aria-live="polite" aria-atomic="false"></div>
+
+<!-- CART VEIL -->
+<div id="cart-veil" onclick="closeCart()"></div>
+
+<!-- CART DRAWER -->
+<div id="cart" role="dialog" aria-modal="true" aria-label="Shopping bag">
+  <div class="cart-head">
+    <div class="cart-title">Your Bag</div>
+    <button class="cart-close" onclick="closeCart()" aria-label="Close cart">✕</button>
+  </div>
+  <div id="cart-items"></div>
+  <div id="cart-foot">
+    <div class="cart-total-row">
+      <span class="cart-total-lbl">Total</span>
+      <span class="cart-total-val" id="cart-total">$0</span>
+    </div>
+    <button class="cart-ck" onclick="checkout()">Proceed to Checkout →</button>
+    <button class="cart-cont" onclick="closeCart()">Continue Shopping</button>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div id="modal-bg" role="dialog" aria-modal="true" aria-labelledby="m-title" onclick="if(event.target===this)closeModal()">
+  <div id="modal-box">
+    <button class="m-close" onclick="closeModal()">✕</button>
+    <div class="m-title" id="m-title"></div>
+    <div class="m-rule"></div>
+    <div class="m-body" id="m-body"></div>
+  </div>
+</div>
+
+<!-- MOBILE MENU -->
+<div id="mob-menu">
+  <a class="mob-link" href="#" onclick="mobGo('story')">Story</a>
+  <a class="mob-link" href="#" onclick="mobGo('process')">Process</a>
+  <a class="mob-link" href="#" onclick="mobGo('origins')">Origins</a>
+  <a class="mob-link" href="#" onclick="mobGo('products')">Collection</a>
+  <a class="mob-link" href="#" onclick="mobGo('cta')">The Ritual</a>
+  <div class="mob-sep"></div>
+  <div class="mob-sub">
+    <a href="mailto:hello@aura.coffee">Email Us</a>
+    <a href="#" onclick="openCart();closeMenu();return false">Bag</a>
+  </div>
+</div>
+
+<!-- NAVIGATION -->
+<nav id="nav">
+  <a class="nav-logo" href="#" onclick="smoothTo('hero');return false">AURA</a>
+  <div class="nav-center">
+    <a class="nav-link" href="#" onclick="smoothTo('story');return false">Story</a>
+    <a class="nav-link" href="#" onclick="smoothTo('process');return false">Process</a>
+    <a class="nav-link" href="#" onclick="smoothTo('origins');return false">Origins</a>
+    <a class="nav-link" href="#" onclick="smoothTo('products');return false">Collection</a>
+  </div>
+  <div class="nav-right">
+    <button class="nav-bag" onclick="openCart()" aria-label="Open cart">
+      Bag <span id="bag-count">0</span>
+    </button>
+    <button class="nav-ham" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <div class="ham-line"></div>
+      <div class="ham-line"></div>
+      <div class="ham-line"></div>
+    </button>
+  </div>
+</nav>
+
+<main id="main-content">
+<!-- ═══ HERO ═══ -->
+<section id="hero">
+  <div class="hero-art">
+    <div class="ha-base"></div>
+    <div class="ha-grid"></div>
+    <!-- Hero right: real photo + SVG overlay -->
+    <div class="ha-cup" aria-hidden="true">
+      <!-- Real coffee pour photo layered under SVG -->
+      <img
+        src="https://images.unsplash.com/photo-1541167760496-1628856ab772?w=900&q=90&fit=crop&auto=format"
+        alt="AURA coffee"
+        style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;
+               filter:brightness(.55) contrast(1.12) saturate(.72);
+               mask-image:radial-gradient(circle,black 52%,transparent 78%);
+               -webkit-mask-image:radial-gradient(circle,black 52%,transparent 78%);
+               opacity:.9;"
+        loading="eager" fetchpriority="high"
+      />
+      <!-- SVG cup overlaid on top -->
+      <div style="position:relative;width:100%;height:100%">
+      <svg viewBox="0 0 480 480" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Outer glow ring -->
+        <circle cx="240" cy="240" r="220" stroke="rgba(196,154,86,.08)" stroke-width=".8"/>
+        <circle cx="240" cy="240" r="190" stroke="rgba(196,154,86,.05)" stroke-width=".6"/>
+        <!-- Cup body -->
+        <path d="M140 200 Q136 320 180 350 Q240 368 300 350 Q344 320 340 200 Z"
+              fill="rgba(196,154,86,.04)" stroke="rgba(196,154,86,.22)" stroke-width=".8"/>
+        <!-- Cup rim -->
+        <ellipse cx="240" cy="200" rx="100" ry="18"
+                 fill="rgba(196,154,86,.06)" stroke="rgba(196,154,86,.28)" stroke-width=".8"/>
+        <!-- Coffee surface inside cup -->
+        <ellipse cx="240" cy="202" rx="90" ry="14"
+                 fill="rgba(140,70,15,.18)" stroke="rgba(196,154,86,.18)" stroke-width=".6"/>
+        <!-- Latte art — simple leaf/tulip pattern -->
+        <ellipse cx="240" cy="202" rx="62" ry="10" fill="none" stroke="rgba(196,154,86,.14)" stroke-width=".5"/>
+        <path d="M195 202 Q220 194 240 202 Q260 210 285 202" stroke="rgba(237,232,222,.12)" stroke-width=".8" fill="none"/>
+        <path d="M205 198 Q225 192 240 198 Q255 204 275 198" stroke="rgba(237,232,222,.09)" stroke-width=".6" fill="none"/>
+        <!-- Saucer -->
+        <ellipse cx="240" cy="362" rx="115" ry="20"
+                 fill="rgba(196,154,86,.04)" stroke="rgba(196,154,86,.18)" stroke-width=".8"/>
+        <ellipse cx="240" cy="362" rx="92" ry="15"
+                 fill="rgba(196,154,86,.03)" stroke="rgba(196,154,86,.1)" stroke-width=".5"/>
+        <!-- Handle -->
+        <path d="M340 225 Q388 225 388 268 Q388 310 340 310"
+              fill="none" stroke="rgba(196,154,86,.22)" stroke-width=".8"/>
+        <path d="M340 238 Q374 238 374 268 Q374 298 340 298"
+              fill="none" stroke="rgba(196,154,86,.12)" stroke-width=".6"/>
+        <!-- Decorative ring lines -->
+        <circle cx="240" cy="240" r="150" stroke="rgba(196,154,86,.05)" stroke-width=".6" stroke-dasharray="3 8"/>
+        <!-- Corner marks -->
+        <line x1="30" y1="30" x2="70" y2="30" stroke="rgba(196,154,86,.2)" stroke-width=".7"/>
+        <line x1="30" y1="30" x2="30" y2="70" stroke="rgba(196,154,86,.2)" stroke-width=".7"/>
+        <line x1="450" y1="30" x2="410" y2="30" stroke="rgba(196,154,86,.2)" stroke-width=".7"/>
+        <line x1="450" y1="30" x2="450" y2="70" stroke="rgba(196,154,86,.2)" stroke-width=".7"/>
+        <line x1="30" y1="450" x2="70" y2="450" stroke="rgba(196,154,86,.2)" stroke-width=".7"/>
+        <line x1="30" y1="450" x2="30" y2="410" stroke="rgba(196,154,86,.2)" stroke-width=".7"/>
+        <line x1="450" y1="450" x2="410" y2="450" stroke="rgba(196,154,86,.2)" stroke-width=".7"/>
+        <line x1="450" y1="450" x2="450" y2="410" stroke="rgba(196,154,86,.2)" stroke-width=".7"/>
+        <!-- SVG circular text -->
+        <path id="svg-c" d="M240,240 m-170,0 a170,170 0 1,1 340,0 a170,170 0 1,1 -340,0" fill="none"/>
+        <text font-size="8.5" letter-spacing="4.5" fill="rgba(196,154,86,.22)" font-family="'DM Mono',monospace">
+          <textPath href="#svg-c">AURA COFFEE ★ EST. 2019 ★ COPENHAGEN ★ SINGLE ORIGIN ★ </textPath>
+        </text>
+      </svg>
+      </div><!-- end SVG wrapper -->
+    </div>
+    <!-- Steam wisps above cup -->
+    <div class="ha-steam">
+      <div class="steam-wsp" style="height:52px"></div>
+      <div class="steam-wsp" style="height:70px"></div>
+      <div class="steam-wsp" style="height:58px"></div>
+    </div>
+    <div class="ha-vignette"></div>
+    <div class="ha-fade"></div>
+  </div>
+
+  <!-- Text content -->
+  <div class="hero-body">
+    <div class="h-eyebrow">
+      <span class="h-eyeline"></span>
+      <span class="h-eyetxt">Est. 2019 · Copenhagen, Denmark</span>
+    </div>
+    <h1 class="h-head">
+      <span class="h-line"><span class="h-line-i h-l1">The Art</span></span>
+      <span class="h-line"><span class="h-line-i h-l2">of the</span></span>
+      <span class="h-line"><span class="h-line-i h-l3" id="hw">Perfect Cup.</span></span>
+    </h1>
+    <p class="h-sub">Born in the highlands of Ethiopia.<br>Roasted in silence. Served with intention.</p>
+    <div class="h-actions">
+      <button class="btn-solid" onclick="smoothTo('products')"><span>Explore Collection</span></button>
+      <button class="btn-arrow" onclick="smoothTo('story')">
+        Our Story
+        <svg width="16" height="10" viewBox="0 0 16 10" fill="none" stroke="currentColor" stroke-width="1">
+          <path d="M0 5h14M10 1l5 4-5 4"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="hero-footer">
+    <div class="hero-scroll" onclick="smoothTo('philo')" role="button" tabindex="0">
+      <div class="scroll-wire"></div>
+      <div class="scroll-lbl">Scroll</div>
+    </div>
+    <div class="hero-coord">9°01′N, 38°44′E — Yirgacheffe</div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-wrap" id="ticker-wrap"></div>
+</div>
+
+<!-- ═══ PHILOSOPHY ═══ -->
+<section id="philo">
+  <div class="philo-inner">
+    <div class="r">
+      <div class="phi-n">01</div>
+      <div class="phi-t">Sourced with<br><em>purpose</em></div>
+      <p class="phi-p">Every lot is traceable to a single farm. We visit each origin twice per season — once at harvest, once at delivery. No exceptions, no brokers.</p>
+    </div>
+    <div class="phi-div"></div>
+    <div class="r d1">
+      <div class="phi-n">02</div>
+      <div class="phi-t">Roasted with<br><em>obsession</em></div>
+      <p class="phi-p">Each batch is hand-roasted in our Copenhagen studio on a 12kg Loring drum. Small volumes. Long conversations with the bean.</p>
+    </div>
+    <div class="phi-div"></div>
+    <div class="r d2">
+      <div class="phi-n">03</div>
+      <div class="phi-t">Delivered with<br><em>ceremony</em></div>
+      <p class="phi-p">Nitrogen-flushed within 24 hours of roasting. Carbon-neutral shipping. Compostable packaging. A ritual before the first sip.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ STORY ═══ -->
+<section id="story">
+  <div class="story-grid">
+    <div class="story-art">
+      <div class="story-art-bg" id="pax"></div>
+      <!-- Rotating circular text -->
+      <svg class="story-circ-txt" viewBox="0 0 340 340">
+        <path id="sc-path" d="M170,170 m-155,0 a155,155 0 1,1 310,0 a155,155 0 1,1 -310,0" fill="none"/>
+        <text font-size="9" letter-spacing="4.8" fill="rgba(196,154,86,.4)" font-family="'DM Mono',monospace">
+          <textPath href="#sc-path">AURA COFFEE ★ SINGLE ORIGIN ★ EST. 2019 ★ </textPath>
+        </text>
+      </svg>
+      <!-- Coffee rings visual -->
+      <div class="story-rings">
+        <div class="ring ring-1"></div>
+        <div class="ring ring-2"></div>
+        <div class="ring ring-3"></div>
+        <div class="story-year-pill">
+          <div class="syp-num">2019</div>
+          <div class="syp-lbl">Founded</div>
+        </div>
+      </div>
+      <!-- Stats bar -->
+      <div class="story-stats">
+        <div class="ss-item">
+          <div class="ss-num">47<sup>k</sup></div>
+          <div class="ss-lbl">km traveled</div>
+        </div>
+        <div class="ss-item">
+          <div class="ss-num">12</div>
+          <div class="ss-lbl">Origin farms</div>
+        </div>
+        <div class="ss-item">
+          <div class="ss-num">38</div>
+          <div class="ss-lbl">Countries served</div>
+        </div>
+      </div>
+      <div class="story-art-frame"></div>
+    </div>
+    <div class="story-copy">
+      <div class="story-lbl r"><span class="s-lline"></span><span class="s-ltxt">Our Origin</span></div>
+      <h2 class="story-h r d1" style="margin-bottom:24px">Born from a<br><em>single obsession.</em></h2>
+      <blockquote class="story-quote r d2">
+        What if coffee could taste the way morning light feels on a quiet winter day?
+      </blockquote>
+      <p class="story-para r d3">We traveled 47,000 kilometers across Ethiopia, Colombia, and Japan before we understood what we were searching for — not a flavor, but a feeling. A moment of absolute stillness in a cup.</p>
+      <p class="story-para r d3">AURA was built on the belief that the world's finest coffee should reach those who truly seek it, without compromise, without shortcut, and without apology.</p>
+      <div class="r d4">
+        <div class="story-sig">Mads Eriksen</div>
+        <div class="story-sigtitle">Founder & Head Roaster</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PROCESS ═══ -->
+<section id="process">
+  <div class="proc-head">
+    <div class="sec-lbl r"><span class="sl-line"></span><span class="sl-txt">The Process</span></div>
+    <h2 class="sec-h r d1" style="margin-bottom:0">From seed<br><em>to ceremony.</em></h2>
+  </div>
+  <div class="proc-track" id="proc-track">
+    <div class="proc-step"><div class="proc-dot"></div><div class="proc-n">Stage 01</div><div class="proc-t">Discovery &<br>Farm Selection</div><p class="proc-b">Our sourcing team visits 40+ farms each season, tasting and evaluating directly — no brokers, no intermediaries. Only farms with verifiable sustainable practices.</p></div>
+    <div class="proc-step"><div class="proc-dot"></div><div class="proc-n">Stage 02</div><div class="proc-t">Harvest &<br>Processing</div><p class="proc-b">Cherries are handpicked at peak ripeness. Each lot is processed — washed, natural, or honey — according to what the terroir demands, never convenience.</p></div>
+    <div class="proc-step"><div class="proc-dot"></div><div class="proc-n">Stage 03</div><div class="proc-t">Green Coffee<br>Import</div><p class="proc-b">Shipped in GrainPro sacks to preserve moisture and flavor. Every container is cup-scored on arrival at our Copenhagen roastery before any batch proceeds.</p></div>
+    <div class="proc-step"><div class="proc-dot"></div><div class="proc-n">Stage 04</div><div class="proc-t">Small-Batch<br>Roasting</div><p class="proc-b">Each roast is developed by hand on a 12kg Loring drum. Profiles crafted to honor the unique character of each lot — never to mask, always to reveal.</p></div>
+    <div class="proc-step"><div class="proc-dot"></div><div class="proc-n">Stage 05</div><div class="proc-t">Quality<br>Cupping</div><p class="proc-b">Every batch is cupped blind against our reference standard. If it doesn't score 87+ on the SCA scale, it does not leave the studio. No exceptions, ever.</p></div>
+    <div class="proc-step" style="flex:0 0 min(280px,80vw);padding-right:0"><div class="proc-dot"></div><div class="proc-n">Stage 06</div><div class="proc-t">Delivery &<br>Your Ritual</div><p class="proc-b">Nitrogen-flushed, sealed, dispatched within 24 hours. Carbon-neutral. It arrives ready for its moment — your morning, your ceremony, your stillness.</p></div>
+  </div>
+  <div class="proc-hint r">
+    <svg width="18" height="10" viewBox="0 0 18 10" fill="none" stroke="currentColor" stroke-width="1" opacity=".5"><path d="M0 5h14M10 1l5 4-5 4"/></svg>
+    Drag to explore all stages
+  </div>
+</section>
+
+<!-- ═══ PRODUCTS ═══ -->
+<section id="products">
+  <div class="prod-wrap">
+    <div class="prod-head">
+      <div>
+        <div class="sec-lbl r"><span class="sl-line"></span><span class="sl-txt">The Collection</span></div>
+        <h2 class="sec-h r d1">Signature<br><em>Expressions</em></h2>
+      </div>
+      <button class="btn-arrow r d2" onclick="toast('Full catalogue launching Q3 2025','info')">
+        View Full Catalogue
+        <svg width="16" height="10" viewBox="0 0 16 10" fill="none" stroke="currentColor" stroke-width="1"><path d="M0 5h14M10 1l5 4-5 4"/></svg>
+      </button>
+    </div>
+    <div class="prod-grid">
+
+      <!-- PRODUCT 1: Yirgacheffe -->
+      <div class="pc r">
+        <div class="pc-img art-yirg">
+          <div class="pc-img-art"></div>
+          <!-- Beautiful botanical SVG art -->
+          <svg class="prod-icon" width="200" height="200" viewBox="0 0 200 200" fill="none">
+            <!-- Coffee cherry branch illustration -->
+            <circle cx="100" cy="100" r="72" stroke="rgba(196,154,86,.15)" stroke-width=".8"/>
+            <circle cx="100" cy="100" r="50" stroke="rgba(196,154,86,.1)" stroke-width=".6" stroke-dasharray="3 7"/>
+            <!-- Main stem -->
+            <path d="M100 170 Q100 130 100 100 Q100 72 88 52" stroke="rgba(196,154,86,.35)" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+            <!-- Leaves -->
+            <path d="M100 130 Q78 118 68 100 Q82 108 100 130Z" fill="rgba(196,154,86,.12)" stroke="rgba(196,154,86,.25)" stroke-width=".7"/>
+            <path d="M100 130 Q122 118 132 100 Q118 108 100 130Z" fill="rgba(196,154,86,.09)" stroke="rgba(196,154,86,.2)" stroke-width=".6"/>
+            <path d="M97 108 Q78 96 72 78 Q88 90 97 108Z" fill="rgba(196,154,86,.1)" stroke="rgba(196,154,86,.2)" stroke-width=".6"/>
+            <!-- Coffee cherries -->
+            <circle cx="88" cy="52" r="9" fill="rgba(200,80,30,.55)" stroke="rgba(196,154,86,.3)" stroke-width=".8"/>
+            <circle cx="88" cy="52" r="5.5" fill="rgba(220,100,40,.4)"/>
+            <circle cx="88" cy="52" r="2.5" fill="rgba(196,154,86,.3)"/>
+            <circle cx="112" cy="62" r="7.5" fill="rgba(190,70,25,.5)" stroke="rgba(196,154,86,.25)" stroke-width=".7"/>
+            <circle cx="112" cy="62" r="4.5" fill="rgba(210,90,35,.35)"/>
+            <circle cx="78" cy="72" r="6" fill="rgba(185,65,20,.45)" stroke="rgba(196,154,86,.2)" stroke-width=".7"/>
+            <!-- Highlight dots on cherries -->
+            <circle cx="85" cy="49" r="1.5" fill="rgba(237,232,222,.25)"/>
+            <circle cx="110" cy="59" r="1.2" fill="rgba(237,232,222,.2)"/>
+          </svg>
+          <div class="pc-badge">New Harvest</div>
+          <div class="pc-roast">Light Roast</div>
+        </div>
+        <div class="pc-body">
+          <div class="pc-origin">Ethiopia · Yirgacheffe</div>
+          <div class="pc-name">No.1<br>Yirgacheffe</div>
+          <div class="pc-terroir">2,200m · Washed Process · Single Cooperative</div>
+          <div class="pc-notes">
+            <span class="pc-note">Jasmine</span>
+            <span class="pc-note">Bergamot</span>
+            <span class="pc-note">White Peach</span>
+            <span class="pc-note">Citrus</span>
+          </div>
+          <div class="pc-foot">
+            <span class="pc-price">$28</span>
+            <button class="pc-add" id="add1" onclick="addToCart('Yirgacheffe No.1',28,'add1')">Add to Bag</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PRODUCT 2: Huila Noir -->
+      <div class="pc r d1">
+        <div class="pc-img art-huila">
+          <div class="pc-img-art"></div>
+          <!-- Geometric coffee bean art -->
+          <svg class="prod-icon" width="200" height="200" viewBox="0 0 200 200" fill="none">
+            <circle cx="100" cy="100" r="72" stroke="rgba(196,154,86,.13)" stroke-width=".8"/>
+            <!-- Bean shape -->
+            <ellipse cx="100" cy="100" rx="42" ry="54" fill="rgba(140,60,10,.22)" stroke="rgba(196,154,86,.3)" stroke-width="1"/>
+            <!-- Bean crease -->
+            <path d="M100 48 Q86 74 100 100 Q114 126 100 152" stroke="rgba(196,154,86,.45)" stroke-width=".8" fill="none"/>
+            <!-- Texture lines -->
+            <ellipse cx="100" cy="100" rx="42" ry="54" fill="none" stroke="rgba(196,154,86,.1)" stroke-width=".5" transform="rotate(8 100 100)"/>
+            <ellipse cx="100" cy="100" rx="42" ry="54" fill="none" stroke="rgba(196,154,86,.07)" stroke-width=".5" transform="rotate(-8 100 100)"/>
+            <!-- Orbiting circle -->
+            <circle cx="100" cy="100" r="62" stroke="rgba(196,154,86,.1)" stroke-width=".7" stroke-dasharray="4 10"/>
+            <!-- Corner ornaments -->
+            <path d="M38 38 L54 38 M38 38 L38 54" stroke="rgba(196,154,86,.25)" stroke-width=".8" stroke-linecap="round"/>
+            <path d="M162 38 L146 38 M162 38 L162 54" stroke="rgba(196,154,86,.25)" stroke-width=".8" stroke-linecap="round"/>
+            <path d="M38 162 L54 162 M38 162 L38 146" stroke="rgba(196,154,86,.25)" stroke-width=".8" stroke-linecap="round"/>
+            <path d="M162 162 L146 162 M162 162 L162 146" stroke="rgba(196,154,86,.25)" stroke-width=".8" stroke-linecap="round"/>
+            <!-- Highlight -->
+            <ellipse cx="90" cy="82" rx="8" ry="12" fill="rgba(237,232,222,.06)" transform="rotate(-15 90 82)"/>
+          </svg>
+          <div class="pc-badge">Bestseller</div>
+          <div class="pc-roast">Medium Roast</div>
+        </div>
+        <div class="pc-body">
+          <div class="pc-origin">Colombia · Huila</div>
+          <div class="pc-name">Huila<br>Noir</div>
+          <div class="pc-terroir">1,850m · Natural Process · Family Estate</div>
+          <div class="pc-notes">
+            <span class="pc-note">Dark Chocolate</span>
+            <span class="pc-note">Black Cherry</span>
+            <span class="pc-note">Walnut</span>
+            <span class="pc-note">Molasses</span>
+          </div>
+          <div class="pc-foot">
+            <span class="pc-price">$32</span>
+            <button class="pc-add" id="add2" onclick="addToCart('Huila Noir',32,'add2')">Add to Bag</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PRODUCT 3: Obsidian Reserve -->
+      <div class="pc r d2">
+        <div class="pc-img art-obsid">
+          <div class="pc-img-art"></div>
+          <!-- Architectural / crystalline SVG art -->
+          <svg class="prod-icon" width="200" height="200" viewBox="0 0 200 200" fill="none">
+            <!-- Outer rings -->
+            <circle cx="100" cy="100" r="80" stroke="rgba(196,154,86,.09)" stroke-width=".7"/>
+            <circle cx="100" cy="100" r="64" stroke="rgba(196,154,86,.07)" stroke-width=".6"/>
+            <!-- Crystal / diamond shape -->
+            <polygon points="100,32 148,100 100,152 52,100" fill="rgba(196,154,86,.06)" stroke="rgba(196,154,86,.28)" stroke-width=".9"/>
+            <!-- Inner facets -->
+            <line x1="100" y1="32" x2="100" y2="152" stroke="rgba(196,154,86,.12)" stroke-width=".6"/>
+            <line x1="52" y1="100" x2="148" y2="100" stroke="rgba(196,154,86,.12)" stroke-width=".6"/>
+            <polygon points="100,32 148,100 100,100" fill="rgba(196,154,86,.05)"/>
+            <polygon points="52,100 100,100 100,152" fill="rgba(196,154,86,.03)"/>
+            <!-- Glow centre -->
+            <circle cx="100" cy="100" r="16" fill="rgba(196,154,86,.1)" stroke="rgba(196,154,86,.3)" stroke-width=".7"/>
+            <circle cx="100" cy="100" r="6" fill="rgba(196,154,86,.22)"/>
+            <!-- Radiating lines -->
+            <line x1="100" y1="100" x2="140" y2="60"  stroke="rgba(196,154,86,.1)" stroke-width=".5"/>
+            <line x1="100" y1="100" x2="60"  y2="140" stroke="rgba(196,154,86,.1)" stroke-width=".5"/>
+            <line x1="100" y1="100" x2="140" y2="140" stroke="rgba(196,154,86,.08)" stroke-width=".5"/>
+            <line x1="100" y1="100" x2="60"  y2="60"  stroke="rgba(196,154,86,.08)" stroke-width=".5"/>
+            <!-- Highlight -->
+            <circle cx="92" cy="92" r="3" fill="rgba(237,232,222,.18)"/>
+          </svg>
+          <div class="pc-badge">Limited</div>
+          <div class="pc-roast">Dark Roast</div>
+        </div>
+        <div class="pc-body">
+          <div class="pc-origin">Japan Blend · Kyoto Style</div>
+          <div class="pc-name">Obsidian<br>Reserve</div>
+          <div class="pc-terroir">Honey Process · Multi-Origin · Master Blend</div>
+          <div class="pc-notes">
+            <span class="pc-note">Tobacco</span>
+            <span class="pc-note">Black Plum</span>
+            <span class="pc-note">Dark Caramel</span>
+            <span class="pc-note">Smoke</span>
+          </div>
+          <div class="pc-foot">
+            <span class="pc-price">$44</span>
+            <button class="pc-add" id="add3" onclick="addToCart('Obsidian Reserve',44,'add3')">Add to Bag</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ORIGINS ═══ -->
+<section id="origins">
+  <div class="orig-inner">
+    <div class="sec-lbl r"><span class="sl-line"></span><span class="sl-txt">Where We Source</span></div>
+    <h2 class="sec-h r d1" style="margin-bottom:0">12 farms.<br><em>3 continents. 1 standard.</em></h2>
+    <div class="orig-grid">
+      <div class="orig-map r">
+        <div class="orig-map-glow"></div>
+        <svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <defs><style>.land{fill:rgba(196,154,86,.065);stroke:rgba(196,154,86,.15);stroke-width:.6}</style></defs>
+          <!-- Simplified landmasses -->
+          <ellipse cx="195" cy="195" rx="108" ry="138" class="land" transform="rotate(-7 195 195)"/>
+          <ellipse cx="208" cy="310" rx="52" ry="90" class="land" transform="rotate(4 208 310)"/>
+          <ellipse cx="395" cy="178" rx="88" ry="106" class="land" transform="rotate(3 395 178)"/>
+          <ellipse cx="415" cy="308" rx="52" ry="66" class="land" transform="rotate(-3 415 308)"/>
+          <ellipse cx="596" cy="194" rx="72" ry="96" class="land" transform="rotate(5 596 194)"/>
+          <ellipse cx="636" cy="324" rx="48" ry="56" class="land" transform="rotate(-7 636 324)"/>
+          <ellipse cx="118" cy="235" rx="38" ry="56" class="land"/>
+          <ellipse cx="534" cy="155" rx="28" ry="36" class="land" transform="rotate(10 534 155)"/>
+          <!-- Grid -->
+          <line x1="0" y1="250" x2="800" y2="250" stroke="rgba(196,154,86,.07)" stroke-width=".5"/>
+          <line x1="400" y1="0" x2="400" y2="500" stroke="rgba(196,154,86,.07)" stroke-width=".5"/>
+        </svg>
+        <!-- Pins -->
+        <div class="opin" style="left:61%;top:53%" data-name="Ethiopia"></div>
+        <div class="opin" style="left:27%;top:60%" data-name="Colombia"></div>
+        <div class="opin" style="left:77%;top:37%" data-name="Japan"></div>
+        <div class="opin" style="left:55%;top:43%" data-name="Kenya"></div>
+      </div>
+      <div class="orig-list r d1">
+        <div class="orig-item">
+          <div class="orig-idx">01</div>
+          <div><div class="orig-name">Ethiopia</div><div class="orig-sub">Yirgacheffe · Sidama · Guji</div></div>
+          <div class="orig-pill">3 Farms</div>
+        </div>
+        <div class="orig-item">
+          <div class="orig-idx">02</div>
+          <div><div class="orig-name">Colombia</div><div class="orig-sub">Huila · Nariño · Cauca</div></div>
+          <div class="orig-pill">4 Farms</div>
+        </div>
+        <div class="orig-item">
+          <div class="orig-idx">03</div>
+          <div><div class="orig-name">Japan</div><div class="orig-sub">Kyoto Blend · Okinawa</div></div>
+          <div class="orig-pill">2 Farms</div>
+        </div>
+        <div class="orig-item">
+          <div class="orig-idx">04</div>
+          <div><div class="orig-name">Kenya</div><div class="orig-sub">Nyeri · Kirinyaga</div></div>
+          <div class="orig-pill">Seasonal</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PRESS ═══ -->
+<section id="press">
+  <div class="press-inner">
+    <div class="press-lbl-row">
+      <div class="press-lbl-line"></div>
+      <div class="press-lbl-txt">As Seen In</div>
+      <div class="press-lbl-line"></div>
+    </div>
+    <div class="press-grid">
+      <div class="press-card r"><div class="press-src">The New York Times</div><div class="press-q">"The coffee that made us reconsider everything we thought we knew about a morning cup."</div></div>
+      <div class="press-card r d1"><div class="press-src">Financial Times</div><div class="press-q">"AURA represents the pinnacle of what a premium coffee brand can and should be in 2025."</div></div>
+      <div class="press-card r d2"><div class="press-src">Monocle Magazine</div><div class="press-q">"A Copenhagen studio that has quietly built the most rigorous sourcing program in the industry."</div></div>
+      <div class="press-card r d3"><div class="press-src">Wallpaper*</div><div class="press-q">"Where aesthetic excellence meets uncompromising quality. Third wave at its absolute zenith."</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CTA ═══ -->
+<section id="cta">
+  <div class="cta-orb"></div>
+  <div class="cta-eyebrow r">
+    <div style="width:24px;height:1px;background:var(--gold);opacity:.6"></div>
+    <div style="font-size:8.5px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold)">The Philosophy</div>
+    <div style="width:24px;height:1px;background:var(--gold);opacity:.6"></div>
+  </div>
+  <h2 class="cta-head r d1">Every cup,<br><em>a ceremony.</em></h2>
+  <p class="cta-sub r d2">Slow down. Let the aroma arrive before the first sip. This is what coffee was always meant to be.</p>
+  <div class="cta-acts r d3">
+    <button class="btn-solid" onclick="smoothTo('products')"><span>Shop the Collection</span></button>
+    <button class="btn-border" onclick="openCart()">View Your Bag</button>
+  </div>
+</section>
+
+<!-- ═══ NEWSLETTER ═══ -->
+<section id="nl">
+  <div class="nl-inner">
+    <div>
+      <div class="sec-lbl" style="margin-bottom:10px"><span class="sl-line"></span><span class="sl-txt">Stay Informed</span></div>
+      <div class="nl-h">The <em>Harvest Bulletin</em></div>
+      <p class="nl-sub" style="margin-top:10px">New lots, seasonal arrivals, and stories from origin — delivered monthly. No noise. Only substance.</p>
+    </div>
+    <div>
+      <div class="nl-form">
+        <input class="nl-in" type="email" placeholder="Your email address" id="nl-email" autocomplete="email"/>
+        <button class="nl-btn" onclick="subscribeNL()">Subscribe</button>
+      </div>
+      <p class="nl-fine">By subscribing you agree to receive our monthly bulletin. Unsubscribe at any time.</p>
+    </div>
+  </div>
+</section>
+
+</main><!-- /main -->
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="ft-grid">
+    <div>
+      <div class="ft-brand">AURA</div>
+      <p class="ft-tag">The Art of the Perfect Cup.<br>Est. 2019 · Copenhagen, Denmark.</p>
+      <div class="ft-socs">
+        <a class="ft-soc" href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram">Ig</a>
+        <a class="ft-soc" href="https://twitter.com" target="_blank" rel="noopener" aria-label="X">Tw</a>
+        <a class="ft-soc" href="https://pinterest.com" target="_blank" rel="noopener" aria-label="Pinterest">Pt</a>
+        <a class="ft-soc" href="https://linkedin.com" target="_blank" rel="noopener" aria-label="LinkedIn">Li</a>
+      </div>
+    </div>
+    <div>
+      <div class="ft-ch">Navigate</div>
+      <ul class="ft-links">
+        <li><a href="#" onclick="smoothTo('story');return false">Our Story</a></li>
+        <li><a href="#" onclick="smoothTo('process');return false">The Process</a></li>
+        <li><a href="#" onclick="smoothTo('products');return false">Collection</a></li>
+        <li><a href="#" onclick="smoothTo('origins');return false">Origins</a></li>
+        <li><a href="#" onclick="smoothTo('cta');return false">The Ritual</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="ft-ch">Legal</div>
+      <ul class="ft-links">
+        <li><a href="#" onclick="modal('Privacy Policy','At AURA, your privacy is treated with the same care as our coffee. We collect only the information necessary to fulfil your order and improve your experience. We never sell, rent, or trade your data with third parties. All payment processing is handled by PCI-DSS Level 1 compliant partners. You may request access to, correction of, or deletion of your personal data at any time by contacting hello@aura.coffee. We use strictly necessary cookies for session management and anonymous analytics to understand how our site is used.');return false">Privacy Policy</a></li>
+        <li><a href="#" onclick="modal('Terms of Service','By placing an order with AURA you agree to the following terms. All prices are listed in USD and include applicable taxes where legally required. We reserve the right to refuse or cancel orders at our discretion. Products are dispatched within 3–5 business days of roasting. Subscription plans renew automatically on the agreed billing cycle and may be cancelled at any time before the next renewal date. All content on this website is the intellectual property of AURA Coffee ApS and may not be reproduced without consent.');return false">Terms of Service</a></li>
+        <li><a href="#" onclick="modal('Shipping Policy','We ship worldwide to 38 countries. Orders above $60 qualify for complimentary shipping. Standard international delivery takes 5–10 business days. Denmark delivery takes 1–2 business days. All bags are nitrogen-flushed and heat-sealed within 24 hours of roasting to preserve peak freshness. A tracking number is provided via email upon dispatch. DHL Express shipping is available at checkout for time-sensitive orders.');return false">Shipping</a></li>
+        <li><a href="#" onclick="modal('Returns Policy','Your complete satisfaction is our commitment. If your coffee arrives damaged or stale upon first opening, contact us at hello@aura.coffee within 7 days and we will dispatch a replacement at no cost. Due to the perishable nature of roasted coffee, we cannot accept returns of opened bags. Unopened sealed bags may be returned within 14 days for a full refund minus shipping. Subscriptions may be cancelled before the next roast cycle for a full refund of that cycle.');return false">Returns</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="ft-ch">Contact</div>
+      <ul class="ft-links">
+        <li><a href="mailto:hello@aura.coffee">hello@aura.coffee</a></li>
+        <li><a href="tel:+4530123456">+45 30 12 34 56</a></li>
+        <li><a href="https://maps.google.com/?q=Copenhagen+Denmark" target="_blank" rel="noopener">Copenhagen Studio ↗</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="ft-bot">
+    <div class="ft-copy">© 2025 Aura Coffee ApS. All rights reserved.</div>
+    <div class="ft-copy-i">Crafted with intention.</div>
+    <div class="ft-copy">Copenhagen · Ethiopia · Colombia</div>
+  </div>
+  <div style="padding-top:14px;font-size:7.5px;letter-spacing:.09em;color:var(--c5)">Photography: <a href="https://unsplash.com" target="_blank" rel="noopener" style="color:var(--c4);transition:color .3s" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--c4)'">Unsplash</a> — replace with licensed photography for production use.</div>
+</footer>
+
+<!-- ═══════════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════════ -->
+<script src="script.js"></script>
+</body>
+</html>

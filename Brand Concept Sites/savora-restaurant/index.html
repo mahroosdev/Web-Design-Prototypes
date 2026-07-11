@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SAVORA — Fine Dining Experience</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#" class="nav-logo">SAVORA</a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#about">About</a></li>
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#testimonials">Reviews</a></li>
+        <li><a href="#reservation" class="nav-cta">Reserve a Table</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header class="hero" id="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-subtitle">Est. 2019</p>
+      <h1 class="hero-title">A Culinary<br>Journey Awaits</h1>
+      <p class="hero-desc">Where every plate tells a story and every flavor leaves a memory.</p>
+      <a href="#reservation" class="btn btn-primary">Reserve a Table</a>
+    </div>
+  </header>
+
+  <!-- About -->
+  <section class="about section" id="about">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-image reveal">
+          <img src="https://images.unsplash.com/photo-1600565193348-f74bd3c7ccdf?w=600&q=80&fit=crop" alt="Chef preparing a dish" loading="lazy">
+        </div>
+        <div class="about-text reveal">
+          <span class="section-tag">Our Story</span>
+          <h2>Crafted with Passion,<br>Served with Love</h2>
+          <p>At Savora, we believe dining is more than a meal — it's an experience. Founded by Chef Adrienne Moreau, our kitchen blends classic French technique with bold, seasonal ingredients sourced from local farms and artisan producers.</p>
+          <p>Every dish on our menu reflects a commitment to craft, from the hand-rolled pasta to the wood-fired proteins that define our signature style. We invite you to slow down, savor, and discover flavors that surprise and delight.</p>
+          <div class="about-stats">
+            <div class="stat">
+              <span class="stat-number">7</span>
+              <span class="stat-label">Years of Excellence</span>
+            </div>
+            <div class="stat">
+              <span class="stat-number">15K+</span>
+              <span class="stat-label">Happy Guests</span>
+            </div>
+            <div class="stat">
+              <span class="stat-number">4.9</span>
+              <span class="stat-label">Average Rating</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Menu Highlights -->
+  <section class="menu section" id="menu">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">Our Menu</span>
+        <h2>Signature Dishes</h2>
+        <p>A curated selection from our seasonal menu, crafted with the finest ingredients.</p>
+      </div>
+      <div class="menu-grid">
+        <div class="menu-card reveal">
+          <div class="menu-card-image">
+            <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&q=80&fit=crop" alt="Seared Salmon" loading="lazy">
+          </div>
+          <div class="menu-card-content">
+            <div class="menu-card-header">
+              <h3>Seared Atlantic Salmon</h3>
+              <span class="price">$38</span>
+            </div>
+            <p>Citrus-glazed with roasted fennel, micro greens, and saffron beurre blanc.</p>
+          </div>
+        </div>
+        <div class="menu-card reveal">
+          <div class="menu-card-image">
+            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80&fit=crop" alt="Wagyu Steak" loading="lazy">
+          </div>
+          <div class="menu-card-content">
+            <div class="menu-card-header">
+              <h3>Wagyu Beef Tenderloin</h3>
+              <span class="price">$62</span>
+            </div>
+            <p>Dry-aged 28 days, truffle jus, pomme purée, and charred broccolini.</p>
+          </div>
+        </div>
+        <div class="menu-card reveal">
+          <div class="menu-card-image">
+            <img src="https://images.unsplash.com/photo-1473093295043-cdd812d0e601?w=400&q=80&fit=crop" alt="Mushroom Risotto" loading="lazy">
+          </div>
+          <div class="menu-card-content">
+            <div class="menu-card-header">
+              <h3>Wild Mushroom Risotto</h3>
+              <span class="price">$29</span>
+            </div>
+            <p>Arborio rice, porcini, chanterelle, aged parmesan, and white truffle oil.</p>
+          </div>
+        </div>
+        <div class="menu-card reveal">
+          <div class="menu-card-image">
+            <img src="https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&q=80&fit=crop" alt="Lobster Linguine" loading="lazy">
+          </div>
+          <div class="menu-card-content">
+            <div class="menu-card-header">
+              <h3>Lobster Linguine</h3>
+              <span class="price">$45</span>
+            </div>
+            <p>Fresh Maine lobster, cherry tomatoes, basil, chili flakes, white wine sauce.</p>
+          </div>
+        </div>
+        <div class="menu-card reveal">
+          <div class="menu-card-image">
+            <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?w=400&q=80&fit=crop" alt="Crème Brûlée" loading="lazy">
+          </div>
+          <div class="menu-card-content">
+            <div class="menu-card-header">
+              <h3>Vanilla Crème Brûlée</h3>
+              <span class="price">$16</span>
+            </div>
+            <p>Madagascar vanilla bean custard with caramelized sugar and fresh berries.</p>
+          </div>
+        </div>
+        <div class="menu-card reveal">
+          <div class="menu-card-image">
+            <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80&fit=crop" alt="Garden Salad" loading="lazy">
+          </div>
+          <div class="menu-card-content">
+            <div class="menu-card-header">
+              <h3>Heirloom Garden Salad</h3>
+              <span class="price">$22</span>
+            </div>
+            <p>Seasonal greens, heirloom tomatoes, burrata, basil oil, and aged balsamic.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery -->
+  <section class="gallery section" id="gallery">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">Ambience</span>
+        <h2>Our Space</h2>
+        <p>An intimate setting designed for unforgettable evenings.</p>
+      </div>
+      <div class="gallery-grid reveal">
+        <div class="gallery-item gallery-item-tall">
+          <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&q=80&fit=crop" alt="Restaurant interior" loading="lazy">
+        </div>
+        <div class="gallery-item">
+          <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=80&fit=crop" alt="Plated dish" loading="lazy">
+        </div>
+        <div class="gallery-item">
+          <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=400&q=80&fit=crop" alt="Wine collection" loading="lazy">
+        </div>
+        <div class="gallery-item gallery-item-wide">
+          <img src="https://images.unsplash.com/photo-1550966871-3ed3cdb51f3a?w=800&q=80&fit=crop" alt="Bar area" loading="lazy">
+        </div>
+        <div class="gallery-item">
+          <img src="https://images.unsplash.com/photo-1424847651672-bf20a4b0982b?w=400&q=80&fit=crop" alt="Table setting" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="testimonials section" id="testimonials">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">Reviews</span>
+        <h2>What Our Guests Say</h2>
+      </div>
+      <div class="testimonials-grid">
+        <div class="testimonial-card reveal">
+          <div class="stars">★★★★★</div>
+          <p>"An extraordinary dining experience from start to finish. The wagyu was cooked to perfection, and the ambiance made the evening truly special."</p>
+          <div class="testimonial-author">
+            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&q=80&fit=crop&crop=face" alt="Sarah M." loading="lazy">
+            <div>
+              <strong>Sarah M.</strong>
+              <span>Food Critic</span>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card reveal">
+          <div class="stars">★★★★★</div>
+          <p>"We celebrated our anniversary here and it was magical. The staff went above and beyond. The tasting menu was a revelation — every course better than the last."</p>
+          <div class="testimonial-author">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&q=80&fit=crop&crop=face" alt="James & Laura T." loading="lazy">
+            <div>
+              <strong>James & Laura T.</strong>
+              <span>Anniversary Dinner</span>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card reveal">
+          <div class="stars">★★★★★</div>
+          <p>"The mushroom risotto alone is worth the visit. Savora has become our go-to for special occasions. Impeccable service and a wine list that doesn't disappoint."</p>
+          <div class="testimonial-author">
+            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&q=80&fit=crop&crop=face" alt="Elena R." loading="lazy">
+            <div>
+              <strong>Elena R.</strong>
+              <span>Regular Guest</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Reservation -->
+  <section class="reservation section" id="reservation">
+    <div class="reservation-bg"></div>
+    <div class="container">
+      <div class="reservation-grid">
+        <div class="reservation-info reveal">
+          <span class="section-tag">Reservations</span>
+          <h2>Book Your Table</h2>
+          <p>Join us for an unforgettable evening. For parties larger than 8, please call us directly.</p>
+          <div class="reservation-details">
+            <div class="detail">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <div>
+                <strong>Hours</strong>
+                <span>Tue–Sun: 5:30 PM – 11:00 PM</span>
+              </div>
+            </div>
+            <div class="detail">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              <div>
+                <strong>Location</strong>
+                <span>42 Rue de la Gastronomie, Midtown</span>
+              </div>
+            </div>
+            <div class="detail">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              <div>
+                <strong>Phone</strong>
+                <span>(555) 234-8901</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <form class="reservation-form reveal" onsubmit="return false;">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="name">Full Name</label>
+              <input type="text" id="name" placeholder="Your name">
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" placeholder="your@email.com">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="date">Date</label>
+              <input type="date" id="date">
+            </div>
+            <div class="form-group">
+              <label for="time">Time</label>
+              <select id="time">
+                <option value="">Select time</option>
+                <option>5:30 PM</option>
+                <option>6:00 PM</option>
+                <option>6:30 PM</option>
+                <option>7:00 PM</option>
+                <option>7:30 PM</option>
+                <option>8:00 PM</option>
+                <option>8:30 PM</option>
+                <option>9:00 PM</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="guests">Number of Guests</label>
+            <select id="guests">
+              <option value="">Select guests</option>
+              <option>1 Guest</option>
+              <option>2 Guests</option>
+              <option>3 Guests</option>
+              <option>4 Guests</option>
+              <option>5 Guests</option>
+              <option>6 Guests</option>
+              <option>7 Guests</option>
+              <option>8 Guests</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="notes">Special Requests</label>
+            <textarea id="notes" rows="3" placeholder="Allergies, celebrations, seating preferences..."></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full">Request Reservation</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h3 class="footer-logo">SAVORA</h3>
+          <p>Fine dining reimagined. Where tradition meets innovation on every plate.</p>
+          <div class="social-links">
+            <a href="#" aria-label="Instagram">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
+            <a href="#" aria-label="Facebook">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            </a>
+            <a href="#" aria-label="Twitter">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4l11.733 16h4.267l-11.733 -16h-4.267z"/><path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772"/></svg>
+            </a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Hours</h4>
+          <ul>
+            <li>Tuesday – Thursday: 5:30 PM – 10:00 PM</li>
+            <li>Friday – Saturday: 5:30 PM – 11:00 PM</li>
+            <li>Sunday: 5:00 PM – 9:30 PM</li>
+            <li>Monday: Closed</li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <ul>
+            <li>42 Rue de la Gastronomie</li>
+            <li>Midtown, NY 10019</li>
+            <li>(555) 234-8901</li>
+            <li>hello@savora.com</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Savora. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
