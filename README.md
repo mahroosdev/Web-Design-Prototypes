@@ -78,7 +78,7 @@ A content quality analyzer with readability and content insights.
 
 ---
 
-## 💼 Portfolio Templates
+## 💼 Portfolio Mini Projects
 
 Portfolio website concepts designed to showcase web development projects.
 
