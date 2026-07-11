@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Veritas | Content Quality Analysis</title>
+  <meta name="description" content="A portfolio-ready content quality analyzer with local demo scoring.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="navin">
+    <button class="brand" type="button" onclick="resetApp()">
+      <span class="mark">V</span>
+      <b>Veritas</b>
+      <span class="tag">Portfolio Demo</span>
+    </button>
+    <div class="crumb">Content scoring, risk review, and rewrite guidance</div>
+    <div class="nav-actions">
+      <button class="btn ghost" onclick="loadSample()">Sample</button>
+      <button class="btn primary" onclick="analyze()">Analyze</button>
+    </div>
+  </div>
+</nav>
+
+<main class="shell">
+
+  <!-- Hero / Input Section -->
+  <section class="hero" id="hero">
+    <div>
+      <div class="eyebrow"><span class="dot"></span>Editorial quality system</div>
+      <h1>Know whether content is clear, credible, and ready.</h1>
+      <p class="lead">A polished analysis dashboard that scores clarity, credibility, tone, and actionability, then produces practical editorial improvements.</p>
+      <div class="hero-grid">
+        <div class="mini"><strong>Score</strong><span>Quality snapshot</span></div>
+        <div class="mini"><strong>Risks</strong><span>Claims and tone</span></div>
+        <div class="mini"><strong>Rewrite</strong><span>Cleaner version</span></div>
+      </div>
+    </div>
+    <aside class="inputcard">
+      <h2>Content input</h2>
+      <textarea id="content" placeholder="Paste marketing copy, article text, proposal content, or a product description..."></textarea>
+      <div class="inputbar">
+        <span class="count" id="count">0 words</span>
+        <div class="actions">
+          <button class="btn" onclick="loadSample()">Load sample</button>
+          <button class="btn primary" onclick="analyze()">Analyze content</button>
+        </div>
+      </div>
+    </aside>
+  </section>
+
+  <!-- Results Section -->
+  <section class="view" id="results">
+    <div class="toolbar">
+      <div class="filemeta">
+        <strong>Quality report</strong>
+        <span id="summary">Demo analysis ready</span>
+      </div>
+      <div class="actions">
+        <button class="btn" onclick="resetApp()">New analysis</button>
+        <button class="btn" onclick="loadSample()">Try sample</button>
+        <button class="btn primary" onclick="exportReport()">Export report</button>
+      </div>
+    </div>
+
+    <div class="grid">
+      <aside class="card">
+        <div class="card-h">
+          <div>
+            <h2>Overall score</h2>
+            <p>Local portfolio scoring model</p>
+          </div>
+        </div>
+        <div class="score">
+          <div class="ring" id="ring" style="--score:0">
+            <div class="ring-inner">
+              <strong id="score">0</strong>
+            </div>
+          </div>
+          <p id="verdict">Awaiting analysis</p>
+        </div>
+        <div class="metrics" id="metrics"></div>
+      </aside>
+
+      <section class="card">
+        <div class="card-h">
+          <div>
+            <h2>Editorial review</h2>
+            <p>Issues, strengths, and improved copy</p>
+          </div>
+          <div class="tabs">
+            <button class="tab active" onclick="showTab('findings',this)">Findings</button>
+            <button class="tab" onclick="showTab('rewrite',this)">Rewrite</button>
+            <button class="tab" onclick="showTab('brief',this)">Brief</button>
+          </div>
+        </div>
+        <div class="panel" id="panel"></div>
+      </section>
+    </div>
+  </section>
+
+</main>
+
+<div class="toast" id="toast"></div>
+<script src="script.js"></script>
+</body>
+</html>

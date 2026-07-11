@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PaperLift | PDF Table Extraction</title>
+  <meta name="description" content="A portfolio-ready PDF table extraction interface with local demo mode.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="navin">
+    <button class="brand" type="button" onclick="resetApp()">
+      <span class="mark">P</span>
+      <b>PaperLift</b>
+      <span class="tag">Portfolio Demo</span>
+    </button>
+    <div class="crumb">PDF table extraction workspace</div>
+    <div class="nav-actions">
+      <button class="btn ghost" onclick="runDemo()">Demo PDF</button>
+      <button class="btn primary" onclick="document.getElementById('fileInput').click()">Upload</button>
+    </div>
+  </div>
+</nav>
+
+<main class="shell">
+
+  <!-- Hero / Upload Section -->
+  <section class="hero" id="hero">
+    <div>
+      <div class="eyebrow"><span class="dot"></span>Document intelligence</div>
+      <h1>PDF tables become clean, exportable data.</h1>
+      <p class="lead">A focused extraction workspace that turns dense PDF reports into structured tables with review, export, and raw response views.</p>
+      <div class="hero-grid">
+        <div class="mini"><strong>PDF</strong><span>Upload or demo</span></div>
+        <div class="mini"><strong>Tables</strong><span>Multi-table review</span></div>
+        <div class="mini"><strong>CSV</strong><span>Export ready</span></div>
+      </div>
+    </div>
+    <aside class="upload">
+      <h2>Extract tables</h2>
+      <div class="drop" id="drop">
+        <div>
+          <div class="docicon"></div>
+          <strong>Drop your PDF here</strong>
+          <p>For portfolio viewing, the demo document runs fully offline.</p>
+          <button class="btn primary" onclick="runDemo()">Run demo document</button>
+        </div>
+      </div>
+      <button class="btn" onclick="document.getElementById('fileInput').click()">Choose PDF</button>
+      <input id="fileInput" type="file" accept=".pdf">
+    </aside>
+  </section>
+
+  <!-- Extraction Progress -->
+  <section class="progress" id="progress">
+    <div class="card-h" style="border:0; padding:0 0 14px">
+      <div>
+        <h2>Extraction in progress</h2>
+        <p>Demo extraction simulates a production handoff.</p>
+      </div>
+    </div>
+    <div class="steps" id="steps"></div>
+  </section>
+
+  <!-- Workspace View -->
+  <section class="view" id="workspace">
+    <div class="toolbar">
+      <div class="filemeta">
+        <strong id="fileName">Annual_Report_2026.pdf</strong>
+        <span id="fileMeta">3 tables extracted · demo mode</span>
+      </div>
+      <div class="actions">
+        <button class="btn" onclick="runDemo()">New demo</button>
+        <button class="btn" onclick="exportCurrent()">Export current CSV</button>
+        <button class="btn primary" onclick="exportAll()">Export all JSON</button>
+      </div>
+    </div>
+
+    <div class="summary" id="summary"></div>
+
+    <div class="grid">
+      <aside class="card">
+        <div class="card-h">
+          <div>
+            <h2>Detected tables</h2>
+            <p>Choose a table to inspect</p>
+          </div>
+        </div>
+        <div class="tables" id="tableList"></div>
+      </aside>
+
+      <section class="card">
+        <div class="card-h">
+          <div>
+            <h2 id="tableTitle">Table preview</h2>
+            <p id="tableSub">Rows and columns</p>
+          </div>
+        </div>
+        <div class="tablewrap">
+          <table class="table">
+            <thead id="thead"></thead>
+            <tbody id="tbody"></tbody>
+          </table>
+        </div>
+        <div class="raw" id="raw">Demo response ready.</div>
+      </section>
+    </div>
+  </section>
+
+</main>
+
+<div class="toast" id="toast"></div>
+<script src="script.js"></script>
+</body>
+</html>

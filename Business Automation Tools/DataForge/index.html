@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DataForge | Data Profiling Dashboard</title>
+  <meta name="description" content="A portfolio-ready data profiling and cleanup dashboard with local demo mode.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="navin">
+    <button class="brand" type="button" onclick="resetApp()">
+      <span class="mark">D</span>
+      <b>DataForge</b>
+      <span class="tag">Portfolio Demo</span>
+    </button>
+    <div class="crumb">Data profiling, cleanup, and analyst summary</div>
+    <div class="nav-actions">
+      <button class="btn ghost" onclick="loadDemo()">Demo data</button>
+      <button class="btn primary" onclick="document.getElementById('fileInput').click()">Upload</button>
+    </div>
+  </div>
+</nav>
+
+<main class="shell">
+
+  <!-- Hero / Upload Section -->
+  <section class="hero" id="hero">
+    <div>
+      <div class="eyebrow"><span class="dot"></span>Data intelligence workspace</div>
+      <h1>Raw datasets become clear operating insight.</h1>
+      <p class="lead">A polished single-page dashboard for profiling CSV, TSV, and JSON files, previewing quality signals, and producing a practical analyst summary.</p>
+      <div class="hero-grid">
+        <div class="mini"><strong>CSV</strong><span>TSV and JSON support</span></div>
+        <div class="mini"><strong>Quality</strong><span>Nulls, uniqueness, types</span></div>
+        <div class="mini"><strong>Export</strong><span>Clean table download</span></div>
+      </div>
+    </div>
+    <aside class="upload">
+      <h2>Start analysis</h2>
+      <div class="drop" id="drop">
+        <div>
+          <strong>Drop a data file here</strong>
+          <p>Or use the included portfolio demo dataset.</p>
+          <button class="btn primary" onclick="loadDemo()">Load demo dataset</button>
+          <div class="chips">
+            <span class="chip">.csv</span>
+            <span class="chip">.tsv</span>
+            <span class="chip">.json</span>
+            <span class="chip">local only</span>
+          </div>
+        </div>
+      </div>
+      <button class="btn" onclick="document.getElementById('fileInput').click()">Choose file</button>
+      <input id="fileInput" type="file" accept=".csv,.tsv,.json,.txt">
+    </aside>
+  </section>
+
+  <!-- Dashboard View -->
+  <section class="view" id="dashboard">
+    <div class="toolbar">
+      <div class="filemeta">
+        <strong id="fileName">Dataset</strong>
+        <span id="fileMeta">Ready</span>
+      </div>
+      <div class="actions">
+        <button class="btn" onclick="loadDemo()">Reload demo</button>
+        <button class="btn" onclick="exportCSV()">Export CSV</button>
+        <button class="btn primary" onclick="runInsights()">Generate insight</button>
+      </div>
+    </div>
+
+    <div class="metrics" id="metrics"></div>
+
+    <div class="grid">
+      <section class="card">
+        <div class="card-h">
+          <div>
+            <h2>Column profile</h2>
+            <p>Detected types and data quality signals</p>
+          </div>
+        </div>
+        <div class="cols" id="columns"></div>
+      </section>
+
+      <aside class="card">
+        <div class="card-h">
+          <div>
+            <h2>Analyst summary</h2>
+            <p>Demo mode response for portfolio review</p>
+          </div>
+          <span class="status">
+            <span class="dot"></span>
+            <span id="aiStatus">Ready</span>
+          </span>
+        </div>
+        <div class="ai">
+          <div class="aiout" id="aiOut">Load data, then generate an insight summary.</div>
+        </div>
+      </aside>
+    </div>
+
+    <section class="card" style="margin-top:12px">
+      <div class="card-h">
+        <div>
+          <h2>Data preview</h2>
+          <p id="tableInfo">No rows yet</p>
+        </div>
+        <input class="search" id="search" placeholder="Filter rows" oninput="renderTable()">
+      </div>
+      <div class="tablewrap">
+        <table class="table">
+          <thead id="thead"></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+    </section>
+  </section>
+
+</main>
+
+<div class="toast" id="toast"></div>
+<script src="script.js"></script>
+</body>
+</html>
