@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="ivory">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nexa Vault Studio V1.0 - Offline Password Studio</title>
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" type="image/svg+xml" href="assets/icons/nexa-vault-studio.svg">
+<link rel="stylesheet" href="css/style.css">
+<meta name="description" content="Offline V1.0 password studio with local password generation, bulk generation, entropy scoring, copy, and download tools.">
+
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">
+    Nexa<em>·</em><span class="logo-vault">Vault</span>
+    <span class="logo-sep"></span>
+    <span style="font-size:13px;letter-spacing:0.2em;opacity:0.5;">SOVEREIGN PASSWORDS</span>
+  </div>
+  <div class="header-right">
+    <div class="header-shield">
+      <span>Professional Vault Studio &nbsp;·&nbsp; V1.0</span>
+    </div>
+    <div class="header-meta" style="display:none;" id="headerMeta">Entropy Engine V1.0</div>
+
+    <!-- Theme button -->
+    <div style="position:relative;" id="themeBtnWrap">
+      <button class="theme-palette-btn" onclick="toggleThemePanel()">
+        <span class="palette-preview"></span>
+        <span class="palette-btn-label" id="themeLabel">White</span>
+        <span class="palette-chevron">▾</span>
+      </button>
+      <div class="theme-panel" id="themePanel">
+        <div class="theme-panel-title">Select Theme</div>
+        <div class="theme-options">
+          <button class="theme-opt active" onclick="setTheme('ivory','White')" id="opt-ivory">
+            <span class="theme-swatch" style="background:linear-gradient(135deg,#0a0a0a 50%,#f8f8f8 50%);"></span>
+            <span class="theme-opt-text"><span class="theme-opt-name">White</span><span class="theme-opt-desc">Clean default</span></span>
+          </button>
+          <button class="theme-opt" onclick="setTheme('obsidian','Black')" id="opt-obsidian">
+            <span class="theme-swatch" style="background:linear-gradient(135deg,#0a0a0a 50%,#d4a843 50%);"></span>
+            <span class="theme-opt-text"><span class="theme-opt-name">Black</span><span class="theme-opt-desc">Luxury dark</span></span>
+          </button>
+          <button class="theme-opt" onclick="setTheme('void','Purple')" id="opt-void">
+            <span class="theme-swatch" style="background:linear-gradient(135deg,#070617 50%,#9b7ff4 50%);"></span>
+            <span class="theme-opt-text"><span class="theme-opt-name">Purple</span><span class="theme-opt-desc">Focused violet</span></span>
+          </button>
+          <button class="theme-opt" onclick="setTheme('slate','Blue')" id="opt-slate">
+            <span class="theme-swatch" style="background:linear-gradient(135deg,#18182a 50%,#6b91c9 50%);"></span>
+            <span class="theme-opt-text"><span class="theme-opt-name">Blue</span><span class="theme-opt-desc">Cool professional</span></span>
+          </button>
+          <button class="theme-opt" onclick="setTheme('parchment','Gold')" id="opt-parchment">
+            <span class="theme-swatch" style="background:linear-gradient(135deg,#a8782a 50%,#faf8f4 50%);"></span>
+            <span class="theme-opt-text"><span class="theme-opt-name">Gold</span><span class="theme-opt-desc">Warm premium</span></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- APP TABS -->
+<div class="app-tabs">
+  <button class="app-tab active" onclick="switchTab('generator')" id="tab-generator">
+    <span class="tab-icon">🔐</span> Generator
+  </button>
+  <button class="app-tab" onclick="switchTab('bulk')" id="tab-bulk">
+    <span class="tab-icon">⚡</span> Bulk
+  </button>
+  <button class="app-tab" onclick="switchTab('breach')" id="tab-breach">
+    <span class="tab-icon">🛡️</span> Breach Watch
+  </button>
+  <button class="app-tab" onclick="switchTab('about')" id="tab-about">
+    <span class="tab-icon">◈</span> About
+  </button>
+</div>
+
+<!-- ══════════ GENERATOR TAB ══════════ -->
+<div class="vault-section active" id="section-generator">
+
+  <!-- LEFT SIDEBAR -->
+  <div class="vault-sidebar">
+    <div class="sidebar-section-label">Mode</div>
+    <button class="mode-nav-btn active" onclick="setMode('classic')" id="nav-classic">
+      <span style="display:flex;align-items:center;gap:8px;"><span class="mode-nav-icon">🔑</span> Classic</span>
+      <span class="mode-tag">chars</span>
+    </button>
+    <button class="mode-nav-btn" onclick="setMode('passphrase')" id="nav-passphrase">
+      <span style="display:flex;align-items:center;gap:8px;"><span class="mode-nav-icon">📖</span> Passphrase</span>
+      <span class="mode-tag">words</span>
+    </button>
+    <button class="mode-nav-btn" onclick="setMode('quantum')" id="nav-quantum">
+      <span style="display:flex;align-items:center;gap:8px;"><span class="mode-nav-icon">⚛️</span> Quantum</span>
+      <span class="mode-tag">max</span>
+    </button>
+    <button class="mode-nav-btn" onclick="setMode('pin')" id="nav-pin">
+      <span style="display:flex;align-items:center;gap:8px;"><span class="mode-nav-icon">🔢</span> PIN / OTP</span>
+      <span class="mode-tag">numeric</span>
+    </button>
+
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section-label">Strength</div>
+
+    <div class="strength-card">
+      <div class="strength-card-label">Entropy Score</div>
+      <div class="strength-bars" id="strengthBars">
+        <div class="sbar" id="sb1"></div><div class="sbar" id="sb2"></div>
+        <div class="sbar" id="sb3"></div><div class="sbar" id="sb4"></div>
+        <div class="sbar" id="sb5"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div class="strength-text" id="strengthText">—</div>
+        <div class="strength-bits" id="strengthBits"></div>
+      </div>
+    </div>
+
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section-label">Character Map</div>
+    <div style="padding:0 14px 0;">
+      <div id="charMapWrap" style="display:flex;flex-wrap:wrap;gap:4px;padding:10px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;min-height:60px;"></div>
+    </div>
+  </div>
+
+  <!-- MAIN PANEL -->
+  <div class="vault-main">
+    <div class="vault-panel">
+
+      <!-- Classic Mode -->
+      <div class="panel-section active" id="panel-classic">
+        <div class="step-badge"><span class="step-num">1</span> Configuration</div>
+        <h1 class="panel-title">Classic Password</h1>
+        <p class="panel-sub">Precise character-set control for maximum compatibility.</p>
+
+        <div class="field">
+          <label>Length</label>
+          <div class="slider-wrap">
+            <input type="range" id="classicLen" min="6" max="128" value="16" oninput="syncLen();generatePw();" aria-label="Password length">
+            <span class="slider-val" id="classicLenVal">16</span>
+          </div>
+        </div>
+
+        <div class="vault-divider"></div>
+        <div class="step-badge"><span class="step-num">2</span> Character Sets</div>
+
+        <div class="toggle-grid" id="toggleGrid">
+          <div class="toggle-card on" id="tc-upper" onclick="toggleCard('upper')">
+            <div class="toggle-card-left">
+              <span class="toggle-icon">🔠</span>
+              <div class="toggle-label-wrap">
+                <span class="toggle-label">Uppercase</span>
+                <span class="toggle-sublabel">A – Z</span>
+              </div>
+            </div>
+            <div class="toggle-pip"></div>
+          </div>
+          <div class="toggle-card on" id="tc-lower" onclick="toggleCard('lower')">
+            <div class="toggle-card-left">
+              <span class="toggle-icon">🔡</span>
+              <div class="toggle-label-wrap">
+                <span class="toggle-label">Lowercase</span>
+                <span class="toggle-sublabel">a – z</span>
+              </div>
+            </div>
+            <div class="toggle-pip"></div>
+          </div>
+          <div class="toggle-card on" id="tc-numbers" onclick="toggleCard('numbers')">
+            <div class="toggle-card-left">
+              <span class="toggle-icon">🔢</span>
+              <div class="toggle-label-wrap">
+                <span class="toggle-label">Numbers</span>
+                <span class="toggle-sublabel">0 – 9</span>
+              </div>
+            </div>
+            <div class="toggle-pip"></div>
+          </div>
+          <div class="toggle-card on" id="tc-symbols" onclick="toggleCard('symbols')">
+            <div class="toggle-card-left">
+              <span class="toggle-icon">✦</span>
+              <div class="toggle-label-wrap">
+                <span class="toggle-label">Symbols</span>
+                <span class="toggle-sublabel">! @ # $ %</span>
+              </div>
+            </div>
+            <div class="toggle-pip"></div>
+          </div>
+          <div class="toggle-card" id="tc-noSimilar" onclick="toggleCard('noSimilar')">
+            <div class="toggle-card-left">
+              <span class="toggle-icon">👁️</span>
+              <div class="toggle-label-wrap">
+                <span class="toggle-label">Avoid Similar</span>
+                <span class="toggle-sublabel">0 O l 1 I</span>
+              </div>
+            </div>
+            <div class="toggle-pip"></div>
+          </div>
+          <div class="toggle-card" id="tc-noAmbig" onclick="toggleCard('noAmbig')">
+            <div class="toggle-card-left">
+              <span class="toggle-icon">🚫</span>
+              <div class="toggle-label-wrap">
+                <span class="toggle-label">No Ambiguous</span>
+                <span class="toggle-sublabel">{ } [ ] ( )</span>
+              </div>
+            </div>
+            <div class="toggle-pip"></div>
+          </div>
+        </div>
+
+        <div class="vault-divider"></div>
+        <div class="step-badge"><span class="step-num">3</span> Exclusions</div>
+        <div class="field">
+          <label>Exclude Characters</label>
+          <div class="exclude-wrap">
+            <span style="font-size:14px;color:var(--ink3);">✕</span>
+            <input type="text" id="excludeChars" placeholder="e.g.  @ # & ..." oninput="generatePw();">
+          </div>
+        </div>
+
+        <button class="btn-generate" onclick="generatePw()" aria-label="Generate password">↻ &nbsp; Generate Password</button>
+      </div>
+
+      <!-- Passphrase Mode -->
+      <div class="panel-section" id="panel-passphrase">
+        <div class="step-badge"><span class="step-num">1</span> Configuration</div>
+        <h1 class="panel-title">Passphrase</h1>
+        <p class="panel-sub">Memorable yet unbreakable — entropy through length.</p>
+
+        <div class="field">
+          <label>Word Count</label>
+          <div class="word-count-row" id="wordCountRow">
+            <div class="word-count-badge active" onclick="setWordCount(3)" id="wc3">3</div>
+            <div class="word-count-badge" onclick="setWordCount(4)" id="wc4">4</div>
+            <div class="word-count-badge" onclick="setWordCount(5)" id="wc5">5</div>
+            <div class="word-count-badge" onclick="setWordCount(6)" id="wc6">6</div>
+            <div class="word-count-badge" onclick="setWordCount(7)" id="wc7">7</div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Separator</label>
+          <div class="separator-row" id="sepRow">
+            <div class="sep-chip active" onclick="setSep('-')" id="sep--">—</div>
+            <div class="sep-chip" onclick="setSep('.')" id="sep-.">·</div>
+            <div class="sep-chip" onclick="setSep('_')" id="sep-_">_</div>
+            <div class="sep-chip" onclick="setSep(' ')" id="sep- ">space</div>
+            <div class="sep-chip" onclick="setSep('@')" id="sep-@">@</div>
+            <div class="sep-chip" onclick="setSep('#')" id="sep-#">#</div>
+            <div class="sep-chip" onclick="setSep('')" id="sep-">none</div>
+          </div>
+        </div>
+
+        <div class="toggle-grid" style="grid-template-columns:1fr 1fr;">
+          <div class="toggle-card" id="tc-capitalize" onclick="toggleCard('capitalize')">
+            <div class="toggle-card-left">
+              <span class="toggle-icon">🔠</span>
+              <div class="toggle-label-wrap">
+                <span class="toggle-label">Capitalize</span>
+                <span class="toggle-sublabel">First letter</span>
+              </div>
+            </div>
+            <div class="toggle-pip"></div>
+          </div>
+          <div class="toggle-card" id="tc-addNumber" onclick="toggleCard('addNumber')">
+            <div class="toggle-card-left">
+              <span class="toggle-icon">🔢</span>
+              <div class="toggle-label-wrap">
+                <span class="toggle-label">Add Number</span>
+                <span class="toggle-sublabel">Appended digit</span>
+              </div>
+            </div>
+            <div class="toggle-pip"></div>
+          </div>
+        </div>
+
+        <button class="btn-generate" onclick="generatePw()" aria-label="Generate passphrase">↻ &nbsp; Generate Passphrase</button>
+      </div>
+
+      <!-- Quantum Mode -->
+      <div class="panel-section" id="panel-quantum">
+        <div class="step-badge"><span class="step-num">∞</span> Maximum Entropy</div>
+        <h1 class="panel-title">Quantum Mode</h1>
+        <p class="panel-sub">Maximum entropy — 64-character full-charset fortress.</p>
+        <div class="quantum-card">
+          <span class="quantum-icon">⚛️</span>
+          <div class="quantum-desc">
+            <strong>Quantum mode</strong> generates a 64-character password using the entire printable ASCII charset (95 characters), yielding approximately <strong>~420 bits of entropy</strong> — computationally unbreakable by any known or projected hardware.
+          </div>
+        </div>
+        <div class="field">
+          <label>Length Override</label>
+          <div class="slider-wrap">
+            <input type="range" id="quantumLen" min="32" max="128" value="64" oninput="syncQuantumLen();generatePw();" aria-label="Quantum password length">
+            <span class="slider-val" id="quantumLenVal">64</span>
+          </div>
+        </div>
+        <button class="btn-generate" onclick="generatePw()" aria-label="Generate quantum password">⚛ &nbsp; Generate Quantum Password</button>
+      </div>
+
+      <!-- PIN Mode -->
+      <div class="panel-section" id="panel-pin">
+        <div class="step-badge"><span class="step-num">🔢</span> Numeric</div>
+        <h1 class="panel-title">PIN / OTP</h1>
+        <p class="panel-sub">Cryptographically secure numeric codes.</p>
+        <div class="field">
+          <label>Digits</label>
+          <div class="slider-wrap">
+            <input type="range" id="pinLen" min="4" max="20" value="6" oninput="syncPinLen();generatePw();" aria-label="PIN length">
+            <span class="slider-val" id="pinLenVal">6</span>
+          </div>
+        </div>
+        <div class="toggle-grid" style="grid-template-columns:1fr;">
+          <div class="toggle-card" id="tc-pinGroup" onclick="toggleCard('pinGroup')">
+            <div class="toggle-card-left">
+              <span class="toggle-icon">·</span>
+              <div class="toggle-label-wrap">
+                <span class="toggle-label">Group digits</span>
+                <span class="toggle-sublabel">e.g. 123-456</span>
+              </div>
+            </div>
+            <div class="toggle-pip"></div>
+          </div>
+        </div>
+        <button class="btn-generate" onclick="generatePw()" aria-label="Generate PIN">↻ &nbsp; Generate PIN</button>
+      </div>
+
+    </div><!-- /vault-panel -->
+  </div><!-- /vault-main -->
+
+  <!-- RIGHT PREVIEW -->
+  <div class="vault-preview">
+    <div class="preview-label">Generated Password</div>
+
+    <div class="pw-display-wrap pw-display-corners">
+      <div class="pw-text" id="pwDisplay">$Ue1TG030Pm_p5+V</div>
+      <div class="pw-strength-row">
+        <span class="pw-strength-label">Strength</span>
+        <span class="pw-strength-badge" id="pwBadge">—</span>
+      </div>
+    </div>
+
+    <div class="preview-divider"></div>
+
+    <div class="btn-row">
+      <button class="btn-action" onclick="copyPw()" aria-label="Copy password to clipboard">📋 Copy</button>
+      <button class="btn-action" onclick="generatePw()" aria-label="Regenerate password">↻ Refresh</button>
+    </div>
+    <button class="btn-primary-action" onclick="copyPw()" style="margin-bottom:14px;" aria-label="Copy password to clipboard">
+      ✓ &nbsp; Copy Password
+    </button>
+
+    <div class="preview-divider"></div>
+
+    <!-- Session log -->
+    <div class="session-log-wrap">
+      <div class="session-log-header">
+        <span class="session-log-title">Access Log</span>
+        <button class="session-clear-btn" onclick="clearSession()">Clear Session</button>
+      </div>
+      <div class="session-log" id="sessionLog">
+        <div style="padding:14px;font-size:11px;color:var(--ink3);text-align:center;letter-spacing:0.06em;">No entries yet</div>
+      </div>
+    </div>
+
+  </div>
+</div><!-- /section-generator -->
+
+<!-- ══════════ BULK TAB ══════════ -->
+<div class="vault-section" id="section-bulk" style="display:none;grid-template-columns:1fr;">
+  <div style="display:flex;gap:0;min-height:calc(100vh - 116px);">
+
+    <div style="flex:1;padding:40px 48px;border-right:1px solid var(--border);overflow-y:auto;">
+      <div class="step-badge"><span class="step-num">⚡</span> Batch Mode</div>
+      <h1 class="panel-title">Bulk Generate</h1>
+      <p class="panel-sub">Generate multiple passwords in a single operation.</p>
+
+      <div class="field">
+        <label>Quantity</label>
+        <div class="bulk-controls">
+          <button class="bulk-minus" onclick="adjustBulk(-1)">−</button>
+          <span class="bulk-count" id="bulkCount">5</span>
+          <button class="bulk-plus" onclick="adjustBulk(1)">+</button>
+          <span style="font-size:11px;color:var(--ink3);letter-spacing:0.08em;">passwords</span>
+        </div>
+      </div>
+
+      <button class="btn-generate" onclick="generateBulk()">⚡ &nbsp; Generate Batch</button>
+    </div>
+
+    <div style="flex:1;padding:40px 32px;overflow-y:auto;">
+      <div class="preview-label">Batch Results</div>
+      <div class="bulk-list" id="bulkList">
+        <div style="padding:20px;font-size:11px;color:var(--ink3);text-align:center;letter-spacing:0.06em;">Press Generate Batch to begin</div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-action" onclick="copyBulkAll()">📋 Copy All</button>
+        <button class="btn-action" onclick="downloadBulk()">⬇ Download</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════ BREACH WATCH TAB ══════════ -->
+<div class="vault-section" id="section-breach" style="display:none;grid-template-columns:1fr;">
+  <div style="padding:40px 48px;width:100%;max-width:680px;margin:0 auto;">
+    <div class="step-badge"><span class="step-num">🛡️</span> Security Scan</div>
+    <h1 class="panel-title">Breach Watch</h1>
+    <p class="panel-sub">Breach Watch uses the Have I Been Pwned k-anonymity API when internet is available. Passwords are never sent; only the first five SHA-1 hash characters are queried.</p>
+
+    <div class="vault-divider"></div>
+
+    <div class="field">
+      <label>Password to Check</label>
+      <div class="breach-field-wrap">
+        <input type="text" id="breachPwInput" placeholder="Enter password to scan..." aria-label="Password to check for breaches">
+        <button class="breach-scan-btn" onclick="scanBreach()" aria-label="Scan password for breaches">Scan</button>
+      </div>
+    </div>
+    <div class="breach-result" id="breachResult"></div>
+
+    <div class="vault-divider"></div>
+
+    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:16px 20px;">
+      <div style="font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink3);margin-bottom:10px;">How it Works</div>
+      <div style="font-size:12px;color:var(--ink3);line-height:1.8;">
+        The page opens offline and all generator tools stay local. Breach lookup runs only when internet is available and uses a hash-prefix privacy check.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ ABOUT TAB ══════════ -->
+<div class="about-section" id="section-about">
+
+  <!-- HERO -->
+  <h1 class="about-hero">Crafted for those who<br>refuse to <em>compromise</em>.</h1>
+  <p class="about-lead">Nexa Vault is not a utility. It is a philosophy made executable — the belief that security tools should ask nothing of you, store nothing about you, and trust no one, including themselves. Every keystroke, every generated character, every entropy calculation happens entirely inside your browser. The server never sees it. We never see it. Nobody does.</p>
+
+  <!-- PERFORMANCE STRIP -->
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:36px;">
+    <div style="background:var(--surface2);padding:20px 18px;text-align:center;">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:var(--accent);line-height:1;">~0ms</div>
+      <div style="font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink3);margin-top:6px;">Server latency</div>
+    </div>
+    <div style="background:var(--surface2);padding:20px 18px;text-align:center;">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:var(--accent);line-height:1;">420+</div>
+      <div style="font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink3);margin-top:6px;">Bits of entropy</div>
+    </div>
+    <div style="background:var(--surface2);padding:20px 18px;text-align:center;">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:var(--accent);line-height:1;">0 bytes</div>
+      <div style="font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink3);margin-top:6px;">Data transmitted</div>
+    </div>
+    <div style="background:var(--surface2);padding:20px 18px;text-align:center;">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:var(--accent);line-height:1;">∞</div>
+      <div style="font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink3);margin-top:6px;">Works offline</div>
+    </div>
+  </div>
+
+  <!-- SECTION LABEL -->
+  <div style="font-size:9px;letter-spacing:0.24em;text-transform:uppercase;color:var(--ink3);margin-bottom:16px;display:flex;align-items:center;gap:12px;">
+    <span>The Arsenal</span>
+    <span style="flex:1;height:1px;background:var(--border);display:block;"></span>
+  </div>
+
+  <div class="feature-grid">
+    <div class="feature-card">
+      <div class="feature-card-icon">🔐</div>
+      <div class="feature-card-title">Sovereign Cryptography</div>
+      <div class="feature-card-desc">Powered by the browser's native <code style="font-family:Consolas,monospace;font-size:10.5px;background:var(--surface);padding:1px 4px;border-radius:3px;border:1px solid var(--border);">getRandomValues()</code> — the same cryptographic engine used by banks and intelligence agencies. No pseudo-random shortcuts. No predictable seeds. Pure entropy, on demand.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">🌿</div>
+      <div class="feature-card-title">Air-Gapped by Design</div>
+      <div class="feature-card-desc">Nexa Vault functions as a sealed chamber. No telemetry beacons, no analytics pings, no hidden dependencies phoning home. Disconnect from the internet entirely — it works exactly the same. Your passwords exist only where you choose to put them.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">⚛️</div>
+      <div class="feature-card-title">Post-Quantum Armour</div>
+      <div class="feature-card-desc">Quantum mode draws from the full printable ASCII spectrum across 64+ characters, producing passwords with over 420 bits of entropy. Even a hypothetical quantum computer running Grover's algorithm would need longer than the age of the universe to brute-force a single result.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">📖</div>
+      <div class="feature-card-title">The Passphrase Engine</div>
+      <div class="feature-card-desc">Human memory and machine security, finally reconciled. Nexa Vault's curated lexicon of 1,500+ words generates passphrases that are trivially memorable yet computationally impenetrable — with full control over word count, separator style, capitalisation, and appended digits.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">🛡️</div>
+      <div class="feature-card-title">Breach Intelligence</div>
+      <div class="feature-card-desc">Breach Watch uses a private hash-prefix lookup only when you press Scan and internet is available. Password generation, bulk generation, copy/download actions, and entropy scoring continue to run locally.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">⚡</div>
+      <div class="feature-card-title">Bulk Studio</div>
+      <div class="feature-card-desc">Provision up to 50 unique credentials in a single operation — ideal for staging environments, onboarding batches, or seeding a new password manager. Export the full set as a plain-text file or copy to clipboard. Every password in the batch is independently generated with full entropy.</div>
+    </div>
+  </div>
+
+  <!-- PHILOSOPHY BLOCK -->
+  <div style="border:1px solid var(--border);border-radius:10px;padding:28px 32px;margin-bottom:32px;background:var(--surface2);position:relative;overflow:hidden;">
+    <div style="position:absolute;top:-20px;right:24px;font-family:'Cormorant Garamond',serif;font-size:120px;font-weight:300;color:var(--border);line-height:1;pointer-events:none;user-select:none;">"</div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;color:var(--ink);line-height:1.65;max-width:560px;position:relative;">
+      The most secure password manager is the one that never becomes a target. Nexa Vault holds nothing — so there is nothing to breach, nothing to subpoena, nothing to sell.
+    </div>
+    <div style="font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink3);margin-top:16px;">Design Principle</div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div style="font-size:9px;letter-spacing:0.24em;text-transform:uppercase;color:var(--ink3);margin-bottom:16px;display:flex;align-items:center;gap:12px;">
+    <span>Under the Hood</span>
+    <span style="flex:1;height:1px;background:var(--border);display:block;"></span>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:32px;">
+    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:18px 20px;">
+      <div style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink3);margin-bottom:8px;">Entropy Engine</div>
+      <div style="font-size:12px;color:var(--ink2);line-height:1.75;">Every generation call sources fresh randomness from <code style="font-size:10.5px;font-family:Consolas,monospace;">crypto.getRandomValues()</code>. No session state is reused, no seed is cached. The result is statistically indistinguishable from true random noise.</div>
+    </div>
+    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:18px 20px;">
+      <div style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink3);margin-bottom:8px;">Strength Calculation</div>
+      <div style="font-size:12px;color:var(--ink2);line-height:1.75;">Entropy is computed as <em style="font-family:'Cormorant Garamond',serif;font-size:14px;">H = L × log₂(N)</em> — where L is password length and N is the effective character pool. The live strength meter visualises this in real time as you adjust your configuration.</div>
+    </div>
+    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:18px 20px;">
+      <div style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink3);margin-bottom:8px;">k-Anonymity Protocol</div>
+      <div style="font-size:12px;color:var(--ink2);line-height:1.75;">Breach lookup sends only a SHA-1 hash prefix to Have I Been Pwned when internet is available. The password itself is never sent; offline users can still use local generation and strength scoring.</div>
+    </div>
+    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:18px 20px;">
+      <div style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink3);margin-bottom:8px;">Session Memory</div>
+      <div style="font-size:12px;color:var(--ink2);line-height:1.75;">Generated passwords are held in a transient in-session log — never written to <code style="font-size:10.5px;font-family:Consolas,monospace;">localStorage</code> or cookies. Close the tab and the session is gone. No trace. No recovery. Intentionally ephemeral.</div>
+    </div>
+  </div>
+
+  <div style="font-size:10px;color:var(--ink3);letter-spacing:0.18em;text-transform:uppercase;border-top:1px solid var(--border);padding-top:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:gap;">
+    <span>Nexa Vault · Built with Web Crypto API · Zero Data Retention · All operations client-side</span>
+    <span style="color:var(--accent);">◈</span>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- ════════════════════════════════════════════
+     MOBILE SHELL — shown only on ≤768px
+════════════════════════════════════════════ -->
+<div class="mobile-shell" id="mobileShell">
+
+  <!-- Top bar -->
+  <div class="m-topbar">
+    <div class="m-logo">
+      Nexa<em>·</em><span class="m-logo-vault">Vault</span>
+    </div>
+    <div class="m-topbar-right">
+      <div class="m-shield">
+        <span class="m-shield-dot"></span>
+        <span>Secure</span>
+      </div>
+      <button class="m-theme-btn" onclick="mOpenTheme()" aria-label="Change theme">🎨</button>
+    </div>
+  </div>
+
+  <!-- Theme sheet overlay -->
+  <div class="m-theme-overlay" id="mThemeOverlay" onclick="mCloseTheme(event)">
+    <div class="m-theme-sheet" onclick="event.stopPropagation()">
+      <div class="m-sheet-handle"></div>
+      <div class="m-sheet-title">Select Theme</div>
+      <div class="m-theme-grid">
+        <button class="m-theme-item active" onclick="mSetTheme('ivory','White')" id="mopt-ivory">
+          <span class="m-theme-swatch" style="background:linear-gradient(135deg,#0a0a0a 50%,#f8f8f8 50%);"></span>
+          <span class="m-theme-name">White</span>
+        </button>
+        <button class="m-theme-item" onclick="mSetTheme('obsidian','Black')" id="mopt-obsidian">
+          <span class="m-theme-swatch" style="background:linear-gradient(135deg,#0a0a0a 50%,#d4a843 50%);"></span>
+          <span class="m-theme-name">Black</span>
+        </button>
+        <button class="m-theme-item" onclick="mSetTheme('void','Purple')" id="mopt-void">
+          <span class="m-theme-swatch" style="background:linear-gradient(135deg,#070617 50%,#9b7ff4 50%);"></span>
+          <span class="m-theme-name">Purple</span>
+        </button>
+        <button class="m-theme-item" onclick="mSetTheme('slate','Blue')" id="mopt-slate">
+          <span class="m-theme-swatch" style="background:linear-gradient(135deg,#18182a 50%,#6b91c9 50%);"></span>
+          <span class="m-theme-name">Blue</span>
+        </button>
+        <button class="m-theme-item" onclick="mSetTheme('parchment','Gold')" id="mopt-parchment">
+          <span class="m-theme-swatch" style="background:linear-gradient(135deg,#a8782a 50%,#faf8f4 50%);"></span>
+          <span class="m-theme-name">Gold</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ PAGE: GENERATOR ══ -->
+  <div class="m-page active" id="mpage-generator">
+
+    <!-- Password hero card -->
+    <div class="m-hero">
+      <div class="m-pw-card">
+        <div class="m-pw-label">Generated Password</div>
+        <div class="m-pw-text" id="mPwDisplay" onclick="mCopyPw()" title="Tap to copy" style="cursor:pointer;">—</div>
+        <div class="m-pw-meta">
+          <span class="m-strength-badge" id="mPwBadge">—</span>
+          <span class="m-entropy-text" id="mEntropyText"></span>
+        </div>
+      </div>
+      <div class="m-strength-strip" id="mStrengthStrip">
+        <div class="m-sbar" id="msb1"></div>
+        <div class="m-sbar" id="msb2"></div>
+        <div class="m-sbar" id="msb3"></div>
+        <div class="m-sbar" id="msb4"></div>
+        <div class="m-sbar" id="msb5"></div>
+      </div>
+    </div>
+
+    <!-- Quick action buttons -->
+    <div class="m-actions">
+      <button class="m-btn" onclick="mCopyPw()" aria-label="Copy password">
+        <span class="m-btn-icon">📋</span> Copy
+      </button>
+      <button class="m-btn" onclick="mGenAndLog()" aria-label="Regenerate">
+        <span class="m-btn-icon">↻</span> Refresh
+      </button>
+      <button class="m-btn m-btn-primary" onclick="mCopyPw()" aria-label="Copy to clipboard">
+        ✓ &nbsp; Copy Password
+      </button>
+    </div>
+
+    <!-- Mode rail -->
+    <div class="m-mode-rail-wrap">
+    <div class="m-mode-rail">
+      <button class="m-mode-chip active" onclick="mSetMode('classic')" id="mchip-classic" aria-label="Classic mode">
+        <span class="m-chip-icon">🔑</span>
+        <span class="m-chip-label">Classic</span>
+      </button>
+      <button class="m-mode-chip" onclick="mSetMode('passphrase')" id="mchip-passphrase" aria-label="Passphrase mode">
+        <span class="m-chip-icon">📖</span>
+        <span class="m-chip-label">Phrase</span>
+      </button>
+      <button class="m-mode-chip" onclick="mSetMode('quantum')" id="mchip-quantum" aria-label="Quantum mode">
+        <span class="m-chip-icon">⚛️</span>
+        <span class="m-chip-label">Quantum</span>
+      </button>
+      <button class="m-mode-chip" onclick="mSetMode('pin')" id="mchip-pin" aria-label="PIN / OTP mode">
+        <span class="m-chip-icon">🔢</span>
+        <span class="m-chip-label">PIN</span>
+      </button>
+    </div>
+    </div>
+
+    <!-- Config accordion -->
+    <div class="m-config">
+
+      <!-- Classic config -->
+      <div class="m-config-card open" id="mconfig-classic">
+        <div class="m-config-header" onclick="mToggleConfig('classic')">
+          <span class="m-config-title">🔑 Classic Settings</span>
+          <span class="m-config-chevron">▾</span>
+        </div>
+        <div class="m-config-body">
+          <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink3);padding-top:12px;">Length</div>
+          <div class="m-slider-row">
+            <input type="range" id="mClassicLen" min="6" max="128" value="16"
+              oninput="mSyncLen();mGenPw();" aria-label="Password length">
+            <span class="m-slider-val" id="mClassicLenVal">16</span>
+          </div>
+          <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink3);padding-top:12px;margin-bottom:2px;">Character Sets</div>
+          <div class="m-toggle-grid">
+            <div class="m-toggle on" id="mtc-upper" onclick="mToggleCard('upper')">
+              <div class="m-toggle-left">
+                <span class="m-toggle-name">🔠 Uppercase</span>
+                <span class="m-toggle-sub">A – Z</span>
+              </div>
+              <div class="m-pip"></div>
+            </div>
+            <div class="m-toggle on" id="mtc-lower" onclick="mToggleCard('lower')">
+              <div class="m-toggle-left">
+                <span class="m-toggle-name">🔡 Lowercase</span>
+                <span class="m-toggle-sub">a – z</span>
+              </div>
+              <div class="m-pip"></div>
+            </div>
+            <div class="m-toggle on" id="mtc-numbers" onclick="mToggleCard('numbers')">
+              <div class="m-toggle-left">
+                <span class="m-toggle-name">🔢 Numbers</span>
+                <span class="m-toggle-sub">0 – 9</span>
+              </div>
+              <div class="m-pip"></div>
+            </div>
+            <div class="m-toggle on" id="mtc-symbols" onclick="mToggleCard('symbols')">
+              <div class="m-toggle-left">
+                <span class="m-toggle-name">✦ Symbols</span>
+                <span class="m-toggle-sub">! @ # $ %</span>
+              </div>
+              <div class="m-pip"></div>
+            </div>
+            <div class="m-toggle" id="mtc-noSimilar" onclick="mToggleCard('noSimilar')">
+              <div class="m-toggle-left">
+                <span class="m-toggle-name">👁️ Avoid Similar</span>
+                <span class="m-toggle-sub">0 O l 1 I</span>
+              </div>
+              <div class="m-pip"></div>
+            </div>
+            <div class="m-toggle" id="mtc-noAmbig" onclick="mToggleCard('noAmbig')">
+              <div class="m-toggle-left">
+                <span class="m-toggle-name">🚫 No Ambiguous</span>
+                <span class="m-toggle-sub">{ } [ ] ( )</span>
+              </div>
+              <div class="m-pip"></div>
+            </div>
+          </div>
+          <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink3);padding-top:14px;margin-bottom:0;">Exclude Characters</div>
+          <div class="m-exclude-wrap">
+            <span style="font-size:14px;color:var(--ink3);">✕</span>
+            <input type="text" id="mExcludeChars" placeholder="e.g.  @ # & ..."
+              oninput="mGenPw();" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false"
+              style="width:100%;background:none;border:none;outline:none;font-family:Consolas,monospace;font-size:13px;color:var(--ink);">
+          </div>
+        </div>
+      </div>
+
+      <!-- Passphrase config -->
+      <div class="m-config-card" id="mconfig-passphrase" style="display:none;">
+        <div class="m-config-header" onclick="mToggleConfig('passphrase')">
+          <span class="m-config-title">📖 Passphrase Settings</span>
+          <span class="m-config-chevron">▾</span>
+        </div>
+        <div class="m-config-body">
+          <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink3);padding-top:12px;">Word Count</div>
+          <div class="m-wc-row">
+            <div class="m-wc-pill active" onclick="mSetWordCount(3)" id="mwc3">3</div>
+            <div class="m-wc-pill" onclick="mSetWordCount(4)" id="mwc4">4</div>
+            <div class="m-wc-pill" onclick="mSetWordCount(5)" id="mwc5">5</div>
+            <div class="m-wc-pill" onclick="mSetWordCount(6)" id="mwc6">6</div>
+            <div class="m-wc-pill" onclick="mSetWordCount(7)" id="mwc7">7</div>
+          </div>
+          <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink3);padding-top:14px;margin-bottom:0;">Separator</div>
+          <div class="m-sep-row">
+            <div class="m-sep-chip active" onclick="mSetSep('-')" id="msep--">—</div>
+            <div class="m-sep-chip" onclick="mSetSep('.')" id="msep-.">·</div>
+            <div class="m-sep-chip" onclick="mSetSep('_')" id="msep-_">_</div>
+            <div class="m-sep-chip" onclick="mSetSep(' ')" id="msep-space">space</div>
+            <div class="m-sep-chip" onclick="mSetSep('@')" id="msep-@">@</div>
+            <div class="m-sep-chip" onclick="mSetSep('#')" id="msep-#">#</div>
+            <div class="m-sep-chip" onclick="mSetSep('')" id="msep-">none</div>
+          </div>
+          <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink3);padding-top:14px;margin-bottom:2px;">Options</div>
+          <div class="m-toggle-grid">
+            <div class="m-toggle" id="mtc-capitalize" onclick="mToggleCard('capitalize')">
+              <div class="m-toggle-left">
+                <span class="m-toggle-name">🔠 Capitalize</span>
+                <span class="m-toggle-sub">First letter</span>
+              </div>
+              <div class="m-pip"></div>
+            </div>
+            <div class="m-toggle" id="mtc-addNumber" onclick="mToggleCard('addNumber')">
+              <div class="m-toggle-left">
+                <span class="m-toggle-name">🔢 Add Number</span>
+                <span class="m-toggle-sub">Appended digit</span>
+              </div>
+              <div class="m-pip"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quantum config -->
+      <div class="m-config-card" id="mconfig-quantum" style="display:none;">
+        <div class="m-config-header" onclick="mToggleConfig('quantum')">
+          <span class="m-config-title">⚛️ Quantum Settings</span>
+          <span class="m-config-chevron">▾</span>
+        </div>
+        <div class="m-config-body">
+          <div class="m-quantum-info">
+            <span class="m-quantum-icon">⚛️</span>
+            <div class="m-quantum-desc">
+              <strong>Quantum mode</strong> generates a 64-character password using the entire printable ASCII charset, yielding <strong>~420 bits of entropy</strong> — computationally unbreakable.
+            </div>
+          </div>
+          <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink3);padding-top:14px;">Length Override</div>
+          <div class="m-slider-row">
+            <input type="range" id="mQuantumLen" min="32" max="128" value="64"
+              oninput="mSyncQuantumLen();mGenPw();" aria-label="Quantum length">
+            <span class="m-slider-val" id="mQuantumLenVal">64</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PIN config -->
+      <div class="m-config-card" id="mconfig-pin" style="display:none;">
+        <div class="m-config-header" onclick="mToggleConfig('pin')">
+          <span class="m-config-title">🔢 PIN Settings</span>
+          <span class="m-config-chevron">▾</span>
+        </div>
+        <div class="m-config-body">
+          <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink3);padding-top:12px;">Digits</div>
+          <div class="m-slider-row">
+            <input type="range" id="mPinLen" min="4" max="20" value="6"
+              oninput="mSyncPinLen();mGenPw();" aria-label="PIN length">
+            <span class="m-slider-val" id="mPinLenVal">6</span>
+          </div>
+          <div class="m-toggle-grid m-toggle-single" style="margin-top:12px;">
+            <div class="m-toggle" id="mtc-pinGroup" onclick="mToggleCard('pinGroup')">
+              <div class="m-toggle-left">
+                <span class="m-toggle-name">· Group Digits</span>
+                <span class="m-toggle-sub">e.g. 123-456</span>
+              </div>
+              <div class="m-pip"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /m-config -->
+
+    <!-- Access Log -->
+    <div class="m-divider"></div>
+    <div style="padding: 0 20px 8px;">
+      <div class="m-section-label">Access Log</div>
+    </div>
+    <div class="m-session-wrap">
+      <div class="m-session-header">
+        <span class="m-session-title">Generated This Session</span>
+        <button class="m-session-clear" onclick="mClearSession()">Clear</button>
+      </div>
+      <div class="m-session-list" id="mSessionLog">
+        <div style="padding:14px;font-size:11px;color:var(--ink3);text-align:center;letter-spacing:0.06em;">No entries yet</div>
+      </div>
+    </div>
+
+    <div class="m-nav-spacer"></div>
+  </div>
+
+  <!-- ══ PAGE: BULK ══ -->
+  <div class="m-page" id="mpage-bulk">
+    <div class="m-page-header">
+      <div class="m-page-badge"><span class="m-page-badge-dot">⚡</span> Batch Mode</div>
+      <h2 class="m-page-title">Bulk Generate</h2>
+      <p class="m-page-sub">Generate multiple passwords in one operation.</p>
+    </div>
+
+    <div class="m-bulk-qty">
+      <button class="m-qty-btn" onclick="mAdjustBulk(-1)" aria-label="Decrease">−</button>
+      <span class="m-qty-num" id="mBulkCount">5</span>
+      <button class="m-qty-btn" onclick="mAdjustBulk(1)" aria-label="Increase">+</button>
+    </div>
+    <div style="text-align:center;font-size:11px;color:var(--ink3);letter-spacing:0.1em;text-transform:uppercase;margin-top:6px;">passwords</div>
+
+    <div class="m-divider"></div>
+
+    <div style="padding:0 20px;">
+      <button class="m-breach-scan-btn" onclick="mGenerateBulk()" aria-label="Generate batch">
+        ⚡ &nbsp; Generate Batch
+      </button>
+    </div>
+
+    <div class="m-bulk-list" id="mBulkList">
+      <div style="padding:20px;font-size:11px;color:var(--ink3);text-align:center;letter-spacing:0.06em;">Press Generate Batch to begin</div>
+    </div>
+
+    <div class="m-actions" style="margin-top:0;">
+      <button class="m-btn" onclick="mCopyBulkAll()" aria-label="Copy all">
+        <span class="m-btn-icon">📋</span> Copy All
+      </button>
+      <button class="m-btn" onclick="mDownloadBulk()" aria-label="Download">
+        <span class="m-btn-icon">⬇</span> Download
+      </button>
+    </div>
+
+    <div class="m-nav-spacer"></div>
+  </div>
+
+  <!-- ══ PAGE: BREACH WATCH ══ -->
+  <div class="m-page" id="mpage-breach">
+    <div class="m-page-header">
+      <div class="m-page-badge"><span class="m-page-badge-dot">🛡️</span> Security Scan</div>
+      <h2 class="m-page-title">Breach Watch</h2>
+      <p class="m-page-sub">Breach Watch uses the Have I Been Pwned k-anonymity API when internet is available. Passwords are never sent; only the first five SHA-1 hash characters are queried.</p>
+    </div>
+
+    <div class="m-divider"></div>
+
+    <div class="m-breach-input-wrap">
+      <input type="text" class="m-breach-input" id="mBreachInput"
+        placeholder="Enter password to scan…" aria-label="Password to check"
+        autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false">
+      <button class="m-breach-scan-btn" onclick="mScanBreach()" aria-label="Scan for breaches">
+        🛡️ &nbsp; Scan Password
+      </button>
+    </div>
+
+    <div class="m-breach-result" id="mBreachResult"></div>
+
+    <div class="m-breach-info">
+      <div class="m-breach-info-title">How it Works</div>
+      <div class="m-breach-info-text">
+        The page opens offline and all generator tools stay local. Breach lookup runs only when internet is available and uses a hash-prefix privacy check.
+      </div>
+    </div>
+
+    <div class="m-nav-spacer"></div>
+  </div>
+
+  <!-- ══ PAGE: ABOUT ══ -->
+  <div class="m-page" id="mpage-about">
+    <div class="m-page-header">
+      <div class="m-page-badge"><span class="m-page-badge-dot">◈</span> Philosophy</div>
+    </div>
+    <div class="m-about">
+      <h1 class="m-about-hero">Crafted for those who refuse to <em>compromise</em>.</h1>
+      <p class="m-about-lead">Nexa Vault is not a utility. It is a philosophy made executable — the belief that security tools should ask nothing of you, store nothing about you, and trust no one, including themselves. Every keystroke, every generated character happens entirely inside your browser.</p>
+
+      <div class="m-section-label">At a Glance</div>
+      <div class="m-stats-grid">
+        <div class="m-stat">
+          <div class="m-stat-val">~0ms</div>
+          <div class="m-stat-label">Server latency</div>
+        </div>
+        <div class="m-stat">
+          <div class="m-stat-val">420+</div>
+          <div class="m-stat-label">Bits entropy</div>
+        </div>
+        <div class="m-stat">
+          <div class="m-stat-val">0 bytes</div>
+          <div class="m-stat-label">Data sent</div>
+        </div>
+        <div class="m-stat">
+          <div class="m-stat-val">∞</div>
+          <div class="m-stat-label">Works offline</div>
+        </div>
+      </div>
+
+      <div class="m-section-label">The Arsenal</div>
+      <div class="m-feature-list">
+        <div class="m-feature-item">
+          <span class="m-feature-icon">🔐</span>
+          <div class="m-feature-text">
+            <div class="m-feature-title">Sovereign Cryptography</div>
+            <div class="m-feature-desc">Powered by the browser's native crypto.getRandomValues() — the same engine used by banks and intelligence agencies.</div>
+          </div>
+        </div>
+        <div class="m-feature-item">
+          <span class="m-feature-icon">🌿</span>
+          <div class="m-feature-text">
+            <div class="m-feature-title">Air-Gapped by Design</div>
+            <div class="m-feature-desc">No telemetry beacons, no analytics pings. Disconnect entirely — it works exactly the same. Your passwords exist only where you choose.</div>
+          </div>
+        </div>
+        <div class="m-feature-item">
+          <span class="m-feature-icon">⚛️</span>
+          <div class="m-feature-text">
+            <div class="m-feature-title">Post-Quantum Armour</div>
+            <div class="m-feature-desc">Quantum mode produces passwords with over 420 bits of entropy. Even a quantum computer running Grover's algorithm would need longer than the age of the universe.</div>
+          </div>
+        </div>
+        <div class="m-feature-item">
+          <span class="m-feature-icon">🛡️</span>
+          <div class="m-feature-text">
+            <div class="m-feature-title">Breach Intelligence</div>
+            <div class="m-feature-desc">Breach Watch is disabled in Offline V1.0. No password data or hash prefixes leave the device.</div>
+          </div>
+        </div>
+        <div class="m-feature-item">
+          <span class="m-feature-icon">⚡</span>
+          <div class="m-feature-text">
+            <div class="m-feature-title">Bulk Studio</div>
+            <div class="m-feature-desc">Provision up to 50 unique credentials in a single operation — ideal for staging environments or seeding a password manager.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="m-philosophy">
+        <div class="m-philosophy-quote">"</div>
+        <div class="m-philosophy-text">The most secure password manager is the one that never becomes a target. Nexa Vault holds nothing — so there is nothing to breach, nothing to subpoena, nothing to sell.</div>
+        <div class="m-philosophy-caption">Design Principle</div>
+      </div>
+
+      <div class="m-about-footer">
+        Nexa Vault · Web Crypto API · Zero Data Retention · All operations client-side
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom nav -->
+  <div class="m-nav">
+    <div class="m-nav-inner">
+      <button class="m-nav-btn active" onclick="mSwitchPage('generator')" id="mnav-generator">
+        <span class="m-nav-icon">🔐</span>
+        <span class="m-nav-label">Generate</span>
+      </button>
+      <button class="m-nav-btn" onclick="mSwitchPage('bulk')" id="mnav-bulk">
+        <span class="m-nav-icon">⚡</span>
+        <span class="m-nav-label">Bulk</span>
+      </button>
+      <button class="m-nav-btn" onclick="mSwitchPage('breach')" id="mnav-breach">
+        <span class="m-nav-icon">🛡️</span>
+        <span class="m-nav-label">Breach</span>
+      </button>
+      <button class="m-nav-btn" onclick="mSwitchPage('about')" id="mnav-about">
+        <span class="m-nav-icon">◈</span>
+        <span class="m-nav-label">About</span>
+      </button>
+    </div>
+  </div>
+
+</div><!-- /mobile-shell -->
+
+<script defer src="js/app.js"></script>
+
+
+
+</body>
+</html>

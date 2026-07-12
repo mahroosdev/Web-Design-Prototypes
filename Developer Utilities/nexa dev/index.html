@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NexaDev — Developer Utility</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- BACKGROUND -->
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="orb orb3"></div>
+<div class="bgrid"></div>
+
+<!-- CINEMATIC CURTAIN -->
+<div id="curtain">
+  <div class="crt-bgrid"></div>
+  <div class="crt-aura"></div>
+  <div class="crt-aura"></div>
+  <div class="crt">
+    <div class="crt-icon">
+      <div class="crt-ring"></div>
+      <div class="crt-icon-inner">
+        <!-- Code brackets icon -->
+        <svg viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M13 12L7 19L13 26" stroke="var(--g)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M25 12L31 19L25 26" stroke="var(--c)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M21 9L17 29" stroke="var(--g)" stroke-width="1.8" stroke-linecap="round" opacity="0.6"/>
+        </svg>
+      </div>
+    </div>
+    <div class="crt-word" id="crtWord"></div>
+    <div class="crt-line"></div>
+    <div class="crt-sub">Offline Developer Utility</div>
+    <div class="crt-dots">
+      <div class="crt-dot"></div>
+      <div class="crt-dot"></div>
+      <div class="crt-dot"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN WRAP -->
+<div class="wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="vh-entry">
+      <div class="vh-icon-wrap">
+        <div class="vh-ring vh-ring1"></div>
+        <div class="vh-ring vh-ring2"></div>
+        <div class="vh-ring vh-ring3"></div>
+        <div class="vh-core">
+          <svg class="vh-core-svg" viewBox="0 0 40 40" fill="none">
+            <path d="M14 12L8 20L14 28" stroke="var(--g)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M26 12L32 20L26 28" stroke="var(--c)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M22 8L18 32" stroke="var(--g)" stroke-width="1.8" stroke-linecap="round" opacity="0.5"/>
+          </svg>
+        </div>
+        <div class="vh-sweep"></div>
+        <div class="vh-od vh-od1"></div>
+        <div class="vh-od vh-od2"></div>
+        <div class="vh-od vh-od3"></div>
+      </div>
+    </div>
+
+    <div class="hero-eyebrow" id="heroEyebrow">
+      <span class="eyebrow-cursor-line"></span>
+      <span class="eyebrow-typed" id="eyebrowTyped"></span><span class="eyebrow-cursor" id="eyebrowCursor">|</span>
+      <span class="eyebrow-cursor-line"></span>
+    </div>
+
+    <h1 class="display" id="heroTitle">
+      <span class="ch chi">D</span><span class="ch chi">e</span><span class="ch chi">v</span>
+    </h1>
+
+    <div class="hero-divider"></div>
+    <p class="hero-sub">URL formatter · UTM builder · Copy tools · JSON export — all client-side.</p>
+
+    <div class="stat-strip">
+      <div class="stat-item"><span class="stat-num">4</span><span class="stat-lbl">Tools</span></div>
+      <div class="stat-item"><span class="stat-num">100%</span><span class="stat-lbl">Offline</span></div>
+      <div class="stat-item"><span class="stat-num">0</span><span class="stat-lbl">Requests</span></div>
+    </div>
+  </div>
+
+  <!-- ── MAIN TOOL CARD (URL + UTM) ── -->
+  <div class="glass-card sr sr-d1">
+    <div class="card-label">URL Utilities</div>
+    <div class="card-title">URL Formatter &amp; UTM Builder</div>
+
+    <div class="tab-bar" id="mainTabBar">
+      <button class="tab-btn active" onclick="switchTab('main','panelUrl',this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+        URL
+      </button>
+      <button class="tab-btn" onclick="switchTab('main','panelUtm',this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        UTM
+      </button>
+    </div>
+
+    <!-- URL FORMATTER -->
+    <div class="tab-panel active" id="panelUrl">
+      <div class="field-group">
+        <label class="field-label">Input URL</label>
+        <input class="field-input" id="urlInput" placeholder="https://example.com/page?ref=ads&utm_source=google" oninput="formatUrl()"/>
+      </div>
+
+      <div class="chip-row" id="urlChips">
+        <button class="chip active" data-action="decode" onclick="toggleChip(this)" title="URL-decode encoded characters">Decode %xx</button>
+        <button class="chip active" data-action="trailing" onclick="toggleChip(this)" title="Remove trailing slashes">Remove Trailing /</button>
+        <button class="chip" data-action="lowercase" onclick="toggleChip(this)" title="Lowercase the domain">Lowercase Host</button>
+        <button class="chip" data-action="sort" onclick="toggleChip(this)" title="Sort query params alphabetically">Sort Params</button>
+        <button class="chip" data-action="strip_utm" onclick="toggleChip(this)" title="Remove all UTM parameters">Strip UTM</button>
+        <button class="chip" data-action="strip_all" onclick="toggleChip(this)" title="Remove all query parameters">Strip All Params</button>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Formatted URL</label>
+        <div class="output-box" id="urlOutput"><span class="placeholder">Formatted URL will appear here…</span></div>
+      </div>
+
+      <div class="actions-row">
+        <button class="btn-copy" id="urlCopyBtn" onclick="copyOutput('urlOutput','urlCopyBtn')">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          Copy URL
+        </button>
+        <button class="btn-copy btn-sm" onclick="clearField('urlInput','urlOutput')">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>
+          Clear
+        </button>
+      </div>
+
+      <!-- URL Parts breakdown -->
+      <div class="url-parts" id="urlParts">
+        <div class="section-divider"><div class="section-divider-line"></div><div class="section-divider-text">Parsed Components</div><div class="section-divider-line"></div></div>
+        <div class="url-part-grid" id="urlPartGrid"></div>
+        <div id="urlParamList" class="url-param-list"></div>
+      </div>
+    </div>
+
+    <!-- UTM BUILDER -->
+    <div class="tab-panel" id="panelUtm">
+      <div class="field-group">
+        <label class="field-label">Base URL <span class="utm-tag">required</span></label>
+        <input class="field-input" id="utmBase" placeholder="https://yoursite.com/landing" oninput="buildUtm()"/>
+      </div>
+      <div class="utm-grid">
+        <div class="field-group">
+          <label class="field-label">Source <span class="utm-tag">utm_source</span></label>
+          <input class="field-input" id="utmSource" placeholder="google" oninput="buildUtm()"/>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Medium <span class="utm-tag">utm_medium</span></label>
+          <input class="field-input" id="utmMedium" placeholder="cpc" oninput="buildUtm()"/>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Campaign <span class="utm-tag">utm_campaign</span></label>
+          <input class="field-input" id="utmCampaign" placeholder="summer_sale" oninput="buildUtm()"/>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Term <span class="utm-tag">utm_term</span></label>
+          <input class="field-input" id="utmTerm" placeholder="buy shoes online" oninput="buildUtm()"/>
+        </div>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Content <span class="utm-tag">utm_content</span></label>
+        <input class="field-input" id="utmContent" placeholder="hero_banner" oninput="buildUtm()"/>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Generated UTM URL</label>
+        <div class="output-box" id="utmOutput"><span class="placeholder">Fill fields above to build the UTM URL…</span></div>
+      </div>
+
+      <div class="actions-row">
+        <button class="btn-copy" id="utmCopyBtn" onclick="copyOutput('utmOutput','utmCopyBtn')">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          Copy UTM URL
+        </button>
+        <button class="btn-copy btn-sm" onclick="clearUtm()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>
+          Clear
+        </button>
+      </div>
+
+      <!-- How UTMs work -->
+      <div class="how-panel">
+        <div class="how-header" onclick="toggleHow('utmHow','utmHowChevron')">
+          <div class="how-title">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            What are UTM Parameters?
+          </div>
+          <svg class="how-chevron" id="utmHowChevron" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="how-body" id="utmHow">
+          <div class="how-body-inner">
+            <div class="how-step">
+              <div class="how-step-num">S</div>
+              <div class="how-step-text"><span class="how-accent">utm_source</span> — Identifies where traffic originates (google, newsletter, twitter).</div>
+            </div>
+            <div class="how-step">
+              <div class="how-step-num">M</div>
+              <div class="how-step-text"><span class="how-accent">utm_medium</span> — The marketing channel (cpc, email, social, organic).</div>
+            </div>
+            <div class="how-step">
+              <div class="how-step-num">C</div>
+              <div class="how-step-text"><span class="how-accent">utm_campaign</span> — The specific campaign name for performance tracking.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── COPY TOOLS CARD ── -->
+  <div class="glass-card sr sr-d2">
+    <div class="card-label">Quick Copy</div>
+    <div class="card-title">Copy Tools</div>
+
+    <div class="copy-tools-grid">
+
+      <!-- UUID -->
+      <div class="copy-tool-item">
+        <div class="tool-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--g)" stroke-width="2.2" stroke-linecap="round"><rect x="2" y="7" width="20" height="10" rx="2"/><path d="M6 11h2m4 0h2m4 0h2"/></svg>
+        </div>
+        <div class="tool-name">UUID v4</div>
+        <div class="tool-desc">Cryptographically random unique identifier</div>
+        <div class="tool-output" id="uuidOut">—</div>
+        <button class="btn-copy" style="width:100%;justify-content:center" onclick="genUUID()">Generate &amp; Copy</button>
+      </div>
+
+      <!-- Timestamp -->
+      <div class="copy-tool-item">
+        <div class="tool-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--c)" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div class="tool-name">Timestamp</div>
+        <div class="tool-desc">Current time in multiple formats</div>
+        <div class="tool-output" id="tsOut">—</div>
+        <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap">
+          <button class="btn-copy btn-sm" onclick="copyTs('unix')">Unix</button>
+          <button class="btn-copy btn-sm" onclick="copyTs('iso')">ISO</button>
+          <button class="btn-copy btn-sm" onclick="copyTs('human')">Human</button>
+        </div>
+      </div>
+
+      <!-- Lorem Ipsum -->
+      <div class="copy-tool-item">
+        <div class="tool-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--am)" stroke-width="2.2" stroke-linecap="round"><path d="M4 6h16M4 10h16M4 14h8"/></svg>
+        </div>
+        <div class="tool-name">Lorem Ipsum</div>
+        <div class="tool-desc">Placeholder Latin text generator</div>
+        <div class="tool-output" id="loremOut" style="max-height:60px;overflow:hidden">—</div>
+        <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap">
+          <button class="btn-copy btn-sm" onclick="genLorem(1)">1 Para</button>
+          <button class="btn-copy btn-sm" onclick="genLorem(2)">2 Para</button>
+          <button class="btn-copy btn-sm" onclick="genLorem(3)">3 Para</button>
+        </div>
+      </div>
+
+      <!-- Color -->
+      <div class="copy-tool-item">
+        <div class="tool-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--rd)" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a5 5 0 015 5c0 3-5 10-5 10S7 10 7 7a5 5 0 015-5z"/></svg>
+        </div>
+        <div class="tool-name">Color Picker</div>
+        <div class="tool-desc">Pick a color and copy in any format</div>
+        <input type="color" id="colorPick" value="#00c97a" oninput="updateColor()" style="width:100%;height:36px;border:none;background:none;cursor:pointer;border-radius:8px;margin-bottom:8px"/>
+        <div class="tool-output" id="colorOut">#00c97a</div>
+        <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap">
+          <button class="btn-copy btn-sm" onclick="copyColor('hex')">HEX</button>
+          <button class="btn-copy btn-sm" onclick="copyColor('rgb')">RGB</button>
+          <button class="btn-copy btn-sm" onclick="copyColor('hsl')">HSL</button>
+        </div>
+      </div>
+
+      <!-- Base64 Encode -->
+      <div class="copy-tool-item">
+        <div class="tool-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--g)" stroke-width="2.2" stroke-linecap="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        </div>
+        <div class="tool-name">Base64</div>
+        <div class="tool-desc">Encode or decode Base64 strings</div>
+        <input class="field-input" id="b64Input" placeholder="Text to encode…" style="margin-bottom:8px;font-size:12px"/>
+        <div class="tool-output" id="b64Out">—</div>
+        <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap">
+          <button class="btn-copy btn-sm" onclick="doBase64('enc')">Encode</button>
+          <button class="btn-copy btn-sm" onclick="doBase64('dec')">Decode</button>
+        </div>
+      </div>
+
+      <!-- Fake Email -->
+      <div class="copy-tool-item">
+        <div class="tool-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--c)" stroke-width="2.2" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </div>
+        <div class="tool-name">Placeholder Email</div>
+        <div class="tool-desc">Generate a random test email address</div>
+        <div class="tool-output" id="emailOut">—</div>
+        <button class="btn-copy" style="width:100%;justify-content:center" onclick="genEmail()">Generate &amp; Copy</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── JSON FORMATTER CARD ── -->
+  <div class="glass-card sr sr-d3">
+    <div class="card-label">JSON Export</div>
+    <div class="card-title">JSON Formatter &amp; Validator</div>
+
+    <div class="json-modes">
+      <button class="json-mode-btn active" id="jsBtnPretty" onclick="setJsonMode('pretty')">Beautify</button>
+      <button class="json-mode-btn" id="jsBtnMinify" onclick="setJsonMode('minify')">Minify</button>
+      <button class="json-mode-btn" id="jsBtnSort" onclick="setJsonMode('sort')">Sort Keys</button>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Input JSON</label>
+      <textarea class="field-input" id="jsonInput" placeholder='{"name":"NexaDev","version":"1.0","offline":true}' oninput="processJson()" style="min-height:140px"></textarea>
+    </div>
+
+    <div class="json-valid" id="jsonValid"></div>
+
+    <div class="field-group" style="margin-top:16px">
+      <label class="field-label">Output</label>
+      <div class="output-box" id="jsonOutput" style="min-height:120px;white-space:pre-wrap"><span class="placeholder">Formatted JSON will appear here…</span></div>
+    </div>
+
+    <div class="json-stats" id="jsonStats" style="display:none">
+      <div class="json-stat"><span class="json-stat-val" id="jsKeys">0</span><span class="json-stat-lbl">Keys</span></div>
+      <div class="json-stat"><span class="json-stat-val" id="jsDepth">0</span><span class="json-stat-lbl">Depth</span></div>
+      <div class="json-stat"><span class="json-stat-val" id="jsChars">0</span><span class="json-stat-lbl">Chars</span></div>
+      <div class="json-stat"><span class="json-stat-val" id="jsSize">0B</span><span class="json-stat-lbl">Size</span></div>
+    </div>
+
+    <div class="actions-row">
+      <button class="btn-copy" id="jsonCopyBtn" onclick="copyOutput('jsonOutput','jsonCopyBtn')">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+        Copy JSON
+      </button>
+      <button class="btn-copy btn-sm" onclick="downloadJson()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download .json
+      </button>
+      <button class="btn-copy btn-sm" onclick="clearField('jsonInput','jsonOutput');resetJsonStats()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>
+        Clear
+      </button>
+    </div>
+
+    <!-- how it works -->
+    <div class="how-panel" style="margin-top:20px">
+      <div class="how-header" onclick="toggleHow('jsonHow','jsonHowChevron')">
+        <div class="how-title">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+          Format Tips
+        </div>
+        <svg class="how-chevron" id="jsonHowChevron" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="how-body" id="jsonHow">
+        <div class="how-body-inner">
+          <div class="how-step">
+            <div class="how-step-num">1</div>
+            <div class="how-step-text"><span class="how-accent">Beautify</span> — Formats with 2-space indentation, readable for humans and code review.</div>
+          </div>
+          <div class="how-step">
+            <div class="how-step-num">2</div>
+            <div class="how-step-text"><span class="how-accent">Minify</span> — Strips all whitespace to minimize payload size for APIs and storage.</div>
+          </div>
+          <div class="how-step">
+            <div class="how-step-num">3</div>
+            <div class="how-step-text"><span class="how-accent">Sort Keys</span> — Alphabetically sorts all object keys for consistent diff comparisons.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-logo"><span>Dev</span></div>
+    <div class="footer-sub">Offline · Client-Side · Zero Data Sent</div>
+  </div>
+
+</div>
+
+<!-- THEME SWITCHER -->
+<div id="themeSwitcher">
+  <div class="theme-panel" id="themePanel">
+    <div class="theme-panel-label">Appearance</div>
+    <div class="theme-swatches">
+      <div class="theme-opt active" data-theme="void" onclick="setTheme('void',this)">
+        <div class="t-swatch" style="background:linear-gradient(135deg,#1a0a2e 0%,#9b7ff4 50%,#818cf8 100%)"></div>
+        <div class="t-info"><span class="t-name">Void</span><span class="t-sub">Purple</span></div>
+        <span class="t-active-dot"></span>
+      </div>
+      <div class="theme-opt" data-theme="emerald" onclick="setTheme('emerald',this)">
+        <div class="t-swatch" style="background:linear-gradient(135deg,#00c97a 0%,#22d3ee 100%)"></div>
+        <div class="t-info"><span class="t-name">Emerald</span><span class="t-sub">Green &amp; Cyan</span></div>
+        <span class="t-active-dot"></span>
+      </div>
+      <div class="theme-opt" data-theme="jewel" onclick="setTheme('jewel',this)">
+        <div class="t-swatch" style="background:linear-gradient(135deg,#c97a00 0%,#e85d04 60%,#ffca28 100%)"></div>
+        <div class="t-info"><span class="t-name">Jewel Gold</span><span class="t-sub">Amber &amp; Ember</span></div>
+        <span class="t-active-dot"></span>
+      </div>
+      <div class="theme-opt" data-theme="aerium" onclick="setTheme('aerium',this)">
+        <div class="t-swatch" style="background:linear-gradient(135deg,#1a3a5c 0%,#7eb8f7 50%,#a5f3fc 100%)"></div>
+        <div class="t-info"><span class="t-name">Aerium</span><span class="t-sub">Steel &amp; Sky Blue</span></div>
+        <span class="t-active-dot"></span>
+      </div>
+      <div class="theme-opt" data-theme="obsidian" onclick="setTheme('obsidian',this)">
+        <div class="t-swatch" style="background:linear-gradient(135deg,#000 0%,#2a2a2a 50%,#888 100%)"></div>
+        <div class="t-info"><span class="t-name">Obsidian</span><span class="t-sub">Pure Black &amp; White</span></div>
+        <span class="t-active-dot"></span>
+      </div>
+    </div>
+  </div>
+  <button class="theme-toggle-btn" onclick="toggleThemePanel()" title="Change theme">
+    <div class="t-palette">
+      <div class="t-palette-dot"></div>
+      <div class="t-palette-dot"></div>
+      <div class="t-palette-dot"></div>
+      <div class="t-palette-dot"></div>
+    </div>
+  </button>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script defer src="js/app.js"></script>
+</body>
+</html>
