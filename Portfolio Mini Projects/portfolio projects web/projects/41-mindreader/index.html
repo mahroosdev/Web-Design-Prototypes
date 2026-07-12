@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <html lang="en">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <title>Mind Reader | DevOS</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+</head>
+<body>
+<div id="topbar">
+  <div class="topbar-left">
+    <a class="back-btn" href="index.html">← BACK</a>
+    <span class="topbar-logo">MIND_OS</span>
+  </div>
+  <div class="topbar-right">
+    <button class="theme-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle theme">🌙</button>
+  </div>
+</div>
+<div id="toast"></div>
+<div class="wrap">
+<div class="page-header animate-in">
+  <div class="row align" style="gap:10px;margin-bottom:8px"><span style="font-size:28px">🧠</span><h1>Mind Reader</h1></div>
+  <p>Interactive card trick that reads your mind using math magic.</p>
+</div>
+
+
+<h1>🧠 Mind Reader Game</h1>
+<p>Interactive card trick that "reads your mind" with logic.</p>
+<div style="margin-top:16px"><div class="card" style="text-align:center;margin-top:16px">
+  <div id="mr-stage"></div>
+</div></div>
+<script>const cards=['A♠','2♠','3♠','4♠','5♠','6♠','7♠','8♠','9♠','10♠','J♠','Q♠','K♠','A♥','2♥','3♥','4♥','5♥','6♥','7♥','8♥','9♥','10♥','J♥','Q♥','K♥','A♦','2♦','3♦','4♦','5♦','6♦','7♦','8♦','9♦','10♦','J♦','Q♦','K♦','A♣','2♣','3♣','4♣','5♣','6♣','7♣','8♣','9♣','10♣','J♣','Q♣','K♣'];
+let chosen=null,step=0,piles=[];
+function mrStage(){
+  const s=document.getElementById('mr-stage');
+  if(step===0){
+    s.innerHTML=`<div style="font-size:56px;margin-bottom:16px">🔮</div><h1 style="font-size:22px;margin-bottom:8px">Mind Reader</h1><p style="color:var(--muted);font-size:13px;margin-bottom:20px">Think of a card. I will find it.</p><button class="btn btn-primary" onclick="startGame()" style="font-size:14px">Start the Trick</button>`;
+  } else if(step<=3){
+    s.innerHTML=`<p style="color:var(--muted);font-size:12px;margin-bottom:14px">Round ${step}/3 — Which pile contains your card?</p><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px">${piles.map((pile,pi)=>`<div onclick="choosePile(${pi})" style="background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:8px;cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">${pile.slice(0,7).map(c=>`<div style="font-size:11px;color:var(--accent);font-family:JetBrains Mono,monospace;padding:1px 0">${c}</div>`).join('')}</div>`).join('')}</div>`;
+  } else {
+    s.innerHTML=`<div style="font-size:72px;margin-bottom:14px">🎉</div><h2 style="font-size:20px;margin-bottom:8px">Your card is...</h2><div style="font-size:48px;font-weight:800;color:var(--accent);font-family:JetBrains Mono,monospace;margin-bottom:20px">${chosen}</div><button class="btn btn-primary" onclick="step=0;mrStage()">Play Again</button>`;
+  }
+}
+function startGame(){const deck=[...cards].sort(()=>Math.random()-.5).slice(0,21);piles=[[],[],[]];deck.forEach((c,i)=>piles[i%3].push(c));step=1;mrStage();}
+function choosePile(pi){const mid=piles[pi][Math.floor(piles[pi].length/2)];chosen=mid;const newDeck=[...piles[(pi+1)%3],...piles[pi],...piles[(pi+2)%3]];piles=[[],[],[]];newDeck.forEach((c,i)=>piles[i%3].push(c));if(step===3){step=4;}else step++;mrStage();}
+mrStage();</script>
+
+
+</div>
+  <script src="../shared-back.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

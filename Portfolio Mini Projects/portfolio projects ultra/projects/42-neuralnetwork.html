@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8">
+<meta name="description" content="Neural Network Visualizer — part of a professional web developer portfolio with 50+ projects.">
+<meta name="robots" content="index, follow">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Neural Network Visualizer</title><style>*{margin:0;padding:0;box-sizing:border-box}
+body{background:linear-gradient(135deg,#020617 0%,#0f172a 100%);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#fff;min-height:100vh;padding:40px 20px;overflow-x:hidden}
+.container{max-width:1000px;margin:0 auto}
+h1{background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:36px;margin-bottom:8px}
+.subtitle{color:#94a3b8;margin-bottom:28px;font-size:15px}
+.back-link{display:inline-flex;align-items:center;gap:6px;margin-bottom:20px;color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;padding:8px 14px;border:1px solid rgba(56,189,248,.3);border-radius:8px;transition:.2s}
+.back-link:hover{background:rgba(56,189,248,.1)}
+.card{background:rgba(30,41,59,.8);backdrop-filter:blur(10px);padding:24px;border-radius:16px;border:1px solid rgba(56,189,248,.2);margin-bottom:20px}
+.btn{padding:10px 22px;border:none;border-radius:8px;cursor:pointer;font-weight:700;font-size:14px;transition:.2s;background:linear-gradient(90deg,#38bdf8,#22c55e);color:#000}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(56,189,248,.35)}
+.btn-outline{background:transparent;border:1px solid rgba(56,189,248,.4);color:#38bdf8}
+input,textarea,select{background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.3);color:#fff;border-radius:8px;padding:10px 14px;font-size:14px;width:100%;outline:none;transition:.2s}
+input:focus,textarea:focus,select:focus{border-color:#38bdf8;box-shadow:0 0 0 3px rgba(56,189,248,.15)}
+input::placeholder,textarea::placeholder{color:#64748b}
+label{display:block;font-size:13px;font-weight:600;color:#94a3b8;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.flex{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;background:rgba(56,189,248,.15);color:#38bdf8;border:1px solid rgba(56,189,248,.3)}
+.badge-green{background:rgba(34,197,94,.15);color:#22c55e;border-color:rgba(34,197,94,.3)}
+.badge-red{background:rgba(239,68,68,.15);color:#ef4444;border-color:rgba(239,68,68,.3)}
+.stat-box{background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.15);border-radius:12px;padding:20px;text-align:center}
+.stat-num{font-size:32px;font-weight:800;background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-label{font-size:12px;color:#64748b;margin-top:4px;text-transform:uppercase;letter-spacing:.5px}
+@media(max-width:768px){body{padding:15px 12px}h1{font-size:26px}.grid2,.grid3,.grid4{grid-template-columns:1fr}.card{padding:16px 14px}}
+.layer-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.layer-label{font-size:13px;color:#94a3b8;width:80px;flex-shrink:0}
+.net-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(56,189,248,.08);font-size:14px}
+.net-row:last-child{border:none}
+.act-item{padding:10px;border-radius:8px;background:rgba(56,189,248,.04);border:1px solid rgba(56,189,248,.1);margin-bottom:8px;font-size:13px}
+.out-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.out-bar{flex:1;height:8px;background:rgba(56,189,248,.1);border-radius:4px;overflow:hidden}
+.out-fill{height:100%;background:linear-gradient(90deg,#38bdf8,#22c55e);border-radius:4px;transition:width .4s}
+/* ── UNIVERSAL UPGRADE: Theme, Animations, Toast ── */
+:root{
+  --bg:#020617;--bg2:#0f172a;--card:rgba(30,41,59,.85);--border:rgba(56,189,248,.22);
+  --accent:#38bdf8;--accent2:#22c55e;--text:#f1f5f9;--muted:#94a3b8;--danger:#ef4444;
+}
+
+
+/* Toast notifications */
+.u-toast-container{position:fixed;bottom:24px;right:20px;z-index:99999;display:flex;flex-direction:column;gap:8px;max-width:320px}
+.u-toast{
+  background:var(--card);border:1px solid var(--border);color:var(--text);
+  padding:11px 16px;border-radius:10px;font-size:13px;font-weight:600;
+  box-shadow:0 4px 20px rgba(0,0,0,.35);
+  animation:uToastIn .3s ease;display:flex;align-items:center;gap:8px;
+}
+.u-toast.success{border-color:rgba(34,197,94,.5);background:rgba(34,197,94,.1)}
+.u-toast.error{border-color:rgba(239,68,68,.5);background:rgba(239,68,68,.1)}
+.u-toast.info{border-color:rgba(56,189,248,.5);background:rgba(56,189,248,.1)}
+@keyframes uToastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes uToastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(20px)}}
+
+/* Entrance animations */
+@keyframes uFadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes uFadeIn{from{opacity:0}to{opacity:1}}
+@keyframes uPulse{0%,100%{box-shadow:0 0 0 0 rgba(56,189,248,.4)}70%{box-shadow:0 0 0 8px rgba(56,189,248,0)}}
+.u-fade-up{animation:uFadeUp .45s ease both}
+.u-fade-in{animation:uFadeIn .4s ease both}
+.u-pulse{animation:uPulse 2s infinite}
+
+/* Button hover lift */
+.btn:hover,[class*="btn"]:not([class*="btn-"]):hover{transform:translateY(-2px)!important}
+
+/* Smooth card hover */
+.card:hover,[class*="card"]:hover{
+  border-color:var(--accent)!important;
+  box-shadow:0 6px 28px rgba(56,189,248,.12)!important;
+  transition:all .25s ease!important;
+}
+
+/* Loading skeleton */
+.u-skeleton{
+  background:linear-gradient(90deg,rgba(56,189,248,.06) 25%,rgba(56,189,248,.12) 50%,rgba(56,189,248,.06) 75%);
+  background-size:200% 100%;animation:uSkeleton 1.4s infinite;border-radius:6px;
+}
+@keyframes uSkeleton{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* Progress bar component */
+.u-progress{height:5px;background:rgba(56,189,248,.12);border-radius:3px;overflow:hidden;margin:8px 0}
+.u-progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:3px;transition:width .5s ease}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(56,189,248,.3);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(56,189,248,.55)}
+
+/* Mobile responsive upgrades */
+@media(max-width:600px){
+  
+  .u-toast-container{right:10px;bottom:80px;max-width:calc(100vw - 20px)}
+}
+
+</style></head>
+<body><div class="container">
+<a href="../index.html" class="back-link" onclick="window.close(); return false;">← Back to Portfolio</a>
+
+<h1>🤖 Neural Network Visualizer</h1>
+<p class="subtitle">Interactive neural network architecture builder and forward pass simulator</p>
+<div class="grid2" style="align-items:start">
+  <div>
+    <div class="card">
+      <h3 style="color:#38bdf8;margin-bottom:14px">Architecture Builder</h3>
+      <div class="grid2" style="gap:10px;margin-bottom:12px">
+        <div><label>Input Neurons</label>
+          <select id="inputN" onchange="buildNet()">
+            <option value="2">2</option><option value="3" selected>3</option><option value="4">4</option><option value="5">5</option>
+          </select>
+        </div>
+        <div><label>Output Neurons</label>
+          <select id="outputN" onchange="buildNet()">
+            <option value="1">1</option><option value="2" selected>2</option><option value="3">3</option>
+          </select>
+        </div>
+      </div>
+      <label>Hidden Layers</label>
+      <div id="layerControls" style="margin-bottom:12px"></div>
+      <button class="btn btn-outline" onclick="addLayer()" style="width:100%;margin-bottom:8px">+ Add Hidden Layer</button>
+      <button class="btn btn-outline" onclick="removeLayer()" style="width:100%;margin-bottom:12px">- Remove Layer</button>
+      <label>Activation Function</label>
+      <select id="activation" onchange="buildNet()" style="margin-bottom:12px">
+        <option value="relu">ReLU</option><option value="sigmoid">Sigmoid</option>
+        <option value="tanh">Tanh</option><option value="leaky">Leaky ReLU</option>
+      </select>
+      <div class="grid2" style="gap:8px">
+        <button class="btn" onclick="runForward()">▶ Forward Pass</button>
+        <button class="btn btn-outline" onclick="randomWeights()">⟳ Randomize</button>
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="color:#38bdf8;margin-bottom:14px">Network Info</h3>
+      <div id="netInfo"></div>
+    </div>
+    <div class="card">
+      <h3 style="color:#38bdf8;margin-bottom:14px">Activation Functions</h3>
+      <div id="activationInfo"></div>
+    </div>
+  </div>
+  <div>
+    <div class="card" style="padding:16px">
+      <div class="flex" style="justify-content:space-between;margin-bottom:12px">
+        <h3 style="color:#38bdf8">Network Visualization</h3>
+        <span id="passBadge" class="badge" style="display:none">Forward Pass Active</span>
+      </div>
+      <canvas id="netCanvas" style="width:100%;border-radius:8px;background:rgba(0,0,0,.3)"></canvas>
+    </div>
+    <div class="card">
+      <h3 style="color:#38bdf8;margin-bottom:14px">Layer Outputs</h3>
+      <div id="layerOutputs"></div>
+    </div>
+  </div>
+</div>
+</div><script>
+let hiddenLayers=[4,3],weights={},outputs={},forwardActive=false;
+
+const activationFns={
+  relu:{fn:x=>Math.max(0,x),name:'ReLU',formula:'f(x) = max(0, x)',desc:'Most popular. Solves vanishing gradient problem.'},
+  sigmoid:{fn:x=>1/(1+Math.exp(-x)),name:'Sigmoid',formula:'f(x) = 1 / (1 + e^(-x))',desc:'Output between 0-1. Good for binary classification output.'},
+  tanh:{fn:x=>Math.tanh(x),name:'Tanh',formula:'f(x) = (e^x - e^(-x)) / (e^x + e^(-x))',desc:'Output between -1 and 1. Zero-centered.'},
+  leaky:{fn:x=>x>0?x:0.01*x,name:'Leaky ReLU',formula:'f(x) = x if x>0, else 0.01x',desc:'Solves dying ReLU problem with small negative slope.'},
+};
+
+function getInputN(){return parseInt(document.getElementById('inputN').value);}
+function getOutputN(){return parseInt(document.getElementById('outputN').value);}
+
+function addLayer(){hiddenLayers.push(3);buildNet();}
+function removeLayer(){if(hiddenLayers.length>1){hiddenLayers.pop();buildNet();}}
+
+function buildNet(){
+  renderLayerControls();
+  randomWeights();
+  renderNetInfo();
+  renderActivationInfo();
+  drawNet();
+}
+
+function renderLayerControls(){
+  document.getElementById('layerControls').innerHTML=hiddenLayers.map((n,i)=>`
+    <div class="layer-row">
+      <span class="layer-label">Layer ${i+1}</span>
+      <input type="range" min="2" max="8" value="${n}" oninput="hiddenLayers[${i}]=parseInt(this.value);document.getElementById('hl${i}').textContent=this.value;randomWeights();drawNet();renderNetInfo();" style="flex:1;padding:0;border:none;background:transparent;box-shadow:none">
+      <span id="hl${i}" style="width:20px;text-align:center;font-weight:700;color:#38bdf8">${n}</span> neurons
+    </div>`).join('');
+}
+
+function randomWeights(){
+  const layers=[getInputN(),...hiddenLayers,getOutputN()];
+  weights={};
+  for(let i=0;i<layers.length-1;i++){
+    weights[i]=Array.from({length:layers[i]},()=>Array.from({length:layers[i+1]},()=>(Math.random()-0.5)*2));
+  }
+}
+
+function sigmoid(x){return 1/(1+Math.exp(-Math.max(-500,Math.min(500,x))));}
+
+function forwardPass(){
+  const layers=[getInputN(),...hiddenLayers,getOutputN()];
+  const act=activationFns[document.getElementById('activation').value].fn;
+  outputs={};
+  // Random inputs
+  let cur=Array.from({length:getInputN()},()=>Math.random()*2-1);
+  outputs[0]=cur;
+  for(let l=0;l<layers.length-1;l++){
+    const next=[];
+    for(let j=0;j<layers[l+1];j++){
+      let sum=0;
+      for(let i=0;i<layers[l];i++)sum+=cur[i]*weights[l][i][j];
+      next.push(l===layers.length-2?sigmoid(sum):act(sum));
+    }
+    cur=next;outputs[l+1]=cur;
+  }
+  return outputs;
+}
+
+function runForward(){
+  forwardActive=true;
+  document.getElementById('passBadge').style.display='block';
+  const out=forwardPass();
+  drawNet(true);
+  renderLayerOutputs(out);
+  setTimeout(()=>{forwardActive=false;document.getElementById('passBadge').style.display='none';},3000);
+}
+
+function renderLayerOutputs(out){
+  const keys=Object.keys(out);
+  const names=['Input',...hiddenLayers.map((_,i)=>`Hidden ${i+1}`),'Output'];
+  document.getElementById('layerOutputs').innerHTML=keys.map(k=>`
+    <div style="margin-bottom:12px">
+      <div style="font-size:12px;color:#64748b;text-transform:uppercase;margin-bottom:6px">${names[k]||'Layer '+k}</div>
+      ${out[k].map((v,i)=>`<div class="out-row">
+        <span style="font-size:12px;width:24px;color:#64748b">N${i+1}</span>
+        <div class="out-bar"><div class="out-fill" style="width:${Math.abs(v)*100}%;background:${v>=0?'linear-gradient(90deg,#38bdf8,#22c55e)':'linear-gradient(90deg,#ef4444,#f97316)'}"></div></div>
+        <span style="font-size:12px;width:50px;text-align:right;font-family:monospace;color:${v>=0?'#22c55e':'#ef4444'}">${v.toFixed(3)}</span>
+      </div>`).join('')}
+    </div>`).join('');
+}
+
+function renderNetInfo(){
+  const layers=[getInputN(),...hiddenLayers,getOutputN()];
+  const totalParams=layers.slice(0,-1).reduce((s,l,i)=>s+l*layers[i+1],0);
+  const totalNeurons=layers.reduce((a,b)=>a+b,0);
+  document.getElementById('netInfo').innerHTML=`
+    <div class="net-row"><span style="color:#64748b">Total Layers</span><span style="font-weight:700">${layers.length}</span></div>
+    <div class="net-row"><span style="color:#64748b">Total Neurons</span><span style="font-weight:700">${totalNeurons}</span></div>
+    <div class="net-row"><span style="color:#64748b">Parameters (Weights)</span><span style="font-weight:700">${totalParams.toLocaleString()}</span></div>
+    <div class="net-row"><span style="color:#64748b">Architecture</span><span style="font-weight:700">${layers.join(' → ')}</span></div>`;
+}
+
+function renderActivationInfo(){
+  const acts=Object.values(activationFns);
+  const active=document.getElementById('activation').value;
+  document.getElementById('activationInfo').innerHTML=acts.map(a=>`
+    <div class="act-item" style="${a.name===activationFns[active].name?'border-color:rgba(56,189,248,.4);background:rgba(56,189,248,.08)':''}">
+      <div style="font-weight:700;color:${a.name===activationFns[active].name?'#38bdf8':'#e2e8f0'};margin-bottom:2px">${a.name}</div>
+      <div style="font-family:monospace;font-size:11px;color:#64748b;margin-bottom:3px">${a.formula}</div>
+      <div style="font-size:12px;color:#94a3b8">${a.desc}</div>
+    </div>`).join('');
+}
+
+function drawNet(animate=false){
+  const canvas=document.getElementById('netCanvas');
+  canvas.width=canvas.parentElement?.offsetWidth-32||400;
+  canvas.height=Math.max(300,canvas.width*0.65);
+  const W=canvas.width,H=canvas.height;
+  const ctx=canvas.getContext('2d');
+  ctx.clearRect(0,0,W,H);
+  const layers=[getInputN(),...hiddenLayers,getOutputN()];
+  const lCount=layers.length;
+  const xStep=W/(lCount+1);
+  const positions=layers.map((n,li)=>{
+    const x=xStep*(li+1);
+    return Array.from({length:n},(_,ni)=>{
+      const y=(H/(n+1))*(ni+1);
+      return {x,y,val:outputs[li]?outputs[li][ni]:null};
+    });
+  });
+  // Draw connections
+  layers.forEach((n,li)=>{
+    if(li>=lCount-1)return;
+    positions[li].forEach((from,fi)=>{
+      positions[li+1].forEach((to,ti)=>{
+        const w=weights[li]?weights[li][fi][ti]:0;
+        const isActive=animate&&outputs[li]&&outputs[li+1];
+        ctx.beginPath();ctx.moveTo(from.x,from.y);ctx.lineTo(to.x,to.y);
+        ctx.strokeStyle=isActive?(w>0?'rgba(56,189,248,0.3)':'rgba(239,68,68,0.3)'):'rgba(56,189,248,0.06)';
+        ctx.lineWidth=isActive?Math.abs(w)*2+0.5:0.5;
+        ctx.stroke();
+      });
+    });
+  });
+  // Draw neurons
+  const nodeNames=['Input',...hiddenLayers.map((_,i)=>`H${i+1}`),'Output'];
+  positions.forEach((layer,li)=>{
+    const isOut=li===lCount-1;
+    layer.forEach((n,ni)=>{
+      const val=n.val;
+      const active=animate&&val!==null;
+      const r=10;
+      ctx.beginPath();ctx.arc(n.x,n.y,r,0,Math.PI*2);
+      ctx.fillStyle=active?(val>=0?'rgba(56,189,248,0.8)':'rgba(239,68,68,0.6)'):'rgba(30,41,59,0.9)';
+      ctx.strokeStyle=active?'#38bdf8':'rgba(56,189,248,0.4)';
+      ctx.lineWidth=active?2:1;
+      if(active){ctx.shadowColor='#38bdf8';ctx.shadowBlur=8;}
+      ctx.fill();ctx.stroke();ctx.shadowBlur=0;
+      if(active&&val!==null){
+        ctx.fillStyle=val>=0?'#fff':'#fca5a5';ctx.font='bold 8px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+        ctx.fillText(val.toFixed(1),n.x,n.y);
+      }
+    });
+    ctx.fillStyle='#64748b';ctx.font='11px sans-serif';ctx.textAlign='center';
+    ctx.fillText(nodeNames[li],layer[0].x,H-10);
+  });
+}
+
+buildNet();
+</script><script>
+// ── UNIVERSAL UPGRADE: Theme, localStorage, Toast, Animations ──
+(function(){
+'use strict';
+
+// ── 2. TOAST SYSTEM ──────────────────────────────────────────────
+var toastContainer = null;
+function getToastContainer(){
+  if(!toastContainer || !document.body.contains(toastContainer)){
+    toastContainer = document.createElement('div');
+    toastContainer.className = 'u-toast-container';
+    document.body.appendChild(toastContainer);
+  }
+  return toastContainer;
+}
+
+window.uToast = function(msg, type, duration){
+  type = type || 'info';
+  duration = duration || 2800;
+  var icons = {success:'✅', error:'❌', info:'💡', warning:'⚠️'};
+  var c = getToastContainer();
+  var t = document.createElement('div');
+  t.className = 'u-toast ' + type;
+  t.innerHTML = '<span>' + (icons[type]||'💡') + '</span><span>' + msg + '</span>';
+  c.appendChild(t);
+  setTimeout(function(){
+    t.style.animation = 'uToastOut .3s ease forwards';
+    setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 300);
+  }, duration);
+};
+
+// ── 3. LOCALSTORAGE HELPERS ──────────────────────────────────────
+var APP_KEY = 'uapp_' + location.pathname.split('/').pop().replace('.html','');
+window.uSave = function(key, val){
+  try { localStorage.setItem(APP_KEY + '_' + key, JSON.stringify(val)); return true; }
+  catch(e){ return false; }
+};
+window.uLoad = function(key, def){
+  try {
+    var v = localStorage.getItem(APP_KEY + '_' + key);
+    return v !== null ? JSON.parse(v) : def;
+  } catch(e){ return def; }
+};
+window.uClear = function(key){
+  try { localStorage.removeItem(APP_KEY + '_' + key); } catch(e){}
+};
+
+// ── 4. ENTRANCE ANIMATIONS ───────────────────────────────────────
+function animateEntrance(){
+  var cards = document.querySelectorAll('.card, [class*="card"]');
+  cards.forEach(function(el, i){
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(18px)';
+    setTimeout(function(){
+      el.style.transition = 'opacity .4s ease, transform .4s ease';
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+    }, i * 60);
+  });
+}
+
+// ── 5. SMOOTH COUNTER ANIMATION ──────────────────────────────────
+window.uAnimCount = function(el, target, duration, prefix, suffix){
+  prefix = prefix || '';
+  suffix = suffix || '';
+  duration = duration || 1200;
+  var start = 0;
+  var step = target / (duration / 16);
+  var iv = setInterval(function(){
+    start = Math.min(start + step, target);
+    el.textContent = prefix + Math.round(start).toLocaleString() + suffix;
+    if(start >= target) clearInterval(iv);
+  }, 16);
+};
+
+// ── 6. EXPORT HELPER ─────────────────────────────────────────────
+window.uExportJSON = function(data, filename){
+  var blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.json';
+  a.click();
+  uToast('Data exported!', 'success');
+};
+window.uExportCSV = function(rows, filename){
+  var csv = rows.map(function(r){ return r.join(','); }).join('\n');
+  var blob = new Blob([csv], {type:'text/csv'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.csv';
+  a.click();
+  uToast('CSV exported!', 'success');
+};
+
+// ── 8. INIT ──────────────────────────────────────────────────────
+function init(){
+  setTimeout(animateEntrance, 100);
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+})();
+</script>
+<script>
+(function(){
+  var savedModels = uLoad('nn_saved_models', []);
+  
+  // Save/Load model panel
+  function injectModelPanel(){
+    if(document.getElementById('uModelPanel')) return;
+    var container = document.querySelector('.grid2 > div:first-child');
+    if(!container) return;
+    var panel = document.createElement('div');
+    panel.id = 'uModelPanel';
+    panel.className = 'card u-fade-up';
+    panel.style.marginTop = '16px';
+    panel.innerHTML = '<div style="font-weight:700;color:#38bdf8;margin-bottom:12px;font-size:14px">💾 Model Library</div>' +
+      '<div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap">' +
+      '<input id="uModelName" placeholder="Model name..." style="flex:1;font-size:13px;min-width:120px">' +
+      '<button onclick="saveModel()" style="padding:7px 14px;background:linear-gradient(90deg,#38bdf8,#22c55e);border:none;color:#000;border-radius:8px;cursor:pointer;font-weight:700;font-size:12px;flex-shrink:0">Save</button>' +
+      '</div><div id="uModelList"></div>';
+    container.appendChild(panel);
+    renderModelList();
+  }
+  
+  window.saveModel = function(){
+    var name = document.getElementById('uModelName')?.value.trim();
+    if(!name){uToast('Enter a model name','error');return;}
+    var model = {
+      name:name,
+      inputN:document.getElementById('inputN')?.value,
+      outputN:document.getElementById('outputN')?.value,
+      hiddenLayers:window.hiddenLayers ? [...window.hiddenLayers] : [4,3],
+      activation:document.getElementById('activation')?.value,
+      savedAt:new Date().toLocaleString()
+    };
+    savedModels.unshift(model);
+    if(savedModels.length>5) savedModels.pop();
+    uSave('nn_saved_models', savedModels);
+    document.getElementById('uModelName').value='';
+    renderModelList();
+    uToast('Model "'+name+'" saved! 🤖', 'success');
+  };
+  
+  function renderModelList(){
+    var el = document.getElementById('uModelList');
+    if(!el) return;
+    if(!savedModels.length){el.innerHTML='<p style="color:#64748b;font-size:13px">No saved models.</p>';return;}
+    el.innerHTML = savedModels.map(function(m,i){
+      return '<div style="padding:10px;background:rgba(56,189,248,.04);border:1px solid rgba(56,189,248,.1);border-radius:8px;margin-bottom:6px">' +
+        '<div style="display:flex;justify-content:space-between;margin-bottom:4px">' +
+        '<span style="font-weight:700;font-size:13px">'+m.name+'</span>' +
+        '<div style="display:flex;gap:4px">' +
+        '<button onclick="loadModel('+i+')" style="padding:3px 8px;background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.3);color:#38bdf8;border-radius:5px;cursor:pointer;font-size:10px;font-weight:700">Load</button>' +
+        '<button onclick="savedModels.splice('+i+',1);uSave(\'nn_saved_models\',savedModels);renderModelList()" style="padding:3px 7px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#ef4444;border-radius:5px;cursor:pointer;font-size:10px;font-weight:700">✕</button>' +
+        '</div></div>' +
+        '<div style="font-size:11px;color:#64748b">'+m.hiddenLayers.join('→')+' hidden · '+m.activation+' · '+m.savedAt+'</div>' +
+        '</div>';
+    }).join('');
+  }
+  
+  window.loadModel = function(i){
+    var m = savedModels[i];
+    if(!m) return;
+    var inSel=document.getElementById('inputN'), outSel=document.getElementById('outputN'), actSel=document.getElementById('activation');
+    if(inSel) inSel.value = m.inputN;
+    if(outSel) outSel.value = m.outputN;
+    if(actSel) actSel.value = m.activation;
+    if(window.hiddenLayers){ window.hiddenLayers = [...m.hiddenLayers]; }
+    if(window.buildNet) buildNet();
+    uToast('Model "'+m.name+'" loaded! 🤖', 'success');
+  };
+  
+  window.renderModelList = renderModelList;
+  injectModelPanel();
+})();
+</script>
+</body></html>

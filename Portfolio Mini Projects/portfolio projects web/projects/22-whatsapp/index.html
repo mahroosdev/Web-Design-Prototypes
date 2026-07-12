@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <html lang="en">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <title>WhatsApp Clone | DevOS</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+</head>
+<body>
+<div id="topbar">
+  <div class="topbar-left">
+    <a class="back-btn" href="index.html">← BACK</a>
+    <span class="topbar-logo">CHAT2_OS</span>
+  </div>
+  <div class="topbar-right">
+    <button class="theme-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle theme">🌙</button>
+  </div>
+</div>
+<div id="toast"></div>
+<div class="wrap">
+<div class="page-header animate-in">
+  <div class="row align" style="gap:10px;margin-bottom:8px"><span style="font-size:28px">💚</span><h1>WhatsApp Clone</h1></div>
+  <p>Full messaging UI with contacts, status, voice notes indicator.</p>
+</div>
+
+
+<h1>💚 WhatsApp Clone</h1>
+<p>Chat UI with contacts list, message bubbles, and status.</p>
+<div style="margin-top:16px"><div class="card" style="padding:0;overflow:hidden;height:560px;display:flex;flex-direction:column">
+  <div style="padding:14px;border-bottom:1px solid var(--border);background:rgba(0,224,255,.04)"><div style="font-size:13px;font-weight:700;color:var(--accent3);letter-spacing:.05em">WhatsApp</div></div>
+  <div id="wa-view"></div>
+</div></div>
+<script>const contacts=[{id:1,name:'Alex Dev',avatar:'👨‍💻',status:'online',lastMsg:'Yo check out this new project!',time:'12:30',msgs:[{from:'them',text:'Yo check out this new project!',t:'12:30'},{from:'them',text:'50 projects in one portfolio 🔥',t:'12:31'}]},{id:2,name:'Sarah Design',avatar:'🎨',status:'online',lastMsg:'The UI looks amazing 😍',time:'11:15',msgs:[{from:'them',text:'The UI looks amazing 😍',t:'11:15'},{from:'them',text:'Can you send me the Figma link?',t:'11:16'}]},{id:3,name:'Mike Code',avatar:'💻',status:'2h ago',lastMsg:'Fixed the bug finally!',time:'10:00',msgs:[{from:'them',text:'Fixed the bug finally!',t:'10:00'},{from:'them',text:'It was a missing semicolon 😅',t:'10:01'}]}];
+let active=null;
+function renderList(){document.getElementById('wa-view').innerHTML=`<div style="overflow-y:auto;flex:1">${contacts.map((c,i)=>`<div onclick="openChat(${i})" style="padding:14px 16px;display:flex;gap:12px;align-items:center;cursor:pointer;border-bottom:1px solid rgba(0,224,255,.06);transition:background .15s" onmouseover="this.style.background='rgba(0,224,255,.04)'" onmouseout="this.style.background='transparent'"><div style="width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0">${c.avatar}</div><div style="flex:1;overflow:hidden"><div class="row" style="justify-content:space-between"><span style="font-size:14px;font-weight:600">${c.name}</span><span style="font-size:11px;color:var(--muted)">${c.time}</span></div><div class="row" style="justify-content:space-between;margin-top:3px"><span style="font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.lastMsg}</span><div style="width:18px;height:18px;border-radius:50%;background:var(--accent3);display:flex;align-items:center;justify-content:center;font-size:10px;color:#000;flex-shrink:0;font-weight:700">${c.msgs.length}</div></div></div></div>`).join('')}</div>`;}
+function openChat(i){active=i;const c=contacts[i];document.getElementById('wa-view').innerHTML=`<div style="padding:12px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;background:rgba(0,224,255,.04)"><button onclick="renderList()" style="background:none;border:none;color:var(--accent);font-size:18px;cursor:pointer">←</button><div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:20px">${c.avatar}</div><div><div style="font-size:14px;font-weight:600">${c.name}</div><div style="font-size:11px;color:var(--accent3)">${c.status}</div></div></div><div id="wa-msgs" style="flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:8px;min-height:380px"></div><div style="padding:10px;border-top:1px solid var(--border);display:flex;gap:8px"><input id="wa-in" placeholder="Type a message..." style="flex:1" onkeydown="if(event.key==='Enter')waSend()"><button class="btn btn-primary" onclick="waSend()" style="padding:10px 16px;min-height:44px">Send</button></div>`;renderChat(i);}
+function renderChat(i){const c=contacts[i];document.getElementById('wa-msgs').innerHTML=c.msgs.map(m=>`<div style="display:flex;justify-content:${m.from==='me'?'flex-end':'flex-start'}"><div style="max-width:75%;padding:9px 13px;border-radius:${m.from==='me'?'12px 12px 2px 12px':'12px 12px 12px 2px'};background:${m.from==='me'?'#005c4b':'#1f2c34'};font-size:13px;line-height:1.5">${m.text}<span style="font-size:10px;color:rgba(255,255,255,.4);margin-left:8px">${m.t}</span></div></div>`).join('');document.getElementById('wa-msgs').scrollTop=9999;}
+function waSend(){if(active===null)return;const v=document.getElementById('wa-in').value.trim();if(!v)return;const t=new Date().toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit'});contacts[active].msgs.push({from:'me',text:v,t});contacts[active].lastMsg=v;contacts[active].time=t;document.getElementById('wa-in').value='';renderChat(active);setTimeout(()=>{const replies=['Got it! 👍','Interesting...','Let me check that out','Sounds good to me!','🔥🔥🔥'];contacts[active].msgs.push({from:'them',text:replies[Math.floor(Math.random()*replies.length)],t:new Date().toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit'})});renderChat(active);},800);}
+renderList();</script>
+
+
+</div>
+  <script src="../shared-back.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

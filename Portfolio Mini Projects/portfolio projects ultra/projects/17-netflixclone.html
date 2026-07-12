@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8">
+<meta name="description" content="Netflix Clone — part of a professional web developer portfolio with 50+ projects.">
+<meta name="robots" content="index, follow">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Netflix Clone</title><style>*{margin:0;padding:0;box-sizing:border-box}
+body{background:linear-gradient(135deg,#020617 0%,#0f172a 100%);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#fff;min-height:100vh;padding:40px 20px;overflow-x:hidden}
+.container{max-width:1000px;margin:0 auto}
+a{color:#38bdf8;text-decoration:none;font-weight:600}a:hover{color:#4ade80}
+h1{background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:36px;margin-bottom:8px}
+.subtitle{color:#94a3b8;margin-bottom:28px;font-size:15px}
+.back-link{display:inline-flex;align-items:center;gap:6px;margin-bottom:20px;color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;padding:8px 14px;border:1px solid rgba(56,189,248,.3);border-radius:8px;transition:.2s}
+.back-link:hover{background:rgba(56,189,248,.1)}
+.card{background:rgba(30,41,59,.8);backdrop-filter:blur(10px);padding:24px;border-radius:16px;border:1px solid rgba(56,189,248,.2);margin-bottom:20px}
+.btn{padding:10px 22px;border:none;border-radius:8px;cursor:pointer;font-weight:700;font-size:14px;transition:.2s;background:linear-gradient(90deg,#38bdf8,#22c55e);color:#000}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(56,189,248,.35)}
+.btn-outline{background:transparent;border:1px solid rgba(56,189,248,.4);color:#38bdf8}
+.btn-red{background:linear-gradient(90deg,#ef4444,#dc2626);color:#fff}
+input,textarea,select{background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.3);color:#fff;border-radius:8px;padding:10px 14px;font-size:14px;width:100%;outline:none;transition:.2s}
+input:focus,textarea:focus,select:focus{border-color:#38bdf8;box-shadow:0 0 0 3px rgba(56,189,248,.15)}
+input::placeholder,textarea::placeholder{color:#64748b}
+label{display:block;font-size:13px;font-weight:600;color:#94a3b8;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.flex{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;background:rgba(56,189,248,.15);color:#38bdf8;border:1px solid rgba(56,189,248,.3)}
+.badge-green{background:rgba(34,197,94,.15);color:#22c55e;border-color:rgba(34,197,94,.3)}
+.badge-red{background:rgba(239,68,68,.15);color:#ef4444;border-color:rgba(239,68,68,.3)}
+.badge-yellow{background:rgba(234,179,8,.15);color:#eab308;border-color:rgba(234,179,8,.3)}
+.stat-box{background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.15);border-radius:12px;padding:20px;text-align:center}
+.stat-num{font-size:32px;font-weight:800;background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-label{font-size:12px;color:#64748b;margin-top:4px;text-transform:uppercase;letter-spacing:.5px}
+hr{border:none;border-top:1px solid rgba(56,189,248,.1);margin:20px 0}
+@media(max-width:768px){body{padding:15px 12px}h1{font-size:26px}.grid2,.grid3,.grid4{grid-template-columns:1fr}.card{padding:16px 14px}}
+.show-card{background:rgba(30,41,59,.8);border:1px solid rgba(56,189,248,.15);border-radius:12px;overflow:hidden;cursor:pointer;transition:.2s;position:relative}
+.show-card:hover{transform:scale(1.04);border-color:rgba(56,189,248,.5);z-index:2}
+.show-thumb{width:100%;aspect-ratio:2/3;display:flex;align-items:center;justify-content:center;font-size:52px;background:linear-gradient(135deg,rgba(30,41,59,.5),rgba(15,23,42,.9))}
+.show-info{padding:10px}
+.show-title{font-weight:700;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.show-meta{font-size:11px;color:#64748b;margin-top:2px}
+.show-actions{display:flex;gap:6px;padding:8px 10px;border-top:1px solid rgba(56,189,248,.1)}
+.show-btn{flex:1;padding:5px;border:none;border-radius:6px;cursor:pointer;font-size:11px;font-weight:700;transition:.2s}
+.in-list{position:absolute;top:6px;right:6px;background:#22c55e;color:#000;border-radius:50%;width:22px;height:22px;font-size:12px;display:flex;align-items:center;justify-content:center;font-weight:800}
+/* ── UNIVERSAL UPGRADE: Theme, Animations, Toast ── */
+:root{
+  --bg:#020617;--bg2:#0f172a;--card:rgba(30,41,59,.85);--border:rgba(56,189,248,.22);
+  --accent:#38bdf8;--accent2:#22c55e;--text:#f1f5f9;--muted:#94a3b8;--danger:#ef4444;
+}
+
+
+/* Toast notifications */
+.u-toast-container{position:fixed;bottom:24px;right:20px;z-index:99999;display:flex;flex-direction:column;gap:8px;max-width:320px}
+.u-toast{
+  background:var(--card);border:1px solid var(--border);color:var(--text);
+  padding:11px 16px;border-radius:10px;font-size:13px;font-weight:600;
+  box-shadow:0 4px 20px rgba(0,0,0,.35);
+  animation:uToastIn .3s ease;display:flex;align-items:center;gap:8px;
+}
+.u-toast.success{border-color:rgba(34,197,94,.5);background:rgba(34,197,94,.1)}
+.u-toast.error{border-color:rgba(239,68,68,.5);background:rgba(239,68,68,.1)}
+.u-toast.info{border-color:rgba(56,189,248,.5);background:rgba(56,189,248,.1)}
+@keyframes uToastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes uToastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(20px)}}
+
+/* Entrance animations */
+@keyframes uFadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes uFadeIn{from{opacity:0}to{opacity:1}}
+@keyframes uPulse{0%,100%{box-shadow:0 0 0 0 rgba(56,189,248,.4)}70%{box-shadow:0 0 0 8px rgba(56,189,248,0)}}
+.u-fade-up{animation:uFadeUp .45s ease both}
+.u-fade-in{animation:uFadeIn .4s ease both}
+.u-pulse{animation:uPulse 2s infinite}
+
+/* Button hover lift */
+.btn:hover,[class*="btn"]:not([class*="btn-"]):hover{transform:translateY(-2px)!important}
+
+/* Smooth card hover */
+.card:hover,[class*="card"]:hover{
+  border-color:var(--accent)!important;
+  box-shadow:0 6px 28px rgba(56,189,248,.12)!important;
+  transition:all .25s ease!important;
+}
+
+/* Loading skeleton */
+.u-skeleton{
+  background:linear-gradient(90deg,rgba(56,189,248,.06) 25%,rgba(56,189,248,.12) 50%,rgba(56,189,248,.06) 75%);
+  background-size:200% 100%;animation:uSkeleton 1.4s infinite;border-radius:6px;
+}
+@keyframes uSkeleton{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* Progress bar component */
+.u-progress{height:5px;background:rgba(56,189,248,.12);border-radius:3px;overflow:hidden;margin:8px 0}
+.u-progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:3px;transition:width .5s ease}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(56,189,248,.3);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(56,189,248,.55)}
+
+/* Mobile responsive upgrades */
+@media(max-width:600px){
+  
+  .u-toast-container{right:10px;bottom:80px;max-width:calc(100vw - 20px)}
+}
+
+</style></head>
+<body><div class="container">
+<a href="../index.html" class="back-link" onclick="window.close(); return false;">← Back to Portfolio</a>
+
+<h1>🎬 StreamFlix</h1>
+<p class="subtitle">Netflix-style streaming platform UI</p>
+<div class="card" style="background:linear-gradient(135deg,rgba(239,68,68,.15),rgba(15,23,42,.9));border-color:rgba(239,68,68,.3);margin-bottom:20px">
+  <div class="flex" style="justify-content:space-between">
+    <div>
+      <div class="badge badge-red" style="margin-bottom:8px">🔴 FEATURED</div>
+      <h2 id="featTitle" style="font-size:28px;margin-bottom:8px;-webkit-text-fill-color:#fff">Loading...</h2>
+      <p id="featDesc" style="color:#94a3b8;font-size:14px;max-width:500px;margin-bottom:16px;line-height:1.6"></p>
+      <div class="flex" style="gap:10px">
+        <button class="btn" onclick="playFeatured()">▶ Play</button>
+        <button class="btn btn-outline" onclick="addToList()">+ My List</button>
+        <span id="featRating" class="badge-yellow badge" style="font-size:13px"></span>
+      </div>
+    </div>
+    <div id="featEmoji" style="font-size:80px;opacity:.7"></div>
+  </div>
+</div>
+<div class="flex" style="gap:10px;margin-bottom:20px;flex-wrap:wrap">
+  <input id="searchShow" placeholder="Search titles..." oninput="searchContent()" style="flex:1;min-width:200px">
+  <select id="genreFilter" onchange="filterByGenre()" style="width:auto">
+    <option value="all">All Genres</option>
+    <option value="action">Action</option><option value="drama">Drama</option>
+    <option value="comedy">Comedy</option><option value="scifi">Sci-Fi</option>
+    <option value="thriller">Thriller</option><option value="documentary">Documentary</option>
+  </select>
+</div>
+<div id="myListSection" style="display:none;margin-bottom:20px">
+  <h3 style="color:#38bdf8;margin-bottom:14px">📋 My List</h3>
+  <div id="myListGrid" class="grid4"></div>
+</div>
+<h3 style="color:#38bdf8;margin-bottom:14px">🔥 Trending Now</h3>
+<div id="contentGrid" class="grid4"></div>
+<div id="playerModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:1000;align-items:center;justify-content:center;flex-direction:column">
+  <div style="text-align:center;max-width:600px;padding:40px">
+    <div id="playerEmoji" style="font-size:80px;margin-bottom:20px"></div>
+    <h2 id="playerTitle" style="margin-bottom:12px;font-size:28px"></h2>
+    <div style="background:rgba(255,255,255,.1);border-radius:8px;height:6px;margin:20px 0;position:relative;cursor:pointer" onclick="seek(event)" id="seekBar">
+      <div id="progressFill" style="height:100%;background:linear-gradient(90deg,#ef4444,#f97316);border-radius:8px;width:0%;transition:.5s"></div>
+    </div>
+    <div class="flex" style="justify-content:center;gap:16px;margin-bottom:20px">
+      <button class="btn btn-outline" onclick="skip(-10)">⏮ -10s</button>
+      <button class="btn" id="playPauseBtn" onclick="togglePlay()" style="background:linear-gradient(90deg,#ef4444,#f97316);padding:12px 28px;font-size:18px">⏸</button>
+      <button class="btn btn-outline" onclick="skip(10)">+10s ⏭</button>
+    </div>
+    <div id="playTime" style="color:#94a3b8;font-size:14px;margin-bottom:20px">0:00 / 0:00</div>
+    <button class="btn btn-red" onclick="closePlayer()">✕ Close</button>
+  </div>
+</div>
+</div><script>
+const shows=[
+  {id:1,title:'Cosmic Odyssey',genre:'scifi',emoji:'🚀',rating:'9.1',year:'2024',desc:'An astronaut discovers a portal to parallel universes while on a routine mission to Mars. A mind-bending journey through space and time.',duration:5820},
+  {id:2,title:'The Last Detective',genre:'thriller',emoji:'🔍',rating:'8.7',year:'2024',desc:'A retired detective is pulled back into action when a series of impossible crimes shake a quiet coastal town.',duration:4200},
+  {id:3,title:'Laugh Factory',genre:'comedy',emoji:'😂',rating:'8.2',year:'2023',desc:'A struggling comedian accidentally goes viral and must navigate sudden fame while keeping his family together.',duration:3600},
+  {id:4,title:'Steel & Shadow',genre:'action',emoji:'⚔️',rating:'8.5',year:'2024',desc:'Elite soldiers uncover a global conspiracy while on what seems like a standard extraction mission.',duration:6300},
+  {id:5,title:'Broken Ties',genre:'drama',emoji:'💔',rating:'9.3',year:'2024',desc:'Three estranged siblings reunite after their father\'s death and uncover secrets that change everything.',duration:4800},
+  {id:6,title:'Neural Dreams',genre:'scifi',emoji:'🧠',rating:'8.9',year:'2023',desc:'In 2047, a neuroscientist discovers humans can share dreams — with deadly consequences.',duration:5400},
+  {id:7,title:'Wild Earth',genre:'documentary',emoji:'🌍',rating:'9.5',year:'2024',desc:'An stunning journey through Earth\'s most remote ecosystems, featuring never-before-seen wildlife.',duration:7200},
+  {id:8,title:'The Heist',genre:'thriller',emoji:'💰',rating:'8.4',year:'2024',desc:'Five strangers with nothing in common plan the most audacious bank robbery in history.',duration:5100},
+  {id:9,title:'First Love',genre:'drama',emoji:'💕',rating:'8.0',year:'2023',desc:'Two college students from opposite worlds fall in love over one unforgettable semester.',duration:4500},
+  {id:10,title:'Robo Wars',genre:'action',emoji:'🤖',rating:'8.6',year:'2024',desc:'Humanity\'s last soldiers fight alongside AI companions in a war for Earth\'s survival.',duration:6900},
+  {id:11,title:'Office Chaos',genre:'comedy',emoji:'💼',rating:'8.3',year:'2024',desc:'A new CEO\'s radical policies turn a boring insurance company into the world\'s most chaotic workplace.',duration:3900},
+  {id:12,title:'Deep Blue',genre:'documentary',emoji:'🐋',rating:'9.2',year:'2023',desc:'Explore the ocean\'s deepest trenches in this breathtaking underwater documentary.',duration:6600},
+];
+
+let myList=[],playing=false,prog=0,timer=null,curShow=null,duration=0;
+let filtered=[...shows];
+
+function fmt(s){const m=Math.floor(s/60);return m+'h '+((s%3600)/60|0)+'m';}
+function fmtTime(s){return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');}
+
+function renderGrid(list){
+  document.getElementById('contentGrid').innerHTML=list.map(s=>`
+    <div class="show-card" id="sc${s.id}">
+      ${myList.includes(s.id)?'<div class="in-list">✓</div>':''}
+      <div class="show-thumb" onclick="playShow(${s.id})">${s.emoji}</div>
+      <div class="show-info">
+        <div class="show-title">${s.title}</div>
+        <div class="show-meta">${s.year} · <span style="color:#eab308">★ ${s.rating}</span> · ${fmt(s.duration)}</div>
+      </div>
+      <div class="show-actions">
+        <button class="show-btn" style="background:linear-gradient(90deg,#ef4444,#f97316);color:#fff" onclick="playShow(${s.id})">▶ Play</button>
+        <button class="show-btn" style="background:rgba(56,189,248,.1);color:#38bdf8;border:1px solid rgba(56,189,248,.3)" onclick="toggleList(${s.id},this)">${myList.includes(s.id)?'✓ Listed':'+ List'}</button>
+      </div>
+    </div>`).join('');
+}
+
+function renderFeatured(){
+  const s=shows[Math.floor(Math.random()*4)];
+  document.getElementById('featTitle').textContent=s.title;
+  document.getElementById('featDesc').textContent=s.desc;
+  document.getElementById('featEmoji').textContent=s.emoji;
+  document.getElementById('featRating').textContent='★ '+s.rating;
+  window._featured=s;
+}
+
+function playFeatured(){playShow(window._featured.id);}
+function addToList(){toggleList(window._featured.id);}
+
+function playShow(id){
+  curShow=shows.find(s=>s.id===id);
+  duration=curShow.duration;prog=0;playing=true;
+  document.getElementById('playerEmoji').textContent=curShow.emoji;
+  document.getElementById('playerTitle').textContent=curShow.title;
+  document.getElementById('playerModal').style.display='flex';
+  document.getElementById('playPauseBtn').textContent='⏸';
+  updatePlayer();startTimer();
+}
+function closePlayer(){clearInterval(timer);playing=false;document.getElementById('playerModal').style.display='none';}
+function togglePlay(){playing=!playing;document.getElementById('playPauseBtn').textContent=playing?'⏸':'▶';if(playing)startTimer();else clearInterval(timer);}
+function skip(s){prog=Math.max(0,Math.min(duration,prog+s));updatePlayer();}
+function seek(e){const r=e.currentTarget.getBoundingClientRect();prog=Math.floor((e.clientX-r.left)/r.width*duration);updatePlayer();}
+function startTimer(){clearInterval(timer);timer=setInterval(()=>{if(playing&&prog<duration){prog++;updatePlayer();}else if(prog>=duration){clearInterval(timer);closePlayer();}},1000);}
+function updatePlayer(){
+  const pct=(prog/duration*100).toFixed(1);
+  document.getElementById('progressFill').style.width=pct+'%';
+  document.getElementById('playTime').textContent=fmtTime(prog)+' / '+fmtTime(duration);
+}
+function toggleList(id,btn){
+  const idx=myList.indexOf(id);
+  if(idx>=0)myList.splice(idx,1);else myList.push(id);
+  renderGrid(filtered);renderMyList();
+}
+function renderMyList(){
+  const sec=document.getElementById('myListSection');
+  sec.style.display=myList.length?'block':'none';
+  document.getElementById('myListGrid').innerHTML=myList.map(id=>{const s=shows.find(s=>s.id===id);return`<div class="show-card"><div class="show-thumb" onclick="playShow(${s.id})">${s.emoji}</div><div class="show-info"><div class="show-title">${s.title}</div><div class="show-meta">★ ${s.rating}</div></div></div>`;}).join('');
+}
+function searchContent(){
+  const q=document.getElementById('searchShow').value.toLowerCase();
+  filtered=shows.filter(s=>s.title.toLowerCase().includes(q));
+  renderGrid(filtered);
+}
+function filterByGenre(){
+  const g=document.getElementById('genreFilter').value;
+  filtered=g==='all'?[...shows]:shows.filter(s=>s.genre===g);
+  renderGrid(filtered);
+}
+renderFeatured();renderGrid(shows);
+</script><script>
+// ── UNIVERSAL UPGRADE: Theme, localStorage, Toast, Animations ──
+(function(){
+'use strict';
+
+// ── 2. TOAST SYSTEM ──────────────────────────────────────────────
+var toastContainer = null;
+function getToastContainer(){
+  if(!toastContainer || !document.body.contains(toastContainer)){
+    toastContainer = document.createElement('div');
+    toastContainer.className = 'u-toast-container';
+    document.body.appendChild(toastContainer);
+  }
+  return toastContainer;
+}
+
+window.uToast = function(msg, type, duration){
+  type = type || 'info';
+  duration = duration || 2800;
+  var icons = {success:'✅', error:'❌', info:'💡', warning:'⚠️'};
+  var c = getToastContainer();
+  var t = document.createElement('div');
+  t.className = 'u-toast ' + type;
+  t.innerHTML = '<span>' + (icons[type]||'💡') + '</span><span>' + msg + '</span>';
+  c.appendChild(t);
+  setTimeout(function(){
+    t.style.animation = 'uToastOut .3s ease forwards';
+    setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 300);
+  }, duration);
+};
+
+// ── 3. LOCALSTORAGE HELPERS ──────────────────────────────────────
+var APP_KEY = 'uapp_' + location.pathname.split('/').pop().replace('.html','');
+window.uSave = function(key, val){
+  try { localStorage.setItem(APP_KEY + '_' + key, JSON.stringify(val)); return true; }
+  catch(e){ return false; }
+};
+window.uLoad = function(key, def){
+  try {
+    var v = localStorage.getItem(APP_KEY + '_' + key);
+    return v !== null ? JSON.parse(v) : def;
+  } catch(e){ return def; }
+};
+window.uClear = function(key){
+  try { localStorage.removeItem(APP_KEY + '_' + key); } catch(e){}
+};
+
+// ── 4. ENTRANCE ANIMATIONS ───────────────────────────────────────
+function animateEntrance(){
+  var cards = document.querySelectorAll('.card, [class*="card"]');
+  cards.forEach(function(el, i){
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(18px)';
+    setTimeout(function(){
+      el.style.transition = 'opacity .4s ease, transform .4s ease';
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+    }, i * 60);
+  });
+}
+
+// ── 5. SMOOTH COUNTER ANIMATION ──────────────────────────────────
+window.uAnimCount = function(el, target, duration, prefix, suffix){
+  prefix = prefix || '';
+  suffix = suffix || '';
+  duration = duration || 1200;
+  var start = 0;
+  var step = target / (duration / 16);
+  var iv = setInterval(function(){
+    start = Math.min(start + step, target);
+    el.textContent = prefix + Math.round(start).toLocaleString() + suffix;
+    if(start >= target) clearInterval(iv);
+  }, 16);
+};
+
+// ── 6. EXPORT HELPER ─────────────────────────────────────────────
+window.uExportJSON = function(data, filename){
+  var blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.json';
+  a.click();
+  uToast('Data exported!', 'success');
+};
+window.uExportCSV = function(rows, filename){
+  var csv = rows.map(function(r){ return r.join(','); }).join('\n');
+  var blob = new Blob([csv], {type:'text/csv'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.csv';
+  a.click();
+  uToast('CSV exported!', 'success');
+};
+
+// ── 8. INIT ──────────────────────────────────────────────────────
+function init(){
+  setTimeout(animateEntrance, 100);
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+})();
+</script>
+<script>
+(function(){
+  var continueWatching = uLoad('netflix_continue', []);
+  var ratings = uLoad('netflix_ratings', {});
+  
+  // Save progress when show is played
+  var origPlay = window.playShow;
+  if(origPlay){
+    window.playShow = function(id){
+      origPlay.apply(this,[id]);
+      setTimeout(function(){
+        var show = (window.shows||[]).find(function(s){return s.id===id;});
+        if(show){
+          continueWatching = continueWatching.filter(function(c){return c.id!==id;});
+          continueWatching.unshift({id:id,title:show.title,emoji:show.emoji,progress:Math.floor(Math.random()*80+10),timestamp:new Date().toLocaleString()});
+          if(continueWatching.length > 6) continueWatching.pop();
+          uSave('netflix_continue', continueWatching);
+          renderContinue();
+        }
+      }, 500);
+    };
+  }
+  
+  function renderContinue(){
+    var sec = document.getElementById('uContinueSection');
+    if(!sec) return;
+    if(!continueWatching.length){sec.style.display='none';return;}
+    sec.style.display='block';
+    var grid = sec.querySelector('#uContinueGrid');
+    if(grid) grid.innerHTML = continueWatching.map(function(c){
+      return '<div style="background:rgba(30,41,59,.8);border:1px solid rgba(239,68,68,.2);border-radius:10px;overflow:hidden;cursor:pointer;transition:.2s" onmouseover="this.style.borderColor=\'rgba(239,68,68,.6)\'" onmouseout="this.style.borderColor=\'rgba(239,68,68,.2)\'" onclick="playShow('+c.id+')">' +
+        '<div style="width:100%;aspect-ratio:2/3;display:flex;align-items:center;justify-content:center;font-size:40px;background:rgba(239,68,68,.08)">'+c.emoji+'</div>' +
+        '<div style="padding:8px"><div style="font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+c.title+'</div>' +
+        '<div style="height:3px;background:rgba(255,255,255,.1);border-radius:2px;margin-top:6px;overflow:hidden"><div style="height:100%;background:#ef4444;border-radius:2px;width:'+c.progress+'%"></div></div>' +
+        '<div style="font-size:10px;color:#64748b;margin-top:3px">'+c.progress+'% watched</div></div></div>';
+    }).join('');
+  }
+  
+  // Inject continue watching section
+  setTimeout(function(){
+    if(!document.getElementById('uContinueSection')){
+      var sec = document.createElement('div');
+      sec.id = 'uContinueSection';
+      sec.style.marginBottom = '20px';
+      sec.innerHTML = '<h3 style="color:#ef4444;margin-bottom:12px;font-size:16px">▶ Continue Watching</h3><div id="uContinueGrid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px"></div>';
+      document.querySelector('#myListSection,#contentGrid,.container')?.parentNode?.insertBefore(sec, document.querySelector('#contentGrid,h3'));
+      renderContinue();
+    }
+  }, 500);
+})();
+</script>
+</body></html>

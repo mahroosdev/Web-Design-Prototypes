@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <html lang="en">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <title>Music Player | DevOS</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+</head>
+<body>
+<div id="topbar">
+  <div class="topbar-left">
+    <a class="back-btn" href="index.html">← BACK</a>
+    <span class="topbar-logo">MUSIC_OS</span>
+  </div>
+  <div class="topbar-right">
+    <button class="theme-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle theme">🌙</button>
+  </div>
+</div>
+<div id="toast"></div>
+<div class="wrap">
+<div class="page-header animate-in">
+  <div class="row align" style="gap:10px;margin-bottom:8px"><span style="font-size:28px">🎵</span><h1>Music Player</h1></div>
+  <p>Full music player with playlist, visualizer, equalizer and lyrics.</p>
+</div>
+
+
+<h1>🎵 Music Player</h1>
+<p>Full-featured music player with playlist, visualizer and controls.</p>
+<div style="margin-top:16px"><div class="card" style="text-align:center">
+  <div id="mp-art" style="width:180px;height:180px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:72px;box-shadow:0 0 40px rgba(0,224,255,.3);transition:transform .3s" id="mp-disc">🎵</div>
+  <h2 id="mp-title" style="font-size:18px;margin-bottom:4px">Midnight Code</h2>
+  <div id="mp-artist" style="font-size:13px;color:var(--muted);margin-bottom:16px">DevOS Soundtrack</div>
+  <div style="background:var(--card2);border-radius:4px;height:4px;margin-bottom:8px;cursor:pointer;overflow:hidden" onclick="seek(event,this)">
+    <div id="mp-prog" style="height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:4px;transition:width .5s linear"></div>
+  </div>
+  <div class="row" style="justify-content:space-between;margin-bottom:16px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted)"><span id="mp-curr">0:00</span><span id="mp-dur">3:24</span></div>
+  <div class="row" style="justify-content:center;gap:16px;margin-bottom:16px;align-items:center">
+    <button onclick="prevSong()" style="background:none;border:none;color:var(--muted);font-size:24px;cursor:pointer">⏮</button>
+    <button onclick="togglePlay()" id="mp-play" style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;font-size:22px;cursor:pointer;color:#000;box-shadow:0 0 20px rgba(0,224,255,.4)">▶</button>
+    <button onclick="nextSong()" style="background:none;border:none;color:var(--muted);font-size:24px;cursor:pointer">⏭</button>
+  </div>
+  <div class="row" style="align-items:center;gap:8px;margin-bottom:16px">🔊<input type="range" id="mp-vol" min="0" max="100" value="80" style="flex:1;background:transparent;border:none;padding:0;border-radius:0"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted)" id="mp-vol-label">80%</span></div>
+</div>
+<div class="card" style="margin-top:12px">
+  <h2 style="font-size:14px;margin-bottom:10px">Playlist</h2>
+  <div id="mp-playlist"></div>
+</div></div>
+<script>const tracks=[{title:'Midnight Code',artist:'DevOS',emoji:'🎵',dur:204},{title:'Neural Flow',artist:'SynthWave',emoji:'🧠',dur:187},{title:'Cyber Dawn',artist:'PixelBeats',emoji:'🌅',dur:221},{title:'Stack Overflow',artist:'DevOS',emoji:'💻',dur:198},{title:'Binary Rain',artist:'CodeJam',emoji:'🌧',dur:234},{title:'Async Dreams',artist:'DevOS',emoji:'⚡',dur:212}];
+let cur=0,playing=false,progress=0,iv=null;
+function fmt(s){return Math.floor(s/60)+':'+(s%60<10?'0':'')+Math.floor(s%60);}
+function renderTrack(){const t=tracks[cur];document.getElementById('mp-art').textContent=t.emoji;document.getElementById('mp-title').textContent=t.title;document.getElementById('mp-artist').textContent=t.artist;document.getElementById('mp-dur').textContent=fmt(t.dur);progress=0;document.getElementById('mp-prog').style.width='0%';document.getElementById('mp-curr').textContent='0:00';}
+function renderPlaylist(){document.getElementById('mp-playlist').innerHTML=tracks.map((t,i)=>`<div onclick="cur=${i};renderTrack();if(playing)startPlay()" style="padding:10px 12px;border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:10px;transition:background .15s;background:${i===cur?'rgba(0,224,255,.08)':'transparent'}" onmouseover="this.style.background='rgba(0,224,255,.05)'" onmouseout="this.style.background='${i===cur?'rgba(0,224,255,.08)':'transparent'}'"><span style="font-size:22px">${t.emoji}</span><div style="flex:1"><div style="font-size:13px;font-weight:${i===cur?700:400};color:${i===cur?'var(--accent)':'var(--text)'}">${t.title}</div><div style="font-size:11px;color:var(--muted)">${t.artist}</div></div><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted)">${fmt(t.dur)}</span>${i===cur&&playing?'<span style="color:var(--accent);font-size:12px">♫</span>':''}</div>`).join('');}
+function startPlay(){clearInterval(iv);iv=setInterval(()=>{progress++;const dur=tracks[cur].dur;document.getElementById('mp-prog').style.width=(progress/dur*100)+'%';document.getElementById('mp-curr').textContent=fmt(progress);if(progress>=dur)nextSong();},1000);}
+function togglePlay(){playing=!playing;document.getElementById('mp-play').textContent=playing?'⏸':'▶';document.getElementById('mp-art').style.animation=playing?'spin 4s linear infinite':'none';if(playing)startPlay();else clearInterval(iv);}
+function nextSong(){cur=(cur+1)%tracks.length;progress=0;renderTrack();renderPlaylist();if(playing)startPlay();}
+function prevSong(){cur=(cur-1+tracks.length)%tracks.length;progress=0;renderTrack();renderPlaylist();if(playing)startPlay();}
+function seek(e,bar){const r=bar.getBoundingClientRect();progress=Math.floor((e.clientX-r.left)/r.width*tracks[cur].dur);document.getElementById('mp-curr').textContent=fmt(progress);}
+document.getElementById('mp-vol').addEventListener('input',function(){document.getElementById('mp-vol-label').textContent=this.value+'%';});
+const style=document.createElement('style');style.textContent='@keyframes spin{to{transform:rotate(360deg)}}';document.head.appendChild(style);
+renderTrack();renderPlaylist();</script>
+
+
+</div>
+  <script src="../shared-back.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

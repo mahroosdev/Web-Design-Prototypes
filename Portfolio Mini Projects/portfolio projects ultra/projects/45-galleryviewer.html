@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Gallery Viewer — interactive photo gallery with lightbox">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖼️</text></svg>">
+  <title>Gallery Viewer</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{--bg:#020617;--bg2:#0f172a;--card:rgba(30,41,59,.85);--accent:#38bdf8;--green:#22c55e;--border:rgba(56,189,248,.2);--text:#f1f5f9;--muted:#94a3b8}
+    body{background:linear-gradient(135deg,var(--bg),var(--bg2));font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--text);min-height:100vh;padding:24px 16px;overflow-x:hidden}
+    .container{max-width:1000px;margin:0 auto}
+    a.back{display:inline-flex;align-items:center;gap:6px;color:var(--accent);text-decoration:none;font-weight:600;margin-bottom:16px;transition:.2s}
+    a.back:hover{color:var(--green)}
+    h1{background:linear-gradient(90deg,var(--accent),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:1.8rem;margin-bottom:4px}
+    .subtitle{color:var(--muted);margin-bottom:24px;font-size:14px}
+
+    /* Filters & Search */
+    .controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;align-items:center}
+    .search-box{flex:1;min-width:180px;padding:9px 14px;background:var(--card);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;outline:none;transition:.2s}
+    .search-box:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(56,189,248,.1)}
+    .filter-btn{padding:8px 16px;border:1px solid var(--border);border-radius:8px;background:var(--card);color:var(--muted);cursor:pointer;font-size:13px;font-weight:600;transition:.2s;white-space:nowrap}
+    .filter-btn:hover,.filter-btn.active{background:rgba(56,189,248,.15);border-color:var(--accent);color:var(--text)}
+    .sort-select{padding:8px 12px;background:var(--card);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:13px;cursor:pointer;outline:none}
+
+    /* Stats bar */
+    .stats-bar{display:flex;gap:20px;padding:12px 16px;background:var(--card);border:1px solid var(--border);border-radius:10px;margin-bottom:20px;font-size:13px;color:var(--muted)}
+    .stat-item{display:flex;flex-direction:column;gap:2px}
+    .stat-num{font-size:18px;font-weight:800;color:var(--accent)}
+
+    /* Grid */
+    .gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin-bottom:24px}
+    .gallery-card{border-radius:12px;overflow:hidden;border:1px solid var(--border);background:var(--card);cursor:pointer;transition:all .25s;position:relative;group:true}
+    .gallery-card:hover{transform:translateY(-4px);border-color:rgba(56,189,248,.5);box-shadow:0 12px 32px rgba(0,0,0,.4)}
+    .gallery-card:hover .card-overlay{opacity:1}
+    .gallery-thumb{width:100%;height:180px;display:flex;align-items:center;justify-content:center;font-size:64px;position:relative;overflow:hidden}
+    .card-overlay{position:absolute;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;gap:10px;opacity:0;transition:opacity .25s}
+    .overlay-btn{padding:8px 14px;border:1px solid rgba(255,255,255,.4);border-radius:7px;color:white;font-size:12px;font-weight:700;cursor:pointer;background:rgba(255,255,255,.1);transition:.15s}
+    .overlay-btn:hover{background:rgba(255,255,255,.2)}
+    .card-info{padding:12px 14px}
+    .card-title{font-weight:700;font-size:14px;margin-bottom:4px}
+    .card-meta{display:flex;justify-content:space-between;align-items:center}
+    .card-category{font-size:11px;padding:2px 8px;border-radius:20px;font-weight:600}
+    .card-likes{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:4px;cursor:pointer;transition:.2s}
+    .card-likes:hover{color:#ef4444}
+    .card-likes.liked{color:#ef4444}
+
+    /* Lightbox */
+    .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:9999;display:none;align-items:center;justify-content:center;flex-direction:column;gap:20px;padding:20px}
+    .lightbox.open{display:flex}
+    .lb-close{position:absolute;top:16px;right:20px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:8px;color:white;font-size:20px;cursor:pointer;padding:8px 14px;transition:.2s;z-index:10}
+    .lb-close:hover{background:rgba(255,255,255,.2)}
+    .lb-img{max-width:700px;width:100%;height:420px;border-radius:12px;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;font-size:120px}
+    .lb-info{max-width:700px;width:100%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+    .lb-title{font-size:1.2rem;font-weight:800}
+    .lb-desc{color:var(--muted);font-size:13px;margin-top:4px}
+    .lb-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:white;padding:14px 18px;cursor:pointer;border-radius:10px;font-size:20px;transition:.2s;z-index:10}
+    .lb-nav:hover{background:rgba(255,255,255,.25)}
+    .lb-prev{left:16px}
+    .lb-next{right:16px}
+    .lb-counter{color:var(--muted);font-size:13px}
+
+    /* Empty state */
+    .empty-state{text-align:center;padding:60px 20px;color:var(--muted)}
+    .empty-state .em{font-size:48px;margin-bottom:12px}
+
+    ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:rgba(56,189,248,.3);border-radius:3px}
+    @media(max-width:480px){.gallery-grid{grid-template-columns:1fr 1fr}.gallery-thumb{height:130px;font-size:40px}}
+  </style>
+</head>
+<body>
+<div class="container">
+  <a href="../index.html" class="back" onclick="window.close(); return false;">← Back to Portfolio</a>
+  <h1>🖼️ Gallery Viewer</h1>
+  <p class="subtitle">Browse, search, and explore the collection — click any image to open lightbox</p>
+
+  <div class="controls">
+    <input class="search-box" id="searchBox" type="text" placeholder="🔍  Search images..." oninput="render()">
+    <button class="filter-btn active" data-cat="all" onclick="setFilter('all',this)">All</button>
+    <button class="filter-btn" data-cat="nature" onclick="setFilter('nature',this)">🌿 Nature</button>
+    <button class="filter-btn" data-cat="city" onclick="setFilter('city',this)">🏙️ City</button>
+    <button class="filter-btn" data-cat="space" onclick="setFilter('space',this)">🚀 Space</button>
+    <button class="filter-btn" data-cat="abstract" onclick="setFilter('abstract',this)">🎨 Abstract</button>
+    <button class="filter-btn" data-cat="ocean" onclick="setFilter('ocean',this)">🌊 Ocean</button>
+    <select class="sort-select" onchange="render()" id="sortSel">
+      <option value="date">Sort: Newest</option>
+      <option value="name">Sort: A–Z</option>
+      <option value="likes">Sort: Most Liked</option>
+    </select>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat-item"><div class="stat-num" id="totalStat">0</div><div>Images</div></div>
+    <div class="stat-item"><div class="stat-num" id="likedStat">0</div><div>Liked</div></div>
+    <div class="stat-item"><div class="stat-num" id="catStat">0</div><div>Categories</div></div>
+  </div>
+
+  <div class="gallery-grid" id="galleryGrid"></div>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" onclick="closeLightbox()">✕</button>
+  <button class="lb-nav lb-prev" onclick="navLB(-1)">‹</button>
+  <button class="lb-nav lb-next" onclick="navLB(1)">›</button>
+  <div class="lb-img" id="lbImg"></div>
+  <div class="lb-info">
+    <div>
+      <div class="lb-title" id="lbTitle"></div>
+      <div class="lb-desc" id="lbDesc"></div>
+    </div>
+    <div class="lb-counter" id="lbCounter"></div>
+  </div>
+</div>
+
+<script>
+// Gallery data — CSS art previews using gradients + emoji
+const IMAGES = [
+  {id:1,title:'Aurora Borealis',cat:'nature',emoji:'🌌',grad:'linear-gradient(135deg,#0f2027,#203a43,#2c5364)',desc:'Dancing northern lights over snowy peaks',date:8},
+  {id:2,title:'City at Night',cat:'city',emoji:'🌃',grad:'linear-gradient(135deg,#141e30,#243b55)',desc:'Skyline glowing against the midnight sky',date:7},
+  {id:3,title:'Nebula Cloud',cat:'space',emoji:'🌠',grad:'linear-gradient(135deg,#200122,#6f0000)',desc:'A stellar nursery millions of light-years away',date:6},
+  {id:4,title:'Ocean Sunset',cat:'ocean',emoji:'🌅',grad:'linear-gradient(135deg,#f7971e,#ffd200)',desc:'Golden hour melting into calm waters',date:5},
+  {id:5,title:'Forest Rain',cat:'nature',emoji:'🌲',grad:'linear-gradient(135deg,#134e5e,#71b280)',desc:'Morning mist through ancient redwoods',date:4},
+  {id:6,title:'Abstract Flow',cat:'abstract',emoji:'🎨',grad:'linear-gradient(135deg,#f953c6,#b91d73)',desc:'Fluid art in motion',date:3},
+  {id:7,title:'Mars Surface',cat:'space',emoji:'🔴',grad:'linear-gradient(135deg,#8B0000,#c0392b)',desc:'The red planet up close',date:2},
+  {id:8,title:'Deep Ocean',cat:'ocean',emoji:'🐋',grad:'linear-gradient(135deg,#000428,#004e92)',desc:'Life in the bioluminescent abyss',date:1},
+  {id:9,title:'Mountain Peak',cat:'nature',emoji:'🏔️',grad:'linear-gradient(135deg,#373b44,#4286f4)',desc:'First light breaking over the summit',date:9},
+  {id:10,title:'Neon District',cat:'city',emoji:'🌆',grad:'linear-gradient(135deg,#4a00e0,#8e2de2)',desc:'Vibrant neon signs reflected in rain',date:10},
+  {id:11,title:'Geometric Art',cat:'abstract',emoji:'🔷',grad:'linear-gradient(135deg,#00b4db,#0083b0)',desc:'Precision shapes in perfect harmony',date:11},
+  {id:12,title:'Galaxy Core',cat:'space',emoji:'✨',grad:'linear-gradient(135deg,#0f0c29,#302b63,#24243e)',desc:'The heart of our Milky Way',date:12},
+  {id:13,title:'Coral Reef',cat:'ocean',emoji:'🐠',grad:'linear-gradient(135deg,#0052d4,#4364f7,#6fb1fc)',desc:'A riot of colour under the sea',date:13},
+  {id:14,title:'Cherry Blossom',cat:'nature',emoji:'🌸',grad:'linear-gradient(135deg,#f8b4c8,#cc2b5e)',desc:'Sakura season in full bloom',date:14},
+  {id:15,title:'Brutalist Tower',cat:'city',emoji:'🏛️',grad:'linear-gradient(135deg,#485563,#29323c)',desc:'Monumental concrete architecture',date:15},
+  {id:16,title:'Lava Flow',cat:'abstract',emoji:'🌋',grad:'linear-gradient(135deg,#ff4e00,#ec9f05)',desc:'Molten earth reshaping the land',date:16},
+];
+
+let liked = {};
+let activeFilter = 'all';
+let lbIdx = 0;
+let filtered = [];
+
+try { liked = JSON.parse(localStorage.getItem('gallery_liked') || '{}'); } catch(e) {}
+
+function saveLiked() { try { localStorage.setItem('gallery_liked', JSON.stringify(liked)); } catch(e) {} }
+
+function setFilter(cat, el) {
+  activeFilter = cat;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  render();
+}
+
+function render() {
+  const q = document.getElementById('searchBox').value.toLowerCase();
+  const sort = document.getElementById('sortSel').value;
+  filtered = IMAGES
+    .filter(img => (activeFilter === 'all' || img.cat === activeFilter) && (!q || img.title.toLowerCase().includes(q) || img.desc.toLowerCase().includes(q)))
+    .sort((a,b) => sort === 'name' ? a.title.localeCompare(b.title) : sort === 'likes' ? (liked[b.id]||0) - (liked[a.id]||0) : b.date - a.date);
+
+  const grid = document.getElementById('galleryGrid');
+  if (!filtered.length) {
+    grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="em">🔍</div><div>No images found. Try a different search or filter.</div></div>';
+  } else {
+    grid.innerHTML = filtered.map((img,i) => {
+      const isLiked = liked[img.id];
+      const catColors = {nature:'rgba(34,197,94,.15)',city:'rgba(56,189,248,.15)',space:'rgba(139,92,246,.15)',abstract:'rgba(249,115,22,.15)',ocean:'rgba(6,182,212,.15)'};
+      const catText = {nature:'#22c55e',city:'#38bdf8',space:'#a78bfa',abstract:'#f97316',ocean:'#06b6d4'};
+      return `
+        <div class="gallery-card" onclick="openLightbox(${i})">
+          <div class="gallery-thumb" style="background:${img.grad}">
+            <span style="filter:drop-shadow(0 2px 8px rgba(0,0,0,.5))">${img.emoji}</span>
+            <div class="card-overlay">
+              <div class="overlay-btn" onclick="event.stopPropagation();openLightbox(${i})">🔍 View</div>
+              <div class="overlay-btn" onclick="event.stopPropagation();toggleLike(${img.id})">${isLiked ? '❤️' : '🤍'} Like</div>
+            </div>
+          </div>
+          <div class="card-info">
+            <div class="card-title">${img.title}</div>
+            <div class="card-meta">
+              <span class="card-category" style="background:${catColors[img.cat]||'rgba(56,189,248,.1)'};color:${catText[img.cat]||'#38bdf8'}">${img.cat}</span>
+              <span class="card-likes ${isLiked?'liked':''}" onclick="event.stopPropagation();toggleLike(${img.id})" id="likes-${img.id}">
+                ${isLiked?'❤️':'🤍'} ${liked[img.id]||0}
+              </span>
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  document.getElementById('totalStat').textContent = filtered.length;
+  document.getElementById('likedStat').textContent = Object.values(liked).filter(Boolean).length;
+  document.getElementById('catStat').textContent = [...new Set(IMAGES.map(i=>i.cat))].length;
+}
+
+function toggleLike(id) {
+  liked[id] = liked[id] ? 0 : 1;
+  saveLiked();
+  render();
+}
+
+function openLightbox(i) {
+  lbIdx = i;
+  updateLightbox();
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function navLB(dir) {
+  lbIdx = (lbIdx + dir + filtered.length) % filtered.length;
+  updateLightbox();
+}
+
+function updateLightbox() {
+  const img = filtered[lbIdx];
+  if (!img) return;
+  document.getElementById('lbImg').style.background = img.grad;
+  document.getElementById('lbImg').innerHTML = '<span style="font-size:120px;filter:drop-shadow(0 4px 16px rgba(0,0,0,.6))">' + img.emoji + '</span>';
+  document.getElementById('lbTitle').textContent = img.title;
+  document.getElementById('lbDesc').textContent = img.desc;
+  document.getElementById('lbCounter').textContent = (lbIdx+1) + ' / ' + filtered.length;
+}
+
+document.addEventListener('keydown', e => {
+  if (document.getElementById('lightbox').classList.contains('open')) {
+    if (e.key === 'ArrowLeft') navLB(-1);
+    if (e.key === 'ArrowRight') navLB(1);
+    if (e.key === 'Escape') closeLightbox();
+  }
+});
+
+function closeWindow(ev) {
+  if (ev) try { ev.stopPropagation(); } catch(x) {}
+  try { window.close(); } catch(x) {}
+  try { if (window.opener) { window.opener.postMessage({type:'requestClose',url:window.location.href},'*'); setTimeout(()=>{window.location.href='../index.html';},300); return; }} catch(x) {}
+  window.location.href = '../index.html';
+}
+
+render();
+</script>
+</body>
+</html>

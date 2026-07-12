@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8">
+<meta name="description" content="Notes App — part of a professional web developer portfolio with 50+ projects.">
+<meta name="robots" content="index, follow">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Notes App</title><style>*{margin:0;padding:0;box-sizing:border-box}
+body{background:linear-gradient(135deg,#020617 0%,#0f172a 100%);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#fff;min-height:100vh;padding:40px 20px;overflow-x:hidden}
+.container{max-width:1000px;margin:0 auto}
+h1{background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:36px;margin-bottom:8px}
+.subtitle{color:#94a3b8;margin-bottom:28px;font-size:15px}
+.back-link{display:inline-flex;align-items:center;gap:6px;margin-bottom:20px;color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;padding:8px 14px;border:1px solid rgba(56,189,248,.3);border-radius:8px;transition:.2s}
+.back-link:hover{background:rgba(56,189,248,.1)}
+.card{background:rgba(30,41,59,.8);backdrop-filter:blur(10px);padding:24px;border-radius:16px;border:1px solid rgba(56,189,248,.2);margin-bottom:20px}
+.btn{padding:10px 22px;border:none;border-radius:8px;cursor:pointer;font-weight:700;font-size:14px;transition:.2s;background:linear-gradient(90deg,#38bdf8,#22c55e);color:#000}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(56,189,248,.35)}
+.btn-outline{background:transparent;border:1px solid rgba(56,189,248,.4);color:#38bdf8}
+.btn-red{background:linear-gradient(90deg,#ef4444,#dc2626);color:#fff}
+input,textarea,select{background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.3);color:#fff;border-radius:8px;padding:10px 14px;font-size:14px;width:100%;outline:none;transition:.2s}
+input:focus,textarea:focus,select:focus{border-color:#38bdf8;box-shadow:0 0 0 3px rgba(56,189,248,.15)}
+input::placeholder,textarea::placeholder{color:#64748b}
+label{display:block;font-size:13px;font-weight:600;color:#94a3b8;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.flex{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;background:rgba(56,189,248,.15);color:#38bdf8;border:1px solid rgba(56,189,248,.3)}
+.badge-green{background:rgba(34,197,94,.15);color:#22c55e;border-color:rgba(34,197,94,.3)}
+.badge-red{background:rgba(239,68,68,.15);color:#ef4444;border-color:rgba(239,68,68,.3)}
+.badge-yellow{background:rgba(234,179,8,.15);color:#eab308;border-color:rgba(234,179,8,.3)}
+.stat-box{background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.15);border-radius:12px;padding:20px;text-align:center}
+.stat-num{font-size:32px;font-weight:800;background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-label{font-size:12px;color:#64748b;margin-top:4px;text-transform:uppercase;letter-spacing:.5px}
+hr{border:none;border-top:1px solid rgba(56,189,248,.1);margin:20px 0}
+@media(max-width:768px){body{padding:15px 12px}h1{font-size:26px}.grid2,.grid3,.grid4{grid-template-columns:1fr}.card{padding:16px 14px}}
+.note-item{padding:12px;border-radius:10px;border:1px solid rgba(56,189,248,.1);margin-bottom:8px;cursor:pointer;transition:.2s;position:relative}
+.note-item:hover,.note-item.active{background:rgba(56,189,248,.08);border-color:rgba(56,189,248,.3)}
+.note-item-title{font-weight:700;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px}
+.note-item-preview{font-size:12px;color:#64748b;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.note-item-meta{font-size:11px;color:#475569;margin-top:6px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.tag-chip{padding:2px 8px;border-radius:12px;font-size:10px;font-weight:700;cursor:pointer;border:1px solid transparent}
+.fmt-btn{background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.2);color:#38bdf8;padding:5px 10px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:700;transition:.2s}
+.fmt-btn:hover{background:rgba(56,189,248,.25)}
+.md-h1{font-size:22px;font-weight:800;color:#38bdf8;margin-bottom:8px}
+.md-h2{font-size:18px;font-weight:700;color:#60a5fa;margin-bottom:6px}
+.md-bold{font-weight:800;color:#f1f5f9}
+.md-italic{font-style:italic;color:#cbd5e1}
+.md-code{font-family:monospace;background:rgba(56,189,248,.1);padding:2px 6px;border-radius:4px;color:#7dd3fc;font-size:13px}
+.md-quote{border-left:3px solid #38bdf8;padding-left:12px;color:#94a3b8;margin:8px 0;font-style:italic}
+.md-li{padding-left:16px;margin:4px 0;position:relative}
+.md-li::before{content:'•';position:absolute;left:4px;color:#38bdf8}
+/* ── UNIVERSAL UPGRADE: Theme, Animations, Toast ── */
+:root{
+  --bg:#020617;--bg2:#0f172a;--card:rgba(30,41,59,.85);--border:rgba(56,189,248,.22);
+  --accent:#38bdf8;--accent2:#22c55e;--text:#f1f5f9;--muted:#94a3b8;--danger:#ef4444;
+}
+
+
+/* Toast notifications */
+.u-toast-container{position:fixed;bottom:24px;right:20px;z-index:99999;display:flex;flex-direction:column;gap:8px;max-width:320px}
+.u-toast{
+  background:var(--card);border:1px solid var(--border);color:var(--text);
+  padding:11px 16px;border-radius:10px;font-size:13px;font-weight:600;
+  box-shadow:0 4px 20px rgba(0,0,0,.35);
+  animation:uToastIn .3s ease;display:flex;align-items:center;gap:8px;
+}
+.u-toast.success{border-color:rgba(34,197,94,.5);background:rgba(34,197,94,.1)}
+.u-toast.error{border-color:rgba(239,68,68,.5);background:rgba(239,68,68,.1)}
+.u-toast.info{border-color:rgba(56,189,248,.5);background:rgba(56,189,248,.1)}
+@keyframes uToastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes uToastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(20px)}}
+
+/* Entrance animations */
+@keyframes uFadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes uFadeIn{from{opacity:0}to{opacity:1}}
+@keyframes uPulse{0%,100%{box-shadow:0 0 0 0 rgba(56,189,248,.4)}70%{box-shadow:0 0 0 8px rgba(56,189,248,0)}}
+.u-fade-up{animation:uFadeUp .45s ease both}
+.u-fade-in{animation:uFadeIn .4s ease both}
+.u-pulse{animation:uPulse 2s infinite}
+
+/* Button hover lift */
+.btn:hover,[class*="btn"]:not([class*="btn-"]):hover{transform:translateY(-2px)!important}
+
+/* Smooth card hover */
+.card:hover,[class*="card"]:hover{
+  border-color:var(--accent)!important;
+  box-shadow:0 6px 28px rgba(56,189,248,.12)!important;
+  transition:all .25s ease!important;
+}
+
+/* Loading skeleton */
+.u-skeleton{
+  background:linear-gradient(90deg,rgba(56,189,248,.06) 25%,rgba(56,189,248,.12) 50%,rgba(56,189,248,.06) 75%);
+  background-size:200% 100%;animation:uSkeleton 1.4s infinite;border-radius:6px;
+}
+@keyframes uSkeleton{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* Progress bar component */
+.u-progress{height:5px;background:rgba(56,189,248,.12);border-radius:3px;overflow:hidden;margin:8px 0}
+.u-progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:3px;transition:width .5s ease}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(56,189,248,.3);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(56,189,248,.55)}
+
+/* Mobile responsive upgrades */
+@media(max-width:600px){
+  
+  .u-toast-container{right:10px;bottom:80px;max-width:calc(100vw - 20px)}
+}
+
+</style></head>
+<body><div class="container">
+<a href="../index.html" class="back-link" onclick="window.close(); return false;">← Back to Portfolio</a>
+
+<h1>📝 Notes Pro</h1>
+<p class="subtitle">Rich notes with tags, search and markdown preview</p>
+<div class="grid2" style="align-items:start">
+  <div>
+    <div class="card">
+      <div class="flex" style="justify-content:space-between;margin-bottom:14px">
+        <h3 style="color:#38bdf8">Notes (<span id="noteCount">0</span>)</h3>
+        <button class="btn" onclick="newNote()" style="padding:7px 14px;font-size:13px">+ New</button>
+      </div>
+      <input id="searchNotes" placeholder="Search notes..." oninput="renderList()" style="margin-bottom:12px">
+      <div class="flex" style="gap:6px;flex-wrap:wrap;margin-bottom:12px" id="tagFilter"></div>
+      <div id="noteList"></div>
+    </div>
+  </div>
+  <div>
+    <div class="card" id="editorCard">
+      <div class="flex" style="justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
+        <input id="noteTitle" placeholder="Note title..." style="flex:1;font-size:18px;font-weight:700;min-width:150px">
+        <div class="flex" style="gap:6px">
+          <button class="btn btn-outline" onclick="togglePreview()" style="padding:7px 12px;font-size:12px" id="previewBtn">👁 Preview</button>
+          <button class="btn" onclick="saveNote()" style="padding:7px 14px;font-size:13px">💾 Save</button>
+          <button class="btn btn-red" onclick="deleteNote()" style="padding:7px 12px;font-size:12px">🗑</button>
+        </div>
+      </div>
+      <input id="noteTags" placeholder="Tags: work, idea, personal (comma separated)" style="margin-bottom:12px;font-size:13px">
+      <div class="flex" style="gap:6px;margin-bottom:12px;flex-wrap:wrap" id="formatBar">
+        <button class="fmt-btn" onclick="fmt('**','**')">B</button>
+        <button class="fmt-btn" onclick="fmt('*','*')">I</button>
+        <button class="fmt-btn" onclick="fmt('# ','')">H1</button>
+        <button class="fmt-btn" onclick="fmt('## ','')">H2</button>
+        <button class="fmt-btn" onclick="fmt('- ','')">List</button>
+        <button class="fmt-btn" onclick="fmt('> ','')">Quote</button>
+        <button class="fmt-btn" onclick="fmt('\`','\`')">Code</button>
+      </div>
+      <textarea id="noteContent" rows="14" placeholder="Write your note here... (Markdown supported)" style="resize:vertical;font-family:monospace;font-size:14px"></textarea>
+      <div id="notePreview" style="display:none;min-height:200px;line-height:1.8;font-size:15px;color:#e2e8f0"></div>
+      <div style="font-size:12px;color:#64748b;margin-top:8px;text-align:right" id="wordCount">0 words</div>
+    </div>
+  </div>
+</div>
+</div><script>
+let notes=[],activeId=null,previewing=false,allTags=new Set(),activeTag=null;
+
+function newNote(){
+  const id=Date.now();
+  notes.unshift({id,title:'New Note',content:'',tags:[],date:new Date(),modified:new Date()});
+  openNote(id);renderList();
+}
+
+function openNote(id){
+  activeId=id;
+  const n=notes.find(n=>n.id===id);
+  if(!n)return;
+  document.getElementById('noteTitle').value=n.title;
+  document.getElementById('noteContent').value=n.content;
+  document.getElementById('noteTags').value=n.tags.join(', ');
+  updateWordCount();
+  renderList();
+}
+
+function saveNote(){
+  if(!activeId)return;
+  const n=notes.find(n=>n.id===activeId);
+  if(!n)return;
+  n.title=document.getElementById('noteTitle').value||'Untitled';
+  n.content=document.getElementById('noteContent').value;
+  n.tags=document.getElementById('noteTags').value.split(',').map(t=>t.trim()).filter(Boolean);
+  n.modified=new Date();
+  n.tags.forEach(t=>allTags.add(t));
+  renderList();renderTagFilter();showToast('Note saved!');
+}
+
+function deleteNote(){
+  if(!activeId)return;
+  notes=notes.filter(n=>n.id!==activeId);
+  activeId=null;
+  document.getElementById('noteTitle').value='';
+  document.getElementById('noteContent').value='';
+  document.getElementById('noteTags').value='';
+  renderList();
+}
+
+function renderList(){
+  const q=document.getElementById('searchNotes').value.toLowerCase();
+  const list=notes.filter(n=>{
+    const matchQ=!q||n.title.toLowerCase().includes(q)||n.content.toLowerCase().includes(q);
+    const matchT=!activeTag||n.tags.includes(activeTag);
+    return matchQ&&matchT;
+  });
+  document.getElementById('noteCount').textContent=notes.length;
+  if(!list.length){document.getElementById('noteList').innerHTML='<p style="color:#64748b;text-align:center;padding:20px">'+(q||activeTag?'No matching notes.':'No notes yet. Create one!')+'</p>';return;}
+  document.getElementById('noteList').innerHTML=list.map(n=>`
+    <div class="note-item ${n.id===activeId?'active':''}" onclick="openNote(${n.id})">
+      <div class="note-item-title">${n.title}</div>
+      <div class="note-item-preview">${n.content||'<span style="color:#475569">Empty note</span>'}</div>
+      <div class="note-item-meta">
+        <span>${n.modified.toLocaleDateString()}</span>
+        ${n.tags.map(t=>`<span class="tag-chip" style="background:rgba(56,189,248,.15);color:#38bdf8;border-color:rgba(56,189,248,.3)">#${t}</span>`).join('')}
+      </div>
+    </div>`).join('');
+}
+
+function renderTagFilter(){
+  const tags=[...allTags];
+  document.getElementById('tagFilter').innerHTML=tags.map(t=>`<span class="tag-chip ${activeTag===t?'':'btn-outline'}" style="background:${activeTag===t?'#38bdf8':'rgba(56,189,248,.08)'};color:${activeTag===t?'#000':'#38bdf8'};border:1px solid rgba(56,189,248,.3);padding:4px 10px;cursor:pointer" onclick="filterTag('${t}')">#${t}</span>`).join('');
+}
+
+function filterTag(t){activeTag=activeTag===t?null:t;renderList();renderTagFilter();}
+
+function togglePreview(){
+  previewing=!previewing;
+  document.getElementById('noteContent').style.display=previewing?'none':'block';
+  document.getElementById('notePreview').style.display=previewing?'block':'none';
+  document.getElementById('formatBar').style.display=previewing?'none':'flex';
+  document.getElementById('previewBtn').textContent=previewing?'✏️ Edit':'👁 Preview';
+  if(previewing){
+    let md=document.getElementById('noteContent').value;
+    md=md.replace(/^### (.+)$/gm,'<div class="md-h2">$1</div>');
+    md=md.replace(/^## (.+)$/gm,'<div class="md-h2">$1</div>');
+    md=md.replace(/^# (.+)$/gm,'<div class="md-h1">$1</div>');
+    md=md.replace(/\*\*(.+?)\*\*/g,'<span class="md-bold">$1</span>');
+    md=md.replace(/\*(.+?)\*/g,'<span class="md-italic">$1</span>');
+    md=md.replace(/\`(.+?)\`/g,'<span class="md-code">$1</span>');
+    md=md.replace(/^> (.+)$/gm,'<div class="md-quote">$1</div>');
+    md=md.replace(/^- (.+)$/gm,'<div class="md-li">$1</div>');
+    md=md.replace(/\n/g,'<br>');
+    document.getElementById('notePreview').innerHTML=md||'<span style="color:#64748b">Nothing to preview</span>';
+  }
+}
+
+function fmt(prefix,suffix){
+  const ta=document.getElementById('noteContent');
+  const s=ta.selectionStart,e=ta.selectionEnd;
+  const sel=ta.value.slice(s,e);
+  const rep=prefix+sel+suffix;
+  ta.value=ta.value.slice(0,s)+rep+ta.value.slice(e);
+  ta.focus();ta.setSelectionRange(s+prefix.length,s+prefix.length+sel.length);
+  updateWordCount();
+}
+
+function updateWordCount(){
+  const words=document.getElementById('noteContent').value.trim().split(/\s+/).filter(Boolean).length;
+  document.getElementById('wordCount').textContent=words+' words';
+}
+document.getElementById('noteContent').addEventListener('input',updateWordCount);
+
+function showToast(msg){
+  const t=document.createElement('div');
+  t.style.cssText='position:fixed;bottom:80px;right:20px;background:rgba(34,197,94,.9);color:#000;padding:10px 18px;border-radius:8px;font-weight:700;font-size:14px;z-index:999;animation:fadeIn .3s';
+  t.textContent='✓ '+msg;document.body.appendChild(t);setTimeout(()=>t.remove(),2500);
+}
+
+// Seed notes
+[{title:'Project Ideas 🚀',content:'# Big Ideas\n- Build a SaaS product\n- Create an open source tool\n- Launch a YouTube channel\n\n## Next Steps\nResearch market and competitors',tags:['ideas','work']},
+ {title:'Shopping List',content:'- Milk\n- Eggs\n- Coffee beans\n- Sourdough bread\n- Olive oil',tags:['personal']},
+ {title:'Dev Notes',content:'## Useful Commands\n`git rebase -i HEAD~3`\n`npm run build`\n\n> Remember to update the env variables before deployment',tags:['work','dev']}
+].forEach((n,i)=>{const id=Date.now()-i*1000;notes.push({id,...n,date:new Date(),modified:new Date(Date.now()-i*86400000)});n.tags.forEach(t=>allTags.add(t));});
+renderList();renderTagFilter();openNote(notes[0].id);
+</script><script>
+// ── UNIVERSAL UPGRADE: Theme, localStorage, Toast, Animations ──
+(function(){
+'use strict';
+
+// ── 2. TOAST SYSTEM ──────────────────────────────────────────────
+var toastContainer = null;
+function getToastContainer(){
+  if(!toastContainer || !document.body.contains(toastContainer)){
+    toastContainer = document.createElement('div');
+    toastContainer.className = 'u-toast-container';
+    document.body.appendChild(toastContainer);
+  }
+  return toastContainer;
+}
+
+window.uToast = function(msg, type, duration){
+  type = type || 'info';
+  duration = duration || 2800;
+  var icons = {success:'✅', error:'❌', info:'💡', warning:'⚠️'};
+  var c = getToastContainer();
+  var t = document.createElement('div');
+  t.className = 'u-toast ' + type;
+  t.innerHTML = '<span>' + (icons[type]||'💡') + '</span><span>' + msg + '</span>';
+  c.appendChild(t);
+  setTimeout(function(){
+    t.style.animation = 'uToastOut .3s ease forwards';
+    setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 300);
+  }, duration);
+};
+
+// ── 3. LOCALSTORAGE HELPERS ──────────────────────────────────────
+var APP_KEY = 'uapp_' + location.pathname.split('/').pop().replace('.html','');
+window.uSave = function(key, val){
+  try { localStorage.setItem(APP_KEY + '_' + key, JSON.stringify(val)); return true; }
+  catch(e){ return false; }
+};
+window.uLoad = function(key, def){
+  try {
+    var v = localStorage.getItem(APP_KEY + '_' + key);
+    return v !== null ? JSON.parse(v) : def;
+  } catch(e){ return def; }
+};
+window.uClear = function(key){
+  try { localStorage.removeItem(APP_KEY + '_' + key); } catch(e){}
+};
+
+// ── 4. ENTRANCE ANIMATIONS ───────────────────────────────────────
+function animateEntrance(){
+  var cards = document.querySelectorAll('.card, [class*="card"]');
+  cards.forEach(function(el, i){
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(18px)';
+    setTimeout(function(){
+      el.style.transition = 'opacity .4s ease, transform .4s ease';
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+    }, i * 60);
+  });
+}
+
+// ── 5. SMOOTH COUNTER ANIMATION ──────────────────────────────────
+window.uAnimCount = function(el, target, duration, prefix, suffix){
+  prefix = prefix || '';
+  suffix = suffix || '';
+  duration = duration || 1200;
+  var start = 0;
+  var step = target / (duration / 16);
+  var iv = setInterval(function(){
+    start = Math.min(start + step, target);
+    el.textContent = prefix + Math.round(start).toLocaleString() + suffix;
+    if(start >= target) clearInterval(iv);
+  }, 16);
+};
+
+// ── 6. EXPORT HELPER ─────────────────────────────────────────────
+window.uExportJSON = function(data, filename){
+  var blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.json';
+  a.click();
+  uToast('Data exported!', 'success');
+};
+window.uExportCSV = function(rows, filename){
+  var csv = rows.map(function(r){ return r.join(','); }).join('\n');
+  var blob = new Blob([csv], {type:'text/csv'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.csv';
+  a.click();
+  uToast('CSV exported!', 'success');
+};
+
+// ── 8. INIT ──────────────────────────────────────────────────────
+function init(){
+  setTimeout(animateEntrance, 100);
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+})();
+</script>
+<script>
+(function(){
+  // Auto-save on keyup with debounce
+  var saveTimer = null;
+  document.addEventListener('keyup', function(e){
+    if(e.target.id === 'noteContent' || e.target.id === 'noteTitle'){
+      var indicator = document.getElementById('uSaveIndicator');
+      if(indicator) indicator.textContent = '● Unsaved';
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(function(){
+        if(window.saveNote) saveNote();
+        if(indicator){ indicator.textContent = '✓ Saved'; indicator.style.color = '#22c55e'; }
+      }, 1500);
+    }
+  });
+  
+  // Save indicator
+  if(!document.getElementById('uSaveIndicator')){
+    var ind = document.createElement('span');
+    ind.id = 'uSaveIndicator';
+    ind.style.cssText = 'font-size:11px;color:#64748b;margin-left:10px;font-weight:600;transition:.3s';
+    ind.textContent = '✓ Saved';
+    document.querySelector('#editorCard .flex,.editor-actions')?.appendChild(ind);
+  }
+  
+  // Reading time in word count
+  var origWordCount = window;
+  document.getElementById('noteContent')?.addEventListener('input', function(){
+    var words = this.value.trim().split(/\s+/).filter(Boolean).length;
+    var readTime = Math.ceil(words / 200);
+    var wc = document.getElementById('wordCount');
+    if(wc) wc.textContent = words + ' words · ' + readTime + ' min read';
+  });
+  
+  // Export all notes button
+  if(!document.getElementById('uExportNotes')){
+    var exportBtn = document.createElement('button');
+    exportBtn.id = 'uExportNotes';
+    exportBtn.textContent = '⬇ Export All';
+    exportBtn.style.cssText = 'padding:7px 14px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:#22c55e;border-radius:8px;cursor:pointer;font-size:13px;font-weight:700;transition:.2s';
+    exportBtn.onclick = function(){
+      if(window.notes) uExportJSON(window.notes, 'my_notes');
+    };
+    document.querySelector('.card:first-child .flex')?.appendChild(exportBtn);
+  }
+  
+  // Note pinning
+  document.addEventListener('dblclick', function(e){
+    var noteItem = e.target.closest('.note-item');
+    if(!noteItem) return;
+    noteItem.style.borderColor = noteItem.style.borderColor === 'rgb(245, 158, 11)' ? '' : '#f59e0b';
+    noteItem.style.background = noteItem.style.background ? '' : 'rgba(245,158,11,.06)';
+    uToast(noteItem.style.borderColor ? '📌 Note pinned' : '📌 Note unpinned', 'info', 1200);
+  });
+})();
+</script>
+</body></html>

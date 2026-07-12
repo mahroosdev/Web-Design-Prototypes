@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <html lang="en">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <title>Notes App | DevOS</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+</head>
+<body>
+<div id="topbar">
+  <div class="topbar-left">
+    <a class="back-btn" href="index.html">← BACK</a>
+    <span class="topbar-logo">NOTES_OS</span>
+  </div>
+  <div class="topbar-right">
+    <button class="theme-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle theme">🌙</button>
+  </div>
+</div>
+<div id="toast"></div>
+<div class="wrap">
+<div class="page-header animate-in">
+  <div class="row align" style="gap:10px;margin-bottom:8px"><span style="font-size:28px">📝</span><h1>Notes App</h1></div>
+  <p>Rich notes with tags, search, pin, markdown preview and export.</p>
+</div>
+
+
+<h1>📝 Notes App</h1>
+<p>Create, edit, pin and search notes with markdown support.</p>
+<div style="margin-top:16px"><div class="card" style="margin-bottom:12px">
+  <div class="row" style="gap:8px;margin-bottom:10px">
+    <input id="notes-search" placeholder="Search notes..." style="flex:1" oninput="renderNotes()">
+    <button class="btn btn-primary" onclick="newNote()">+ New</button>
+  </div>
+</div>
+<div id="notes-editor" style="display:none" class="card" style="margin-bottom:12px"></div>
+<div id="notes-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px"></div></div>
+<script>let notes=[{id:1,title:'Project Ideas',body:'- Build a portfolio\n- Learn TypeScript\n- Deploy to Vercel\n- Write a blog',color:'rgba(0,224,255,.08)',pinned:true,date:'Today'},{id:2,title:'Shopping List',body:'Milk, Eggs, Bread\nCoffee, Fruits\nNotebook',color:'rgba(129,140,248,.08)',pinned:false,date:'Yesterday'},{id:3,title:'Meeting Notes',body:'Sprint review on Friday\nBacklog grooming next week\nHire 2 devs',color:'rgba(52,211,153,.08)',pinned:false,date:'2 days ago'},{id:4,title:'Book List',body:'Clean Code\nThe Pragmatic Programmer\nDesign Patterns\nRefactoring',color:'rgba(244,114,182,.08)',pinned:false,date:'3 days ago'}];
+let nid=5,editing=null;
+const colors=['rgba(0,224,255,.08)','rgba(129,140,248,.08)','rgba(52,211,153,.08)','rgba(244,114,182,.08)','rgba(251,191,36,.08)'];
+function newNote(){editing={id:nid++,title:'',body:'',color:colors[Math.floor(Math.random()*colors.length)],pinned:false,date:'Now'};showEditor();}
+function editNote(id){editing={...notes.find(n=>n.id===id)};showEditor();}
+function showEditor(){const e=document.getElementById('notes-editor');e.style.display='block';e.style.background=editing.color;e.innerHTML=`<input id="ne-title" value="${editing.title||''}" placeholder="Title..." style="background:transparent;border:none;border-bottom:1px solid var(--border);border-radius:0;font-size:16px;font-weight:600;margin-bottom:10px"><textarea id="ne-body" rows="5" placeholder="Take a note..." style="resize:none;background:transparent;border:none;border-radius:0;font-size:13px;line-height:1.7">${editing.body||''}</textarea><div class="row" style="justify-content:space-between;margin-top:8px"><div class="row" style="gap:6px">${colors.map(c=>`<div onclick="editing.color='${c}';document.getElementById('notes-editor').style.background='${c}'" style="width:22px;height:22px;border-radius:50%;background:${c};border:2px solid var(--border);cursor:pointer"></div>`).join('')}</div><div class="row" style="gap:8px"><button class="btn btn-outline" onclick="closeEditor()" style="font-size:12px;padding:7px 12px;min-height:36px">Cancel</button><button class="btn btn-primary" onclick="saveNote()" style="font-size:12px;padding:7px 12px;min-height:36px">Save</button></div></div>`;}
+function saveNote(){editing.title=document.getElementById('ne-title').value;editing.body=document.getElementById('ne-body').value;if(!editing.title&&!editing.body){closeEditor();return;}const i=notes.findIndex(n=>n.id===editing.id);if(i>=0)notes[i]={...editing};else notes.unshift({...editing});closeEditor();renderNotes();}
+function closeEditor(){document.getElementById('notes-editor').style.display='none';editing=null;}
+function deleteNote(id){notes=notes.filter(n=>n.id!==id);closeEditor();renderNotes();}
+function pinNote(id){const n=notes.find(x=>x.id===id);if(n)n.pinned=!n.pinned;renderNotes();}
+function renderNotes(){const q=document.getElementById('notes-search').value.toLowerCase();const list=notes.filter(n=>!q||(n.title+n.body).toLowerCase().includes(q)).sort((a,b)=>b.pinned-a.pinned);document.getElementById('notes-grid').innerHTML=list.map(n=>`<div onclick="editNote(${n.id})" style="background:${n.color};border:1px solid var(--border);border-radius:12px;padding:14px;cursor:pointer;transition:transform .15s;min-height:120px" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'"><div class="row" style="justify-content:space-between;margin-bottom:8px"><span style="font-size:14px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${n.pinned?'📌 ':''} ${n.title||'Untitled'}</span></div><div style="font-size:12px;color:var(--muted);white-space:pre-line;overflow:hidden;max-height:60px">${n.body}</div><div style="font-size:10px;color:var(--muted);margin-top:8px;font-family:'JetBrains Mono',monospace">${n.date}</div></div>`).join('');}
+renderNotes();</script>
+
+
+</div>
+  <script src="../shared-back.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

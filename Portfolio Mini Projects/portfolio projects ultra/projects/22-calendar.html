@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8">
+<meta name="description" content="Calendar App — part of a professional web developer portfolio with 50+ projects.">
+<meta name="robots" content="index, follow">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Calendar App</title><style>*{margin:0;padding:0;box-sizing:border-box}
+body{background:linear-gradient(135deg,#020617 0%,#0f172a 100%);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#fff;min-height:100vh;padding:40px 20px;overflow-x:hidden}
+.container{max-width:1000px;margin:0 auto}
+h1{background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:36px;margin-bottom:8px}
+.subtitle{color:#94a3b8;margin-bottom:28px;font-size:15px}
+.back-link{display:inline-flex;align-items:center;gap:6px;margin-bottom:20px;color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;padding:8px 14px;border:1px solid rgba(56,189,248,.3);border-radius:8px;transition:.2s}
+.back-link:hover{background:rgba(56,189,248,.1)}
+.card{background:rgba(30,41,59,.8);backdrop-filter:blur(10px);padding:24px;border-radius:16px;border:1px solid rgba(56,189,248,.2);margin-bottom:20px}
+.btn{padding:10px 22px;border:none;border-radius:8px;cursor:pointer;font-weight:700;font-size:14px;transition:.2s;background:linear-gradient(90deg,#38bdf8,#22c55e);color:#000}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(56,189,248,.35)}
+.btn-outline{background:transparent;border:1px solid rgba(56,189,248,.4);color:#38bdf8}
+.btn-red{background:linear-gradient(90deg,#ef4444,#dc2626);color:#fff}
+input,textarea,select{background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.3);color:#fff;border-radius:8px;padding:10px 14px;font-size:14px;width:100%;outline:none;transition:.2s}
+input:focus,textarea:focus,select:focus{border-color:#38bdf8;box-shadow:0 0 0 3px rgba(56,189,248,.15)}
+input::placeholder,textarea::placeholder{color:#64748b}
+label{display:block;font-size:13px;font-weight:600;color:#94a3b8;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.flex{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;background:rgba(56,189,248,.15);color:#38bdf8;border:1px solid rgba(56,189,248,.3)}
+.badge-green{background:rgba(34,197,94,.15);color:#22c55e;border-color:rgba(34,197,94,.3)}
+.badge-red{background:rgba(239,68,68,.15);color:#ef4444;border-color:rgba(239,68,68,.3)}
+.badge-yellow{background:rgba(234,179,8,.15);color:#eab308;border-color:rgba(234,179,8,.3)}
+.stat-box{background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.15);border-radius:12px;padding:20px;text-align:center}
+.stat-num{font-size:32px;font-weight:800;background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-label{font-size:12px;color:#64748b;margin-top:4px;text-transform:uppercase;letter-spacing:.5px}
+hr{border:none;border-top:1px solid rgba(56,189,248,.1);margin:20px 0}
+@media(max-width:768px){body{padding:15px 12px}h1{font-size:26px}.grid2,.grid3,.grid4{grid-template-columns:1fr}.card{padding:16px 14px}}
+.cal-header{font-size:11px;font-weight:700;color:#64748b;padding:6px 2px;text-transform:uppercase}
+.cal-day{padding:8px 4px;border-radius:8px;cursor:pointer;transition:.2s;font-size:14px;position:relative;min-height:38px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:2px}
+.cal-day:hover{background:rgba(56,189,248,.1)}
+.cal-day.today{background:rgba(56,189,248,.2);font-weight:800;color:#38bdf8}
+.cal-day.selected{background:rgba(56,189,248,.3);border:1px solid #38bdf8}
+.cal-day.other-month{color:#334155}
+.cal-day.has-events::after{content:'';width:5px;height:5px;border-radius:50%;background:#22c55e;position:absolute;bottom:3px}
+.evt-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;margin-bottom:8px;border:1px solid rgba(255,255,255,.08);transition:.2s}
+.evt-item:hover{background:rgba(56,189,248,.05)}
+.evt-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.evt-title{font-weight:600;font-size:14px;flex:1}
+.evt-time{font-size:12px;color:#64748b}
+.evt-del{background:none;border:none;color:#ef4444;cursor:pointer;font-size:14px;padding:2px 6px;border-radius:4px}
+.evt-del:hover{background:rgba(239,68,68,.1)}
+/* ── UNIVERSAL UPGRADE: Theme, Animations, Toast ── */
+:root{
+  --bg:#020617;--bg2:#0f172a;--card:rgba(30,41,59,.85);--border:rgba(56,189,248,.22);
+  --accent:#38bdf8;--accent2:#22c55e;--text:#f1f5f9;--muted:#94a3b8;--danger:#ef4444;
+}
+
+
+/* Toast notifications */
+.u-toast-container{position:fixed;bottom:24px;right:20px;z-index:99999;display:flex;flex-direction:column;gap:8px;max-width:320px}
+.u-toast{
+  background:var(--card);border:1px solid var(--border);color:var(--text);
+  padding:11px 16px;border-radius:10px;font-size:13px;font-weight:600;
+  box-shadow:0 4px 20px rgba(0,0,0,.35);
+  animation:uToastIn .3s ease;display:flex;align-items:center;gap:8px;
+}
+.u-toast.success{border-color:rgba(34,197,94,.5);background:rgba(34,197,94,.1)}
+.u-toast.error{border-color:rgba(239,68,68,.5);background:rgba(239,68,68,.1)}
+.u-toast.info{border-color:rgba(56,189,248,.5);background:rgba(56,189,248,.1)}
+@keyframes uToastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes uToastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(20px)}}
+
+/* Entrance animations */
+@keyframes uFadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes uFadeIn{from{opacity:0}to{opacity:1}}
+@keyframes uPulse{0%,100%{box-shadow:0 0 0 0 rgba(56,189,248,.4)}70%{box-shadow:0 0 0 8px rgba(56,189,248,0)}}
+.u-fade-up{animation:uFadeUp .45s ease both}
+.u-fade-in{animation:uFadeIn .4s ease both}
+.u-pulse{animation:uPulse 2s infinite}
+
+/* Button hover lift */
+.btn:hover,[class*="btn"]:not([class*="btn-"]):hover{transform:translateY(-2px)!important}
+
+/* Smooth card hover */
+.card:hover,[class*="card"]:hover{
+  border-color:var(--accent)!important;
+  box-shadow:0 6px 28px rgba(56,189,248,.12)!important;
+  transition:all .25s ease!important;
+}
+
+/* Loading skeleton */
+.u-skeleton{
+  background:linear-gradient(90deg,rgba(56,189,248,.06) 25%,rgba(56,189,248,.12) 50%,rgba(56,189,248,.06) 75%);
+  background-size:200% 100%;animation:uSkeleton 1.4s infinite;border-radius:6px;
+}
+@keyframes uSkeleton{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* Progress bar component */
+.u-progress{height:5px;background:rgba(56,189,248,.12);border-radius:3px;overflow:hidden;margin:8px 0}
+.u-progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:3px;transition:width .5s ease}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(56,189,248,.3);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(56,189,248,.55)}
+
+/* Mobile responsive upgrades */
+@media(max-width:600px){
+  
+  .u-toast-container{right:10px;bottom:80px;max-width:calc(100vw - 20px)}
+}
+
+</style></head>
+<body><div class="container">
+<a href="../index.html" class="back-link" onclick="window.close(); return false;">← Back to Portfolio</a>
+
+<h1>📅 Calendar Pro</h1>
+<p class="subtitle">Interactive calendar with events, reminders and views</p>
+<div class="grid2" style="align-items:start">
+  <div>
+    <div class="card">
+      <div class="flex" style="justify-content:space-between;margin-bottom:16px">
+        <button class="btn btn-outline" onclick="prevMonth()" style="padding:7px 14px">‹</button>
+        <h3 id="monthTitle" style="color:#38bdf8;font-size:18px"></h3>
+        <button class="btn btn-outline" onclick="nextMonth()" style="padding:7px 14px">›</button>
+      </div>
+      <div id="calGrid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center"></div>
+    </div>
+    <div class="card">
+      <h3 style="color:#38bdf8;margin-bottom:14px">Add Event</h3>
+      <input id="evTitle" placeholder="Event title" style="margin-bottom:10px">
+      <div class="grid2" style="gap:10px;margin-bottom:10px">
+        <div><label>Date</label><input type="date" id="evDate"></div>
+        <div><label>Time</label><input type="time" id="evTime" value="09:00"></div>
+      </div>
+      <div class="grid2" style="gap:10px;margin-bottom:10px">
+        <div><label>Color</label>
+          <select id="evColor">
+            <option value="#38bdf8">Blue</option><option value="#22c55e">Green</option>
+            <option value="#ef4444">Red</option><option value="#a855f7">Purple</option>
+            <option value="#f59e0b">Yellow</option>
+          </select>
+        </div>
+        <div><label>Category</label>
+          <select id="evCat">
+            <option>Work</option><option>Personal</option><option>Health</option><option>Social</option><option>Reminder</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn" onclick="addEvent()" style="width:100%">+ Add Event</button>
+    </div>
+  </div>
+  <div>
+    <div class="card">
+      <div class="flex" style="justify-content:space-between;margin-bottom:14px">
+        <h3 id="selectedDayTitle" style="color:#38bdf8">Select a day</h3>
+        <span id="todayBadge" class="badge badge-green" style="display:none">Today</span>
+      </div>
+      <div id="dayEvents"><p style="color:#64748b;font-size:14px">Click on a day to see events.</p></div>
+    </div>
+    <div class="card">
+      <h3 style="color:#38bdf8;margin-bottom:14px">Upcoming Events</h3>
+      <div id="upcomingEvents"></div>
+    </div>
+    <div class="card">
+      <h3 style="color:#38bdf8;margin-bottom:14px">Stats</h3>
+      <div class="grid3" style="gap:10px">
+        <div class="stat-box"><div class="stat-num" id="totalEvt">0</div><div class="stat-label">Total</div></div>
+        <div class="stat-box"><div class="stat-num" id="thisMonth">0</div><div class="stat-label">This Month</div></div>
+        <div class="stat-box"><div class="stat-num" id="upcoming">0</div><div class="stat-label">Upcoming</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div><script>
+let events=[],cur=new Date(),selectedDay=null;
+const today=new Date();
+const months=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const dow=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+function pad(n){return String(n).padStart(2,'0');}
+function dateKey(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());}
+function fmt12(t){if(!t)return'';const[h,m]=t.split(':');const ampm=h>=12?'PM':'AM';return((h%12)||12)+':'+m+' '+ampm;}
+
+function renderCal(){
+  document.getElementById('monthTitle').textContent=months[cur.getMonth()]+' '+cur.getFullYear();
+  const first=new Date(cur.getFullYear(),cur.getMonth(),1);
+  const last=new Date(cur.getFullYear(),cur.getMonth()+1,0);
+  const startDow=first.getDay();
+  let html=dow.map(d=>`<div class="cal-header">${d}</div>`).join('');
+  for(let i=0;i<startDow;i++){
+    const d=new Date(first);d.setDate(d.getDate()-(startDow-i));
+    html+=`<div class="cal-day other-month" onclick="selectDay('${dateKey(d)}')">${d.getDate()}</div>`;
+  }
+  for(let d=1;d<=last.getDate();d++){
+    const date=new Date(cur.getFullYear(),cur.getMonth(),d);
+    const key=dateKey(date);
+    const isToday=key===dateKey(today);
+    const isSel=key===selectedDay;
+    const hasEvt=events.some(e=>e.date===key);
+    html+=`<div class="cal-day ${isToday?'today':''} ${isSel?'selected':''} ${hasEvt?'has-events':''}" onclick="selectDay('${key}')">${d}</div>`;
+  }
+  const remaining=(7-((startDow+last.getDate())%7))%7;
+  for(let i=1;i<=remaining;i++){
+    const d=new Date(last);d.setDate(d.getDate()+i);
+    html+=`<div class="cal-day other-month" onclick="selectDay('${dateKey(d)}')">${d.getDate()}</div>`;
+  }
+  document.getElementById('calGrid').innerHTML=html;
+  renderUpcoming();updateStats();
+}
+
+function selectDay(key){
+  selectedDay=key;
+  const d=new Date(key+'T12:00:00');
+  const isToday=key===dateKey(today);
+  document.getElementById('selectedDayTitle').textContent=d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+  document.getElementById('todayBadge').style.display=isToday?'inline':'none';
+  document.getElementById('evDate').value=key;
+  const dayEvts=events.filter(e=>e.date===key).sort((a,b)=>a.time.localeCompare(b.time));
+  document.getElementById('dayEvents').innerHTML=dayEvts.length
+    ?dayEvts.map(e=>`<div class="evt-item"><div class="evt-dot" style="background:${e.color}"></div><div class="evt-title">${e.title}</div><div class="evt-time">${fmt12(e.time)}<br><span class="badge" style="font-size:9px">${e.cat}</span></div><button class="evt-del" onclick="deleteEvent('${e.id}')">✕</button></div>`).join('')
+    :'<p style="color:#64748b;font-size:14px">No events on this day.</p>';
+  renderCal();
+}
+
+function addEvent(){
+  const title=document.getElementById('evTitle').value.trim();
+  const date=document.getElementById('evDate').value;
+  if(!title||!date)return;
+  events.push({id:Date.now().toString(),title,date,time:document.getElementById('evTime').value,color:document.getElementById('evColor').value,cat:document.getElementById('evCat').value});
+  document.getElementById('evTitle').value='';
+  if(selectedDay===date)selectDay(date);
+  renderCal();
+}
+
+function deleteEvent(id){
+  events=events.filter(e=>e.id!==id);
+  if(selectedDay)selectDay(selectedDay);
+  renderCal();
+}
+
+function renderUpcoming(){
+  const todayKey=dateKey(today);
+  const upcoming=events.filter(e=>e.date>=todayKey).sort((a,b)=>a.date.localeCompare(b.date)||a.time.localeCompare(b.time)).slice(0,5);
+  document.getElementById('upcomingEvents').innerHTML=upcoming.length
+    ?upcoming.map(e=>`<div class="evt-item"><div class="evt-dot" style="background:${e.color}"></div><div class="evt-title">${e.title}</div><div class="evt-time">${new Date(e.date+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'})} ${fmt12(e.time)}</div></div>`).join('')
+    :'<p style="color:#64748b;font-size:14px">No upcoming events.</p>';
+}
+
+function updateStats(){
+  const todayKey=dateKey(today);
+  const mKey=today.getFullYear()+'-'+pad(today.getMonth()+1);
+  document.getElementById('totalEvt').textContent=events.length;
+  document.getElementById('thisMonth').textContent=events.filter(e=>e.date.startsWith(mKey)).length;
+  document.getElementById('upcoming').textContent=events.filter(e=>e.date>=todayKey).length;
+}
+
+function prevMonth(){cur=new Date(cur.getFullYear(),cur.getMonth()-1,1);renderCal();}
+function nextMonth(){cur=new Date(cur.getFullYear(),cur.getMonth()+1,1);renderCal();}
+
+// Seed events
+const y=today.getFullYear(),m=pad(today.getMonth()+1);
+[{title:'Team Standup',date:`${y}-${m}-${pad(today.getDate())}`,time:'09:00',color:'#38bdf8',cat:'Work'},
+ {title:'Gym Session',date:`${y}-${m}-${pad(today.getDate()+1)}`,time:'07:00',color:'#22c55e',cat:'Health'},
+ {title:'Project Deadline',date:`${y}-${m}-${pad(today.getDate()+3)}`,time:'17:00',color:'#ef4444',cat:'Work'},
+ {title:'Dinner with Friends',date:`${y}-${m}-${pad(today.getDate()+5)}`,time:'19:30',color:'#a855f7',cat:'Social'},
+ {title:'Doctor Appointment',date:`${y}-${m}-${pad(today.getDate()+7)}`,time:'10:00',color:'#f59e0b',cat:'Health'},
+].forEach(e=>events.push({id:Date.now()+Math.random(),...e}));
+document.getElementById('evDate').value=dateKey(today);
+renderCal();selectDay(dateKey(today));
+</script><script>
+// ── UNIVERSAL UPGRADE: Theme, localStorage, Toast, Animations ──
+(function(){
+'use strict';
+
+// ── 2. TOAST SYSTEM ──────────────────────────────────────────────
+var toastContainer = null;
+function getToastContainer(){
+  if(!toastContainer || !document.body.contains(toastContainer)){
+    toastContainer = document.createElement('div');
+    toastContainer.className = 'u-toast-container';
+    document.body.appendChild(toastContainer);
+  }
+  return toastContainer;
+}
+
+window.uToast = function(msg, type, duration){
+  type = type || 'info';
+  duration = duration || 2800;
+  var icons = {success:'✅', error:'❌', info:'💡', warning:'⚠️'};
+  var c = getToastContainer();
+  var t = document.createElement('div');
+  t.className = 'u-toast ' + type;
+  t.innerHTML = '<span>' + (icons[type]||'💡') + '</span><span>' + msg + '</span>';
+  c.appendChild(t);
+  setTimeout(function(){
+    t.style.animation = 'uToastOut .3s ease forwards';
+    setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 300);
+  }, duration);
+};
+
+// ── 3. LOCALSTORAGE HELPERS ──────────────────────────────────────
+var APP_KEY = 'uapp_' + location.pathname.split('/').pop().replace('.html','');
+window.uSave = function(key, val){
+  try { localStorage.setItem(APP_KEY + '_' + key, JSON.stringify(val)); return true; }
+  catch(e){ return false; }
+};
+window.uLoad = function(key, def){
+  try {
+    var v = localStorage.getItem(APP_KEY + '_' + key);
+    return v !== null ? JSON.parse(v) : def;
+  } catch(e){ return def; }
+};
+window.uClear = function(key){
+  try { localStorage.removeItem(APP_KEY + '_' + key); } catch(e){}
+};
+
+// ── 4. ENTRANCE ANIMATIONS ───────────────────────────────────────
+function animateEntrance(){
+  var cards = document.querySelectorAll('.card, [class*="card"]');
+  cards.forEach(function(el, i){
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(18px)';
+    setTimeout(function(){
+      el.style.transition = 'opacity .4s ease, transform .4s ease';
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+    }, i * 60);
+  });
+}
+
+// ── 5. SMOOTH COUNTER ANIMATION ──────────────────────────────────
+window.uAnimCount = function(el, target, duration, prefix, suffix){
+  prefix = prefix || '';
+  suffix = suffix || '';
+  duration = duration || 1200;
+  var start = 0;
+  var step = target / (duration / 16);
+  var iv = setInterval(function(){
+    start = Math.min(start + step, target);
+    el.textContent = prefix + Math.round(start).toLocaleString() + suffix;
+    if(start >= target) clearInterval(iv);
+  }, 16);
+};
+
+// ── 6. EXPORT HELPER ─────────────────────────────────────────────
+window.uExportJSON = function(data, filename){
+  var blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.json';
+  a.click();
+  uToast('Data exported!', 'success');
+};
+window.uExportCSV = function(rows, filename){
+  var csv = rows.map(function(r){ return r.join(','); }).join('\n');
+  var blob = new Blob([csv], {type:'text/csv'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.csv';
+  a.click();
+  uToast('CSV exported!', 'success');
+};
+
+// ── 8. INIT ──────────────────────────────────────────────────────
+function init(){
+  setTimeout(animateEntrance, 100);
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+})();
+</script>
+<script>
+(function(){
+  // Persist events
+  setTimeout(function(){
+    var saved = uLoad('calendar_events', null);
+    if(saved && saved.length && window.events && !window.events.length){
+      window.events = saved;
+      if(window.renderCal) renderCal();
+      if(window.renderUpcoming) renderUpcoming();
+      uToast(saved.length + ' events restored 📅', 'success', 1800);
+    }
+    
+    // Patch addEvent to save
+    var origAdd = window.addEvent;
+    if(origAdd){
+      window.addEvent = function(){
+        origAdd.apply(this,arguments);
+        setTimeout(function(){ if(window.events) uSave('calendar_events', window.events); }, 100);
+      };
+    }
+    var origDel = window.deleteEvent;
+    if(origDel){
+      window.deleteEvent = function(id){
+        origDel.apply(this,[id]);
+        setTimeout(function(){ if(window.events) uSave('calendar_events', window.events); }, 100);
+      };
+    }
+  }, 300);
+  
+  // Export events
+  if(!document.getElementById('uCalExport')){
+    var btn = document.createElement('button');
+    btn.id = 'uCalExport';
+    btn.textContent = '⬇ Export';
+    btn.style.cssText = 'padding:7px 14px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:#22c55e;border-radius:8px;cursor:pointer;font-size:13px;font-weight:700';
+    btn.onclick = function(){ if(window.events) uExportJSON(window.events, 'calendar_events'); };
+    document.querySelector('.card:first-child .flex')?.appendChild(btn);
+  }
+  
+  // Today's summary badge
+  setTimeout(function(){
+    var today = new Date().toISOString().split('T')[0];
+    var todayEvents = (window.events||[]).filter(function(e){return e.date===today;});
+    if(todayEvents.length && !document.getElementById('uTodayBadge')){
+      var badge = document.createElement('div');
+      badge.id = 'uTodayBadge';
+      badge.style.cssText = 'position:fixed;top:14px;left:14px;background:rgba(56,189,248,.15);border:1px solid rgba(56,189,248,.4);color:#38bdf8;padding:6px 12px;border-radius:20px;font-size:12px;font-weight:700;z-index:100;cursor:pointer';
+      badge.textContent = '📅 ' + todayEvents.length + ' event' + (todayEvents.length>1?'s':'') + ' today';
+      badge.onclick = function(){ if(window.selectDay) selectDay(today); };
+      document.body.appendChild(badge);
+    }
+  }, 500);
+})();
+</script>
+</body></html>

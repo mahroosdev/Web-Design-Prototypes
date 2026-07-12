@@ -1,0 +1,99 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <html lang="en">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <title>SaaS Landing | DevOS</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+</head>
+<body>
+<div id="topbar">
+  <div class="topbar-left">
+    <a class="back-btn" href="index.html">← BACK</a>
+    <span class="topbar-logo">SAAS_OS</span>
+  </div>
+  <div class="topbar-right">
+    <button class="theme-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle theme">🌙</button>
+  </div>
+</div>
+<div id="toast"></div>
+<div class="wrap">
+
+<div class="animate-in">
+<div style="background:linear-gradient(135deg,rgba(0,229,255,.06),rgba(124,111,255,.06));border:1px solid var(--border);border-radius:var(--r);padding:36px 24px;text-align:center;margin-bottom:20px;position:relative;overflow:hidden">
+  <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),var(--accent2),transparent)"></div>
+  <span class="badge badge-accent" style="margin-bottom:16px;display:inline-flex">⚡ v3.0 Just Released — 50% off launch pricing</span>
+  <h1 style="font-size:clamp(28px,8vw,48px);font-weight:800;letter-spacing:-.03em;margin-bottom:12px;line-height:1.1">Ship Faster.<br><span style="background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent">Scale Smarter.</span></h1>
+  <p style="color:var(--muted);font-size:15px;max-width:400px;margin:0 auto 24px;line-height:1.7">The all-in-one platform for modern development teams. Deploy in seconds, monitor in real-time, scale with confidence.</p>
+  <div class="row center" style="gap:10px;flex-wrap:wrap">
+    <button class="btn btn-primary" onclick="toast('🚀 Starting your free trial!')" style="font-size:15px;padding:13px 28px">Start Free Trial →</button>
+    <button class="btn btn-outline" onclick="toast('📺 Opening product demo...')" style="font-size:15px;padding:13px 28px">▶ Watch Demo</button>
+  </div>
+  <div style="margin-top:16px;font-size:12px;color:var(--dim)">No credit card required · 14-day free trial · Cancel anytime</div>
+</div>
+<div class="stats-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:20px">
+  <div class="stat-card"><div class="stat-val" style="color:var(--accent)" id="ls-customers">0</div><div class="stat-lbl">Customers</div></div>
+  <div class="stat-card"><div class="stat-val" style="color:var(--accent2)" id="ls-deploys">0</div><div class="stat-lbl">Deploys/day</div></div>
+  <div class="stat-card"><div class="stat-val" style="color:var(--accent3)">99.9%</div><div class="stat-lbl">Uptime SLA</div></div>
+  <div class="stat-card"><div class="stat-val" style="color:var(--accent5)">24/7</div><div class="stat-lbl">Support</div></div>
+</div>
+<div class="section-title">Features</div>
+<div class="grid-auto" style="margin-bottom:20px">
+  <div class="card card-hover"><div style="font-size:32px;margin-bottom:10px">⚡</div><div style="font-weight:700;margin-bottom:6px">Instant Deploy</div><div style="font-size:12px;color:var(--muted)">Push to deploy in under 10 seconds with zero downtime deployments.</div></div>
+  <div class="card card-hover"><div style="font-size:32px;margin-bottom:10px">🔒</div><div style="font-weight:700;margin-bottom:6px">Enterprise Security</div><div style="font-size:12px;color:var(--muted)">SOC2 compliant with end-to-end encryption and SSO support.</div></div>
+  <div class="card card-hover"><div style="font-size:32px;margin-bottom:10px">📊</div><div style="font-weight:700;margin-bottom:6px">Real-time Analytics</div><div style="font-size:12px;color:var(--muted)">Monitor performance, errors, and user behavior in real-time.</div></div>
+  <div class="card card-hover"><div style="font-size:32px;margin-bottom:10px">🌐</div><div style="font-weight:700;margin-bottom:6px">Global CDN</div><div style="font-size:12px;color:var(--muted)">200+ edge locations worldwide for ultra-low latency delivery.</div></div>
+  <div class="card card-hover"><div style="font-size:32px;margin-bottom:10px">🔄</div><div style="font-weight:700;margin-bottom:6px">Auto Scaling</div><div style="font-size:12px;color:var(--muted)">Scale from 0 to millions of requests automatically.</div></div>
+  <div class="card card-hover"><div style="font-size:32px;margin-bottom:10px">🛠</div><div style="font-weight:700;margin-bottom:6px">100+ Integrations</div><div style="font-size:12px;color:var(--muted)">Connect with GitHub, Slack, Datadog, and more.</div></div>
+</div>
+<div class="section-title">Pricing</div>
+<div class="grid-3" id="pricing-grid">
+  <div class="card" style="text-align:center">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-bottom:8px;letter-spacing:.2em">STARTER</div>
+    <div style="font-size:36px;font-weight:800;color:var(--text);margin-bottom:4px">$0</div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:16px">Forever free</div>
+    <div style="font-size:12px;color:var(--muted);text-align:left;margin-bottom:16px">
+      <div style="padding:4px 0;border-bottom:1px solid var(--border)">✓ 3 projects</div>
+      <div style="padding:4px 0;border-bottom:1px solid var(--border)">✓ 1GB storage</div>
+      <div style="padding:4px 0">✓ Community support</div>
+    </div>
+    <button class="btn btn-outline btn-full btn-sm" onclick="toast('Starter plan selected!')">Get Started</button>
+  </div>
+  <div class="card" style="text-align:center;border-color:var(--accent);background:rgba(0,229,255,.03);position:relative">
+    <div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;font-size:9px;font-weight:700;padding:3px 12px;border-radius:20px;letter-spacing:.1em">MOST POPULAR</div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);margin-bottom:8px;letter-spacing:.2em">PRO</div>
+    <div style="font-size:36px;font-weight:800;color:var(--accent);margin-bottom:4px">$19</div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:16px">per month</div>
+    <div style="font-size:12px;color:var(--muted);text-align:left;margin-bottom:16px">
+      <div style="padding:4px 0;border-bottom:1px solid var(--border)">✓ Unlimited projects</div>
+      <div style="padding:4px 0;border-bottom:1px solid var(--border)">✓ 50GB storage</div>
+      <div style="padding:4px 0;border-bottom:1px solid var(--border)">✓ Priority support</div>
+      <div style="padding:4px 0">✓ Custom domains</div>
+    </div>
+    <button class="btn btn-primary btn-full btn-sm" onclick="toast('🎉 Pro plan selected! Redirecting...')">Get Pro</button>
+  </div>
+  <div class="card" style="text-align:center">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-bottom:8px;letter-spacing:.2em">ENTERPRISE</div>
+    <div style="font-size:36px;font-weight:800;color:var(--accent2);margin-bottom:4px">$99</div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:16px">per month</div>
+    <div style="font-size:12px;color:var(--muted);text-align:left;margin-bottom:16px">
+      <div style="padding:4px 0;border-bottom:1px solid var(--border)">✓ Everything in Pro</div>
+      <div style="padding:4px 0;border-bottom:1px solid var(--border)">✓ SLA guarantee</div>
+      <div style="padding:4px 0;border-bottom:1px solid var(--border)">✓ Dedicated support</div>
+      <div style="padding:4px 0">✓ Custom contracts</div>
+    </div>
+    <button class="btn btn-outline btn-full btn-sm" onclick="toast('Sales team will contact you!')">Contact Sales</button>
+  </div>
+</div>
+</div>
+
+</div>
+  <script src="../shared-back.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <html lang="en">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <title>Password Generator | DevOS</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+</head>
+<body>
+<div id="topbar">
+  <div class="topbar-left">
+    <a class="back-btn" href="index.html">← BACK</a>
+    <span class="topbar-logo">PASS_OS</span>
+  </div>
+  <div class="topbar-right">
+    <button class="theme-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle theme">🌙</button>
+  </div>
+</div>
+<div id="toast"></div>
+<div class="wrap">
+
+<div class="page-header animate-in">
+  <div class="row align" style="gap:10px;margin-bottom:8px"><span style="font-size:28px">🔐</span><h1>Password Generator</h1></div>
+  <p>Generate ultra-secure passwords with entropy analysis, breach checking simulation and vault.</p>
+</div>
+<div class="card animate-in" style="margin-bottom:14px">
+  <div id="pw-display" style="background:var(--bg);border:1px solid var(--border);border-radius:var(--r2);padding:16px;margin-bottom:12px;font-family:'JetBrains Mono',monospace;font-size:clamp(12px,3.5vw,16px);color:var(--accent);word-break:break-all;min-height:56px;display:flex;align-items:center;justify-content:space-between;gap:10px;position:relative">
+    <span id="pw-text" style="flex:1">Click Generate</span>
+    <div class="row" style="gap:6px;flex-shrink:0">
+      <button onclick="copyPw()" class="btn btn-xs btn-outline" title="Copy">📋</button>
+      <button onclick="refreshPw()" class="btn btn-xs btn-outline" title="Refresh">🔄</button>
+    </div>
+  </div>
+  <!-- Strength -->
+  <div style="margin-bottom:16px">
+    <div class="row between align" style="margin-bottom:6px">
+      <span style="font-size:12px;color:var(--muted)">Strength</span>
+      <span id="pw-strength-label" style="font-size:12px;font-family:'JetBrains Mono',monospace">—</span>
+    </div>
+    <div class="progress-bar"><div id="pw-sbar" class="progress-fill" style="width:0;background:var(--muted)"></div></div>
+    <div class="row between" style="margin-top:6px;font-size:10px;color:var(--muted);font-family:'JetBrains Mono',monospace">
+      <span>Entropy: <span id="pw-entropy">0</span> bits</span>
+      <span>Est. crack: <span id="pw-crack">—</span></span>
+    </div>
+  </div>
+  <!-- Options -->
+  <div class="form-group"><label>Length: <span id="pw-len-val">20</span> characters</label>
+    <input type="range" id="pw-len" min="6" max="128" value="20" oninput="document.getElementById('pw-len-val').textContent=this.value;genPw()" style="background:transparent;border:none;padding:0;height:auto;border-radius:0">
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px">
+    <label class="toggle"><input type="checkbox" id="pw-up" checked onchange="genPw()"><span class="toggle-track"><span class="toggle-thumb"></span></span><span style="font-size:13px">Uppercase A-Z</span></label>
+    <label class="toggle"><input type="checkbox" id="pw-lo" checked onchange="genPw()"><span class="toggle-track"><span class="toggle-thumb"></span></span><span style="font-size:13px">Lowercase a-z</span></label>
+    <label class="toggle"><input type="checkbox" id="pw-nu" checked onchange="genPw()"><span class="toggle-track"><span class="toggle-thumb"></span></span><span style="font-size:13px">Numbers 0-9</span></label>
+    <label class="toggle"><input type="checkbox" id="pw-sy" checked onchange="genPw()"><span class="toggle-track"><span class="toggle-thumb"></span></span><span style="font-size:13px">Symbols !@#$</span></label>
+    <label class="toggle"><input type="checkbox" id="pw-am" onchange="genPw()"><span class="toggle-track"><span class="toggle-thumb"></span></span><span style="font-size:13px">Ambiguous (0,O,l,I)</span></label>
+    <label class="toggle"><input type="checkbox" id="pw-pr" onchange="genPw()"><span class="toggle-track"><span class="toggle-thumb"></span></span><span style="font-size:13px">Pronounceable</span></label>
+  </div>
+  <div class="row" style="gap:8px">
+    <button class="btn btn-primary btn-full" onclick="genPw()">⚡ Generate</button>
+    <button class="btn btn-success" onclick="saveToVault()">🔒 Save</button>
+  </div>
+</div>
+<div class="section-title">Password Vault</div>
+<div id="pw-vault"></div>
+
+</div>
+  <script src="../shared-back.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8">
+<meta name="description" content="Timezone Converter — part of a professional web developer portfolio with 50+ projects.">
+<meta name="robots" content="index, follow">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Timezone Converter</title><style>*{margin:0;padding:0;box-sizing:border-box}
+body{background:linear-gradient(135deg,#020617 0%,#0f172a 100%);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#fff;min-height:100vh;padding:40px 20px;overflow-x:hidden}
+.container{max-width:1000px;margin:0 auto}
+h1{background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:36px;margin-bottom:8px}
+.subtitle{color:#94a3b8;margin-bottom:28px;font-size:15px}
+.back-link{display:inline-flex;align-items:center;gap:6px;margin-bottom:20px;color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;padding:8px 14px;border:1px solid rgba(56,189,248,.3);border-radius:8px;transition:.2s}
+.back-link:hover{background:rgba(56,189,248,.1)}
+.card{background:rgba(30,41,59,.8);backdrop-filter:blur(10px);padding:24px;border-radius:16px;border:1px solid rgba(56,189,248,.2);margin-bottom:20px}
+.btn{padding:10px 22px;border:none;border-radius:8px;cursor:pointer;font-weight:700;font-size:14px;transition:.2s;background:linear-gradient(90deg,#38bdf8,#22c55e);color:#000}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(56,189,248,.35)}
+.btn-outline{background:transparent;border:1px solid rgba(56,189,248,.4);color:#38bdf8}
+input,textarea,select{background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.3);color:#fff;border-radius:8px;padding:10px 14px;font-size:14px;width:100%;outline:none;transition:.2s}
+input:focus,textarea:focus,select:focus{border-color:#38bdf8;box-shadow:0 0 0 3px rgba(56,189,248,.15)}
+input::placeholder,textarea::placeholder{color:#64748b}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.flex{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;background:rgba(56,189,248,.15);color:#38bdf8;border:1px solid rgba(56,189,248,.3)}
+.badge-green{background:rgba(34,197,94,.15);color:#22c55e;border-color:rgba(34,197,94,.3)}
+.stat-box{background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.15);border-radius:12px;padding:20px;text-align:center}
+.stat-num{font-size:32px;font-weight:800;background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-label{font-size:12px;color:#64748b;margin-top:4px;text-transform:uppercase;letter-spacing:.5px}
+@media(max-width:768px){body{padding:15px 12px}h1{font-size:26px}.grid2,.grid3,.grid4{grid-template-columns:1fr}.card{padding:16px 14px}}
+.clock-card{background:rgba(30,41,59,.8);border:1px solid rgba(56,189,248,.2);border-radius:14px;padding:16px;text-align:center;position:relative}
+.clock-city{font-size:13px;font-weight:700;color:#94a3b8;margin-bottom:4px}
+.clock-time{font-size:28px;font-weight:900;font-family:monospace;background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.clock-date{font-size:11px;color:#475569;margin-top:3px}
+.clock-zone{font-size:10px;color:#64748b;margin-top:2px}
+.del-btn{position:absolute;top:6px;right:6px;background:none;border:none;color:#475569;cursor:pointer;font-size:12px;padding:2px 5px;border-radius:4px}
+.del-btn:hover{color:#ef4444;background:rgba(239,68,68,.1)}
+.biz-item{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid rgba(56,189,248,.08);font-size:13px}
+.biz-item:last-child{border:none}
+.diff-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(56,189,248,.08);font-size:13px}
+.diff-row:last-child{border:none}
+/* ── UNIVERSAL UPGRADE: Theme, Animations, Toast ── */
+:root{
+  --bg:#020617;--bg2:#0f172a;--card:rgba(30,41,59,.85);--border:rgba(56,189,248,.22);
+  --accent:#38bdf8;--accent2:#22c55e;--text:#f1f5f9;--muted:#94a3b8;--danger:#ef4444;
+}
+
+
+/* Toast notifications */
+.u-toast-container{position:fixed;bottom:24px;right:20px;z-index:99999;display:flex;flex-direction:column;gap:8px;max-width:320px}
+.u-toast{
+  background:var(--card);border:1px solid var(--border);color:var(--text);
+  padding:11px 16px;border-radius:10px;font-size:13px;font-weight:600;
+  box-shadow:0 4px 20px rgba(0,0,0,.35);
+  animation:uToastIn .3s ease;display:flex;align-items:center;gap:8px;
+}
+.u-toast.success{border-color:rgba(34,197,94,.5);background:rgba(34,197,94,.1)}
+.u-toast.error{border-color:rgba(239,68,68,.5);background:rgba(239,68,68,.1)}
+.u-toast.info{border-color:rgba(56,189,248,.5);background:rgba(56,189,248,.1)}
+@keyframes uToastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes uToastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(20px)}}
+
+/* Entrance animations */
+@keyframes uFadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes uFadeIn{from{opacity:0}to{opacity:1}}
+@keyframes uPulse{0%,100%{box-shadow:0 0 0 0 rgba(56,189,248,.4)}70%{box-shadow:0 0 0 8px rgba(56,189,248,0)}}
+.u-fade-up{animation:uFadeUp .45s ease both}
+.u-fade-in{animation:uFadeIn .4s ease both}
+.u-pulse{animation:uPulse 2s infinite}
+
+/* Button hover lift */
+.btn:hover,[class*="btn"]:not([class*="btn-"]):hover{transform:translateY(-2px)!important}
+
+/* Smooth card hover */
+.card:hover,[class*="card"]:hover{
+  border-color:var(--accent)!important;
+  box-shadow:0 6px 28px rgba(56,189,248,.12)!important;
+  transition:all .25s ease!important;
+}
+
+/* Loading skeleton */
+.u-skeleton{
+  background:linear-gradient(90deg,rgba(56,189,248,.06) 25%,rgba(56,189,248,.12) 50%,rgba(56,189,248,.06) 75%);
+  background-size:200% 100%;animation:uSkeleton 1.4s infinite;border-radius:6px;
+}
+@keyframes uSkeleton{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* Progress bar component */
+.u-progress{height:5px;background:rgba(56,189,248,.12);border-radius:3px;overflow:hidden;margin:8px 0}
+.u-progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:3px;transition:width .5s ease}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(56,189,248,.3);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(56,189,248,.55)}
+
+/* Mobile responsive upgrades */
+@media(max-width:600px){
+  
+  .u-toast-container{right:10px;bottom:80px;max-width:calc(100vw - 20px)}
+}
+
+</style></head>
+<body><div class="container">
+<a href="../index.html" class="back-link" onclick="window.close(); return false;">← Back to Portfolio</a>
+
+<h1>🕐 World Clock Pro</h1>
+<p class="subtitle">Real-time world clock and timezone converter</p>
+<div class="grid4" id="clockGrid" style="margin-bottom:20px"></div>
+<div class="grid2" style="align-items:start">
+  <div class="card">
+    <h3 style="color:#38bdf8;margin-bottom:14px">Convert Time</h3>
+    <label>From Timezone</label>
+    <select id="fromTZ" style="margin-bottom:12px"></select>
+    <label>Date & Time</label>
+    <input type="datetime-local" id="fromTime" style="margin-bottom:12px">
+    <label>To Timezone</label>
+    <select id="toTZ" style="margin-bottom:14px"></select>
+    <button class="btn" onclick="convertTime()" style="width:100%;margin-bottom:10px">Convert →</button>
+    <div id="convResult" style="text-align:center;padding:16px;background:rgba(56,189,248,.05);border:1px solid rgba(56,189,248,.1);border-radius:10px;display:none"></div>
+  </div>
+  <div>
+    <div class="card">
+      <h3 style="color:#38bdf8;margin-bottom:14px">Add City</h3>
+      <select id="addCity" style="margin-bottom:12px"></select>
+      <button class="btn" onclick="addClock()" style="width:100%">+ Add to World Clock</button>
+    </div>
+    <div class="card">
+      <h3 style="color:#38bdf8;margin-bottom:14px">Business Hours Overlap</h3>
+      <p style="color:#64748b;font-size:13px;margin-bottom:12px">Cities currently in business hours (9AM-6PM):</p>
+      <div id="bizHours"></div>
+    </div>
+    <div class="card">
+      <h3 style="color:#38bdf8;margin-bottom:14px">Time Differences</h3>
+      <div id="timeDiffs"></div>
+    </div>
+  </div>
+</div>
+</div><script>
+const allZones=[
+  {city:'New York',tz:'America/New_York',flag:'🇺🇸'},{city:'London',tz:'Europe/London',flag:'🇬🇧'},
+  {city:'Paris',tz:'Europe/Paris',flag:'🇫🇷'},{city:'Dubai',tz:'Asia/Dubai',flag:'🇦🇪'},
+  {city:'Mumbai',tz:'Asia/Kolkata',flag:'🇮🇳'},{city:'Singapore',tz:'Asia/Singapore',flag:'🇸🇬'},
+  {city:'Tokyo',tz:'Asia/Tokyo',flag:'🇯🇵'},{city:'Sydney',tz:'Australia/Sydney',flag:'🇦🇺'},
+  {city:'Los Angeles',tz:'America/Los_Angeles',flag:'🇺🇸'},{city:'Chicago',tz:'America/Chicago',flag:'🇺🇸'},
+  {city:'Toronto',tz:'America/Toronto',flag:'🇨🇦'},{city:'Berlin',tz:'Europe/Berlin',flag:'🇩🇪'},
+  {city:'Moscow',tz:'Europe/Moscow',flag:'🇷🇺'},{city:'Beijing',tz:'Asia/Shanghai',flag:'🇨🇳'},
+  {city:'Seoul',tz:'Asia/Seoul',flag:'🇰🇷'},{city:'Auckland',tz:'Pacific/Auckland',flag:'🇳🇿'},
+  {city:'São Paulo',tz:'America/Sao_Paulo',flag:'🇧🇷'},{city:'Johannesburg',tz:'Africa/Johannesburg',flag:'🇿🇦'},
+  {city:'Mexico City',tz:'America/Mexico_City',flag:'🇲🇽'},{city:'Kuwait City',tz:'Asia/Kuwait',flag:'🇰🇼'},
+];
+let clocks=['New York','London','Dubai','Tokyo','Sydney'];
+
+function getTime(tz,fmt='time'){
+  const d=new Date();
+  if(fmt==='time')return d.toLocaleTimeString('en-US',{timeZone:tz,hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  if(fmt==='date')return d.toLocaleDateString('en-US',{timeZone:tz,weekday:'short',month:'short',day:'numeric'});
+  if(fmt==='hour')return parseInt(d.toLocaleString('en-US',{timeZone:tz,hour:'numeric',hour12:false}));
+  if(fmt==='offset'){const t=new Date(d.toLocaleString('en-US',{timeZone:tz}));return (t-d)/3600000;}
+}
+
+function renderClocks(){
+  const grid=document.getElementById('clockGrid');
+  const cols=Math.min(clocks.length,4);
+  grid.style.gridTemplateColumns=`repeat(${cols},1fr)`;
+  grid.innerHTML=clocks.map(city=>{
+    const z=allZones.find(z=>z.city===city);if(!z)return'';
+    const h=getTime(z.tz,'hour');
+    const isDay=h>=6&&h<20;
+    return `<div class="clock-card">
+      <button class="del-btn" onclick="removeClock('${city}')">✕</button>
+      <div class="clock-city">${z.flag} ${z.city}</div>
+      <div style="font-size:20px;margin-bottom:4px">${isDay?'☀️':'🌙'}</div>
+      <div class="clock-time" id="clk_${city.replace(/ /g,'_')}">${getTime(z.tz)}</div>
+      <div class="clock-date">${getTime(z.tz,'date')}</div>
+      <div class="clock-zone">${z.tz}</div>
+    </div>`;
+  }).join('');
+}
+
+function updateClocks(){
+  clocks.forEach(city=>{
+    const z=allZones.find(z=>z.city===city);if(!z)return;
+    const el=document.getElementById('clk_'+city.replace(/ /g,'_'));
+    if(el)el.textContent=getTime(z.tz);
+  });
+  renderBizHours();
+}
+
+function removeClock(city){clocks=clocks.filter(c=>c!==city);renderClocks();}
+function addClock(){const c=document.getElementById('addCity').value;if(c&&!clocks.includes(c)){clocks.push(c);renderClocks();}}
+
+function renderBizHours(){
+  const biz=allZones.filter(z=>{const h=getTime(z.tz,'hour');return h>=9&&h<18;}).slice(0,8);
+  document.getElementById('bizHours').innerHTML=biz.length
+    ?biz.map(z=>`<div class="biz-item"><span>${z.flag}</span><span style="font-weight:700;flex:1">${z.city}</span><span style="color:#22c55e;font-size:12px;font-weight:700">${getTime(z.tz,'hour')}:00</span><span class="badge badge-green" style="font-size:10px">Open</span></div>`).join('')
+    :'<p style="color:#64748b;font-size:13px">No major cities in business hours</p>';
+}
+
+function renderDiffs(){
+  const base=allZones.find(z=>z.city==='New York');
+  const others=['London','Dubai','Tokyo','Sydney','Los Angeles'];
+  document.getElementById('timeDiffs').innerHTML=others.map(city=>{
+    const z=allZones.find(z=>z.city===city);if(!z)return'';
+    const diff=Math.round((getTime(z.tz,'offset')-getTime(base.tz,'offset'))*10)/10;
+    return `<div class="diff-row"><span>${z.flag} ${z.city}</span><span style="font-weight:700;color:${diff>=0?'#22c55e':'#ef4444'}">${diff>=0?'+':''}${diff}h vs NYC</span></div>`;
+  }).join('');
+}
+
+// Populate selects
+const opts=allZones.map(z=>`<option value="${z.city}">${z.flag} ${z.city}</option>`).join('');
+document.getElementById('fromTZ').innerHTML=opts;
+document.getElementById('toTZ').innerHTML=opts;
+document.getElementById('addCity').innerHTML=opts;
+document.getElementById('toTZ').value='London';
+document.getElementById('addCity').value='Seoul';
+
+// Set default datetime
+document.getElementById('fromTime').value=new Date().toISOString().slice(0,16);
+
+function convertTime(){
+  const fromCity=document.getElementById('fromTZ').value;
+  const toCity=document.getElementById('toTZ').value;
+  const fromDT=document.getElementById('fromTime').value;
+  if(!fromDT)return;
+  const fromZ=allZones.find(z=>z.city===fromCity);
+  const toZ=allZones.find(z=>z.city===toCity);
+  const d=new Date(fromDT);
+  const converted=d.toLocaleString('en-US',{timeZone:toZ.tz,dateStyle:'full',timeStyle:'short'});
+  const res=document.getElementById('convResult');
+  res.style.display='block';
+  res.innerHTML=`<div style="font-size:13px;color:#64748b;margin-bottom:6px">${fromZ.flag} ${fromCity}</div>
+    <div style="font-size:14px;margin-bottom:8px">${new Date(fromDT).toLocaleString()}</div>
+    <div style="font-size:20px;margin-bottom:8px">↓</div>
+    <div style="font-size:13px;color:#64748b;margin-bottom:6px">${toZ.flag} ${toCity}</div>
+    <div style="font-size:18px;font-weight:800;color:#38bdf8">${converted}</div>`;
+}
+
+renderClocks();renderBizHours();renderDiffs();setInterval(updateClocks,1000);
+</script><script>
+// ── UNIVERSAL UPGRADE: Theme, localStorage, Toast, Animations ──
+(function(){
+'use strict';
+
+// ── 2. TOAST SYSTEM ──────────────────────────────────────────────
+var toastContainer = null;
+function getToastContainer(){
+  if(!toastContainer || !document.body.contains(toastContainer)){
+    toastContainer = document.createElement('div');
+    toastContainer.className = 'u-toast-container';
+    document.body.appendChild(toastContainer);
+  }
+  return toastContainer;
+}
+
+window.uToast = function(msg, type, duration){
+  type = type || 'info';
+  duration = duration || 2800;
+  var icons = {success:'✅', error:'❌', info:'💡', warning:'⚠️'};
+  var c = getToastContainer();
+  var t = document.createElement('div');
+  t.className = 'u-toast ' + type;
+  t.innerHTML = '<span>' + (icons[type]||'💡') + '</span><span>' + msg + '</span>';
+  c.appendChild(t);
+  setTimeout(function(){
+    t.style.animation = 'uToastOut .3s ease forwards';
+    setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 300);
+  }, duration);
+};
+
+// ── 3. LOCALSTORAGE HELPERS ──────────────────────────────────────
+var APP_KEY = 'uapp_' + location.pathname.split('/').pop().replace('.html','');
+window.uSave = function(key, val){
+  try { localStorage.setItem(APP_KEY + '_' + key, JSON.stringify(val)); return true; }
+  catch(e){ return false; }
+};
+window.uLoad = function(key, def){
+  try {
+    var v = localStorage.getItem(APP_KEY + '_' + key);
+    return v !== null ? JSON.parse(v) : def;
+  } catch(e){ return def; }
+};
+window.uClear = function(key){
+  try { localStorage.removeItem(APP_KEY + '_' + key); } catch(e){}
+};
+
+// ── 4. ENTRANCE ANIMATIONS ───────────────────────────────────────
+function animateEntrance(){
+  var cards = document.querySelectorAll('.card, [class*="card"]');
+  cards.forEach(function(el, i){
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(18px)';
+    setTimeout(function(){
+      el.style.transition = 'opacity .4s ease, transform .4s ease';
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+    }, i * 60);
+  });
+}
+
+// ── 5. SMOOTH COUNTER ANIMATION ──────────────────────────────────
+window.uAnimCount = function(el, target, duration, prefix, suffix){
+  prefix = prefix || '';
+  suffix = suffix || '';
+  duration = duration || 1200;
+  var start = 0;
+  var step = target / (duration / 16);
+  var iv = setInterval(function(){
+    start = Math.min(start + step, target);
+    el.textContent = prefix + Math.round(start).toLocaleString() + suffix;
+    if(start >= target) clearInterval(iv);
+  }, 16);
+};
+
+// ── 6. EXPORT HELPER ─────────────────────────────────────────────
+window.uExportJSON = function(data, filename){
+  var blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.json';
+  a.click();
+  uToast('Data exported!', 'success');
+};
+window.uExportCSV = function(rows, filename){
+  var csv = rows.map(function(r){ return r.join(','); }).join('\n');
+  var blob = new Blob([csv], {type:'text/csv'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.csv';
+  a.click();
+  uToast('CSV exported!', 'success');
+};
+
+// ── 8. INIT ──────────────────────────────────────────────────────
+function init(){
+  setTimeout(animateEntrance, 100);
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+})();
+</script>
+<script>
+(function(){
+  var savedClocks = uLoad('tz_clocks', null);
+  var meetings = uLoad('tz_meetings', []);
+  
+  // Restore saved clocks
+  if(savedClocks && window.clocks){
+    window.clocks = savedClocks;
+    if(window.renderClocks) renderClocks();
+  }
+  
+  // Save clocks when added/removed
+  var origAdd = window.addClock;
+  if(origAdd){
+    window.addClock = function(){
+      origAdd.apply(this,arguments);
+      if(window.clocks) uSave('tz_clocks', window.clocks);
+    };
+  }
+  var origRemove = window.removeClock;
+  if(origRemove){
+    window.removeClock = function(city){
+      origRemove.apply(this,[city]);
+      if(window.clocks) uSave('tz_clocks', window.clocks);
+    };
+  }
+  
+  // Meeting scheduler
+  function injectMeetingScheduler(){
+    if(document.getElementById('uMeetingScheduler')) return;
+    var container = document.querySelector('.grid2')?.parentNode || document.querySelector('.container');
+    if(!container) return;
+    var panel = document.createElement('div');
+    panel.id = 'uMeetingScheduler';
+    panel.className = 'card u-fade-up';
+    panel.style.marginTop = '20px';
+    panel.innerHTML = '<div style="font-weight:700;color:#38bdf8;margin-bottom:14px;font-size:15px">📅 Meeting Scheduler</div>' +
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">' +
+      '<div><label style="font-size:12px">Meeting Title</label><input id="uMeetTitle" placeholder="Team standup..." style="font-size:13px"></div>' +
+      '<div><label style="font-size:12px">Date & Time</label><input type="datetime-local" id="uMeetTime" style="font-size:13px"></div>' +
+      '</div>' +
+      '<button onclick="addMeeting()" style="padding:9px 18px;background:linear-gradient(90deg,#38bdf8,#22c55e);border:none;color:#000;border-radius:8px;cursor:pointer;font-weight:700;font-size:13px;margin-bottom:14px">Add Meeting</button>' +
+      '<div id="uMeetList"></div>';
+    container.appendChild(panel);
+    renderMeetings();
+    
+    // Set default datetime
+    var now = new Date();
+    var dt = document.getElementById('uMeetTime');
+    if(dt) dt.value = new Date(now.getTime()+3600000).toISOString().slice(0,16);
+  }
+  
+  window.addMeeting = function(){
+    var title = document.getElementById('uMeetTitle')?.value.trim();
+    var time = document.getElementById('uMeetTime')?.value;
+    if(!title||!time){uToast('Fill title and time','error');return;}
+    meetings.push({title:title,time:time,id:Date.now()});
+    meetings.sort(function(a,b){return a.time.localeCompare(b.time);});
+    uSave('tz_meetings', meetings);
+    document.getElementById('uMeetTitle').value='';
+    renderMeetings();
+    uToast('Meeting added! 📅','success');
+  };
+  
+  function renderMeetings(){
+    var el = document.getElementById('uMeetList');
+    if(!el) return;
+    var allZones = window.allZones || [];
+    var clocks = window.clocks || ['New York','London'];
+    if(!meetings.length){el.innerHTML='<p style="color:#64748b;font-size:13px">No meetings scheduled.</p>';return;}
+    var now = new Date().toISOString().slice(0,16);
+    el.innerHTML = meetings.map(function(m,i){
+      var isUpcoming = m.time >= now;
+      var d = new Date(m.time);
+      return '<div style="padding:12px;background:rgba(56,189,248,.04);border:1px solid rgba(56,189,248,.1);border-radius:10px;margin-bottom:8px">' +
+        '<div style="display:flex;justify-content:space-between;margin-bottom:6px">' +
+        '<span style="font-weight:700;font-size:14px">'+m.title+'</span>' +
+        '<div style="display:flex;gap:6px;align-items:center">' +
+        '<span class="badge '+(isUpcoming?'badge-green':'')+'">'+( isUpcoming?'Upcoming':'Past')+'</span>' +
+        '<button onclick="meetings.splice('+i+',1);uSave(\'tz_meetings\',meetings);renderMeetings()" style="padding:2px 7px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#ef4444;border-radius:5px;cursor:pointer;font-size:10px;font-weight:700">✕</button>' +
+        '</div></div>' +
+        '<div style="display:flex;gap:10px;flex-wrap:wrap;font-size:12px">' +
+        clocks.slice(0,4).map(function(city){
+          var z = allZones.find(function(az){return az.city===city;});
+          if(!z) return '';
+          var converted = z ? d.toLocaleTimeString('en-US',{timeZone:z.tz,hour:'2-digit',minute:'2-digit'}) : '--';
+          return '<span style="color:#64748b">'+z.flag+' '+city+': <strong style="color:#38bdf8">'+converted+'</strong></span>';
+        }).filter(Boolean).join('') +
+        '</div></div>';
+    }).join('');
+  }
+  
+  window.renderMeetings = renderMeetings;
+  injectMeetingScheduler();
+})();
+</script>
+</body></html>

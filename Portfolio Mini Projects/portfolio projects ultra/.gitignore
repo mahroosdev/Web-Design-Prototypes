@@ -1,0 +1,19 @@
+# OS Metadata
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor / IDE configs
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# Local / Temp Files
+scratch/
+tmp/
+temp/
+*.log

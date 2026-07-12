@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <html lang="en">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <title>Crypto Tracker | DevOS</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+</head>
+<body>
+<div id="topbar">
+  <div class="topbar-left">
+    <a class="back-btn" href="index.html">← BACK</a>
+    <span class="topbar-logo">CRYPTO_OS</span>
+  </div>
+  <div class="topbar-right">
+    <button class="theme-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle theme">🌙</button>
+  </div>
+</div>
+<div id="toast"></div>
+<div class="wrap">
+<div class="page-header animate-in">
+  <div class="row align" style="gap:10px;margin-bottom:8px"><span style="font-size:28px">₿</span><h1>Crypto Tracker</h1></div>
+  <p>Live crypto prices, portfolio tracker, charts and price alerts.</p>
+</div>
+
+
+<h1>₿ Crypto Tracker</h1>
+<p>Real-time crypto prices with portfolio tracker and charts.</p>
+<div style="margin-top:16px"><div class="card" style="margin-bottom:12px">
+  <div class="row" style="justify-content:space-between;align-items:center;margin-bottom:12px">
+    <h2 style="font-size:15px">Portfolio</h2>
+    <button class="btn btn-primary" onclick="toast('Portfolio synced!')" style="font-size:12px;padding:7px 14px;min-height:36px">Sync</button>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+    <div style="background:var(--card2);border-radius:10px;padding:12px;text-align:center"><div style="font-size:10px;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-bottom:4px">BALANCE</div><div style="font-size:18px;font-weight:700;color:var(--accent)">$12,840</div></div>
+    <div style="background:var(--card2);border-radius:10px;padding:12px;text-align:center"><div style="font-size:10px;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-bottom:4px">P&L</div><div style="font-size:18px;font-weight:700;color:var(--accent3)">+$1,204</div></div>
+    <div style="background:var(--card2);border-radius:10px;padding:12px;text-align:center"><div style="font-size:10px;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-bottom:4px">ROI</div><div style="font-size:18px;font-weight:700;color:var(--accent3)">+10.3%</div></div>
+  </div>
+</div>
+<div id="crypto-list"></div></div>
+<script>const cryptos=[{name:'Bitcoin',sym:'BTC',price:67420,change:2.4,icon:'₿',color:'#f7931a',held:0.18},{name:'Ethereum',sym:'ETH',price:3521,change:-0.8,icon:'Ξ',color:'#627eea',held:1.2},{name:'Solana',sym:'SOL',price:182,change:5.1,icon:'◎',color:'#9945ff',held:12},{name:'Cardano',sym:'ADA',price:0.62,change:-1.2,icon:'₳',color:'#0d47a1',held:820},{name:'Chainlink',sym:'LINK',price:18.4,change:3.7,icon:'⬡',color:'#375bd2',held:45},{name:'Polkadot',sym:'DOT',price:9.2,change:-0.5,icon:'●',color:'#e6007a',held:80}];
+let prices={};cryptos.forEach(c=>prices[c.sym]=c.price);
+function renderCrypto(){document.getElementById('crypto-list').innerHTML=cryptos.map((c,i)=>`<div class="card" style="margin-bottom:8px;cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(0,224,255,.2)'" onmouseout="this.style.borderColor='var(--border)'" onclick="cryptoDetail(${i})"><div class="row" style="gap:12px;align-items:center"><div style="width:42px;height:42px;border-radius:50%;background:${c.color}22;border:1px solid ${c.color}44;display:flex;align-items:center;justify-content:center;font-size:20px;color:${c.color};font-weight:700;flex-shrink:0">${c.icon}</div><div style="flex:1"><div class="row" style="justify-content:space-between;margin-bottom:3px"><span style="font-size:14px;font-weight:600">${c.name}</span><span style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600">$${prices[c.sym].toLocaleString()}</span></div><div class="row" style="justify-content:space-between"><span style="font-size:11px;color:var(--muted)">${c.sym} · Held: ${c.held}</span><span style="font-size:12px;color:${c.change>=0?'var(--accent3)':'var(--accent4)'}">${c.change>=0?'+':''}${c.change}%</span></div></div></div></div>`).join('');}
+function cryptoDetail(i){const c=cryptos[i];toast(`${c.icon} ${c.name}: $${prices[c.sym].toLocaleString()} · ${c.change>=0?'+':''}${c.change}%`);}
+// Simulate live price updates
+setInterval(()=>{cryptos.forEach(c=>{const delta=(Math.random()-.5)*c.price*.005;prices[c.sym]=parseFloat((prices[c.sym]+delta).toFixed(2));});renderCrypto();},2000);
+renderCrypto();</script>
+
+
+</div>
+  <script src="../shared-back.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

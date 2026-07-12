@@ -1,0 +1,64 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <html lang="en">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <title>File Manager | DevOS</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+</head>
+<body>
+<div id="topbar">
+  <div class="topbar-left">
+    <a class="back-btn" href="index.html">← BACK</a>
+    <span class="topbar-logo">FILE_OS</span>
+  </div>
+  <div class="topbar-right">
+    <button class="theme-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle theme">🌙</button>
+  </div>
+</div>
+<div id="toast"></div>
+<div class="wrap">
+<div class="page-header animate-in">
+  <div class="row align" style="gap:10px;margin-bottom:8px"><span style="font-size:28px">📁</span><h1>File Manager</h1></div>
+  <p>Upload, organize, share and download files with drag-and-drop.</p>
+</div>
+
+
+<h1>📁 File Share UI</h1>
+<p>Upload, manage and share files with drag-drop and progress.</p>
+<div style="margin-top:16px"><div id="fs-drop" style="border:2px dashed var(--border);border-radius:14px;padding:36px;text-align:center;margin-bottom:14px;cursor:pointer;transition:border-color .2s" onclick="document.getElementById('fs-input').click()" ondragover="event.preventDefault();this.style.borderColor='var(--accent)'" ondragleave="this.style.borderColor='var(--border)'" ondrop="dropFile(event)">
+  <div style="font-size:48px;margin-bottom:10px">📂</div>
+  <div style="font-weight:600;margin-bottom:6px">Drop files here or click to upload</div>
+  <div style="font-size:12px;color:var(--muted)">Supports all file types up to 100MB</div>
+  <input type="file" id="fs-input" multiple style="display:none" onchange="handleFiles(this.files)">
+</div>
+<div id="fs-list"></div></div>
+<script>let files=[];
+function dropFile(e){e.preventDefault();this.style.borderColor='var(--border)';handleFiles(e.dataTransfer.files);}
+function handleFiles(flist){Array.from(flist).forEach(f=>{const id=Date.now()+Math.random();files.unshift({id,name:f.name,size:f.size,type:f.type||'unknown',progress:0,shared:false});renderFiles();simulateUpload(id);});} 
+function simulateUpload(id){let p=0;const iv=setInterval(()=>{p+=Math.random()*20;const f=files.find(x=>x.id===id);if(f){f.progress=Math.min(100,p);renderFiles();if(f.progress>=100)clearInterval(iv);}},200);}
+function humanSize(b){if(b>1048576)return(b/1048576).toFixed(1)+' MB';if(b>1024)return(b/1024).toFixed(1)+' KB';return b+' B';}
+function renderFiles(){
+  if(!files.length){document.getElementById('fs-list').innerHTML='<div style="text-align:center;color:var(--muted);font-size:13px;padding:20px">No files uploaded yet</div>';return;}
+  document.getElementById('fs-list').innerHTML=files.map((f,i)=>{
+    const ext=f.name.split('.').pop().toLowerCase();const icon={'pdf':'📄','jpg':'🖼','png':'🖼','mp4':'🎬','mp3':'🎵','zip':'🗜','doc':'📝','xls':'📊'}[ext]||'📎';
+    return`<div class="card" style="margin-bottom:8px"><div class="row" style="gap:10px;align-items:center"><div style="font-size:28px">${icon}</div><div style="flex:1;overflow:hidden"><div style="font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${f.name}</div><div style="font-size:11px;color:var(--muted)">${humanSize(f.size)}</div>${f.progress<100?`<div style="height:3px;background:var(--card2);border-radius:2px;margin-top:6px;overflow:hidden"><div style="height:100%;width:${f.progress}%;background:var(--accent);transition:width .2s;border-radius:2px"></div></div>`:''}${f.shared?'<div style="font-size:10px;color:var(--accent3);margin-top:4px">🔗 Shared link active</div>':''}</div>${f.progress>=100?`<button onclick="shareFile(${i})" class="btn btn-outline" style="font-size:11px;padding:6px 10px;min-height:32px">${f.shared?'Copy Link':'Share'}</button><button onclick="delFile(${i})" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px">✕</button>`:''}
+    </div></div>`;
+  }).join('');}
+function shareFile(i){files[i].shared=true;renderFiles();navigator.clipboard?.writeText('https://dvos.link/share/'+Math.random().toString(36).slice(2,9));toast('🔗 Share link copied!');}
+function delFile(i){files.splice(i,1);renderFiles();}
+renderFiles();
+// Add demo files
+handleFiles([new File(['demo'],'project_portfolio.pdf',{type:'application/pdf'}),new File(['demo'],'design_mockup.png',{type:'image/png'}),new File(['demo'],'source_code.zip',{type:'application/zip'})]);</script>
+
+
+</div>
+  <script src="../shared-back.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

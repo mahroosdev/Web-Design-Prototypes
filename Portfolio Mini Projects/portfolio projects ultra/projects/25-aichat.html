@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8">
+<meta name="description" content="AI Chat Interface — part of a professional web developer portfolio with 50+ projects.">
+<meta name="robots" content="index, follow">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AI Chat Interface</title><style>*{margin:0;padding:0;box-sizing:border-box}
+body{background:linear-gradient(135deg,#020617 0%,#0f172a 100%);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#fff;min-height:100vh;padding:40px 20px;overflow-x:hidden}
+.container{max-width:1000px;margin:0 auto}
+h1{background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:36px;margin-bottom:8px}
+.subtitle{color:#94a3b8;margin-bottom:28px;font-size:15px}
+.back-link{display:inline-flex;align-items:center;gap:6px;margin-bottom:20px;color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;padding:8px 14px;border:1px solid rgba(56,189,248,.3);border-radius:8px;transition:.2s}
+.back-link:hover{background:rgba(56,189,248,.1)}
+.card{background:rgba(30,41,59,.8);backdrop-filter:blur(10px);padding:24px;border-radius:16px;border:1px solid rgba(56,189,248,.2);margin-bottom:20px}
+.btn{padding:10px 22px;border:none;border-radius:8px;cursor:pointer;font-weight:700;font-size:14px;transition:.2s;background:linear-gradient(90deg,#38bdf8,#22c55e);color:#000}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(56,189,248,.35)}
+.btn-outline{background:transparent;border:1px solid rgba(56,189,248,.4);color:#38bdf8}
+.btn-red{background:linear-gradient(90deg,#ef4444,#dc2626);color:#fff}
+input,textarea,select{background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.3);color:#fff;border-radius:8px;padding:10px 14px;font-size:14px;width:100%;outline:none;transition:.2s}
+input:focus,textarea:focus,select:focus{border-color:#38bdf8;box-shadow:0 0 0 3px rgba(56,189,248,.15)}
+input::placeholder,textarea::placeholder{color:#64748b}
+label{display:block;font-size:13px;font-weight:600;color:#94a3b8;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.flex{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;background:rgba(56,189,248,.15);color:#38bdf8;border:1px solid rgba(56,189,248,.3)}
+.badge-green{background:rgba(34,197,94,.15);color:#22c55e;border-color:rgba(34,197,94,.3)}
+.badge-red{background:rgba(239,68,68,.15);color:#ef4444;border-color:rgba(239,68,68,.3)}
+.badge-yellow{background:rgba(234,179,8,.15);color:#eab308;border-color:rgba(234,179,8,.3)}
+.stat-box{background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.15);border-radius:12px;padding:20px;text-align:center}
+.stat-num{font-size:32px;font-weight:800;background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-label{font-size:12px;color:#64748b;margin-top:4px;text-transform:uppercase;letter-spacing:.5px}
+hr{border:none;border-top:1px solid rgba(56,189,248,.1);margin:20px 0}
+@media(max-width:768px){body{padding:15px 12px}h1{font-size:26px}.grid2,.grid3,.grid4{grid-template-columns:1fr}.card{padding:16px 14px}}
+.msg-user{align-self:flex-end;background:linear-gradient(135deg,rgba(56,189,248,.25),rgba(34,197,94,.15));border:1px solid rgba(56,189,248,.3);border-radius:16px 16px 4px 16px;padding:12px 16px;max-width:75%;font-size:14px;line-height:1.6}
+.msg-ai{align-self:flex-start;background:rgba(30,41,59,.9);border:1px solid rgba(56,189,248,.15);border-radius:16px 16px 16px 4px;padding:12px 16px;max-width:85%;font-size:14px;line-height:1.6;color:#e2e8f0}
+.msg-time{font-size:10px;color:#475569;margin-top:4px;text-align:right}
+.typing-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#38bdf8;animation:bounce .8s infinite}
+.typing-dot:nth-child(2){animation-delay:.15s}
+.typing-dot:nth-child(3){animation-delay:.3s}
+@keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-6px)}}
+.sugg-btn{display:block;width:100%;text-align:left;background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.15);color:#94a3b8;padding:9px 12px;border-radius:8px;cursor:pointer;font-size:12px;margin-bottom:6px;transition:.2s}
+.sugg-btn:hover{border-color:#38bdf8;color:#38bdf8;background:rgba(56,189,248,.1)}
+.code-block{background:rgba(0,0,0,.4);border:1px solid rgba(56,189,248,.2);border-radius:8px;padding:12px;font-family:monospace;font-size:12px;color:#7dd3fc;margin:8px 0;overflow-x:auto;white-space:pre-wrap}
+/* ── UNIVERSAL UPGRADE: Theme, Animations, Toast ── */
+:root{
+  --bg:#020617;--bg2:#0f172a;--card:rgba(30,41,59,.85);--border:rgba(56,189,248,.22);
+  --accent:#38bdf8;--accent2:#22c55e;--text:#f1f5f9;--muted:#94a3b8;--danger:#ef4444;
+}
+
+
+/* Toast notifications */
+.u-toast-container{position:fixed;bottom:24px;right:20px;z-index:99999;display:flex;flex-direction:column;gap:8px;max-width:320px}
+.u-toast{
+  background:var(--card);border:1px solid var(--border);color:var(--text);
+  padding:11px 16px;border-radius:10px;font-size:13px;font-weight:600;
+  box-shadow:0 4px 20px rgba(0,0,0,.35);
+  animation:uToastIn .3s ease;display:flex;align-items:center;gap:8px;
+}
+.u-toast.success{border-color:rgba(34,197,94,.5);background:rgba(34,197,94,.1)}
+.u-toast.error{border-color:rgba(239,68,68,.5);background:rgba(239,68,68,.1)}
+.u-toast.info{border-color:rgba(56,189,248,.5);background:rgba(56,189,248,.1)}
+@keyframes uToastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes uToastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(20px)}}
+
+/* Entrance animations */
+@keyframes uFadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes uFadeIn{from{opacity:0}to{opacity:1}}
+@keyframes uPulse{0%,100%{box-shadow:0 0 0 0 rgba(56,189,248,.4)}70%{box-shadow:0 0 0 8px rgba(56,189,248,0)}}
+.u-fade-up{animation:uFadeUp .45s ease both}
+.u-fade-in{animation:uFadeIn .4s ease both}
+.u-pulse{animation:uPulse 2s infinite}
+
+/* Button hover lift */
+.btn:hover,[class*="btn"]:not([class*="btn-"]):hover{transform:translateY(-2px)!important}
+
+/* Smooth card hover */
+.card:hover,[class*="card"]:hover{
+  border-color:var(--accent)!important;
+  box-shadow:0 6px 28px rgba(56,189,248,.12)!important;
+  transition:all .25s ease!important;
+}
+
+/* Loading skeleton */
+.u-skeleton{
+  background:linear-gradient(90deg,rgba(56,189,248,.06) 25%,rgba(56,189,248,.12) 50%,rgba(56,189,248,.06) 75%);
+  background-size:200% 100%;animation:uSkeleton 1.4s infinite;border-radius:6px;
+}
+@keyframes uSkeleton{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* Progress bar component */
+.u-progress{height:5px;background:rgba(56,189,248,.12);border-radius:3px;overflow:hidden;margin:8px 0}
+.u-progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:3px;transition:width .5s ease}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(56,189,248,.3);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(56,189,248,.55)}
+
+/* Mobile responsive upgrades */
+@media(max-width:600px){
+  
+  .u-toast-container{right:10px;bottom:80px;max-width:calc(100vw - 20px)}
+}
+
+</style></head>
+<body><div class="container">
+<a href="../index.html" class="back-link" onclick="window.close(); return false;">← Back to Portfolio</a>
+
+<h1>🤖 AI Assistant</h1>
+<p class="subtitle">Intelligent conversational AI interface</p>
+<div class="grid2" style="align-items:start">
+  <div>
+    <div class="card">
+      <h3 style="color:#38bdf8;margin-bottom:14px">AI Model</h3>
+      <select id="aiModel" style="margin-bottom:12px">
+        <option value="gpt4">GPT-4 Turbo</option>
+        <option value="claude">Claude 3 Opus</option>
+        <option value="gemini">Gemini Ultra</option>
+        <option value="llama">Llama 3 70B</option>
+      </select>
+      <label>Temperature</label>
+      <input type="range" id="temp" min="0" max="100" value="70" oninput="document.getElementById('tempVal').textContent=this.value/100" style="padding:0;background:transparent;border:none;box-shadow:none">
+      <div style="font-size:13px;color:#64748b;margin-bottom:12px">Value: <span id="tempVal">0.7</span></div>
+      <label>Max Tokens</label>
+      <select id="maxTok" style="margin-bottom:16px">
+        <option value="256">256</option><option value="512" selected>512</option>
+        <option value="1024">1024</option><option value="2048">2048</option>
+      </select>
+      <button class="btn btn-outline" onclick="clearChat()" style="width:100%">🗑 Clear Chat</button>
+    </div>
+    <div class="card">
+      <h3 style="color:#38bdf8;margin-bottom:12px">Suggested Prompts</h3>
+      <div id="suggestions"></div>
+    </div>
+    <div class="card">
+      <h3 style="color:#38bdf8;margin-bottom:12px">Stats</h3>
+      <div class="grid2" style="gap:10px">
+        <div class="stat-box"><div class="stat-num" id="msgCount">0</div><div class="stat-label">Messages</div></div>
+        <div class="stat-box"><div class="stat-num" id="tokCount">0</div><div class="stat-label">Tokens</div></div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="card" style="padding:0;overflow:hidden">
+      <div id="chatBox" style="height:440px;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:14px">
+        <div style="text-align:center;padding:20px">
+          <div style="font-size:48px;margin-bottom:10px">🤖</div>
+          <div style="color:#94a3b8;font-size:14px">Hi! I am your AI assistant.<br>Ask me anything!</div>
+        </div>
+      </div>
+      <div style="padding:14px;border-top:1px solid rgba(56,189,248,.1)">
+        <div class="flex" style="gap:8px">
+          <textarea id="userInput" rows="2" placeholder="Type your message..." style="flex:1;resize:none;font-size:14px" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMsg();}"></textarea>
+          <button class="btn" onclick="sendMsg()" style="flex-shrink:0;padding:10px 18px;align-self:flex-end">Send</button>
+        </div>
+        <div style="font-size:11px;color:#475569;margin-top:6px">Enter to send · Shift+Enter for new line</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div><script>
+const models={gpt4:'GPT-4 Turbo',claude:'Claude 3 Opus',gemini:'Gemini Ultra',llama:'Llama 3 70B'};
+const suggestions=['Explain quantum computing simply','Write a Python function to sort a list','What are the best practices for REST APIs?','Give me 5 startup ideas for 2024','How does machine learning work?','Write a poem about technology','Explain the difference between TCP and UDP','What is the CAP theorem?'];
+let msgCount=0,tokCount=0;
+
+const responses = {
+  default:[
+    "That's a great question! Based on my training data, here's what I know:\n\nThis topic involves multiple layers of complexity. The key insight is that **understanding the fundamentals** enables you to tackle advanced concepts more naturally.\n\nWould you like me to elaborate on any specific aspect?",
+    "Excellent point! Let me break this down for you:\n\n1. **First principle** – Start with what you know\n2. **Second principle** – Build incrementally\n3. **Third principle** – Validate your assumptions\n\nThis approach works well across many domains. Shall I give you a concrete example?",
+    "I've analyzed your question carefully. Here's my perspective:\n\nThe answer depends on context, but generally speaking, the best approach is to **prioritize clarity over cleverness**. This leads to more maintainable and understandable solutions.\n\nWhat specific aspect would you like to explore further?",
+    "Great question! Here's a concise breakdown:\n\n- The core concept revolves around **abstraction**\n- Key factors to consider include performance, readability, and maintainability\n- Best practices suggest starting simple and refactoring as needed\n\nI'm happy to dive deeper into any of these points!",
+  ],
+  code:["Here's a clean implementation:\n\n```\nfunction solution(input) {\n  // Validate input\n  if (!input) throw new Error('Invalid input');\n  \n  // Process data\n  const result = input\n    .filter(Boolean)\n    .map(item => transform(item));\n  \n  return result;\n}\n```\n\nThis approach is O(n) time complexity and handles edge cases properly.",
+    "Here's how you could implement that:\n\n```\nconst fetchData = async (url) => {\n  try {\n    const response = await fetch(url);\n    if (!response.ok) throw new Error('Network error');\n    return await response.json();\n  } catch (error) {\n    console.error('Error:', error);\n    throw error;\n  }\n};\n```\n\nThis uses async/await with proper error handling. Want me to add TypeScript types?",
+  ],
+  python:["Here's a Python solution:\n\n```\ndef process_data(items: list) -> list:\n    \"\"\"Process and filter items.\"\"\"\n    return [\n        transform(item) \n        for item in items \n        if is_valid(item)\n    ]\n\ndef transform(item):\n    return item.strip().lower()\n\ndef is_valid(item):\n    return item and len(item) > 0\n```\n\nPython's list comprehensions make this concise and readable!",
+  ],
+};
+
+function getResponse(msg){
+  const m=msg.toLowerCase();
+  if(m.includes('python'))return responses.python[0];
+  if(m.includes('code')||m.includes('function')||m.includes('implement'))return responses.code[Math.floor(Math.random()*responses.code.length)];
+  return responses.default[Math.floor(Math.random()*responses.default.length)];
+}
+
+function addMsg(text,isUser){
+  const box=document.getElementById('chatBox');
+  const wrap=document.createElement('div');
+  wrap.style.display='flex';wrap.style.flexDirection='column';wrap.style.alignItems=isUser?'flex-end':'flex-start';
+  const now=new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+  if(!isUser){
+    const modelName=models[document.getElementById('aiModel').value];
+    const label=document.createElement('div');
+    label.style.cssText='font-size:11px;color:#64748b;margin-bottom:4px;padding-left:4px';
+    label.textContent='🤖 '+modelName;
+    wrap.appendChild(label);
+  }
+  const bubble=document.createElement('div');
+  bubble.className=isUser?'msg-user':'msg-ai';
+  // Format code blocks
+  const formatted=text.replace(/```([\s\S]*?)```/g,'<div class="code-block">$1</div>').replace(/\*\*(.+?)\*\*/g,'<strong style="color:#f1f5f9">$1</strong>').replace(/\n/g,'<br>');
+  bubble.innerHTML=formatted;
+  const time=document.createElement('div');time.className='msg-time';time.textContent=now;
+  wrap.appendChild(bubble);wrap.appendChild(time);
+  box.appendChild(wrap);
+  box.scrollTop=box.scrollHeight;
+  const tokens=text.split(' ').length;
+  tokCount+=tokens;
+  document.getElementById('tokCount').textContent=tokCount;
+}
+
+function showTyping(){
+  const box=document.getElementById('chatBox');
+  const wrap=document.createElement('div');wrap.id='typingWrap';
+  wrap.innerHTML='<div class="msg-ai" style="padding:14px 18px"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div>';
+  box.appendChild(wrap);box.scrollTop=box.scrollHeight;
+}
+
+function sendMsg(){
+  const input=document.getElementById('userInput');
+  const text=input.value.trim();
+  if(!text)return;
+  addMsg(text,true);
+  input.value='';
+  msgCount++;
+  document.getElementById('msgCount').textContent=msgCount;
+  showTyping();
+  const delay=800+Math.random()*1200;
+  setTimeout(()=>{
+    const typingWrap=document.getElementById('typingWrap');
+    if(typingWrap)typingWrap.remove();
+    addMsg(getResponse(text),false);
+    msgCount++;
+    document.getElementById('msgCount').textContent=msgCount;
+  },delay);
+}
+
+function clearChat(){
+  document.getElementById('chatBox').innerHTML='<div style="text-align:center;padding:20px"><div style="font-size:48px;margin-bottom:10px">🤖</div><div style="color:#94a3b8;font-size:14px">Chat cleared. Start a new conversation!</div></div>';
+  msgCount=0;tokCount=0;
+  document.getElementById('msgCount').textContent=0;
+  document.getElementById('tokCount').textContent=0;
+}
+
+document.getElementById('suggestions').innerHTML=suggestions.map(s=>`<button class="sugg-btn" onclick="document.getElementById('userInput').value='${s}';sendMsg()">${s}</button>`).join('');
+</script><script>
+// ── UNIVERSAL UPGRADE: Theme, localStorage, Toast, Animations ──
+(function(){
+'use strict';
+
+// ── 2. TOAST SYSTEM ──────────────────────────────────────────────
+var toastContainer = null;
+function getToastContainer(){
+  if(!toastContainer || !document.body.contains(toastContainer)){
+    toastContainer = document.createElement('div');
+    toastContainer.className = 'u-toast-container';
+    document.body.appendChild(toastContainer);
+  }
+  return toastContainer;
+}
+
+window.uToast = function(msg, type, duration){
+  type = type || 'info';
+  duration = duration || 2800;
+  var icons = {success:'✅', error:'❌', info:'💡', warning:'⚠️'};
+  var c = getToastContainer();
+  var t = document.createElement('div');
+  t.className = 'u-toast ' + type;
+  t.innerHTML = '<span>' + (icons[type]||'💡') + '</span><span>' + msg + '</span>';
+  c.appendChild(t);
+  setTimeout(function(){
+    t.style.animation = 'uToastOut .3s ease forwards';
+    setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 300);
+  }, duration);
+};
+
+// ── 3. LOCALSTORAGE HELPERS ──────────────────────────────────────
+var APP_KEY = 'uapp_' + location.pathname.split('/').pop().replace('.html','');
+window.uSave = function(key, val){
+  try { localStorage.setItem(APP_KEY + '_' + key, JSON.stringify(val)); return true; }
+  catch(e){ return false; }
+};
+window.uLoad = function(key, def){
+  try {
+    var v = localStorage.getItem(APP_KEY + '_' + key);
+    return v !== null ? JSON.parse(v) : def;
+  } catch(e){ return def; }
+};
+window.uClear = function(key){
+  try { localStorage.removeItem(APP_KEY + '_' + key); } catch(e){}
+};
+
+// ── 4. ENTRANCE ANIMATIONS ───────────────────────────────────────
+function animateEntrance(){
+  var cards = document.querySelectorAll('.card, [class*="card"]');
+  cards.forEach(function(el, i){
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(18px)';
+    setTimeout(function(){
+      el.style.transition = 'opacity .4s ease, transform .4s ease';
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+    }, i * 60);
+  });
+}
+
+// ── 5. SMOOTH COUNTER ANIMATION ──────────────────────────────────
+window.uAnimCount = function(el, target, duration, prefix, suffix){
+  prefix = prefix || '';
+  suffix = suffix || '';
+  duration = duration || 1200;
+  var start = 0;
+  var step = target / (duration / 16);
+  var iv = setInterval(function(){
+    start = Math.min(start + step, target);
+    el.textContent = prefix + Math.round(start).toLocaleString() + suffix;
+    if(start >= target) clearInterval(iv);
+  }, 16);
+};
+
+// ── 6. EXPORT HELPER ─────────────────────────────────────────────
+window.uExportJSON = function(data, filename){
+  var blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.json';
+  a.click();
+  uToast('Data exported!', 'success');
+};
+window.uExportCSV = function(rows, filename){
+  var csv = rows.map(function(r){ return r.join(','); }).join('\n');
+  var blob = new Blob([csv], {type:'text/csv'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.csv';
+  a.click();
+  uToast('CSV exported!', 'success');
+};
+
+// ── 8. INIT ──────────────────────────────────────────────────────
+function init(){
+  setTimeout(animateEntrance, 100);
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+})();
+</script>
+<script>
+(function(){
+  var chatHistory = uLoad('ai_chat_history', []);
+  
+  // Save messages
+  var origSend = window.sendMsg;
+  if(origSend){
+    window.sendMsg = function(){
+      origSend.apply(this,arguments);
+      setTimeout(function(){
+        var msgs = [];
+        document.querySelectorAll('.msg-user,.msg-ai').forEach(function(m){
+          msgs.push({type: m.classList.contains('msg-user')?'user':'ai', text: m.textContent.trim()});
+        });
+        chatHistory = msgs.slice(-50);
+        uSave('ai_chat_history', chatHistory);
+      }, 2000);
+    };
+  }
+  
+  // Export conversation button
+  if(!document.getElementById('uChatExport')){
+    var btn = document.createElement('button');
+    btn.id = 'uChatExport';
+    btn.textContent = '⬇ Export Chat';
+    btn.style.cssText = 'padding:7px 14px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:#22c55e;border-radius:8px;cursor:pointer;font-size:13px;font-weight:700';
+    btn.onclick = function(){
+      var msgs = [];
+      document.querySelectorAll('.msg-user,.msg-ai').forEach(function(m){
+        msgs.push({role: m.classList.contains('msg-user')?'You':'AI', text: m.textContent.trim()});
+      });
+      uExportJSON({conversation: msgs, exported: new Date().toISOString()}, 'ai_conversation');
+    };
+    document.querySelector('.card:last-child,.card:nth-child(3)')?.querySelector('h3')?.after(btn);
+  }
+  
+  // Conversation counter
+  var observer = new MutationObserver(function(){
+    var count = document.querySelectorAll('.msg-user').length;
+    var el = document.getElementById('msgCount');
+    if(el) el.textContent = count;
+  });
+  observer.observe(document.querySelector('#chatBox') || document.body, {childList:true, subtree:true});
+  
+  uToast('💡 Chat history auto-saved', 'info', 1800);
+})();
+</script>
+</body></html>

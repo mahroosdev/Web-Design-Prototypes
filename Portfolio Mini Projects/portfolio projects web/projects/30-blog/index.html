@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <html lang="en">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <title>Blog Platform | DevOS</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+</head>
+<body>
+<div id="topbar">
+  <div class="topbar-left">
+    <a class="back-btn" href="index.html">← BACK</a>
+    <span class="topbar-logo">BLOG_OS</span>
+  </div>
+  <div class="topbar-right">
+    <button class="theme-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle theme">🌙</button>
+  </div>
+</div>
+<div id="toast"></div>
+<div class="wrap">
+<div class="page-header animate-in">
+  <div class="row align" style="gap:10px;margin-bottom:8px"><span style="font-size:28px">✍</span><h1>Blog Platform</h1></div>
+  <p>Read and write posts with categories, likes, comments and search.</p>
+</div>
+
+
+<h1>✍ Blog Platform</h1>
+<p>Read and write blog posts with categories, search and rich text.</p>
+<div style="margin-top:16px"><div class="card" style="margin-bottom:12px">
+  <div class="row" style="gap:8px">
+    <input id="blog-search" placeholder="Search posts..." style="flex:1" oninput="renderBlog()">
+    <button class="btn btn-primary" onclick="showCompose()">+ Write</button>
+  </div>
+  <div class="row" style="gap:6px;margin-top:10px;overflow-x:auto;flex-wrap:nowrap;padding-bottom:4px">
+    <button class="btn btn-outline" style="font-size:11px;padding:6px 12px;min-height:32px;flex-shrink:0;border-color:var(--accent);color:var(--accent)" onclick="setTag('all',this)">All</button>
+    <button class="btn btn-outline" style="font-size:11px;padding:6px 12px;min-height:32px;flex-shrink:0" onclick="setTag('coding',this)">Coding</button>
+    <button class="btn btn-outline" style="font-size:11px;padding:6px 12px;min-height:32px;flex-shrink:0" onclick="setTag('design',this)">Design</button>
+    <button class="btn btn-outline" style="font-size:11px;padding:6px 12px;min-height:32px;flex-shrink:0" onclick="setTag('career',this)">Career</button>
+  </div>
+</div>
+<div id="blog-compose" style="display:none" class="card" style="margin-bottom:12px"></div>
+<div id="blog-posts"></div></div>
+<script>let posts=[{id:1,title:'10 JS Tricks You Need to Know',tag:'coding',author:'Alex Dev',date:'Apr 20',reads:1240,emoji:'⚡',body:'Destructuring, optional chaining, nullish coalescing — modern JavaScript is powerful. Here are 10 patterns that will make your code cleaner and more expressive...',liked:false,likes:42},{id:2,title:'Designing for Dark Mode',tag:'design',author:'Sarah UI',date:'Apr 18',reads:892,emoji:'🌙',body:'Dark mode is not just a trend — it reduces eye strain and saves battery on OLED screens. Here is how to design dark interfaces that actually look good...',liked:false,likes:38},{id:3,title:'From Junior to Senior in 2 Years',tag:'career',author:'Mike Dev',date:'Apr 15',reads:3201,emoji:'🚀',body:'The jump from junior to senior is less about technical skills and more about problem-solving mindset. Here is what made the difference for me...',liked:false,likes:97}];
+let nid=4,activeTag='all';
+function setTag(t,btn){activeTag=t;document.querySelectorAll('.btn-outline').forEach(b=>{b.style.borderColor='var(--border)';b.style.color='var(--muted)'});btn.style.borderColor='var(--accent)';btn.style.color='var(--accent)';renderBlog();}
+function renderBlog(){const q=document.getElementById('blog-search').value.toLowerCase();const list=posts.filter(p=>(activeTag==='all'||p.tag===activeTag)&&(!q||(p.title+p.body).toLowerCase().includes(q)));document.getElementById('blog-posts').innerHTML=list.map((p,i)=>`<div class="card" style="margin-bottom:10px;cursor:pointer;transition:border-color .2s" onclick="readPost(${p.id})" onmouseover="this.style.borderColor='rgba(0,224,255,.3)'" onmouseout="this.style.borderColor='var(--border)'"><div style="font-size:36px;margin-bottom:10px">${p.emoji}</div><div style="display:inline-block;padding:2px 10px;border:1px solid var(--border);border-radius:20px;font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--muted);margin-bottom:8px">${p.tag}</div><h2 style="font-size:16px;margin-bottom:6px;line-height:1.3">${p.title}</h2><p style="font-size:12px;color:var(--muted);margin-bottom:10px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">${p.body}</p><div class="row" style="justify-content:space-between;font-size:11px;color:var(--muted)"><span>${p.author} · ${p.date}</span><div class="row" style="gap:12px"><span>👁 ${p.reads}</span><button onclick="event.stopPropagation();likePost(${p.id})" style="background:none;border:none;font-size:13px;cursor:pointer;-webkit-tap-highlight-color:transparent">${p.liked?'❤️':'🤍'} ${p.likes}</button></div></div></div>`).join('');}
+function likePost(id){const p=posts.find(x=>x.id===id);p.liked=!p.liked;p.likes+=p.liked?1:-1;renderBlog();}
+function readPost(id){const p=posts.find(x=>x.id===id);p.reads++;toast(`📖 Reading: ${p.title}`);}
+function showCompose(){const c=document.getElementById('blog-compose');c.style.display='block';c.innerHTML=`<h2 style="font-size:15px;margin-bottom:12px">Write a Post</h2><div class="form-group"><label>Title</label><input id="bp-title" placeholder="Your post title..."></div><div class="form-group"><label>Tag</label><select id="bp-tag"><option value="coding">Coding</option><option value="design">Design</option><option value="career">Career</option></select></div><div class="form-group"><label>Content</label><textarea id="bp-body" rows="4" placeholder="Write your thoughts..." style="resize:none"></textarea></div><div class="row" style="gap:8px;justify-content:flex-end"><button class="btn btn-outline" onclick="document.getElementById('blog-compose').style.display='none'" style="font-size:12px">Cancel</button><button class="btn btn-primary" onclick="publishPost()" style="font-size:12px">Publish</button></div>`;}
+function publishPost(){const t=document.getElementById('bp-title').value.trim();const b=document.getElementById('bp-body').value.trim();if(!t)return;posts.unshift({id:nid++,title:t,tag:document.getElementById('bp-tag').value,author:'You',date:'Now',reads:1,emoji:'✍',body:b||'...',liked:false,likes:0});document.getElementById('blog-compose').style.display='none';renderBlog();toast('✅ Post published!');}
+renderBlog();</script>
+
+
+</div>
+  <script src="../shared-back.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

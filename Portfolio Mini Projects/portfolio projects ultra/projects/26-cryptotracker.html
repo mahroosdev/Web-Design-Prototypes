@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<meta name="description" content="Crypto Tracker — part of a professional web developer portfolio with 50+ projects.">
+<meta name="robots" content="index, follow">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Tracker</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { background:linear-gradient(135deg,#020617 0%,#0f172a 100%); font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; color:#fff; min-height:100vh; padding:40px 20px; }
+        .container { max-width:1200px; margin:0 auto; }
+        a { color:#38bdf8; text-decoration:none; font-weight:600; }
+        a:hover { color:#4ade80; }
+        h1 { background:linear-gradient(90deg,#38bdf8,#22c55e); -webkit-background-clip:text; -webkit-text-fill-color:transparent; font-size:36px; margin-bottom:10px; }
+        .subtitle { color:#cbd5e1; margin-bottom:30px; }
+        .content { background:rgba(30,41,59,0.8); backdrop-filter:blur(10px); padding:40px; border-radius:15px; border:1px solid rgba(56,189,248,0.2); }
+        input,textarea,button { border-radius:6px; padding:10px; border:1px solid rgba(56,189,248,0.3); background:rgba(56,189,248,0.05); color:white; cursor:pointer; }
+        button { font-weight:700; transition:0.3s; }
+        button:hover { background:rgba(56,189,248,0.2); }
+    
+        /* Production Features */
+        @keyframes slideIn { from { transform: translateX(400px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes slideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(400px); opacity: 0; } }
+        .production-spinner { width: 16px; height: 16px; border: 2px solid rgba(56, 189, 248, 0.2); border-top-color: #38bdf8; border-radius: 50%; animation: spin 0.8s linear infinite; }
+        .app-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; gap: 16px; flex-wrap: wrap; }
+        .app-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+        .btn-icon { background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); color: #38bdf8; padding: 8px 12px; border-radius: 6px; cursor: pointer; transition: 0.2s; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 4px; }
+        .btn-icon:hover { background: rgba(56, 189, 248, 0.2); border-color: rgba(56, 189, 248, 0.5); }
+    
+        /* ===== UNIVERSAL MOBILE RESPONSIVE FIX ===== */
+        * { box-sizing: border-box !important; }
+        body { overflow-x: hidden !important; }
+        
+        @media (max-width: 768px) {
+            body { padding: 15px 12px !important; }
+            .container, [class*="container"], [class*="wrapper"] {
+                max-width: 100% !important;
+                width: 100% !important;
+                padding-left: 12px !important;
+                padding-right: 12px !important;
+            }
+            h1 { font-size: clamp(22px, 6vw, 36px) !important; }
+            h2 { font-size: clamp(18px, 5vw, 28px) !important; }
+            h3 { font-size: clamp(15px, 4vw, 22px) !important; }
+            
+            /* Grids → single column */
+            [class*="grid"]:not([class*="col-"]) {
+                grid-template-columns: 1fr !important;
+            }
+            /* Flex rows → wrap */
+            [class*="header"], [class*="nav"], [class*="toolbar"], [class*="actions"] {
+                flex-wrap: wrap !important;
+                gap: 8px !important;
+            }
+            /* Cards and panels */
+            [class*="card"], [class*="panel"], [class*="content"], [class*="box"] {
+                padding: 16px 14px !important;
+            }
+            /* Tables → scroll */
+            table { display: block !important; overflow-x: auto !important; white-space: nowrap !important; }
+            /* Inputs and buttons */
+            input, select, textarea { font-size: 16px !important; max-width: 100% !important; }
+            button { min-height: 40px !important; }
+            /* Sidebar layouts → stack */
+            [class*="sidebar"], [class*="side-bar"] {
+                width: 100% !important;
+                position: relative !important;
+                height: auto !important;
+            }
+            /* Images */
+            img { max-width: 100% !important; height: auto !important; }
+            /* Canvas */
+            canvas { max-width: 100% !important; }
+            /* Fixed widths → fluid */
+            [style*="width: 1200px"], [style*="width:1200px"],
+            [style*="width: 900px"], [style*="width:900px"],
+            [style*="width: 800px"], [style*="width:800px"],
+            [style*="width: 700px"], [style*="width:700px"],
+            [style*="width: 600px"], [style*="width:600px"] {
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body { padding: 10px 10px !important; }
+            h1 { font-size: clamp(20px, 7vw, 28px) !important; }
+            [class*="card"], [class*="panel"] { padding: 12px 10px !important; border-radius: 10px !important; }
+            [class*="grid"] { gap: 10px !important; }
+            button, .btn, .button { padding: 10px 14px !important; font-size: 13px !important; }
+        }
+        /* ===== END MOBILE FIX ===== */
+        
+/* ── UNIVERSAL UPGRADE: Theme, Animations, Toast ── */
+:root{
+  --bg:#020617;--bg2:#0f172a;--card:rgba(30,41,59,.85);--border:rgba(56,189,248,.22);
+  --accent:#38bdf8;--accent2:#22c55e;--text:#f1f5f9;--muted:#94a3b8;--danger:#ef4444;
+}
+
+
+/* Toast notifications */
+.u-toast-container{position:fixed;bottom:24px;right:20px;z-index:99999;display:flex;flex-direction:column;gap:8px;max-width:320px}
+.u-toast{
+  background:var(--card);border:1px solid var(--border);color:var(--text);
+  padding:11px 16px;border-radius:10px;font-size:13px;font-weight:600;
+  box-shadow:0 4px 20px rgba(0,0,0,.35);
+  animation:uToastIn .3s ease;display:flex;align-items:center;gap:8px;
+}
+.u-toast.success{border-color:rgba(34,197,94,.5);background:rgba(34,197,94,.1)}
+.u-toast.error{border-color:rgba(239,68,68,.5);background:rgba(239,68,68,.1)}
+.u-toast.info{border-color:rgba(56,189,248,.5);background:rgba(56,189,248,.1)}
+@keyframes uToastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes uToastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(20px)}}
+
+/* Entrance animations */
+@keyframes uFadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes uFadeIn{from{opacity:0}to{opacity:1}}
+@keyframes uPulse{0%,100%{box-shadow:0 0 0 0 rgba(56,189,248,.4)}70%{box-shadow:0 0 0 8px rgba(56,189,248,0)}}
+.u-fade-up{animation:uFadeUp .45s ease both}
+.u-fade-in{animation:uFadeIn .4s ease both}
+.u-pulse{animation:uPulse 2s infinite}
+
+/* Button hover lift */
+.btn:hover,[class*="btn"]:not([class*="btn-"]):hover{transform:translateY(-2px)!important}
+
+/* Smooth card hover */
+.card:hover,[class*="card"]:hover{
+  border-color:var(--accent)!important;
+  box-shadow:0 6px 28px rgba(56,189,248,.12)!important;
+  transition:all .25s ease!important;
+}
+
+/* Loading skeleton */
+.u-skeleton{
+  background:linear-gradient(90deg,rgba(56,189,248,.06) 25%,rgba(56,189,248,.12) 50%,rgba(56,189,248,.06) 75%);
+  background-size:200% 100%;animation:uSkeleton 1.4s infinite;border-radius:6px;
+}
+@keyframes uSkeleton{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* Progress bar component */
+.u-progress{height:5px;background:rgba(56,189,248,.12);border-radius:3px;overflow:hidden;margin:8px 0}
+.u-progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:3px;transition:width .5s ease}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(56,189,248,.3);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(56,189,248,.55)}
+
+/* Mobile responsive upgrades */
+@media(max-width:600px){
+  
+  .u-toast-container{right:10px;bottom:80px;max-width:calc(100vw - 20px)}
+}
+
+</style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" onclick="window.close(); return false;">← Back to Portfolio</a>
+        <h1>💰 Crypto Tracker</h1>
+        <p class="subtitle">Crypto Tracker - Interactive web application</p>
+        <div class="content" id="content">
+        <div style="margin-bottom:20px;">
+            <input type="text" id="searchInput" placeholder="Search crypto..." style="width:100%;padding:10px;border-radius:6px;border:1px solid rgba(56,189,248,0.3);background:rgba(56,189,248,0.05);color:white;">
+        </div>
+        <div id="results" style="width:100%;overflow-x:auto;"></div>
+        </div>
+    </div>
+    <script>
+        function closeWindow(e){if(e)e.stopPropagation();try{window.close()}catch(x){}try{if(window.opener){window.opener.postMessage({type:'requestClose',url:window.location.href},'*');setTimeout(()=>{window.location.href='../index.html'},300);return}}catch(x){}window.location.href='../index.html'}
+        const coins=[{n:'Bitcoin',p:'$42K',c:'+2.5%'},{n:'Ethereum',p:'$2.3K',c:'+1.8%'},{n:'Solana',p:'$98',c:'-0.5%'}];function show(){document.getElementById('coins').innerHTML=coins.map(c=>'<div style="background:rgba(56,189,248,0.1); padding:15px; border-radius:10px; border-left:4px solid '+((c.c.includes('+')?'#22c55e':'#e74c3c'))+';"><p style="color:#cbd5e1;">'+c.n+'</p><h3 style="color:#38bdf8;">'+c.p+'</h3><p style="color:'+(c.c.includes('+')?"#22c55e":"#e74c3c")+';">'+c.c+'</p></div>').join('');}show();
+    </script>
+    <script>(function(){try{if(window._errorReporterInjected)return;window._errorReporterInjected=true;const post=p=>{try{if(window.opener&&!window.opener.closed)window.opener.postMessage({type:'runtimeError',url:window.location.href,payload:p},'*')}catch(e){}};window.addEventListener('error',e=>{post({message:e.message,source:e.filename,lineno:e.lineno,colno:e.colno,stack:e.error?.stack})}); window.addEventListener('unhandledrejection',e=>{try{post({message:'unhandledrejection',reason:String(e.reason),stack:e.reason?.stack})}catch(x){}});const orig=console.error.bind(console);console.error=function(){try{post({message:'console.error',args:Array.from(arguments).map(a=>{try{return JSON.stringify(a)}catch(e){return String(a)}})})}catch(x){};orig.apply(console,arguments)}}catch(e){}})();</script>
+
+    <script src="../scripts/production-lib.js" defer></script>
+    <script>
+        // Project-specific initialization
+        const projectPersistence = new window.ProductionLib.PersistenceManager('26-cryptotracker');
+        
+        // Global error handling
+        window.addEventListener('error', (e) => {
+            window.ProductionLib.ProductionErrorHandler.handle(e.error, 'Global');
+        });
+
+        // Close window utility with proper messaging
+        function closeWindow(event) {
+            if (event) try { event.preventDefault(); } catch(e) {}
+            try { window.close(); } catch (e) {}
+            try {
+                if (window.opener) {
+                    window.opener.postMessage({ type: 'requestClose', url: window.location.href }, '*');
+                    setTimeout(() => { window.location.href = '../index.html'; }, 300);
+                    return;
+                }
+            } catch (e) {}
+            window.location.href = '../index.html';
+        }
+
+        // Keyboard shortcuts help
+        document.addEventListener('keydown', (e) => {
+            if (e.key === '?' && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+                e.preventDefault();
+                if (window.keyboardShortcuts) {
+                    window.keyboardShortcuts.showHelp();
+                }
+            }
+        });
+
+    // ==================== UNIVERSAL PRODUCTION FEATURES ====================
+    // Add export button
+    function addUniversalControls() {
+        let controls = document.getElementById('universal-controls');
+        if (!controls) {
+            controls = document.createElement('div');
+            controls.id = 'universal-controls';
+            controls.style = 'display:flex;gap:8px;margin-bottom:15px;flex-wrap:wrap;';
+            
+            let exportBtn = document.createElement('button');
+            exportBtn.textContent = '📤 Export Data';
+            exportBtn.className = 'btn-icon';
+            exportBtn.style = 'background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.3);color:#38bdf8;padding:8px 12px;border-radius:6px;cursor:pointer;font-weight:600;';
+            exportBtn.onclick = exportProjectData;
+            controls.appendChild(exportBtn);
+            
+            let helpBtn = document.createElement('button');
+            helpBtn.textContent = '? Help';
+            helpBtn.className = 'btn-icon';
+            helpBtn.style = 'background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.3);color:#38bdf8;padding:8px 12px;border-radius:6px;cursor:pointer;font-weight:600;';
+            helpBtn.onclick = () => {
+                window.notificationSystem?.info?.('Press ? for keyboard shortcuts');
+                if(window.ProductionLib?.KeyboardShortcuts?.showHelp) {
+                    window.ProductionLib.KeyboardShortcuts.showHelp();
+                }
+            };
+            controls.appendChild(helpBtn);
+            
+            // Try to insert at top of content
+            const content = document.querySelector('.content') || 
+                           document.querySelector('main') ||
+                           document.querySelector('.container');
+            if (content) {
+                content.insertAdjacentElement('afterbegin', controls);
+            }
+        }
+    }
+    
+    // Export project data
+    function exportProjectData() {
+        try {
+            const allData = {};
+            // Collect all project data from persistence
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.includes(projectIdToUse || '')) {
+                    allData[key] = localStorage.getItem(key);
+                }
+            }
+            
+            const data = {
+                projectName: document.title,
+                exportedAt: new Date().toISOString(),
+                data: allData,
+                url: window.location.href
+            };
+            
+            window.ProductionLib?.DataExporter?.exportJSON?.(data, 'project-export');
+            window.notificationSystem?.success?.('Data exported ✓');
+        } catch (e) {
+            window.notificationSystem?.error?.('Export failed');
+            console.error('Export error:', e);
+        }
+    }
+    
+    // Wrap key user actions with notifications
+    function wrapActionWithNotification(element, actionName, notificationText) {
+        if (!element) return;
+        const originalOnclick = element.onclick;
+        element.onclick = function(e) {
+            const result = originalOnclick?.call(this, e);
+            if (result !== false) {
+                window.notificationSystem?.success?.(notificationText || actionName + ' completed');
+                projectPersistence?.set?.('lastAction', {action: actionName, timestamp: Date.now()});
+            }
+            return result;
+        };
+    }
+    
+    // Track user interactions
+    function trackInteraction(eventName, details) {
+        const interactions = projectPersistence?.get?.('interactions', []) || [];
+        interactions.push({event: eventName, timestamp: Date.now(), details});
+        if (interactions.length > 100) interactions.shift(); // Keep last 100
+        projectPersistence?.set?.('interactions', interactions);
+    }
+    
+    // Generic error handling wrapper
+    function safeExecute(fn, actionName) {
+        try {
+            return fn();
+        } catch (e) {
+            window.notificationSystem?.error?.(actionName + ' failed: ' + e.message);
+            window.ProductionLib?.ProductionErrorHandler?.handle?.(e, actionName);
+            trackInteraction('error', {action: actionName, error: e.message});
+            return null;
+        }
+    }
+    
+    // Auto-save handler
+    function setupAutoSave() {
+        window.addEventListener('beforeunload', () => {
+            projectPersistence?.set?.('lastSession', {
+                timestamp: Date.now(),
+                url: window.location.href
+            });
+        });
+    }
+    
+    // Initialize all universal features
+    addUniversalControls();
+    setupAutoSave();
+    
+    // Keyboard shortcut for export (Ctrl+E)
+    document.addEventListener('keydown', (e) => {
+        if (e.ctrlKey && e.key === 'e') {
+            e.preventDefault();
+            exportProjectData();
+        }
+    });
+    // ==================== END UNIVERSAL FEATURES ====================
+
+    
+    // ==================== SEARCH-SPECIFIC FEATURES ====================
+    function setupSearchFeatures() {
+        // Search history
+        window.recordSearch = function(query) {
+            if (query.trim()) {
+                const searches = projectPersistence.get('searches', []);
+                searches.push({query, timestamp: Date.now()});
+                if (searches.length > 50) searches.shift();
+                projectPersistence.set('searches', searches);
+                window.notificationSystem?.success?.('Search saved');
+            }
+        };
+        
+        // Favorites system
+        window.addFavorite = function(item, id) {
+            const favorites = projectPersistence.get('favorites', []);
+            if (!favorites.find(f => f.id === id)) {
+                favorites.push({item, id, timestamp: Date.now()});
+                projectPersistence.set('favorites', favorites);
+                window.notificationSystem?.success?.('Added to favorites ♥');
+            } else {
+                window.notificationSystem?.warning?.('Already in favorites');
+            }
+        };
+        
+        window.removeFavorite = function(id) {
+            const favorites = projectPersistence.get('favorites', []);
+            const filtered = favorites.filter(f => f.id !== id);
+            projectPersistence.set('favorites', filtered);
+            window.notificationSystem?.success?.('Removed from favorites');
+        };
+        
+        // Show search history
+        window.showSearchHistory = function() {
+            const searches = projectPersistence.get('searches', []);
+            if (searches.length === 0) {
+                window.notificationSystem?.info?.('No search history');
+                return;
+            }
+            // Could create a modal showing recent searches
+            console.log('Recent searches:', searches.slice(-10));
+        };
+    }
+    setupSearchFeatures();
+    // ==================== END SEARCH FEATURES ====================
+
+        </script>
+    <script>
+// ── UNIVERSAL UPGRADE: Theme, localStorage, Toast, Animations ──
+(function(){
+'use strict';
+
+// ── 2. TOAST SYSTEM ──────────────────────────────────────────────
+var toastContainer = null;
+function getToastContainer(){
+  if(!toastContainer || !document.body.contains(toastContainer)){
+    toastContainer = document.createElement('div');
+    toastContainer.className = 'u-toast-container';
+    document.body.appendChild(toastContainer);
+  }
+  return toastContainer;
+}
+
+window.uToast = function(msg, type, duration){
+  type = type || 'info';
+  duration = duration || 2800;
+  var icons = {success:'✅', error:'❌', info:'💡', warning:'⚠️'};
+  var c = getToastContainer();
+  var t = document.createElement('div');
+  t.className = 'u-toast ' + type;
+  t.innerHTML = '<span>' + (icons[type]||'💡') + '</span><span>' + msg + '</span>';
+  c.appendChild(t);
+  setTimeout(function(){
+    t.style.animation = 'uToastOut .3s ease forwards';
+    setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 300);
+  }, duration);
+};
+
+// ── 3. LOCALSTORAGE HELPERS ──────────────────────────────────────
+var APP_KEY = 'uapp_' + location.pathname.split('/').pop().replace('.html','');
+window.uSave = function(key, val){
+  try { localStorage.setItem(APP_KEY + '_' + key, JSON.stringify(val)); return true; }
+  catch(e){ return false; }
+};
+window.uLoad = function(key, def){
+  try {
+    var v = localStorage.getItem(APP_KEY + '_' + key);
+    return v !== null ? JSON.parse(v) : def;
+  } catch(e){ return def; }
+};
+window.uClear = function(key){
+  try { localStorage.removeItem(APP_KEY + '_' + key); } catch(e){}
+};
+
+// ── 4. ENTRANCE ANIMATIONS ───────────────────────────────────────
+function animateEntrance(){
+  var cards = document.querySelectorAll('.card, [class*="card"]');
+  cards.forEach(function(el, i){
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(18px)';
+    setTimeout(function(){
+      el.style.transition = 'opacity .4s ease, transform .4s ease';
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+    }, i * 60);
+  });
+}
+
+// ── 5. SMOOTH COUNTER ANIMATION ──────────────────────────────────
+window.uAnimCount = function(el, target, duration, prefix, suffix){
+  prefix = prefix || '';
+  suffix = suffix || '';
+  duration = duration || 1200;
+  var start = 0;
+  var step = target / (duration / 16);
+  var iv = setInterval(function(){
+    start = Math.min(start + step, target);
+    el.textContent = prefix + Math.round(start).toLocaleString() + suffix;
+    if(start >= target) clearInterval(iv);
+  }, 16);
+};
+
+// ── 6. EXPORT HELPER ─────────────────────────────────────────────
+window.uExportJSON = function(data, filename){
+  var blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.json';
+  a.click();
+  uToast('Data exported!', 'success');
+};
+window.uExportCSV = function(rows, filename){
+  var csv = rows.map(function(r){ return r.join(','); }).join('\n');
+  var blob = new Blob([csv], {type:'text/csv'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.csv';
+  a.click();
+  uToast('CSV exported!', 'success');
+};
+
+// ── 8. INIT ──────────────────────────────────────────────────────
+function init(){
+  setTimeout(animateEntrance, 100);
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+})();
+</script>
+<script>
+(function(){
+  var portfolio = uLoad('crypto_portfolio', []);
+  var alerts = uLoad('price_alerts', []);
+  
+  // Portfolio panel
+  function injectPortfolio(){
+    if(document.getElementById('uCryptoPortfolio')) return;
+    var container = document.querySelector('.container,.main,body>div');
+    if(!container) return;
+    var panel = document.createElement('div');
+    panel.id = 'uCryptoPortfolio';
+    panel.className = 'card u-fade-up';
+    panel.style.marginTop = '20px';
+    panel.innerHTML = '<div style="font-weight:700;color:#38bdf8;margin-bottom:14px;font-size:15px">💼 My Portfolio</div>' +
+      '<div style="display:flex;gap:8px;margin-bottom:12px">' +
+      '<input id="uPortCoin" placeholder="Coin (e.g. BTC)" style="flex:1;font-size:13px">' +
+      '<input id="uPortAmount" type="number" placeholder="Amount" style="flex:1;font-size:13px">' +
+      '<input id="uPortPrice" type="number" placeholder="Buy price ($)" style="flex:1;font-size:13px">' +
+      '<button onclick="addToPortfolio()" style="padding:8px 14px;background:linear-gradient(90deg,#38bdf8,#22c55e);border:none;color:#000;border-radius:8px;cursor:pointer;font-weight:700;font-size:13px">Add</button>' +
+      '</div><div id="uPortList"></div>' +
+      '<div id="uPortTotal" style="margin-top:12px;padding:10px;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);border-radius:8px;font-weight:700;color:#22c55e;text-align:center;font-size:16px"></div>';
+    container.appendChild(panel);
+    renderPortfolio();
+  }
+  
+  function renderPortfolio(){
+    var list = document.getElementById('uPortList');
+    var total = document.getElementById('uPortTotal');
+    if(!list) return;
+    if(!portfolio.length){list.innerHTML='<p style="color:#64748b;font-size:13px">No holdings yet. Add some!</p>';if(total)total.textContent='Portfolio: $0.00';return;}
+    var totalVal = 0;
+    list.innerHTML = portfolio.map(function(p,i){
+      var currentPrice = p.buyPrice * (1 + (Math.random()-.3)*.3);
+      var value = p.amount * currentPrice;
+      var pnl = value - p.amount * p.buyPrice;
+      totalVal += value;
+      return '<div style="display:flex;align-items:center;gap:10px;padding:10px;background:rgba(56,189,248,.04);border:1px solid rgba(56,189,248,.1);border-radius:8px;margin-bottom:6px;font-size:13px">' +
+        '<span style="font-weight:800;color:#38bdf8;width:50px">' + p.coin + '</span>' +
+        '<span style="flex:1;color:#94a3b8">' + p.amount + ' @ $' + p.buyPrice.toFixed(2) + '</span>' +
+        '<span style="font-weight:700;color:' + (pnl>=0?'#22c55e':'#ef4444') + '">' + (pnl>=0?'+':'') + '$' + pnl.toFixed(2) + '</span>' +
+        '<button onclick="portfolio.splice('+i+',1);uSave(\'crypto_portfolio\',portfolio);renderPortfolio()" style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#ef4444;border-radius:5px;padding:3px 7px;cursor:pointer;font-size:11px;font-weight:700">✕</button>' +
+        '</div>';
+    }).join('');
+    if(total) total.textContent = 'Total Portfolio Value: $' + totalVal.toFixed(2);
+  }
+  
+  window.addToPortfolio = function(){
+    var coin = document.getElementById('uPortCoin')?.value.trim().toUpperCase();
+    var amount = parseFloat(document.getElementById('uPortAmount')?.value||0);
+    var price = parseFloat(document.getElementById('uPortPrice')?.value||0);
+    if(!coin||!amount||!price){uToast('Fill all fields','error');return;}
+    portfolio.push({coin:coin,amount:amount,buyPrice:price,added:new Date().toLocaleDateString()});
+    uSave('crypto_portfolio',portfolio);
+    document.getElementById('uPortCoin').value='';
+    document.getElementById('uPortAmount').value='';
+    document.getElementById('uPortPrice').value='';
+    renderPortfolio();
+    uToast('Added ' + coin + ' to portfolio! 💼', 'success');
+  };
+  
+  window.renderPortfolio = renderPortfolio;
+  injectPortfolio();
+})();
+</script>
+</body>
+</html>

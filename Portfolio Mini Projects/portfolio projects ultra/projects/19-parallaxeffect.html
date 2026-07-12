@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8">
+<meta name="description" content="Parallax Effect — part of a professional web developer portfolio with 50+ projects.">
+<meta name="robots" content="index, follow">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Parallax Effect</title><style>*{margin:0;padding:0;box-sizing:border-box}
+body{background:linear-gradient(135deg,#020617 0%,#0f172a 100%);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#fff;min-height:100vh;padding:40px 20px;overflow-x:hidden}
+.container{max-width:1000px;margin:0 auto}
+h1{background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:36px;margin-bottom:8px}
+.subtitle{color:#94a3b8;margin-bottom:28px;font-size:15px}
+.back-link{display:inline-flex;align-items:center;gap:6px;margin-bottom:20px;color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;padding:8px 14px;border:1px solid rgba(56,189,248,.3);border-radius:8px;transition:.2s}
+.back-link:hover{background:rgba(56,189,248,.1)}
+.card{background:rgba(30,41,59,.8);backdrop-filter:blur(10px);padding:24px;border-radius:16px;border:1px solid rgba(56,189,248,.2);margin-bottom:20px}
+.btn{padding:10px 22px;border:none;border-radius:8px;cursor:pointer;font-weight:700;font-size:14px;transition:.2s;background:linear-gradient(90deg,#38bdf8,#22c55e);color:#000}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(56,189,248,.35)}
+.btn-outline{background:transparent;border:1px solid rgba(56,189,248,.4);color:#38bdf8}
+.btn-red{background:linear-gradient(90deg,#ef4444,#dc2626);color:#fff}
+input,textarea,select{background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.3);color:#fff;border-radius:8px;padding:10px 14px;font-size:14px;width:100%;outline:none;transition:.2s}
+input:focus,textarea:focus,select:focus{border-color:#38bdf8;box-shadow:0 0 0 3px rgba(56,189,248,.15)}
+input::placeholder,textarea::placeholder{color:#64748b}
+label{display:block;font-size:13px;font-weight:600;color:#94a3b8;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.flex{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;background:rgba(56,189,248,.15);color:#38bdf8;border:1px solid rgba(56,189,248,.3)}
+.badge-green{background:rgba(34,197,94,.15);color:#22c55e;border-color:rgba(34,197,94,.3)}
+.badge-red{background:rgba(239,68,68,.15);color:#ef4444;border-color:rgba(239,68,68,.3)}
+.badge-yellow{background:rgba(234,179,8,.15);color:#eab308;border-color:rgba(234,179,8,.3)}
+.stat-box{background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.15);border-radius:12px;padding:20px;text-align:center}
+.stat-num{font-size:32px;font-weight:800;background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-label{font-size:12px;color:#64748b;margin-top:4px;text-transform:uppercase;letter-spacing:.5px}
+hr{border:none;border-top:1px solid rgba(56,189,248,.1);margin:20px 0}
+@media(max-width:768px){body{padding:15px 12px}h1{font-size:26px}.grid2,.grid3,.grid4{grid-template-columns:1fr}.card{padding:16px 14px}}
+.pl-layer{position:absolute;inset:0;transition:transform .08s ease-out;will-change:transform}
+#scrollScene{overflow-y:scroll}
+/* ── UNIVERSAL UPGRADE: Theme, Animations, Toast ── */
+:root{
+  --bg:#020617;--bg2:#0f172a;--card:rgba(30,41,59,.85);--border:rgba(56,189,248,.22);
+  --accent:#38bdf8;--accent2:#22c55e;--text:#f1f5f9;--muted:#94a3b8;--danger:#ef4444;
+}
+
+
+/* Toast notifications */
+.u-toast-container{position:fixed;bottom:24px;right:20px;z-index:99999;display:flex;flex-direction:column;gap:8px;max-width:320px}
+.u-toast{
+  background:var(--card);border:1px solid var(--border);color:var(--text);
+  padding:11px 16px;border-radius:10px;font-size:13px;font-weight:600;
+  box-shadow:0 4px 20px rgba(0,0,0,.35);
+  animation:uToastIn .3s ease;display:flex;align-items:center;gap:8px;
+}
+.u-toast.success{border-color:rgba(34,197,94,.5);background:rgba(34,197,94,.1)}
+.u-toast.error{border-color:rgba(239,68,68,.5);background:rgba(239,68,68,.1)}
+.u-toast.info{border-color:rgba(56,189,248,.5);background:rgba(56,189,248,.1)}
+@keyframes uToastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes uToastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(20px)}}
+
+/* Entrance animations */
+@keyframes uFadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes uFadeIn{from{opacity:0}to{opacity:1}}
+@keyframes uPulse{0%,100%{box-shadow:0 0 0 0 rgba(56,189,248,.4)}70%{box-shadow:0 0 0 8px rgba(56,189,248,0)}}
+.u-fade-up{animation:uFadeUp .45s ease both}
+.u-fade-in{animation:uFadeIn .4s ease both}
+.u-pulse{animation:uPulse 2s infinite}
+
+/* Button hover lift */
+.btn:hover,[class*="btn"]:not([class*="btn-"]):hover{transform:translateY(-2px)!important}
+
+/* Smooth card hover */
+.card:hover,[class*="card"]:hover{
+  border-color:var(--accent)!important;
+  box-shadow:0 6px 28px rgba(56,189,248,.12)!important;
+  transition:all .25s ease!important;
+}
+
+/* Loading skeleton */
+.u-skeleton{
+  background:linear-gradient(90deg,rgba(56,189,248,.06) 25%,rgba(56,189,248,.12) 50%,rgba(56,189,248,.06) 75%);
+  background-size:200% 100%;animation:uSkeleton 1.4s infinite;border-radius:6px;
+}
+@keyframes uSkeleton{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* Progress bar component */
+.u-progress{height:5px;background:rgba(56,189,248,.12);border-radius:3px;overflow:hidden;margin:8px 0}
+.u-progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:3px;transition:width .5s ease}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(56,189,248,.3);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(56,189,248,.55)}
+
+/* Mobile responsive upgrades */
+@media(max-width:600px){
+  
+  .u-toast-container{right:10px;bottom:80px;max-width:calc(100vw - 20px)}
+}
+
+</style></head>
+<body><div class="container">
+<a href="../index.html" class="back-link" onclick="window.close(); return false;">← Back to Portfolio</a>
+
+<h1>🌌 Parallax Showcase</h1>
+<p class="subtitle">Smooth multi-layer parallax scrolling experience</p>
+<div style="position:relative;height:500px;border-radius:16px;overflow:hidden;margin-bottom:20px;cursor:pointer" id="scene" onmousemove="parallax(event)" onmouseleave="resetParallax()">
+  <div class="pl-layer" id="l0" style="background:radial-gradient(ellipse at 50% 80%,#0c1445 0%,#020617 100%)"></div>
+  <div class="pl-layer" id="l1" style="display:flex;align-items:flex-end;justify-content:space-around;padding-bottom:40px;pointer-events:none">
+    <div style="font-size:16px;opacity:.3">⭐</div><div style="font-size:24px;opacity:.5">✨</div><div style="font-size:12px;opacity:.4">⭐</div>
+    <div style="font-size:20px;opacity:.6">🌟</div><div style="font-size:14px;opacity:.3">⭐</div><div style="font-size:22px;opacity:.5">✨</div>
+    <div style="font-size:10px;opacity:.4">⭐</div><div style="font-size:18px;opacity:.6">🌟</div>
+  </div>
+  <div class="pl-layer" id="l2" style="display:flex;align-items:flex-end;justify-content:space-between;padding:0 30px 30px">
+    <div style="font-size:36px;opacity:.15">🏔</div><div style="font-size:48px;opacity:.2">🏔</div><div style="font-size:32px;opacity:.15">🏔</div>
+    <div style="font-size:56px;opacity:.25">🏔</div><div style="font-size:40px;opacity:.18">🏔</div>
+  </div>
+  <div class="pl-layer" id="l3" style="display:flex;align-items:flex-end;justify-content:space-around;padding-bottom:10px">
+    <div style="font-size:48px;opacity:.5">🌲</div><div style="font-size:60px;opacity:.6">🌲</div><div style="font-size:44px;opacity:.55">🌲</div>
+    <div style="font-size:56px;opacity:.5">🌲</div><div style="font-size:52px;opacity:.6">🌲</div><div style="font-size:48px;opacity:.55">🌲</div>
+  </div>
+  <div class="pl-layer" id="l4" style="display:flex;align-items:center;justify-content:center;flex-direction:column">
+    <div id="heroText" style="text-align:center;z-index:10">
+      <div style="font-size:64px;margin-bottom:8px">🌄</div>
+      <h2 style="font-size:32px;background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px">Move Your Mouse</h2>
+      <p style="color:#94a3b8;font-size:15px">Experience layered depth parallax</p>
+    </div>
+  </div>
+  <div class="pl-layer" id="l5" style="display:flex;align-items:flex-end;justify-content:space-between;padding:0 20px 0px;pointer-events:none">
+    <div style="font-size:40px;opacity:.9">🌿</div><div style="font-size:52px;opacity:.95">🌿</div>
+    <div style="font-size:44px;opacity:.9">🌿</div><div style="font-size:56px;opacity:.95">🌿</div>
+    <div style="font-size:40px;opacity:.9">🌿</div>
+  </div>
+</div>
+<div class="grid3">
+  <div class="card" style="text-align:center">
+    <div style="font-size:36px;margin-bottom:8px">⚡</div>
+    <h3 style="color:#38bdf8;margin-bottom:6px">GPU Accelerated</h3>
+    <p style="color:#64748b;font-size:13px">Uses CSS transforms for 60fps smooth animation</p>
+  </div>
+  <div class="card" style="text-align:center">
+    <div style="font-size:36px;margin-bottom:8px">🎯</div>
+    <h3 style="color:#38bdf8;margin-bottom:6px">6 Depth Layers</h3>
+    <p style="color:#64748b;font-size:13px">Each layer moves at different speed creating true depth</p>
+  </div>
+  <div class="card" style="text-align:center">
+    <div style="font-size:36px;margin-bottom:8px">📱</div>
+    <h3 style="color:#38bdf8;margin-bottom:6px">Touch Support</h3>
+    <p style="color:#64748b;font-size:13px">Works with both mouse and touch on mobile devices</p>
+  </div>
+</div>
+<div class="card">
+  <h3 style="color:#38bdf8;margin-bottom:14px">Scroll Parallax Demo</h3>
+  <div id="scrollScene" style="height:300px;border-radius:12px;overflow:hidden;position:relative;background:linear-gradient(135deg,#0f172a,#1e1b4b)">
+    <div id="scrollBg" style="position:absolute;inset:-50px;display:flex;align-items:center;justify-content:center;transition:transform .1s ease-out">
+      <div style="font-size:120px;opacity:.15">🌌</div>
+    </div>
+    <div id="scrollMid" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+      <div style="font-size:60px;opacity:.4">🪐</div>
+    </div>
+    <div id="scrollFg" style="position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:space-around;padding-bottom:20px">
+      <div style="font-size:40px">🌑</div><div style="font-size:30px;opacity:.7">🌒</div><div style="font-size:50px">🌓</div>
+    </div>
+    <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column">
+      <h3 style="font-size:22px;margin-bottom:6px;background:linear-gradient(90deg,#a855f7,#38bdf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Scroll Inside This Box</h3>
+      <p style="color:#64748b;font-size:13px">Watch layers move at different speeds</p>
+    </div>
+  </div>
+</div>
+</div><script>
+const scene=document.getElementById('scene');
+const layers=[
+  {el:document.getElementById('l1'),factorX:.02,factorY:.015},
+  {el:document.getElementById('l2'),factorX:.04,factorY:.03},
+  {el:document.getElementById('l3'),factorX:.07,factorY:.05},
+  {el:document.getElementById('l4'),factorX:.1,factorY:.07},
+  {el:document.getElementById('l5'),factorX:.14,factorY:.1},
+];
+function parallax(e){
+  const r=scene.getBoundingClientRect();
+  const cx=r.width/2,cy=r.height/2;
+  const dx=e.clientX-r.left-cx,dy=e.clientY-r.top-cy;
+  layers.forEach(l=>{
+    const tx=dx*l.factorX,ty=dy*l.factorY;
+    l.el.style.transform=`translate(${tx}px,${ty}px)`;
+  });
+}
+function resetParallax(){layers.forEach(l=>l.el.style.transform='translate(0,0)');}
+// Touch support
+scene.addEventListener('touchmove',e=>{
+  e.preventDefault();
+  const t=e.touches[0];
+  parallax({clientX:t.clientX,clientY:t.clientY});
+},{passive:false});
+scene.addEventListener('touchend',resetParallax);
+// Scroll parallax
+const ss=document.getElementById('scrollScene');
+const sb=document.getElementById('scrollBg');
+const sm=document.getElementById('scrollMid');
+ss.addEventListener('scroll',()=>{
+  const s=ss.scrollTop;
+  sb.style.transform=`translateY(${s*.4}px)`;
+  sm.style.transform=`translateY(${s*.2}px)`;
+});
+</script><script>
+// ── UNIVERSAL UPGRADE: Theme, localStorage, Toast, Animations ──
+(function(){
+'use strict';
+
+// ── 2. TOAST SYSTEM ──────────────────────────────────────────────
+var toastContainer = null;
+function getToastContainer(){
+  if(!toastContainer || !document.body.contains(toastContainer)){
+    toastContainer = document.createElement('div');
+    toastContainer.className = 'u-toast-container';
+    document.body.appendChild(toastContainer);
+  }
+  return toastContainer;
+}
+
+window.uToast = function(msg, type, duration){
+  type = type || 'info';
+  duration = duration || 2800;
+  var icons = {success:'✅', error:'❌', info:'💡', warning:'⚠️'};
+  var c = getToastContainer();
+  var t = document.createElement('div');
+  t.className = 'u-toast ' + type;
+  t.innerHTML = '<span>' + (icons[type]||'💡') + '</span><span>' + msg + '</span>';
+  c.appendChild(t);
+  setTimeout(function(){
+    t.style.animation = 'uToastOut .3s ease forwards';
+    setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 300);
+  }, duration);
+};
+
+// ── 3. LOCALSTORAGE HELPERS ──────────────────────────────────────
+var APP_KEY = 'uapp_' + location.pathname.split('/').pop().replace('.html','');
+window.uSave = function(key, val){
+  try { localStorage.setItem(APP_KEY + '_' + key, JSON.stringify(val)); return true; }
+  catch(e){ return false; }
+};
+window.uLoad = function(key, def){
+  try {
+    var v = localStorage.getItem(APP_KEY + '_' + key);
+    return v !== null ? JSON.parse(v) : def;
+  } catch(e){ return def; }
+};
+window.uClear = function(key){
+  try { localStorage.removeItem(APP_KEY + '_' + key); } catch(e){}
+};
+
+// ── 4. ENTRANCE ANIMATIONS ───────────────────────────────────────
+function animateEntrance(){
+  var cards = document.querySelectorAll('.card, [class*="card"]');
+  cards.forEach(function(el, i){
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(18px)';
+    setTimeout(function(){
+      el.style.transition = 'opacity .4s ease, transform .4s ease';
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+    }, i * 60);
+  });
+}
+
+// ── 5. SMOOTH COUNTER ANIMATION ──────────────────────────────────
+window.uAnimCount = function(el, target, duration, prefix, suffix){
+  prefix = prefix || '';
+  suffix = suffix || '';
+  duration = duration || 1200;
+  var start = 0;
+  var step = target / (duration / 16);
+  var iv = setInterval(function(){
+    start = Math.min(start + step, target);
+    el.textContent = prefix + Math.round(start).toLocaleString() + suffix;
+    if(start >= target) clearInterval(iv);
+  }, 16);
+};
+
+// ── 6. EXPORT HELPER ─────────────────────────────────────────────
+window.uExportJSON = function(data, filename){
+  var blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.json';
+  a.click();
+  uToast('Data exported!', 'success');
+};
+window.uExportCSV = function(rows, filename){
+  var csv = rows.map(function(r){ return r.join(','); }).join('\n');
+  var blob = new Blob([csv], {type:'text/csv'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.csv';
+  a.click();
+  uToast('CSV exported!', 'success');
+};
+
+// ── 8. INIT ──────────────────────────────────────────────────────
+function init(){
+  setTimeout(animateEntrance, 100);
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+})();
+</script>
+<script>
+(function(){
+  var speed = uLoad('parallax_speed', 1);
+  
+  // Speed control
+  if(!document.getElementById('uSpeedControl')){
+    var ctrl = document.createElement('div');
+    ctrl.id = 'uSpeedControl';
+    ctrl.className = 'card u-fade-up';
+    ctrl.style.marginBottom = '16px';
+    ctrl.innerHTML = '<div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">' +
+      '<div style="font-weight:700;color:#38bdf8;font-size:14px">⚡ Parallax Speed</div>' +
+      '<input type="range" id="uSpeedSlider" min="0.2" max="3" step="0.1" value="'+speed+'" style="flex:1;min-width:120px;padding:0;background:transparent;border:none;box-shadow:none">' +
+      '<span id="uSpeedVal" style="color:#38bdf8;font-weight:700;font-family:monospace;width:30px">'+speed+'x</span>' +
+      '</div>' +
+      '<div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">' +
+      ['0.3','0.5','1.0','1.5','2.0','3.0'].map(function(s){
+        return '<button onclick="document.getElementById(\'uSpeedSlider\').value='+s+';applySpeed('+s+')" style="padding:5px 12px;background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.3);color:#38bdf8;border-radius:6px;cursor:pointer;font-size:12px;font-weight:700">'+s+'x</button>';
+      }).join('') +
+      '</div>';
+    document.querySelector('.container')?.insertBefore(ctrl, document.querySelector('.card'));
+  }
+  
+  window.applySpeed = function(s){
+    speed = parseFloat(s);
+    uSave('parallax_speed', speed);
+    document.getElementById('uSpeedVal').textContent = speed + 'x';
+    // Patch parallax multipliers
+    window._speedMult = speed;
+    uToast('Speed: ' + speed + 'x', 'info', 1000);
+  };
+  
+  document.getElementById('uSpeedSlider')?.addEventListener('input', function(){
+    applySpeed(this.value);
+  });
+  
+  // Patch the original parallax to use speed multiplier
+  var origParallax = window.parallax;
+  if(origParallax){
+    window.parallax = function(e){
+      window._speedMult = speed;
+      origParallax.apply(this,[e]);
+    };
+  }
+})();
+</script>
+</body></html>

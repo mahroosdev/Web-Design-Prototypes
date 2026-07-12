@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <html lang="en">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <title>Satellite Tracker | DevOS</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+</head>
+<body>
+<div id="topbar">
+  <div class="topbar-left">
+    <a class="back-btn" href="index.html">← BACK</a>
+    <span class="topbar-logo">SAT_OS</span>
+  </div>
+  <div class="topbar-right">
+    <button class="theme-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle theme">🌙</button>
+  </div>
+</div>
+<div id="toast"></div>
+<div class="wrap">
+<div class="page-header animate-in">
+  <div class="row align" style="gap:10px;margin-bottom:8px"><span style="font-size:28px">🛰</span><h1>Satellite Tracker</h1></div>
+  <p>Live satellite orbital visualization with ISS and GPS tracking.</p>
+</div>
+
+
+<h1>🛰 Satellite Tracker</h1>
+<p>Track ISS and satellites with orbit visualization.</p>
+<div style="margin-top:16px"><canvas id="sat-canvas" style="width:100%;height:380px;border-radius:14px;border:1px solid var(--border);display:block;cursor:pointer;touch-action:none"></canvas>
+<div id="sat-info" class="card" style="margin-top:12px"></div></div>
+<script>const canvas=document.getElementById('sat-canvas');const ctx=canvas.getContext('2d');canvas.width=canvas.offsetWidth;canvas.height=380;
+const W=canvas.width,H=canvas.height;
+const satellites=[{name:'ISS',color:'#00e0ff',orbits:[[W/2,H/2,120,40,-0.4],[W/2,H/2,130,50,.3]],speed:0.008,size:6,info:'International Space Station — altitude: 408km, speed: 7.7 km/s, crew: 7 astronauts'},{name:'Hubble',color:'#818cf8',orbits:[[W/2,H/2,160,60,0.2]],speed:0.006,size:4,info:'Hubble Space Telescope — altitude: 547km, launched 1990, observed 40,000+ objects'},{name:'GPS-IIF',color:'#34d399',orbits:[[W/2,H/2,200,80,.5]],speed:0.003,size:4,info:'GPS Satellite — altitude: 20,200km, provides global positioning to billions of devices'},{name:'Starlink',color:'#f472b6',orbits:[[W/2,H/2,90,30,-.2],[W/2,H/2,95,32,.1]],speed:0.012,size:3,info:'SpaceX Starlink — altitude: 550km, constellation of 4000+ satellites for internet coverage'}];
+let t=0;
+function draw(){
+  // Earth
+  ctx.fillStyle='#060a10';ctx.fillRect(0,0,W,H);
+  for(let i=0;i<50;i++){ctx.fillStyle='rgba(255,255,255,.5)';ctx.beginPath();ctx.arc((i*137.5)%W,(i*89.3)%H,1,0,Math.PI*2);ctx.fill();}
+  const eg=ctx.createRadialGradient(W/2,H/2,0,W/2,H/2,55);eg.addColorStop(0,'#1a6b9a');eg.addColorStop(0.5,'#0d4f73');eg.addColorStop(1,'#062a40');ctx.beginPath();ctx.arc(W/2,H/2,55,0,Math.PI*2);ctx.fillStyle=eg;ctx.fill();
+  ctx.fillStyle='rgba(52,211,153,.4)';[[W/2-10,H/2-5,18,14],[W/2+5,H/2+8,22,12],[W/2-18,H/2+10,14,10]].forEach(([x,y,w,h])=>{ctx.beginPath();ctx.ellipse(x,y,w,h,0.3,0,Math.PI*2);ctx.fill();});
+  satellites.forEach(s=>{
+    s.orbits.forEach(([ox,oy,rx,ry,tilt])=>{
+      ctx.save();ctx.translate(ox,oy);ctx.rotate(tilt);
+      ctx.beginPath();ctx.ellipse(0,0,rx,ry,0,0,Math.PI*2);ctx.strokeStyle=s.color+'33';ctx.lineWidth=1;ctx.stroke();ctx.restore();
+    });
+    const orb=s.orbits[0];const[ox,oy,rx,ry,tilt]=orb;
+    const angle=t*s.speed;const sx=ox+Math.cos(angle+tilt)*rx;const sy=oy+Math.sin(angle+tilt)*ry;
+    ctx.beginPath();ctx.arc(sx,sy,s.size,0,Math.PI*2);ctx.fillStyle=s.color;ctx.fill();
+    ctx.fillStyle=s.color+'cc';ctx.font='10px JetBrains Mono,monospace';ctx.fillText(s.name,sx+s.size+3,sy+4);
+  });
+  t++;requestAnimationFrame(draw);
+}
+// Touch support
+canvas.addEventListener('touchend',e=>{e.preventDefault();const t=e.changedTouches[0];const r=canvas.getBoundingClientRect();const me=new MouseEvent('click',{clientX:t.clientX,clientY:t.clientY});canvas.dispatchEvent(me);},{passive:false});
+canvas.addEventListener('click',e=>{
+  const r=canvas.getBoundingClientRect();const mx=(e.clientX-r.left)*(W/r.width);const my=(e.clientY-r.top)*(H/r.height);
+  satellites.forEach(s=>{const[ox,oy,rx,ry,tilt]=s.orbits[0];const sx=ox+Math.cos(t*.008+tilt)*rx;const sy=oy+Math.sin(t*.008+tilt)*ry;if(Math.sqrt((mx-sx)**2+(my-sy)**2)<20){document.getElementById('sat-info').innerHTML=`<div style="font-size:13px;font-weight:600;color:${s.color};margin-bottom:4px">🛰 ${s.name}</div><p style="font-size:12px;color:var(--muted)">${s.info}</p>`;}});
+});
+document.getElementById('sat-info').innerHTML='<p style="color:var(--muted);font-size:12px">Click on a satellite to view details</p>';
+draw();</script>
+
+
+</div>
+  <script src="../shared-back.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

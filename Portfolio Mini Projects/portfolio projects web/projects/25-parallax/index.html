@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <html lang="en">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <title>Parallax Scroll | DevOS</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+</head>
+<body>
+<div id="topbar">
+  <div class="topbar-left">
+    <a class="back-btn" href="index.html">← BACK</a>
+    <span class="topbar-logo">PARALLAX_OS</span>
+  </div>
+  <div class="topbar-right">
+    <button class="theme-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle theme">🌙</button>
+  </div>
+</div>
+<div id="toast"></div>
+<div class="wrap">
+<div class="page-header animate-in">
+  <div class="row align" style="gap:10px;margin-bottom:8px"><span style="font-size:28px">🌊</span><h1>Parallax Scroll</h1></div>
+  <p>Immersive parallax scrolling with depth layers and particle effects.</p>
+</div>
+
+
+<h1>🌊 Parallax Scroll</h1>
+<p>Smooth parallax scrolling sections with depth effects.</p>
+<div style="margin-top:16px"><div id="par-wrap" style="height:500px;overflow-y:scroll;border-radius:14px;position:relative;border:1px solid var(--border)">
+  <div style="height:500px;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden;background:linear-gradient(180deg,#0b0f14,#0d1b2a)">
+    <div id="p-bg1" style="position:absolute;inset:0;background:radial-gradient(ellipse at 30% 30%,rgba(0,224,255,.15),transparent 60%),radial-gradient(ellipse at 70% 70%,rgba(129,140,248,.12),transparent 60%);pointer-events:none"></div>
+    <div id="p-stars" style="position:absolute;inset:0;pointer-events:none"></div>
+    <div id="p-txt1" style="position:relative;z-index:2">
+      <div style="font-size:10px;letter-spacing:.25em;color:var(--accent);font-family:'JetBrains Mono',monospace;margin-bottom:12px">SCROLL DOWN</div>
+      <h1 style="font-size:clamp(32px,8vw,56px);font-weight:800;line-height:.95;background:linear-gradient(135deg,#fff,var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:16px">DISCOVER<br>THE DEPTHS</h1>
+      <p style="color:var(--muted);font-size:14px">Scroll to explore parallax layers</p>
+    </div>
+  </div>
+  <div style="height:400px;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#0d1b2a,#0f1f2e);position:relative;overflow:hidden">
+    <div id="p-orbs" style="position:absolute;inset:0;pointer-events:none"></div>
+    <div id="p-txt2" style="text-align:center;z-index:2;padding:20px">
+      <h2 style="font-size:28px;color:var(--accent2);margin-bottom:10px">Layer Two</h2>
+      <p style="color:var(--muted);font-size:14px;max-width:300px;margin:0 auto">Elements move at different speeds creating depth and immersion.</p>
+    </div>
+  </div>
+  <div style="height:400px;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#0f1f2e,#0b0f14);position:relative;overflow:hidden">
+    <div id="p-txt3" style="text-align:center;z-index:2;padding:20px">
+      <h2 style="font-size:28px;color:var(--accent3);margin-bottom:10px">Layer Three</h2>
+      <p style="color:var(--muted);font-size:14px;max-width:300px;margin:0 auto">Pure CSS and vanilla JS creating buttery smooth parallax effects.</p>
+    </div>
+  </div>
+</div></div>
+<script>const wrap=document.getElementById('par-wrap');
+// Create stars
+const stars=document.getElementById('p-stars');
+for(let i=0;i<60;i++){const s=document.createElement('div');s.style.cssText=`position:absolute;width:${Math.random()*2+1}px;height:${Math.random()*2+1}px;border-radius:50%;background:#fff;opacity:${Math.random()*.6+.2};left:${Math.random()*100}%;top:${Math.random()*100}%`;stars.appendChild(s);}
+// Create orbs
+const orbs=document.getElementById('p-orbs');
+for(let i=0;i<5;i++){const o=document.createElement('div');o.style.cssText=`position:absolute;width:${80+i*40}px;height:${80+i*40}px;border-radius:50%;background:radial-gradient(circle,${['rgba(0,224,255,.08)','rgba(129,140,248,.08)','rgba(52,211,153,.06)'][i%3]},transparent);left:${10+i*18}%;top:${10+i*15}%`;orbs.appendChild(o);}
+wrap.addEventListener('scroll',()=>{
+  const s=wrap.scrollTop;
+  document.getElementById('p-bg1').style.transform=`translateY(${s*.3}px)`;
+  document.getElementById('p-stars').style.transform=`translateY(${s*.5}px)`;
+  document.getElementById('p-txt1').style.transform=`translateY(${s*.4}px)`;
+  document.getElementById('p-txt1').style.opacity=1-s/300;
+  document.getElementById('p-orbs').style.transform=`translateY(${(s-500)*.3}px)`;
+  document.getElementById('p-txt3').style.transform=`translateY(${(s-900)*-.15}px)`;
+},{ passive:true });</script>
+
+
+</div>
+  <script src="../shared-back.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

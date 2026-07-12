@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <html lang="en">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <title>Survey Builder | DevOS</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+</head>
+<body>
+<div id="topbar">
+  <div class="topbar-left">
+    <a class="back-btn" href="index.html">← BACK</a>
+    <span class="topbar-logo">SURVEY_OS</span>
+  </div>
+  <div class="topbar-right">
+    <button class="theme-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle theme">🌙</button>
+  </div>
+</div>
+<div id="toast"></div>
+<div class="wrap">
+<div class="page-header animate-in">
+  <div class="row align" style="gap:10px;margin-bottom:8px"><span style="font-size:28px">📋</span><h1>Survey Builder</h1></div>
+  <p>Multi-step survey with branching logic, progress bar and result export.</p>
+</div>
+
+
+<h1>📋 Survey Form</h1>
+<p>Interactive multi-step survey with progress bar and results.</p>
+<div style="margin-top:16px"><div class="card" style="position:relative">
+  <div style="background:var(--card2);border-radius:4px;height:5px;margin-bottom:20px;overflow:hidden"><div id="sv-bar" style="height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .4s;width:20%"></div></div>
+  <div id="sv-step" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-bottom:14px">Step 1 of 5</div>
+  <div id="sv-content"></div>
+  <div class="row" style="justify-content:space-between;margin-top:20px">
+    <button class="btn btn-outline" id="sv-prev" onclick="svPrev()" style="visibility:hidden">← Back</button>
+    <button class="btn btn-primary" id="sv-next" onclick="svNext()">Next →</button>
+  </div>
+</div></div>
+<script>const steps=[{q:'How satisfied are you with our service?',type:'rating',key:'satisfaction'},{q:'Which features do you use most?',type:'multi',opts:['Dashboard','Analytics','API','Reports','Mobile App'],key:'features'},{q:'How did you hear about us?',type:'single',opts:['Google','Social Media','Friend','Ad','Other'],key:'source'},{q:'Would you recommend us?',type:'single',opts:['Definitely yes','Probably yes','Neutral','Probably not','No'],key:'recommend'},{q:'Any additional comments?',type:'text',key:'comments'}];
+let step=0,answers={};
+function renderStep(){
+  const s=steps[step];document.getElementById('sv-step').textContent=`Step ${step+1} of ${steps.length}`;document.getElementById('sv-bar').style.width=((step+1)/steps.length*100)+'%';document.getElementById('sv-prev').style.visibility=step>0?'visible':'hidden';document.getElementById('sv-next').textContent=step===steps.length-1?'Submit':'Next →';
+  let html=`<h2 style="font-size:16px;margin-bottom:16px">${s.q}</h2>`;
+  if(s.type==='rating')html+=`<div class="row" style="gap:8px;flex-wrap:nowrap;justify-content:center">${[1,2,3,4,5].map(n=>`<button onclick="setAns('${s.key}',${n})" id="r${n}" style="width:54px;height:54px;border-radius:50%;background:${(answers[s.key]||0)>=n?'linear-gradient(135deg,var(--accent),var(--accent2))':'var(--card2)'};border:2px solid ${(answers[s.key]||0)>=n?'var(--accent)':'var(--border)'};color:${(answers[s.key]||0)>=n?'#000':'var(--text)'};font-size:20px;cursor:pointer">${'⭐'.slice(0,1)} ${n}</button>`).join('')}</div>`;
+  else if(s.type==='single')html+=s.opts.map((o,i)=>`<div onclick="setAns('${s.key}','${o}')" style="padding:12px 14px;border:1px solid ${answers[s.key]===o?'var(--accent)':'var(--border)'};border-radius:10px;margin-bottom:8px;cursor:pointer;background:${answers[s.key]===o?'rgba(0,224,255,.08)':'transparent'};transition:all .2s;font-size:14px">${answers[s.key]===o?'◉':' ○'} ${o}</div>`).join('');
+  else if(s.type==='multi')html+=s.opts.map(o=>`<label style="display:flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid ${(answers[s.key]||[]).includes(o)?'var(--accent)':'var(--border)'};border-radius:10px;margin-bottom:8px;cursor:pointer;font-size:14px"><input type="checkbox" ${(answers[s.key]||[]).includes(o)?'checked':''} onchange="toggleMulti('${s.key}','${o}',this.checked)" style="accent-color:var(--accent);width:16px;height:16px"> ${o}</label>`).join('');
+  else html+=`<textarea id="sv-text" rows="4" placeholder="Share your thoughts..." style="resize:none">${answers[s.key]||''}</textarea>`;
+  document.getElementById('sv-content').innerHTML=html;
+}
+function setAns(k,v){answers[k]=v;renderStep();}
+function toggleMulti(k,v,checked){if(!answers[k])answers[k]=[];if(checked)answers[k].push(v);else answers[k]=answers[k].filter(x=>x!==v);renderStep();}
+function svNext(){if(steps[step].type==='text')answers[steps[step].key]=document.getElementById('sv-text')?.value||'';if(step<steps.length-1){step++;renderStep();}else{document.querySelector('.card').innerHTML=`<div style="text-align:center;padding:30px 0"><div style="font-size:56px">🎉</div><h1 style="margin:16px 0 8px">Thank You!</h1><p style="color:var(--muted)">Your feedback has been submitted successfully.</p><div style="margin-top:20px;padding:16px;background:var(--card2);border-radius:12px;font-family:JetBrains Mono,monospace;font-size:12px;text-align:left">${Object.entries(answers).map(([k,v])=>`<div style="margin-bottom:6px;color:var(--muted)">${k}: <span style="color:var(--accent)">${Array.isArray(v)?v.join(', '):v}</span></div>`).join('')}</div></div>`;}}
+function svPrev(){if(step>0){step--;renderStep();}}
+renderStep();</script>
+
+
+</div>
+  <script src="../shared-back.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

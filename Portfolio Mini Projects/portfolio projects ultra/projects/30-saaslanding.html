@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8">
+<meta name="description" content="SaaS Landing Page — part of a professional web developer portfolio with 50+ projects.">
+<meta name="robots" content="index, follow">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>SaaS Landing Page</title><style>*{margin:0;padding:0;box-sizing:border-box}
+body{background:linear-gradient(135deg,#020617 0%,#0f172a 100%);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#fff;min-height:100vh;padding:40px 20px;overflow-x:hidden}
+.container{max-width:1000px;margin:0 auto}
+h1{background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:36px;margin-bottom:8px}
+.subtitle{color:#94a3b8;margin-bottom:28px;font-size:15px}
+.back-link{display:inline-flex;align-items:center;gap:6px;margin-bottom:20px;color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;padding:8px 14px;border:1px solid rgba(56,189,248,.3);border-radius:8px;transition:.2s}
+.back-link:hover{background:rgba(56,189,248,.1)}
+.card{background:rgba(30,41,59,.8);backdrop-filter:blur(10px);padding:24px;border-radius:16px;border:1px solid rgba(56,189,248,.2);margin-bottom:20px}
+.btn{padding:10px 22px;border:none;border-radius:8px;cursor:pointer;font-weight:700;font-size:14px;transition:.2s;background:linear-gradient(90deg,#38bdf8,#22c55e);color:#000}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(56,189,248,.35)}
+.btn-outline{background:transparent;border:1px solid rgba(56,189,248,.4);color:#38bdf8}
+.btn-red{background:linear-gradient(90deg,#ef4444,#dc2626);color:#fff}
+input,textarea,select{background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.3);color:#fff;border-radius:8px;padding:10px 14px;font-size:14px;width:100%;outline:none;transition:.2s}
+input:focus,textarea:focus,select:focus{border-color:#38bdf8;box-shadow:0 0 0 3px rgba(56,189,248,.15)}
+input::placeholder,textarea::placeholder{color:#64748b}
+label{display:block;font-size:13px;font-weight:600;color:#94a3b8;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.flex{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;background:rgba(56,189,248,.15);color:#38bdf8;border:1px solid rgba(56,189,248,.3)}
+.badge-green{background:rgba(34,197,94,.15);color:#22c55e;border-color:rgba(34,197,94,.3)}
+.badge-red{background:rgba(239,68,68,.15);color:#ef4444;border-color:rgba(239,68,68,.3)}
+.badge-yellow{background:rgba(234,179,8,.15);color:#eab308;border-color:rgba(234,179,8,.3)}
+.stat-box{background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.15);border-radius:12px;padding:20px;text-align:center}
+.stat-num{font-size:32px;font-weight:800;background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-label{font-size:12px;color:#64748b;margin-top:4px;text-transform:uppercase;letter-spacing:.5px}
+hr{border:none;border-top:1px solid rgba(56,189,248,.1);margin:20px 0}
+@media(max-width:768px){body{padding:15px 12px}h1{font-size:26px}.grid2,.grid3,.grid4{grid-template-columns:1fr}.card{padding:16px 14px}}
+.price-card{border:1px solid rgba(56,189,248,.2);border-radius:16px;padding:28px;text-align:center;transition:.2s}
+.price-card:hover{border-color:rgba(56,189,248,.5);transform:translateY(-4px)}
+.price-card.popular{border-color:#38bdf8;background:rgba(56,189,248,.06);position:relative}
+.popular-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:linear-gradient(90deg,#38bdf8,#22c55e);color:#000;padding:4px 16px;border-radius:20px;font-size:12px;font-weight:800;white-space:nowrap}
+.price-amount{font-size:48px;font-weight:900;background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin:12px 0 4px}
+.price-feature{font-size:14px;color:#94a3b8;padding:6px 0;border-bottom:1px solid rgba(56,189,248,.08);text-align:left}
+.price-feature:last-of-type{border:none}
+.price-feature::before{content:"✓ ";color:#22c55e;font-weight:700}
+.test-card{background:rgba(56,189,248,.04);border:1px solid rgba(56,189,248,.1);border-radius:12px;padding:20px}
+.test-stars{color:#f59e0b;font-size:18px;margin-bottom:10px}
+.test-text{font-size:14px;color:#94a3b8;line-height:1.7;margin-bottom:14px;font-style:italic}
+.test-author{display:flex;align-items:center;gap:10px}
+.test-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#38bdf8,#22c55e);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+/* ── UNIVERSAL UPGRADE: Theme, Animations, Toast ── */
+:root{
+  --bg:#020617;--bg2:#0f172a;--card:rgba(30,41,59,.85);--border:rgba(56,189,248,.22);
+  --accent:#38bdf8;--accent2:#22c55e;--text:#f1f5f9;--muted:#94a3b8;--danger:#ef4444;
+}
+
+
+/* Toast notifications */
+.u-toast-container{position:fixed;bottom:24px;right:20px;z-index:99999;display:flex;flex-direction:column;gap:8px;max-width:320px}
+.u-toast{
+  background:var(--card);border:1px solid var(--border);color:var(--text);
+  padding:11px 16px;border-radius:10px;font-size:13px;font-weight:600;
+  box-shadow:0 4px 20px rgba(0,0,0,.35);
+  animation:uToastIn .3s ease;display:flex;align-items:center;gap:8px;
+}
+.u-toast.success{border-color:rgba(34,197,94,.5);background:rgba(34,197,94,.1)}
+.u-toast.error{border-color:rgba(239,68,68,.5);background:rgba(239,68,68,.1)}
+.u-toast.info{border-color:rgba(56,189,248,.5);background:rgba(56,189,248,.1)}
+@keyframes uToastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes uToastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(20px)}}
+
+/* Entrance animations */
+@keyframes uFadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes uFadeIn{from{opacity:0}to{opacity:1}}
+@keyframes uPulse{0%,100%{box-shadow:0 0 0 0 rgba(56,189,248,.4)}70%{box-shadow:0 0 0 8px rgba(56,189,248,0)}}
+.u-fade-up{animation:uFadeUp .45s ease both}
+.u-fade-in{animation:uFadeIn .4s ease both}
+.u-pulse{animation:uPulse 2s infinite}
+
+/* Button hover lift */
+.btn:hover,[class*="btn"]:not([class*="btn-"]):hover{transform:translateY(-2px)!important}
+
+/* Smooth card hover */
+.card:hover,[class*="card"]:hover{
+  border-color:var(--accent)!important;
+  box-shadow:0 6px 28px rgba(56,189,248,.12)!important;
+  transition:all .25s ease!important;
+}
+
+/* Loading skeleton */
+.u-skeleton{
+  background:linear-gradient(90deg,rgba(56,189,248,.06) 25%,rgba(56,189,248,.12) 50%,rgba(56,189,248,.06) 75%);
+  background-size:200% 100%;animation:uSkeleton 1.4s infinite;border-radius:6px;
+}
+@keyframes uSkeleton{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* Progress bar component */
+.u-progress{height:5px;background:rgba(56,189,248,.12);border-radius:3px;overflow:hidden;margin:8px 0}
+.u-progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:3px;transition:width .5s ease}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(56,189,248,.3);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(56,189,248,.55)}
+
+/* Mobile responsive upgrades */
+@media(max-width:600px){
+  
+  .u-toast-container{right:10px;bottom:80px;max-width:calc(100vw - 20px)}
+}
+
+</style></head>
+<body><div class="container">
+<a href="../index.html" class="back-link" onclick="window.close(); return false;">← Back to Portfolio</a>
+
+<div id="hero" style="text-align:center;padding:60px 20px 40px">
+  <div class="badge badge-green" style="margin-bottom:16px;font-size:13px">🚀 Now in Public Beta</div>
+  <h1 style="font-size:52px;line-height:1.15;margin-bottom:16px">Build products<br><span style="background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent">10x faster</span></h1>
+  <p style="color:#94a3b8;font-size:18px;max-width:520px;margin:0 auto 28px;line-height:1.7">The all-in-one platform for modern teams. Ship features, not boilerplate. Trusted by 50,000+ developers.</p>
+  <div class="flex" style="justify-content:center;gap:12px;margin-bottom:40px;flex-wrap:wrap">
+    <input id="heroEmail" placeholder="Enter your email" style="width:280px;padding:14px 18px;font-size:15px">
+    <button class="btn" onclick="startTrial()" style="padding:14px 28px;font-size:15px">Start Free Trial →</button>
+  </div>
+  <div style="color:#475569;font-size:13px">No credit card required · 14-day free trial · Cancel anytime</div>
+</div>
+
+<div class="grid4" style="margin-bottom:40px">
+  <div class="stat-box"><div class="stat-num" id="c1">0</div><div class="stat-label">Users</div></div>
+  <div class="stat-box"><div class="stat-num" id="c2">0</div><div class="stat-label">Projects</div></div>
+  <div class="stat-box"><div class="stat-num" id="c3">0</div><div class="stat-label">Uptime %</div></div>
+  <div class="stat-box"><div class="stat-num" id="c4">0</div><div class="stat-label">Countries</div></div>
+</div>
+
+<div class="card" style="margin-bottom:40px">
+  <div style="text-align:center;margin-bottom:28px">
+    <h2 style="font-size:32px;margin-bottom:8px">Everything you need</h2>
+    <p style="color:#64748b">Powerful features built for modern development teams</p>
+  </div>
+  <div class="grid3">
+    <div class="feat" style="text-align:center;padding:20px"><div style="font-size:40px;margin-bottom:12px">⚡</div><h3 style="margin-bottom:8px;color:#38bdf8">Lightning Fast</h3><p style="color:#64748b;font-size:14px;line-height:1.6">Deploy in seconds. Our global CDN ensures sub-100ms response times worldwide.</p></div>
+    <div class="feat" style="text-align:center;padding:20px"><div style="font-size:40px;margin-bottom:12px">🔒</div><h3 style="margin-bottom:8px;color:#38bdf8">Enterprise Security</h3><p style="color:#64748b;font-size:14px;line-height:1.6">SOC 2 compliant. End-to-end encryption. SSO, MFA, and audit logs included.</p></div>
+    <div class="feat" style="text-align:center;padding:20px"><div style="font-size:40px;margin-bottom:12px">🔌</div><h3 style="margin-bottom:8px;color:#38bdf8">200+ Integrations</h3><p style="color:#64748b;font-size:14px;line-height:1.6">Connect with your existing tools. GitHub, Slack, Jira, Stripe, and more.</p></div>
+    <div class="feat" style="text-align:center;padding:20px"><div style="font-size:40px;margin-bottom:12px">📊</div><h3 style="margin-bottom:8px;color:#38bdf8">Advanced Analytics</h3><p style="color:#64748b;font-size:14px;line-height:1.6">Real-time insights, custom dashboards, and exportable reports.</p></div>
+    <div class="feat" style="text-align:center;padding:20px"><div style="font-size:40px;margin-bottom:12px">🤝</div><h3 style="margin-bottom:8px;color:#38bdf8">Team Collaboration</h3><p style="color:#64748b;font-size:14px;line-height:1.6">Built for teams. Comments, approvals, shared workspaces, and role management.</p></div>
+    <div class="feat" style="text-align:center;padding:20px"><div style="font-size:40px;margin-bottom:12px">🌍</div><h3 style="margin-bottom:8px;color:#38bdf8">Global Scale</h3><p style="color:#64748b;font-size:14px;line-height:1.6">Auto-scaling infrastructure. Run workloads in 25 regions across 6 continents.</p></div>
+  </div>
+</div>
+
+<div class="card" style="margin-bottom:40px">
+  <div style="text-align:center;margin-bottom:28px">
+    <h2 style="font-size:32px;margin-bottom:8px">Simple, transparent pricing</h2>
+    <p style="color:#64748b">Start free, scale as you grow</p>
+    <div class="flex" style="justify-content:center;gap:0;margin-top:14px">
+      <button class="tab-t" id="tab-monthly" onclick="setPricing('monthly')" style="padding:8px 20px;border:1px solid rgba(56,189,248,.3);background:rgba(56,189,248,.2);color:#38bdf8;border-radius:8px 0 0 8px;cursor:pointer;font-weight:700;font-size:13px">Monthly</button>
+      <button class="tab-t" id="tab-annual" onclick="setPricing('annual')" style="padding:8px 20px;border:1px solid rgba(56,189,248,.3);background:transparent;color:#64748b;border-radius:0 8px 8px 0;cursor:pointer;font-weight:700;font-size:13px">Annual (Save 20%)</button>
+    </div>
+  </div>
+  <div class="grid3" id="pricingGrid"></div>
+</div>
+
+<div class="card" style="margin-bottom:40px">
+  <div style="text-align:center;margin-bottom:24px"><h2 style="font-size:28px;margin-bottom:8px">What our users say</h2></div>
+  <div class="grid3" id="testimonials"></div>
+</div>
+
+<div class="card" style="text-align:center;padding:40px">
+  <h2 style="font-size:32px;margin-bottom:12px">Ready to get started?</h2>
+  <p style="color:#64748b;margin-bottom:24px">Join 50,000+ developers building faster with StreamKit</p>
+  <div class="flex" style="justify-content:center;gap:12px;flex-wrap:wrap">
+    <button class="btn" onclick="startTrial()" style="padding:14px 32px;font-size:16px">Start Free Trial</button>
+    <button class="btn btn-outline" onclick="bookDemo()" style="padding:14px 32px;font-size:16px">Book a Demo</button>
+  </div>
+  <div id="ctaFeedback" style="margin-top:16px"></div>
+</div>
+</div><script>
+function animCount(id,target,suffix=''){
+  let v=0;const step=target/50;
+  const iv=setInterval(()=>{v=Math.min(v+step,target);document.getElementById(id).textContent=Math.round(v).toLocaleString()+suffix;if(v>=target)clearInterval(iv);},30);
+}
+animCount('c1',50000);animCount('c2',180000);animCount('c3',99.9,'%');animCount('c4',87);
+
+const plans={
+  monthly:[
+    {name:'Starter',price:0,period:'Forever free',popular:false,features:['5 projects','10GB storage','Community support','Basic analytics','API access']},
+    {name:'Pro',price:29,period:'per month',popular:true,features:['Unlimited projects','100GB storage','Priority support','Advanced analytics','Custom domains','Team collaboration','SSO & MFA']},
+    {name:'Enterprise',price:99,period:'per month',popular:false,features:['Everything in Pro','Unlimited storage','24/7 dedicated support','Custom SLA','Audit logs','SAML SSO','Custom contracts']},
+  ],
+  annual:[
+    {name:'Starter',price:0,period:'Forever free',popular:false,features:['5 projects','10GB storage','Community support','Basic analytics','API access']},
+    {name:'Pro',price:23,period:'per month, billed annually',popular:true,features:['Unlimited projects','100GB storage','Priority support','Advanced analytics','Custom domains','Team collaboration','SSO & MFA']},
+    {name:'Enterprise',price:79,period:'per month, billed annually',popular:false,features:['Everything in Pro','Unlimited storage','24/7 dedicated support','Custom SLA','Audit logs','SAML SSO','Custom contracts']},
+  ],
+};
+let activePricing='monthly';
+
+function setPricing(type){
+  activePricing=type;
+  document.getElementById('tab-monthly').style.background=type==='monthly'?'rgba(56,189,248,.2)':'transparent';
+  document.getElementById('tab-monthly').style.color=type==='monthly'?'#38bdf8':'#64748b';
+  document.getElementById('tab-annual').style.background=type==='annual'?'rgba(56,189,248,.2)':'transparent';
+  document.getElementById('tab-annual').style.color=type==='annual'?'#38bdf8':'#64748b';
+  renderPricing();
+}
+
+function renderPricing(){
+  document.getElementById('pricingGrid').innerHTML=plans[activePricing].map(p=>`
+    <div class="price-card ${p.popular?'popular':''}">
+      ${p.popular?'<div class="popular-badge">Most Popular</div>':''}
+      <div style="font-size:18px;font-weight:800;margin-bottom:4px">${p.name}</div>
+      <div class="price-amount">${p.price===0?'Free':'$'+p.price}</div>
+      <div style="font-size:13px;color:#64748b;margin-bottom:20px">${p.period}</div>
+      ${p.features.map(f=>`<div class="price-feature">${f}</div>`).join('')}
+      <button class="btn ${p.popular?'':'btn-outline'}" onclick="selectPlan('${p.name}')" style="width:100%;margin-top:20px">${p.price===0?'Get Started':'Start Free Trial'}</button>
+    </div>`).join('');
+}
+
+const testimonials=[
+  {text:'StreamKit cut our deployment time from hours to minutes. The DX is incredible — it just works.',author:'Sarah K.',role:'CTO @ FinanceApp',avatar:'👩‍💼',stars:5},
+  {text:'We migrated 200k users with zero downtime. The support team was with us every step of the way.',author:'Marcus T.',role:'Engineering Lead @ ScaleUp',avatar:'👨‍💻',stars:5},
+  {text:'Best developer tool investment we\'ve made. ROI was clear within the first month.',author:'Elena R.',role:'Founder @ DevStudio',avatar:'👩‍🎨',stars:5},
+];
+document.getElementById('testimonials').innerHTML=testimonials.map(t=>`
+  <div class="test-card">
+    <div class="test-stars">${'★'.repeat(t.stars)}</div>
+    <div class="test-text">"${t.text}"</div>
+    <div class="test-author"><div class="test-avatar">${t.avatar}</div><div><div style="font-weight:700;font-size:14px">${t.author}</div><div style="font-size:12px;color:#64748b">${t.role}</div></div></div>
+  </div>`).join('');
+
+function startTrial(){
+  const email=document.getElementById('heroEmail').value.trim();
+  const fb=document.getElementById('ctaFeedback');
+  if(!email||!email.includes('@')){document.getElementById('heroEmail').style.borderColor='#ef4444';return;}
+  document.getElementById('heroEmail').style.borderColor='#22c55e';
+  if(fb)fb.innerHTML='<span class="badge badge-green" style="font-size:13px;padding:10px 18px">✓ Check your email! Your trial is ready.</span>';
+}
+function selectPlan(name){const fb=document.getElementById('ctaFeedback');if(fb)fb.innerHTML='<span class="badge badge-green" style="font-size:13px;padding:10px 18px">✓ '+name+' plan selected! Redirecting to signup...</span>';}
+function bookDemo(){const fb=document.getElementById('ctaFeedback');if(fb)fb.innerHTML='<span class="badge" style="font-size:13px;padding:10px 18px">📅 Demo booked! Check your calendar for a confirmation.</span>';}
+
+renderPricing();
+</script><script>
+// ── UNIVERSAL UPGRADE: Theme, localStorage, Toast, Animations ──
+(function(){
+'use strict';
+
+// ── 2. TOAST SYSTEM ──────────────────────────────────────────────
+var toastContainer = null;
+function getToastContainer(){
+  if(!toastContainer || !document.body.contains(toastContainer)){
+    toastContainer = document.createElement('div');
+    toastContainer.className = 'u-toast-container';
+    document.body.appendChild(toastContainer);
+  }
+  return toastContainer;
+}
+
+window.uToast = function(msg, type, duration){
+  type = type || 'info';
+  duration = duration || 2800;
+  var icons = {success:'✅', error:'❌', info:'💡', warning:'⚠️'};
+  var c = getToastContainer();
+  var t = document.createElement('div');
+  t.className = 'u-toast ' + type;
+  t.innerHTML = '<span>' + (icons[type]||'💡') + '</span><span>' + msg + '</span>';
+  c.appendChild(t);
+  setTimeout(function(){
+    t.style.animation = 'uToastOut .3s ease forwards';
+    setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 300);
+  }, duration);
+};
+
+// ── 3. LOCALSTORAGE HELPERS ──────────────────────────────────────
+var APP_KEY = 'uapp_' + location.pathname.split('/').pop().replace('.html','');
+window.uSave = function(key, val){
+  try { localStorage.setItem(APP_KEY + '_' + key, JSON.stringify(val)); return true; }
+  catch(e){ return false; }
+};
+window.uLoad = function(key, def){
+  try {
+    var v = localStorage.getItem(APP_KEY + '_' + key);
+    return v !== null ? JSON.parse(v) : def;
+  } catch(e){ return def; }
+};
+window.uClear = function(key){
+  try { localStorage.removeItem(APP_KEY + '_' + key); } catch(e){}
+};
+
+// ── 4. ENTRANCE ANIMATIONS ───────────────────────────────────────
+function animateEntrance(){
+  var cards = document.querySelectorAll('.card, [class*="card"]');
+  cards.forEach(function(el, i){
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(18px)';
+    setTimeout(function(){
+      el.style.transition = 'opacity .4s ease, transform .4s ease';
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+    }, i * 60);
+  });
+}
+
+// ── 5. SMOOTH COUNTER ANIMATION ──────────────────────────────────
+window.uAnimCount = function(el, target, duration, prefix, suffix){
+  prefix = prefix || '';
+  suffix = suffix || '';
+  duration = duration || 1200;
+  var start = 0;
+  var step = target / (duration / 16);
+  var iv = setInterval(function(){
+    start = Math.min(start + step, target);
+    el.textContent = prefix + Math.round(start).toLocaleString() + suffix;
+    if(start >= target) clearInterval(iv);
+  }, 16);
+};
+
+// ── 6. EXPORT HELPER ─────────────────────────────────────────────
+window.uExportJSON = function(data, filename){
+  var blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.json';
+  a.click();
+  uToast('Data exported!', 'success');
+};
+window.uExportCSV = function(rows, filename){
+  var csv = rows.map(function(r){ return r.join(','); }).join('\n');
+  var blob = new Blob([csv], {type:'text/csv'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.csv';
+  a.click();
+  uToast('CSV exported!', 'success');
+};
+
+// ── 8. INIT ──────────────────────────────────────────────────────
+function init(){
+  setTimeout(animateEntrance, 100);
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+})();
+</script>
+<script>
+(function(){
+  var signups = uLoad('saas_signups', []);
+  
+  // Patch startTrial to save leads
+  var origTrial = window.startTrial;
+  if(origTrial){
+    window.startTrial = function(){
+      var email = document.getElementById('heroEmail')?.value.trim();
+      if(email && email.includes('@')){
+        signups.push({email:email, time:new Date().toISOString(), plan:'trial'});
+        uSave('saas_signups', signups);
+        uToast('🎉 Welcome aboard! Check your email.', 'success', 4000);
+        var counter = document.getElementById('c1');
+        if(counter){
+          var cur = parseInt(counter.textContent.replace(/[^0-9]/g,'')) || 50000;
+          uAnimCount(counter, cur + 1, 800);
+        }
+      }
+      origTrial.apply(this,arguments);
+    };
+  }
+  
+  // Scroll-triggered animations for feature cards
+  var observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+        observer.unobserve(e.target);
+      }
+    });
+  }, {threshold:0.15});
+  
+  setTimeout(function(){
+    document.querySelectorAll('.feat,.price-card,.test-card').forEach(function(el,i){
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(24px)';
+      el.style.transition = 'opacity .5s ease ' + (i*0.08) + 's, transform .5s ease ' + (i*0.08) + 's';
+      observer.observe(el);
+    });
+    
+    // Signup counter
+    if(signups.length > 0){
+      var c = document.getElementById('c1');
+      if(c){ uAnimCount(c, 50000 + signups.length, 1200); }
+    }
+  }, 300);
+  
+  uToast('Scroll down to see animations ✨', 'info', 2000);
+})();
+</script>
+</body></html>

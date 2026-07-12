@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <html lang="en">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <title>Drawing Canvas | DevOS</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+</head>
+<body>
+<div id="topbar">
+  <div class="topbar-left">
+    <a class="back-btn" href="index.html">← BACK</a>
+    <span class="topbar-logo">DRAW_OS</span>
+  </div>
+  <div class="topbar-right">
+    <button class="theme-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle theme">🌙</button>
+  </div>
+</div>
+<div id="toast"></div>
+<div class="wrap">
+
+<div class="page-header animate-in"><div class="row align" style="gap:10px;margin-bottom:8px"><span style="font-size:28px">🎨</span><h1>Drawing Canvas</h1></div><p>Full-featured drawing app with brushes, shapes, layers, undo/redo and export.</p></div>
+<div class="card animate-in" style="padding:12px;margin-bottom:10px">
+  <div class="row" style="gap:8px;flex-wrap:wrap;align-items:center">
+    <div class="row" style="gap:4px">
+      <button class="btn btn-icon btn-outline" id="tool-pen" onclick="setTool('pen',this)" title="Pen" style="font-size:18px;border-color:var(--accent);color:var(--accent)">✏️</button>
+      <button class="btn btn-icon btn-outline" id="tool-brush" onclick="setTool('brush',this)" title="Brush" style="font-size:18px">🖌️</button>
+      <button class="btn btn-icon btn-outline" id="tool-fill" onclick="setTool('fill',this)" title="Fill" style="font-size:18px">🪣</button>
+      <button class="btn btn-icon btn-outline" id="tool-eraser" onclick="setTool('eraser',this)" title="Eraser" style="font-size:18px">🧹</button>
+    </div>
+    <div style="width:1px;height:36px;background:var(--border)"></div>
+    <div class="row" style="gap:4px">
+      <input type="color" id="dr-col" value="#00e5ff" style="width:40px;height:40px;border:2px solid var(--border);border-radius:8px;cursor:pointer;padding:2px;background:transparent">
+      <div style="display:flex;flex-direction:column;gap:2px">
+        <button onclick="addColor('#ffffff')" style="width:18px;height:18px;border-radius:4px;background:#fff;border:1px solid var(--border);cursor:pointer"></button>
+        <button onclick="addColor('#ff4d8d')" style="width:18px;height:18px;border-radius:4px;background:#ff4d8d;border:none;cursor:pointer"></button>
+      </div>
+      <div id="dr-palette" class="row" style="gap:3px;flex-wrap:wrap;max-width:120px"></div>
+    </div>
+    <div style="width:1px;height:36px;background:var(--border)"></div>
+    <div class="row align" style="gap:6px">
+      <span style="font-size:11px;color:var(--muted)">Size</span>
+      <input type="range" id="dr-sz" min="1" max="60" value="8" style="width:80px;background:transparent;border:none;padding:0">
+      <span id="dr-sz-val" style="font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--accent);min-width:24px">8</span>
+    </div>
+    <div style="width:1px;height:36px;background:var(--border)"></div>
+    <div class="row" style="gap:4px">
+      <button class="btn btn-icon btn-ghost" onclick="undo()" title="Undo">↩</button>
+      <button class="btn btn-icon btn-ghost" onclick="redo()" title="Redo">↪</button>
+      <button class="btn btn-icon btn-ghost" onclick="clearCanvas()" title="Clear">🗑</button>
+      <button class="btn btn-icon btn-outline" onclick="saveCanvas()" title="Save">💾</button>
+    </div>
+  </div>
+</div>
+<canvas id="dr-canvas" style="width:100%;display:block;border-radius:var(--r2);border:1px solid var(--border);cursor:crosshair;touch-action:none;background:#1a2436"></canvas>
+</div>
+  <script src="../shared-back.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

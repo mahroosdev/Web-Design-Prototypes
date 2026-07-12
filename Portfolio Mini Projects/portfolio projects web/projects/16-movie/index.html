@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <html lang="en">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <title>Movie Database | DevOS</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+</head>
+<body>
+<div id="topbar">
+  <div class="topbar-left">
+    <a class="back-btn" href="index.html">← BACK</a>
+    <span class="topbar-logo">MOVIE_OS</span>
+  </div>
+  <div class="topbar-right">
+    <button class="theme-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle theme">🌙</button>
+  </div>
+</div>
+<div id="toast"></div>
+<div class="wrap">
+<div class="page-header animate-in">
+  <div class="row align" style="gap:10px;margin-bottom:8px"><span style="font-size:28px">🎬</span><h1>Movie Database</h1></div>
+  <p>Search and explore movies with ratings, cast info and watchlist saving.</p>
+</div>
+
+
+<h1>🎬 Movie Search</h1>
+<p>Browse and search popular movies with ratings and details.</p>
+<div style="margin-top:16px"><div class="card" style="margin-bottom:12px">
+  <div class="row" style="gap:8px">
+    <input id="mov-search" placeholder="Search movies..." style="flex:1" onkeydown="if(event.key==='Enter')searchMovies()">
+    <button class="btn btn-primary" onclick="searchMovies()">Search</button>
+  </div>
+</div>
+<div id="mov-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px"></div></div>
+<script>const movies=[{id:1,title:'Inception',genre:'Sci-Fi',year:2010,rating:8.8,icon:'🌀',desc:'A thief enters dreams to steal secrets.'},{id:2,title:'Interstellar',genre:'Sci-Fi',year:2014,rating:8.6,icon:'🚀',desc:'Astronauts travel through a wormhole.'},{id:3,title:'The Dark Knight',genre:'Action',year:2008,rating:9.0,icon:'🦇',desc:'Batman faces the Joker in Gotham.'},{id:4,title:'Parasite',genre:'Thriller',year:2019,rating:8.5,icon:'🏠',desc:'Class conflict in South Korea.'},{id:5,title:'Dune',genre:'Sci-Fi',year:2021,rating:8.0,icon:'🏜',desc:'Desert planet epic adventure.'},{id:6,title:'Tenet',genre:'Action',year:2020,rating:7.3,icon:'⏪',desc:'Time-bending spy thriller.'},{id:7,title:'1917',genre:'War',year:2019,rating:8.3,icon:'💂',desc:'Single-shot WWI mission.'},{id:8,title:'Oppenheimer',genre:'Drama',year:2023,rating:8.9,icon:'☢',desc:'Father of the atomic bomb.'}];
+let filtered=movies;
+function searchMovies(){const q=document.getElementById('mov-search').value.toLowerCase();filtered=movies.filter(m=>m.title.toLowerCase().includes(q)||m.genre.toLowerCase().includes(q));renderMovies();}
+function renderMovies(){document.getElementById('mov-grid').innerHTML=filtered.map(m=>`<div class="card" style="cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'" onclick="movieDetail(${m.id})"><div style="font-size:48px;text-align:center;padding:12px 0">${m.icon}</div><div style="font-size:13px;font-weight:600;margin-bottom:4px">${m.title}</div><div style="font-size:11px;color:var(--muted);margin-bottom:6px">${m.genre} · ${m.year}</div><div style="display:flex;justify-content:space-between;align-items:center"><span style="color:#fbbf24;font-size:12px">⭐ ${m.rating}</span><button class="btn btn-outline" style="font-size:11px;padding:4px 10px;min-height:30px">Info</button></div></div>`).join('');}
+function movieDetail(id){const m=movies.find(x=>x.id===id);toast(`${m.icon} ${m.title} (${m.year}) — ⭐${m.rating}`);}
+renderMovies();</script>
+
+
+</div>
+  <script src="../shared-back.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

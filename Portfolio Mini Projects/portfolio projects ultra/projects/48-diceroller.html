@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<meta name="description" content="Dice Roller - Advanced Rolling Tool — part of a professional web developer portfolio with 50+ projects.">
+<meta name="robots" content="index, follow">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dice Roller - Advanced Rolling Tool</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        input[type="number"], select {
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        input[type="number"]:focus, select:focus {
+            background: rgba(255, 255, 255, 0.3);
+            outline: none;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        }
+
+        input[type="number"]::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        select option {
+            background: #1a3a52;
+            color: white;
+        }
+
+        .dice-types {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .dice-btn {
+            padding: 15px 10px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            background: transparent;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .dice-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .dice-btn.active {
+            background: rgba(76, 175, 80, 0.5);
+            border-color: rgba(76, 175, 80, 0.8);
+            box-shadow: 0 0 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .btn-roll {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-roll:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+        }
+
+        .btn-roll:active {
+            transform: translateY(0);
+        }
+
+        .btn-clear {
+            padding: 15px 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            background: transparent;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-clear:hover {
+            background: rgba(244, 67, 54, 0.3);
+            border-color: rgba(244, 67, 54, 0.6);
+        }
+
+        .results-section {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .result-title {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .dice-display {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+            min-height: 40px;
+            align-items: center;
+        }
+
+        .single-die {
+            width: 45px;
+            height: 45px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            animation: rollAnimation 0.5s ease;
+        }
+
+        @keyframes rollAnimation {
+            0% { transform: rotateX(0deg) rotateY(0deg) scale(0.8); opacity: 0; }
+            50% { transform: rotateX(180deg) rotateY(180deg) scale(1.1); }
+            100% { transform: rotateX(0deg) rotateY(0deg) scale(1); opacity: 1; }
+        }
+
+        .total-result {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .total-number {
+            color: #4ECDC4;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .history-section {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .history-title {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .history-list {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .history-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            font-size: 13px;
+            border-left: 3px solid #4ECDC4;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .history-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateX(5px);
+        }
+
+        .history-roll {
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+        }
+
+        .empty-history {
+            color: rgba(255, 255, 255, 0.5);
+            text-align: center;
+            padding: 20px;
+            font-style: italic;
+        }
+
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            opacity: 1;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 22px;
+            }
+
+            .controls {
+                grid-template-columns: 1fr;
+            }
+
+            .dice-types {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .single-die {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+
+            .total-number {
+                font-size: 24px;
+            }
+        }
+    
+        /* ===== UNIVERSAL MOBILE RESPONSIVE FIX ===== */
+        * { box-sizing: border-box !important; }
+        body { overflow-x: hidden !important; }
+        
+        @media (max-width: 768px) {
+            body { padding: 15px 12px !important; }
+            .container, [class*="container"], [class*="wrapper"] {
+                max-width: 100% !important;
+                width: 100% !important;
+                padding-left: 12px !important;
+                padding-right: 12px !important;
+            }
+            h1 { font-size: clamp(22px, 6vw, 36px) !important; }
+            h2 { font-size: clamp(18px, 5vw, 28px) !important; }
+            h3 { font-size: clamp(15px, 4vw, 22px) !important; }
+            
+            /* Grids → single column */
+            [class*="grid"]:not([class*="col-"]) {
+                grid-template-columns: 1fr !important;
+            }
+            /* Flex rows → wrap */
+            [class*="header"], [class*="nav"], [class*="toolbar"], [class*="actions"] {
+                flex-wrap: wrap !important;
+                gap: 8px !important;
+            }
+            /* Cards and panels */
+            [class*="card"], [class*="panel"], [class*="content"], [class*="box"] {
+                padding: 16px 14px !important;
+            }
+            /* Tables → scroll */
+            table { display: block !important; overflow-x: auto !important; white-space: nowrap !important; }
+            /* Inputs and buttons */
+            input, select, textarea { font-size: 16px !important; max-width: 100% !important; }
+            button { min-height: 40px !important; }
+            /* Sidebar layouts → stack */
+            [class*="sidebar"], [class*="side-bar"] {
+                width: 100% !important;
+                position: relative !important;
+                height: auto !important;
+            }
+            /* Images */
+            img { max-width: 100% !important; height: auto !important; }
+            /* Canvas */
+            canvas { max-width: 100% !important; }
+            /* Fixed widths → fluid */
+            [style*="width: 1200px"], [style*="width:1200px"],
+            [style*="width: 900px"], [style*="width:900px"],
+            [style*="width: 800px"], [style*="width:800px"],
+            [style*="width: 700px"], [style*="width:700px"],
+            [style*="width: 600px"], [style*="width:600px"] {
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body { padding: 10px 10px !important; }
+            h1 { font-size: clamp(20px, 7vw, 28px) !important; }
+            [class*="card"], [class*="panel"] { padding: 12px 10px !important; border-radius: 10px !important; }
+            [class*="grid"] { gap: 10px !important; }
+            button, .btn, .button { padding: 10px 14px !important; font-size: 13px !important; }
+        }
+        /* ===== END MOBILE FIX ===== */
+        
+/* ── UNIVERSAL UPGRADE: Theme, Animations, Toast ── */
+:root{
+  --bg:#020617;--bg2:#0f172a;--card:rgba(30,41,59,.85);--border:rgba(56,189,248,.22);
+  --accent:#38bdf8;--accent2:#22c55e;--text:#f1f5f9;--muted:#94a3b8;--danger:#ef4444;
+}
+
+
+/* Toast notifications */
+.u-toast-container{position:fixed;bottom:24px;right:20px;z-index:99999;display:flex;flex-direction:column;gap:8px;max-width:320px}
+.u-toast{
+  background:var(--card);border:1px solid var(--border);color:var(--text);
+  padding:11px 16px;border-radius:10px;font-size:13px;font-weight:600;
+  box-shadow:0 4px 20px rgba(0,0,0,.35);
+  animation:uToastIn .3s ease;display:flex;align-items:center;gap:8px;
+}
+.u-toast.success{border-color:rgba(34,197,94,.5);background:rgba(34,197,94,.1)}
+.u-toast.error{border-color:rgba(239,68,68,.5);background:rgba(239,68,68,.1)}
+.u-toast.info{border-color:rgba(56,189,248,.5);background:rgba(56,189,248,.1)}
+@keyframes uToastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes uToastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(20px)}}
+
+/* Entrance animations */
+@keyframes uFadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes uFadeIn{from{opacity:0}to{opacity:1}}
+@keyframes uPulse{0%,100%{box-shadow:0 0 0 0 rgba(56,189,248,.4)}70%{box-shadow:0 0 0 8px rgba(56,189,248,0)}}
+.u-fade-up{animation:uFadeUp .45s ease both}
+.u-fade-in{animation:uFadeIn .4s ease both}
+.u-pulse{animation:uPulse 2s infinite}
+
+/* Button hover lift */
+.btn:hover,[class*="btn"]:not([class*="btn-"]):hover{transform:translateY(-2px)!important}
+
+/* Smooth card hover */
+.card:hover,[class*="card"]:hover{
+  border-color:var(--accent)!important;
+  box-shadow:0 6px 28px rgba(56,189,248,.12)!important;
+  transition:all .25s ease!important;
+}
+
+/* Loading skeleton */
+.u-skeleton{
+  background:linear-gradient(90deg,rgba(56,189,248,.06) 25%,rgba(56,189,248,.12) 50%,rgba(56,189,248,.06) 75%);
+  background-size:200% 100%;animation:uSkeleton 1.4s infinite;border-radius:6px;
+}
+@keyframes uSkeleton{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* Progress bar component */
+.u-progress{height:5px;background:rgba(56,189,248,.12);border-radius:3px;overflow:hidden;margin:8px 0}
+.u-progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:3px;transition:width .5s ease}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(56,189,248,.3);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(56,189,248,.55)}
+
+/* Mobile responsive upgrades */
+@media(max-width:600px){
+  
+  .u-toast-container{right:10px;bottom:80px;max-width:calc(100vw - 20px)}
+}
+
+</style>
+</head>
+<body>
+    <a href="../index.html" class="back-link" onclick="window.close(); return false;">← Back to Portfolio</a>
+    
+    <div class="container">
+        <h1>🎲 Dice Roller</h1>
+
+        <div class="controls">
+            <div class="control-group">
+                <label for="numDice">Number of Dice</label>
+                <input type="number" id="numDice" min="1" max="20" value="1">
+            </div>
+            <div class="control-group">
+                <label for="diceType">Dice Type</label>
+                <select id="diceType">
+                    <option value="d4">D4</option>
+                    <option value="d6">D6</option>
+                    <option value="d8">D8</option>
+                    <option value="d10">D10</option>
+                    <option value="d12">D12</option>
+                    <option value="d20">D20</option>
+                    <option value="d100">D100</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="dice-types">
+            <button class="dice-btn" onclick="setDice(4)">D4</button>
+            <button class="dice-btn active" onclick="setDice(6)">D6</button>
+            <button class="dice-btn" onclick="setDice(8)">D8</button>
+            <button class="dice-btn" onclick="setDice(10)">D10</button>
+            <button class="dice-btn" onclick="setDice(12)">D12</button>
+            <button class="dice-btn" onclick="setDice(20)">D20</button>
+            <button class="dice-btn" onclick="setDice(100)">D100</button>
+            <button class="dice-btn" onclick="setDice('custom')">Custom</button>
+        </div>
+
+        <div class="action-buttons">
+            <button class="btn-roll" onclick="rollDice()">🎲 ROLL</button>
+            <button class="btn-clear" onclick="clearResults()">Clear</button>
+        </div>
+
+        <div class="results-section" id="resultsSection" style="display: none;">
+            <div class="result-title">Last Roll</div>
+            <div class="dice-display" id="diceDisplay"></div>
+            <div class="total-result">
+                Total: <span class="total-number" id="totalResult">0</span>
+            </div>
+        </div>
+
+        <div class="history-section">
+            <div class="history-title">Roll History</div>
+            <div class="history-list" id="historyList">
+                <div class="empty-history">No rolls yet</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="notification" id="notification"></div>
+
+    <script>
+        let lastDiceType = 6;
+        let rollHistory = [];
+
+        function setDice(sides) {
+            if (sides === 'custom') {
+                const custom = prompt('Enter custom dice sides:', '20');
+                if (custom && !isNaN(custom) && custom > 0) {
+                    lastDiceType = parseInt(custom);
+                    document.getElementById('diceType').value = 'd' + lastDiceType;
+                    updateDiceButtons();
+                }
+            } else {
+                lastDiceType = sides;
+                document.getElementById('diceType').value = 'd' + sides;
+                updateDiceButtons();
+            }
+        }
+
+        function updateDiceButtons() {
+            document.querySelectorAll('.dice-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelectorAll('.dice-btn').forEach(btn => {
+                const text = btn.textContent;
+                if (text === 'D' + lastDiceType || text === 'Custom') {
+                    if (text === 'D' + lastDiceType) btn.classList.add('active');
+                }
+            });
+        }
+
+        function rollDice() {
+            const numDice = parseInt(document.getElementById('numDice').value);
+            
+            if (numDice < 1 || numDice > 20) {
+                showNotification('Roll between 1-20 dice');
+                return;
+            }
+
+            const diceType = lastDiceType;
+            const results = [];
+            let total = 0;
+
+            for (let i = 0; i < numDice; i++) {
+                const roll = Math.floor(Math.random() * diceType) + 1;
+                results.push(roll);
+                total += roll;
+            }
+
+            displayResults(results, total, numDice, diceType);
+            addToHistory(numDice, diceType, results, total);
+        }
+
+        function displayResults(results, total, numDice, diceType) {
+            const diceDisplay = document.getElementById('diceDisplay');
+            diceDisplay.innerHTML = '';
+
+            results.forEach((result, index) => {
+                setTimeout(() => {
+                    const div = document.createElement('div');
+                    div.className = 'single-die';
+                    div.textContent = result;
+                    diceDisplay.appendChild(div);
+                }, index * 50);
+            });
+
+            document.getElementById('totalResult').textContent = total;
+            document.getElementById('resultsSection').style.display = 'block';
+        }
+
+        function addToHistory(numDice, diceType, results, total) {
+            const timestamp = new Date().toLocaleTimeString();
+            const rollText = `${numDice}d${diceType}`;
+            
+            rollHistory.unshift({
+                roll: rollText,
+                results: results,
+                total: total,
+                time: timestamp
+            });
+
+            if (rollHistory.length > 20) rollHistory.pop();
+            updateHistoryDisplay();
+        }
+
+        function updateHistoryDisplay() {
+            const historyList = document.getElementById('historyList');
+            
+            if (rollHistory.length === 0) {
+                historyList.innerHTML = '<div class="empty-history">No rolls yet</div>';
+                return;
+            }
+
+            historyList.innerHTML = rollHistory.map((entry, index) => `
+                <div class="history-item" onclick="copyToClipboard('${entry.total}')">
+                    <span>
+                        <span class="history-roll">${entry.roll}</span> = ${entry.results.join(', ')}
+                    </span>
+                    <span style="font-weight: bold; color: #4ECDC4;">${entry.total}</span>
+                </div>
+            `).join('');
+        }
+
+        function clearResults() {
+            document.getElementById('resultsSection').style.display = 'none';
+            document.getElementById('diceDisplay').innerHTML = '';
+            document.getElementById('totalResult').textContent = '0';
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showNotification('Copied: ' + text);
+            });
+        }
+
+        function showNotification(message) {
+            const notif = document.getElementById('notification');
+            notif.textContent = message;
+            notif.classList.add('show');
+            setTimeout(() => notif.classList.remove('show'), 2000);
+        }
+
+        // Initialize
+        updateDiceButtons();
+    </script>
+<script>
+// ── UNIVERSAL UPGRADE: Theme, localStorage, Toast, Animations ──
+(function(){
+'use strict';
+
+// ── 2. TOAST SYSTEM ──────────────────────────────────────────────
+var toastContainer = null;
+function getToastContainer(){
+  if(!toastContainer || !document.body.contains(toastContainer)){
+    toastContainer = document.createElement('div');
+    toastContainer.className = 'u-toast-container';
+    document.body.appendChild(toastContainer);
+  }
+  return toastContainer;
+}
+
+window.uToast = function(msg, type, duration){
+  type = type || 'info';
+  duration = duration || 2800;
+  var icons = {success:'✅', error:'❌', info:'💡', warning:'⚠️'};
+  var c = getToastContainer();
+  var t = document.createElement('div');
+  t.className = 'u-toast ' + type;
+  t.innerHTML = '<span>' + (icons[type]||'💡') + '</span><span>' + msg + '</span>';
+  c.appendChild(t);
+  setTimeout(function(){
+    t.style.animation = 'uToastOut .3s ease forwards';
+    setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 300);
+  }, duration);
+};
+
+// ── 3. LOCALSTORAGE HELPERS ──────────────────────────────────────
+var APP_KEY = 'uapp_' + location.pathname.split('/').pop().replace('.html','');
+window.uSave = function(key, val){
+  try { localStorage.setItem(APP_KEY + '_' + key, JSON.stringify(val)); return true; }
+  catch(e){ return false; }
+};
+window.uLoad = function(key, def){
+  try {
+    var v = localStorage.getItem(APP_KEY + '_' + key);
+    return v !== null ? JSON.parse(v) : def;
+  } catch(e){ return def; }
+};
+window.uClear = function(key){
+  try { localStorage.removeItem(APP_KEY + '_' + key); } catch(e){}
+};
+
+// ── 4. ENTRANCE ANIMATIONS ───────────────────────────────────────
+function animateEntrance(){
+  var cards = document.querySelectorAll('.card, [class*="card"]');
+  cards.forEach(function(el, i){
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(18px)';
+    setTimeout(function(){
+      el.style.transition = 'opacity .4s ease, transform .4s ease';
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+    }, i * 60);
+  });
+}
+
+// ── 5. SMOOTH COUNTER ANIMATION ──────────────────────────────────
+window.uAnimCount = function(el, target, duration, prefix, suffix){
+  prefix = prefix || '';
+  suffix = suffix || '';
+  duration = duration || 1200;
+  var start = 0;
+  var step = target / (duration / 16);
+  var iv = setInterval(function(){
+    start = Math.min(start + step, target);
+    el.textContent = prefix + Math.round(start).toLocaleString() + suffix;
+    if(start >= target) clearInterval(iv);
+  }, 16);
+};
+
+// ── 6. EXPORT HELPER ─────────────────────────────────────────────
+window.uExportJSON = function(data, filename){
+  var blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.json';
+  a.click();
+  uToast('Data exported!', 'success');
+};
+window.uExportCSV = function(rows, filename){
+  var csv = rows.map(function(r){ return r.join(','); }).join('\n');
+  var blob = new Blob([csv], {type:'text/csv'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.csv';
+  a.click();
+  uToast('CSV exported!', 'success');
+};
+
+// ── 8. INIT ──────────────────────────────────────────────────────
+function init(){
+  setTimeout(animateEntrance, 100);
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+})();
+</script>
+</body>
+</html>

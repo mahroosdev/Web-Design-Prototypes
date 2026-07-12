@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="Weather Dashboard — part of a professional web developer portfolio with 50+ projects.">
+<meta name="robots" content="index, follow">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weather Dashboard</title>
+<style>
+
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{background:linear-gradient(135deg,#020617 0%,#0f172a 100%);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#fff;min-height:100vh;padding:40px 20px;overflow-x:hidden}
+        .container{max-width:1000px;margin:0 auto}
+        a{color:#38bdf8;text-decoration:none;font-weight:600}
+        a:hover{color:#4ade80}
+        h1{background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:36px;margin-bottom:8px}
+        .subtitle{color:#94a3b8;margin-bottom:28px;font-size:15px}
+        .back-link{display:inline-flex;align-items:center;gap:6px;margin-bottom:20px;color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;padding:8px 14px;border:1px solid rgba(56,189,248,0.3);border-radius:8px;transition:.2s}
+        .back-link:hover{background:rgba(56,189,248,0.1)}
+        .card{background:rgba(30,41,59,0.8);backdrop-filter:blur(10px);padding:28px;border-radius:16px;border:1px solid rgba(56,189,248,0.2);margin-bottom:20px}
+        .btn{padding:10px 22px;border:none;border-radius:8px;cursor:pointer;font-weight:700;font-size:14px;transition:.2s;background:linear-gradient(90deg,#38bdf8,#22c55e);color:#000}
+        .btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(56,189,248,.35)}
+        .btn-outline{background:transparent;border:1px solid rgba(56,189,248,.4);color:#38bdf8}
+        .btn-outline:hover{background:rgba(56,189,248,.1)}
+        .btn-red{background:linear-gradient(90deg,#ef4444,#dc2626);color:#fff}
+        input,textarea,select{background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.3);color:#fff;border-radius:8px;padding:10px 14px;font-size:14px;width:100%;outline:none;transition:.2s}
+        input:focus,textarea:focus,select:focus{border-color:#38bdf8;background:rgba(56,189,248,.12);box-shadow:0 0 0 3px rgba(56,189,248,.15)}
+        input::placeholder,textarea::placeholder{color:#64748b}
+        label{display:block;font-size:13px;font-weight:600;color:#94a3b8;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+        .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+        .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+        .flex{display:flex;align-items:center;gap:12px}
+        .badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;background:rgba(56,189,248,.15);color:#38bdf8;border:1px solid rgba(56,189,248,.3)}
+        .badge-green{background:rgba(34,197,94,.15);color:#22c55e;border-color:rgba(34,197,94,.3)}
+        .badge-red{background:rgba(239,68,68,.15);color:#ef4444;border-color:rgba(239,68,68,.3)}
+        .badge-yellow{background:rgba(234,179,8,.15);color:#eab308;border-color:rgba(234,179,8,.3)}
+        .stat-box{background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.15);border-radius:12px;padding:20px;text-align:center}
+        .stat-num{font-size:32px;font-weight:800;background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .stat-label{font-size:12px;color:#64748b;margin-top:4px;text-transform:uppercase;letter-spacing:.5px}
+        hr{border:none;border-top:1px solid rgba(56,189,248,.1);margin:20px 0}
+        @media(max-width:768px){body{padding:15px 12px}h1{font-size:26px}.grid2,.grid3{grid-template-columns:1fr}.card{padding:18px 14px}}
+
+
+.w-main{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+.w-icon{font-size:72px;line-height:1}
+.w-temp{font-size:64px;font-weight:900;background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.w-city{font-size:22px;font-weight:700;margin-bottom:4px}
+.w-desc{color:#94a3b8;font-size:15px;text-transform:capitalize}
+.forecast-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(56,189,248,.1)}
+.forecast-item:last-child{border:none}
+.detail-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(56,189,248,.08);font-size:14px}
+.detail-row:last-child{border:none}
+.detail-label{color:#64748b}
+.detail-val{font-weight:600;color:#e2e8f0}
+
+
+/* ── UNIVERSAL UPGRADE: Theme, Animations, Toast ── */
+:root{
+  --bg:#020617;--bg2:#0f172a;--card:rgba(30,41,59,.85);--border:rgba(56,189,248,.22);
+  --accent:#38bdf8;--accent2:#22c55e;--text:#f1f5f9;--muted:#94a3b8;--danger:#ef4444;
+}
+
+
+/* Toast notifications */
+.u-toast-container{position:fixed;bottom:24px;right:20px;z-index:99999;display:flex;flex-direction:column;gap:8px;max-width:320px}
+.u-toast{
+  background:var(--card);border:1px solid var(--border);color:var(--text);
+  padding:11px 16px;border-radius:10px;font-size:13px;font-weight:600;
+  box-shadow:0 4px 20px rgba(0,0,0,.35);
+  animation:uToastIn .3s ease;display:flex;align-items:center;gap:8px;
+}
+.u-toast.success{border-color:rgba(34,197,94,.5);background:rgba(34,197,94,.1)}
+.u-toast.error{border-color:rgba(239,68,68,.5);background:rgba(239,68,68,.1)}
+.u-toast.info{border-color:rgba(56,189,248,.5);background:rgba(56,189,248,.1)}
+@keyframes uToastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes uToastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(20px)}}
+
+/* Entrance animations */
+@keyframes uFadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes uFadeIn{from{opacity:0}to{opacity:1}}
+@keyframes uPulse{0%,100%{box-shadow:0 0 0 0 rgba(56,189,248,.4)}70%{box-shadow:0 0 0 8px rgba(56,189,248,0)}}
+.u-fade-up{animation:uFadeUp .45s ease both}
+.u-fade-in{animation:uFadeIn .4s ease both}
+.u-pulse{animation:uPulse 2s infinite}
+
+/* Button hover lift */
+.btn:hover,[class*="btn"]:not([class*="btn-"]):hover{transform:translateY(-2px)!important}
+
+/* Smooth card hover */
+.card:hover,[class*="card"]:hover{
+  border-color:var(--accent)!important;
+  box-shadow:0 6px 28px rgba(56,189,248,.12)!important;
+  transition:all .25s ease!important;
+}
+
+/* Loading skeleton */
+.u-skeleton{
+  background:linear-gradient(90deg,rgba(56,189,248,.06) 25%,rgba(56,189,248,.12) 50%,rgba(56,189,248,.06) 75%);
+  background-size:200% 100%;animation:uSkeleton 1.4s infinite;border-radius:6px;
+}
+@keyframes uSkeleton{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* Progress bar component */
+.u-progress{height:5px;background:rgba(56,189,248,.12);border-radius:3px;overflow:hidden;margin:8px 0}
+.u-progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:3px;transition:width .5s ease}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(56,189,248,.3);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(56,189,248,.55)}
+
+/* Mobile responsive upgrades */
+@media(max-width:600px){
+  
+  .u-toast-container{right:10px;bottom:80px;max-width:calc(100vw - 20px)}
+}
+
+</style>
+</head>
+<body>
+<div class="container">
+<a href="../index.html" class="back-link" onclick="window.close(); return false;">← Back to Portfolio</a>
+
+<h1>🌤 Weather Dashboard</h1>
+<p class="subtitle">Real-time weather simulation with 5-day forecast</p>
+<div class="card">
+  <div class="flex" style="margin-bottom:18px;gap:10px;flex-wrap:wrap">
+    <input id="cityInput" placeholder="Search city..." style="flex:1;min-width:180px">
+    <button class="btn" onclick="searchWeather()">Search</button>
+    <button class="btn btn-outline" onclick="loadRandom()">Random City</button>
+  </div>
+  <div id="weatherMain"></div>
+</div>
+<div class="grid2">
+  <div class="card" id="forecastCard" style="display:none">
+    <h3 style="margin-bottom:16px;color:#38bdf8">5-Day Forecast</h3>
+    <div id="forecast"></div>
+  </div>
+  <div class="card" id="detailsCard" style="display:none">
+    <h3 style="margin-bottom:16px;color:#38bdf8">Weather Details</h3>
+    <div id="details"></div>
+  </div>
+</div>
+
+</div>
+<script>
+
+const cities={
+  'London':{temp:14,desc:'Partly Cloudy',icon:'⛅',humidity:72,wind:18,pressure:1012,uv:3,visibility:10,feelsLike:11},
+  'Tokyo':{temp:22,desc:'Sunny',icon:'☀️',humidity:55,wind:12,pressure:1018,uv:7,visibility:15,feelsLike:21},
+  'New York':{temp:18,desc:'Clear',icon:'🌤',humidity:60,wind:22,pressure:1008,uv:5,visibility:12,feelsLike:16},
+  'Dubai':{temp:38,desc:'Hot & Sunny',icon:'☀️',humidity:45,wind:8,pressure:1005,uv:11,visibility:20,feelsLike:41},
+  'Sydney':{temp:24,desc:'Mostly Clear',icon:'🌤',humidity:65,wind:15,pressure:1015,uv:8,visibility:18,feelsLike:23},
+  'Paris':{temp:16,desc:'Overcast',icon:'☁️',humidity:80,wind:20,pressure:1004,uv:2,visibility:8,feelsLike:13},
+  'Mumbai':{temp:31,desc:'Humid',icon:'🌫',humidity:88,wind:14,pressure:1002,uv:9,visibility:6,feelsLike:37},
+  'Toronto':{temp:10,desc:'Rainy',icon:'🌧',humidity:85,wind:25,pressure:998,uv:1,visibility:5,feelsLike:6},
+  'Moscow':{temp:-2,desc:'Snowing',icon:'🌨',humidity:90,wind:30,pressure:990,uv:1,visibility:3,feelsLike:-9},
+  'Berlin':{temp:12,desc:'Windy',icon:'🌬',humidity:70,wind:35,pressure:1000,uv:2,visibility:10,feelsLike:8},
+};
+const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const weatherIcons=['☀️','🌤','⛅','🌦','🌧','⛈','🌨','☁️'];
+
+function getDay(offset){const d=new Date();d.setDate(d.getDate()+offset);return days[d.getDay()];}
+function randTemp(base){return base+Math.round((Math.random()-0.5)*8);}
+
+function renderWeather(city, data){
+  document.getElementById('weatherMain').innerHTML=`
+    <div class="w-main">
+      <div class="w-icon">${data.icon}</div>
+      <div>
+        <div class="w-city">${city}</div>
+        <div class="w-temp">${data.temp}°C</div>
+        <div class="w-desc">${data.desc}</div>
+      </div>
+    </div>`;
+
+  const fc=document.getElementById('forecastCard');
+  const dc=document.getElementById('detailsCard');
+  fc.style.display='block'; dc.style.display='block';
+
+  let fhtml='';
+  for(let i=1;i<=5;i++){
+    const icon=weatherIcons[Math.floor(Math.random()*5)];
+    const hi=randTemp(data.temp+2), lo=randTemp(data.temp-4);
+    fhtml+=`<div class="forecast-item"><span style="width:36px;font-weight:700;color:#94a3b8">${getDay(i)}</span><span style="font-size:20px">${icon}</span><span style="color:#60a5fa">${lo}°</span><span style="font-weight:700">${hi}°</span></div>`;
+  }
+  document.getElementById('forecast').innerHTML=fhtml;
+
+  document.getElementById('details').innerHTML=`
+    <div class="detail-row"><span class="detail-label">💧 Humidity</span><span class="detail-val">${data.humidity}%</span></div>
+    <div class="detail-row"><span class="detail-label">💨 Wind Speed</span><span class="detail-val">${data.wind} km/h</span></div>
+    <div class="detail-row"><span class="detail-label">🌡 Feels Like</span><span class="detail-val">${data.feelsLike}°C</span></div>
+    <div class="detail-row"><span class="detail-label">🔵 Pressure</span><span class="detail-val">${data.pressure} hPa</span></div>
+    <div class="detail-row"><span class="detail-label">☀️ UV Index</span><span class="detail-val">${data.uv}</span></div>
+    <div class="detail-row"><span class="detail-label">👁 Visibility</span><span class="detail-val">${data.visibility} km</span></div>`;
+}
+
+function searchWeather(){
+  const q=document.getElementById('cityInput').value.trim();
+  if(!q)return;
+  const key=Object.keys(cities).find(c=>c.toLowerCase()===q.toLowerCase());
+  if(key){renderWeather(key,cities[key]);}
+  else{
+    // Generate plausible random data for unknown cities
+    const base=Math.round(Math.random()*35-5);
+    const icons=['☀️','🌤','⛅','🌦','☁️'];
+    const descs=['Sunny','Partly Cloudy','Overcast','Light Rain','Clear'];
+    const idx=Math.floor(Math.random()*5);
+    renderWeather(q,{temp:base,desc:descs[idx],icon:icons[idx],humidity:Math.round(50+Math.random()*40),wind:Math.round(5+Math.random()*30),pressure:Math.round(995+Math.random()*25),uv:Math.round(1+Math.random()*10),visibility:Math.round(5+Math.random()*15),feelsLike:base-3});
+  }
+}
+function loadRandom(){
+  const keys=Object.keys(cities);
+  const k=keys[Math.floor(Math.random()*keys.length)];
+  document.getElementById('cityInput').value=k;
+  renderWeather(k,cities[k]);
+}
+document.getElementById('cityInput').addEventListener('keydown',e=>{if(e.key==='Enter')searchWeather();});
+loadRandom();
+
+</script>
+<script>
+// ── UNIVERSAL UPGRADE: Theme, localStorage, Toast, Animations ──
+(function(){
+'use strict';
+
+// ── 2. TOAST SYSTEM ──────────────────────────────────────────────
+var toastContainer = null;
+function getToastContainer(){
+  if(!toastContainer || !document.body.contains(toastContainer)){
+    toastContainer = document.createElement('div');
+    toastContainer.className = 'u-toast-container';
+    document.body.appendChild(toastContainer);
+  }
+  return toastContainer;
+}
+
+window.uToast = function(msg, type, duration){
+  type = type || 'info';
+  duration = duration || 2800;
+  var icons = {success:'✅', error:'❌', info:'💡', warning:'⚠️'};
+  var c = getToastContainer();
+  var t = document.createElement('div');
+  t.className = 'u-toast ' + type;
+  t.innerHTML = '<span>' + (icons[type]||'💡') + '</span><span>' + msg + '</span>';
+  c.appendChild(t);
+  setTimeout(function(){
+    t.style.animation = 'uToastOut .3s ease forwards';
+    setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 300);
+  }, duration);
+};
+
+// ── 3. LOCALSTORAGE HELPERS ──────────────────────────────────────
+var APP_KEY = 'uapp_' + location.pathname.split('/').pop().replace('.html','');
+window.uSave = function(key, val){
+  try { localStorage.setItem(APP_KEY + '_' + key, JSON.stringify(val)); return true; }
+  catch(e){ return false; }
+};
+window.uLoad = function(key, def){
+  try {
+    var v = localStorage.getItem(APP_KEY + '_' + key);
+    return v !== null ? JSON.parse(v) : def;
+  } catch(e){ return def; }
+};
+window.uClear = function(key){
+  try { localStorage.removeItem(APP_KEY + '_' + key); } catch(e){}
+};
+
+// ── 4. ENTRANCE ANIMATIONS ───────────────────────────────────────
+function animateEntrance(){
+  var cards = document.querySelectorAll('.card, [class*="card"]');
+  cards.forEach(function(el, i){
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(18px)';
+    setTimeout(function(){
+      el.style.transition = 'opacity .4s ease, transform .4s ease';
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+    }, i * 60);
+  });
+}
+
+// ── 5. SMOOTH COUNTER ANIMATION ──────────────────────────────────
+window.uAnimCount = function(el, target, duration, prefix, suffix){
+  prefix = prefix || '';
+  suffix = suffix || '';
+  duration = duration || 1200;
+  var start = 0;
+  var step = target / (duration / 16);
+  var iv = setInterval(function(){
+    start = Math.min(start + step, target);
+    el.textContent = prefix + Math.round(start).toLocaleString() + suffix;
+    if(start >= target) clearInterval(iv);
+  }, 16);
+};
+
+// ── 6. EXPORT HELPER ─────────────────────────────────────────────
+window.uExportJSON = function(data, filename){
+  var blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.json';
+  a.click();
+  uToast('Data exported!', 'success');
+};
+window.uExportCSV = function(rows, filename){
+  var csv = rows.map(function(r){ return r.join(','); }).join('\n');
+  var blob = new Blob([csv], {type:'text/csv'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.csv';
+  a.click();
+  uToast('CSV exported!', 'success');
+};
+
+// ── 8. INIT ──────────────────────────────────────────────────────
+function init(){
+  setTimeout(animateEntrance, 100);
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+})();
+</script>
+<script>
+(function(){
+  var favs = uLoad('weather_favs', []);
+  var unit = uLoad('weather_unit', 'C');
+  
+  // Add unit toggle button
+  var searchArea = document.querySelector('.card');
+  if(searchArea && !document.getElementById('uUnitToggle')){
+    var utBtn = document.createElement('button');
+    utBtn.id = 'uUnitToggle';
+    utBtn.textContent = unit === 'C' ? '🌡 °C → °F' : '🌡 °F → °C';
+    utBtn.style.cssText = 'padding:8px 16px;background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.3);color:#38bdf8;border-radius:8px;cursor:pointer;font-size:13px;font-weight:700;margin-left:8px;transition:.2s';
+    utBtn.onclick = function(){
+      unit = unit === 'C' ? 'F' : 'C';
+      uSave('weather_unit', unit);
+      utBtn.textContent = unit === 'C' ? '🌡 °C → °F' : '🌡 °F → °C';
+      // Re-render all temperature elements
+      document.querySelectorAll('.w-temp,[class*="temp"]').forEach(function(el){
+        var match = el.textContent.match(/([-\d.]+)°[CF]/);
+        if(match){
+          var t = parseFloat(match[1]);
+          var converted = unit === 'F' ? Math.round(t * 9/5 + 32) : Math.round((t - 32) * 5/9);
+          el.textContent = converted + '°' + unit;
+        }
+      });
+      uToast('Switched to °' + unit, 'info');
+    };
+    searchArea.querySelector('.flex,.btn')?.parentNode?.appendChild(utBtn);
+  }
+  
+  // Favourites panel
+  if(!document.getElementById('uWeatherFavs')){
+    var favPanel = document.createElement('div');
+    favPanel.className = 'card u-fade-up';
+    favPanel.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><div style="font-weight:700;color:#38bdf8">⭐ Favourite Cities</div></div><div id="uFavList" style="display:flex;gap:8px;flex-wrap:wrap"></div>';
+    document.querySelector('.container')?.appendChild(favPanel);
+  }
+  
+  function renderFavs(){
+    var el = document.getElementById('uFavList');
+    if(!el) return;
+    el.innerHTML = favs.length ? favs.map(function(city){
+      return `<button onclick="document.getElementById('cityInput').value='${city}';searchWeather();uToast('Loading ${city}...','info',1200)" style="padding:6px 14px;background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.25);color:#38bdf8;border-radius:20px;cursor:pointer;font-size:12px;font-weight:700;transition:.2s">${city} <span onclick="event.stopPropagation();favs=favs.filter(function(c){return c!=='${city}'});uSave('weather_favs',favs);renderFavs()" style="margin-left:4px;color:#64748b;cursor:pointer">×</span></button>`;
+    }).join('') : '<p style="color:#64748b;font-size:13px">No favourites yet. Search a city and save it!</p>';
+  }
+  
+  // Add "Save" button to existing search results
+  var origSearch = window.searchWeather;
+  if(origSearch){
+    window.searchWeather = function(){
+      origSearch();
+      setTimeout(function(){
+        if(!document.getElementById('uSaveCityBtn')){
+          var btn = document.createElement('button');
+          btn.id = 'uSaveCityBtn';
+          btn.textContent = '⭐ Save City';
+          btn.style.cssText = 'padding:8px 16px;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);color:#f59e0b;border-radius:8px;cursor:pointer;font-size:13px;font-weight:700;margin-top:10px;display:block;transition:.2s';
+          btn.onclick = function(){
+            var city = document.getElementById('cityInput')?.value.trim();
+            if(city && !favs.includes(city)){
+              favs.push(city);
+              uSave('weather_favs', favs);
+              renderFavs();
+              uToast('⭐ ' + city + ' saved!', 'success');
+            }
+          };
+          document.querySelector('#weatherMain,#weatherCard,.card')?.appendChild(btn);
+        }
+      }, 500);
+    };
+  }
+  
+  renderFavs();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <html lang="en">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <title>Twitter Clone | DevOS</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+</head>
+<body>
+<div id="topbar">
+  <div class="topbar-left">
+    <a class="back-btn" href="index.html">← BACK</a>
+    <span class="topbar-logo">TWEET_OS</span>
+  </div>
+  <div class="topbar-right">
+    <button class="theme-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle theme">🌙</button>
+  </div>
+</div>
+<div id="toast"></div>
+<div class="wrap">
+<div class="page-header animate-in">
+  <div class="row align" style="gap:10px;margin-bottom:8px"><span style="font-size:28px">🐦</span><h1>Twitter Clone</h1></div>
+  <p>Post, like, retweet and follow in this full Twitter/X UI clone.</p>
+</div>
+
+
+<h1>🐦 Twitter / X Clone</h1>
+<p>Post tweets, like, retweet with trending topics sidebar.</p>
+<div style="margin-top:16px"><div class="card" style="margin-bottom:12px">
+  <textarea id="tw-input" rows="3" placeholder="What's happening?" style="resize:none;margin-bottom:10px"></textarea>
+  <div class="row" style="justify-content:space-between;align-items:center">
+    <div style="font-size:12px;color:var(--muted)"><span id="tw-count">280</span> chars left</div>
+    <div class="row" style="gap:8px">
+      <button onclick="addMedia()" class="btn btn-outline" style="font-size:14px;padding:7px 12px;min-height:36px">📷</button>
+      <button class="btn btn-primary" onclick="postTweet()" style="padding:8px 18px">Tweet</button>
+    </div>
+  </div>
+</div>
+<div id="tw-feed"></div></div>
+<script>let tweets=[{id:1,user:'@devos_',avatar:'👨‍💻',text:'Just shipped 50 projects! 🚀 Check out the portfolio. #buildinpublic #coding',likes:142,retweets:38,time:'2m',liked:false,retweeted:false},{id:2,user:'@techguru',avatar:'🧑‍🔬',text:'The future of web development is here. AI-powered coding is changing everything. What do you think? 🤔 #webdev #AI',likes:89,retweets:24,time:'5m',liked:false,retweeted:false},{id:3,user:'@designmind',avatar:'🎨',text:'Clean UI > complex UI. Every. Single. Time. #design #UX',likes:231,retweets:67,time:'12m',liked:false,retweeted:false}];
+let nid=4;
+document.getElementById('tw-input').addEventListener('input',function(){document.getElementById('tw-count').textContent=280-this.value.length;});
+function postTweet(){const v=document.getElementById('tw-input').value.trim();if(!v)return;tweets.unshift({id:nid++,user:'@you',avatar:'😀',text:v,likes:0,retweets:0,time:'now',liked:false,retweeted:false});document.getElementById('tw-input').value='';document.getElementById('tw-count').textContent=280;renderFeed();}
+function renderFeed(){document.getElementById('tw-feed').innerHTML=tweets.map((t,i)=>`<div class="card" style="margin-bottom:10px;cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(0,224,255,.2)'" onmouseout="this.style.borderColor='var(--border)'"><div class="row" style="gap:10px;margin-bottom:8px"><div style="width:40px;height:40px;border-radius:50%;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">${t.avatar}</div><div><div style="font-size:14px;font-weight:600">${t.user}</div><div style="font-size:11px;color:var(--muted)">${t.time} ago</div></div></div><div style="font-size:14px;line-height:1.6;margin-bottom:12px">${t.text}</div><div class="row" style="gap:16px"><button onclick="likeT(${i})" style="background:none;border:none;color:${t.liked?'var(--accent4)':'var(--muted)'};cursor:pointer;font-size:13px;display:flex;align-items:center;gap:4px;-webkit-tap-highlight-color:transparent">${t.liked?'❤️':'🤍'} ${t.likes}</button><button onclick="retweetT(${i})" style="background:none;border:none;color:${t.retweeted?'var(--accent3)':'var(--muted)'};cursor:pointer;font-size:13px;display:flex;align-items:center;gap:4px;-webkit-tap-highlight-color:transparent">🔄 ${t.retweets}</button><button style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:13px">💬 Reply</button></div></div>`).join('');}
+function likeT(i){tweets[i].liked=!tweets[i].liked;tweets[i].likes+=tweets[i].liked?1:-1;renderFeed();}
+function retweetT(i){tweets[i].retweeted=!tweets[i].retweeted;tweets[i].retweets+=tweets[i].retweeted?1:-1;renderFeed();}
+function addMedia(){toast('📷 Image upload coming soon!');}
+renderFeed();</script>
+
+
+</div>
+  <script src="../shared-back.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

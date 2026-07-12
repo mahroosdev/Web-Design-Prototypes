@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <html lang="en">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <title>Travel Planner | DevOS</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+</head>
+<body>
+<div id="topbar">
+  <div class="topbar-left">
+    <a class="back-btn" href="index.html">← BACK</a>
+    <span class="topbar-logo">TRAVEL_OS</span>
+  </div>
+  <div class="topbar-right">
+    <button class="theme-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle theme">🌙</button>
+  </div>
+</div>
+<div id="toast"></div>
+<div class="wrap">
+<div class="page-header animate-in">
+  <div class="row align" style="gap:10px;margin-bottom:8px"><span style="font-size:28px">✈</span><h1>Travel Planner</h1></div>
+  <p>Plan trips with itineraries, budget tracker and packing list.</p>
+</div>
+
+
+<h1>✈ Travel Planner</h1>
+<p>Plan trips with destinations, packing list and budget tracker.</p>
+<div style="margin-top:16px"><div class="card" style="margin-bottom:12px">
+  <div class="row" style="gap:8px;margin-bottom:10px">
+    <input id="tr-dest" placeholder="Add destination..." style="flex:1">
+    <button class="btn btn-primary" onclick="addDest()">Add Trip</button>
+  </div>
+</div>
+<div id="tr-trips"></div>
+<h2 style="font-size:15px;margin:14px 0 10px">Packing List</h2>
+<div class="card">
+  <div class="row" style="gap:8px;margin-bottom:10px"><input id="tr-item" placeholder="Add item..." style="flex:1" onkeydown="if(event.key==='Enter')addItem()"><button class="btn btn-primary" onclick="addItem()">Add</button></div>
+  <div id="tr-pack"></div>
+</div></div>
+<script>const trips=[{dest:'Paris, France',dates:'Jun 15-22',emoji:'🗼',budget:2000,spent:450},{dest:'Tokyo, Japan',dates:'Aug 10-20',emoji:'🗾',budget:3500,spent:800},{dest:'Dubai, UAE',dates:'Dec 1-7',emoji:'🌆',budget:2500,spent:200}];
+let pack=[{item:'Passport',done:false},{item:'Laptop & Charger',done:false},{item:'Travel Adapter',done:true},{item:'Medications',done:false},{item:'Camera',done:true}];
+let nTrip=4;
+function addDest(){const v=document.getElementById('tr-dest').value.trim();if(!v)return;trips.unshift({dest:v,dates:'TBD',emoji:'✈',budget:0,spent:0});document.getElementById('tr-dest').value='';renderTrips();toast('✅ Trip added!');}
+function renderTrips(){document.getElementById('tr-trips').innerHTML=trips.map((t,i)=>`<div class="card" style="margin-bottom:10px"><div class="row" style="gap:10px;align-items:center;margin-bottom:10px"><div style="font-size:36px">${t.emoji}</div><div style="flex:1"><div style="font-size:15px;font-weight:600">${t.dest}</div><div style="font-size:11px;color:var(--muted)">${t.dates}</div></div><button onclick="trips.splice(${i},1);renderTrips()" style="background:none;border:none;color:var(--muted);cursor:pointer">✕</button></div><div style="background:var(--card2);border-radius:6px;height:6px;overflow:hidden;margin-bottom:6px"><div style="height:100%;width:${t.budget?Math.min(100,t.spent/t.budget*100):0}%;background:linear-gradient(90deg,var(--accent3),var(--accent));border-radius:6px"></div></div><div class="row" style="justify-content:space-between;font-size:11px;color:var(--muted)"><span>Budget: $${t.budget}</span><span>Spent: $${t.spent}</span></div></div>`).join('');}
+function addItem(){const v=document.getElementById('tr-item').value.trim();if(!v)return;pack.push({item:v,done:false});document.getElementById('tr-item').value='';renderPack();}
+function renderPack(){document.getElementById('tr-pack').innerHTML=pack.map((p,i)=>`<div class="row" style="align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(0,224,255,.05)"><input type="checkbox" ${p.done?'checked':''} onchange="pack[${i}].done=this.checked;renderPack()" style="width:18px;height:18px;accent-color:var(--accent);cursor:pointer"><span style="flex:1;font-size:13px;${p.done?'text-decoration:line-through;color:var(--muted)':''}">${p.item}</span><button onclick="pack.splice(${i},1);renderPack()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:14px">✕</button></div>`).join('');}
+renderTrips();renderPack();</script>
+
+
+</div>
+  <script src="../shared-back.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<meta name="description" content="Calculator Pro — part of a professional web developer portfolio with 50+ projects.">
+<meta name="robots" content="index, follow">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Advanced calculator with history">
+    <meta name="theme-color" content="#0f172a">
+    <title>Calculator Pro</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: linear-gradient(135deg, #020617 0%, #0f172a 100%); 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; 
+            color: white; 
+            min-height: 100vh; 
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        .container { max-width: 600px; margin: 0 auto; }
+        
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 30px;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        
+        .back-link { 
+            color: #38bdf8; 
+            text-decoration: none; 
+            font-weight: 600; 
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+        .back-link:hover { color: #4ade80; }
+        
+        h1 { 
+            margin-bottom: 10px; 
+            background: linear-gradient(90deg, #38bdf8, #22c55e); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+            font-size: 32px; 
+        }
+        .subtitle { color: #cbd5e1; margin-bottom: 20px; font-size: 14px; }
+        
+        .calculator { 
+            background: rgba(30, 41, 59, 0.8); 
+            backdrop-filter: blur(10px); 
+            padding: 24px; 
+            border-radius: 15px; 
+            border: 1px solid rgba(56, 189, 248, 0.2); 
+        }
+        
+        .display { 
+            background: rgba(0, 0, 0, 0.5); 
+            padding: 20px; 
+            border-radius: 10px; 
+            margin-bottom: 20px; 
+            text-align: right; 
+            font-size: 32px; 
+            color: #38bdf8; 
+            border: 1px solid rgba(56, 189, 248, 0.3); 
+            min-height: 60px; 
+            word-wrap: break-word;
+            user-select: all;
+        }
+        
+        .buttons { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+        button { 
+            padding: 15px; 
+            font-size: 20px; 
+            background: rgba(56, 189, 248, 0.1); 
+            border: 1px solid rgba(56, 189, 248, 0.3); 
+            border-radius: 8px; 
+            color: white; 
+            cursor: pointer; 
+            transition: 0.3s;
+            font-weight: 600;
+        }
+        button:hover { 
+            background: rgba(56, 189, 248, 0.2); 
+            border-color: rgba(56, 189, 248, 0.6);
+            transform: translateY(-2px);
+        }
+        button:active { transform: translateY(0); }
+        button.operator { 
+            background: rgba(34, 197, 94, 0.1); 
+            border-color: rgba(34, 197, 94, 0.3); 
+        }
+        button.operator:hover { background: rgba(34, 197, 94, 0.2); }
+        button.equals { 
+            grid-column: span 2; 
+            background: linear-gradient(90deg, #38bdf8, #22c55e); 
+            border: none; 
+            color: black; 
+            font-weight: 700;
+        }
+        button.equals:hover { opacity: 0.9; }
+        
+        .history-section {
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(56, 189, 248, 0.2);
+        }
+        
+        .history-title {
+            color: #38bdf8;
+            font-weight: 600;
+            margin-bottom: 12px;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+        
+        .history-controls {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        
+        .clear-all-btn {
+            padding: 6px 12px;
+            font-size: 11px;
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 6px;
+            color: #ef4444;
+            cursor: pointer;
+            transition: 0.2s;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .clear-all-btn:hover {
+            background: rgba(239, 68, 68, 0.25);
+            border-color: rgba(239, 68, 68, 0.5);
+        }
+        
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        
+        .history-item {
+            padding: 8px 12px;
+            background: rgba(56, 189, 248, 0.05);
+            border: 1px solid rgba(56, 189, 248, 0.15);
+            border-radius: 6px;
+            font-size: 12px;
+            color: #cbd5e1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+        .history-item:hover {
+            background: rgba(56, 189, 248, 0.1);
+            border-color: rgba(56, 189, 248, 0.3);
+        }
+        
+        .history-item-text {
+            flex: 1;
+            cursor: pointer;
+        }
+        
+        .delete-btn {
+            background: rgba(239, 68, 68, 0.2) !important;
+            border: 1px solid rgba(239, 68, 68, 0.3) !important;
+            padding: 4px 8px !important;
+            font-size: 12px !important;
+            border-radius: 4px;
+            min-width: 32px;
+            cursor: pointer;
+        }
+        .delete-btn:hover {
+            background: rgba(239, 68, 68, 0.4) !important;
+            border-color: rgba(239, 68, 68, 0.6) !important;
+        }
+        
+        .empty-state {
+            text-align: center;
+            color: #cbd5e1;
+            font-size: 12px;
+            padding: 20px;
+            opacity: 0.6;
+        }
+
+        @media (max-width: 480px) {
+            h1 { font-size: 24px; }
+            .display { font-size: 24px; }
+            button { padding: 12px; font-size: 18px; }
+        }
+    
+        /* ===== UNIVERSAL MOBILE RESPONSIVE FIX ===== */
+        * { box-sizing: border-box !important; }
+        body { overflow-x: hidden !important; }
+        
+        @media (max-width: 768px) {
+            body { padding: 15px 12px !important; }
+            .container, [class*="container"], [class*="wrapper"] {
+                max-width: 100% !important;
+                width: 100% !important;
+                padding-left: 12px !important;
+                padding-right: 12px !important;
+            }
+            h1 { font-size: clamp(22px, 6vw, 36px) !important; }
+            h2 { font-size: clamp(18px, 5vw, 28px) !important; }
+            h3 { font-size: clamp(15px, 4vw, 22px) !important; }
+            
+            /* Grids → single column */
+            [class*="grid"]:not([class*="col-"]) {
+                grid-template-columns: 1fr !important;
+            }
+            /* Flex rows → wrap */
+            [class*="header"], [class*="nav"], [class*="toolbar"], [class*="actions"] {
+                flex-wrap: wrap !important;
+                gap: 8px !important;
+            }
+            /* Cards and panels */
+            [class*="card"], [class*="panel"], [class*="content"], [class*="box"] {
+                padding: 16px 14px !important;
+            }
+            /* Tables → scroll */
+            table { display: block !important; overflow-x: auto !important; white-space: nowrap !important; }
+            /* Inputs and buttons */
+            input, select, textarea { font-size: 16px !important; max-width: 100% !important; }
+            button { min-height: 40px !important; }
+            /* Sidebar layouts → stack */
+            [class*="sidebar"], [class*="side-bar"] {
+                width: 100% !important;
+                position: relative !important;
+                height: auto !important;
+            }
+            /* Images */
+            img { max-width: 100% !important; height: auto !important; }
+            /* Canvas */
+            canvas { max-width: 100% !important; }
+            /* Fixed widths → fluid */
+            [style*="width: 1200px"], [style*="width:1200px"],
+            [style*="width: 900px"], [style*="width:900px"],
+            [style*="width: 800px"], [style*="width:800px"],
+            [style*="width: 700px"], [style*="width:700px"],
+            [style*="width: 600px"], [style*="width:600px"] {
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body { padding: 10px 10px !important; }
+            h1 { font-size: clamp(20px, 7vw, 28px) !important; }
+            [class*="card"], [class*="panel"] { padding: 12px 10px !important; border-radius: 10px !important; }
+            [class*="grid"] { gap: 10px !important; }
+            button, .btn, .button { padding: 10px 14px !important; font-size: 13px !important; }
+        }
+        /* ===== END MOBILE FIX ===== */
+        
+/* ── UNIVERSAL UPGRADE: Theme, Animations, Toast ── */
+:root{
+  --bg:#020617;--bg2:#0f172a;--card:rgba(30,41,59,.85);--border:rgba(56,189,248,.22);
+  --accent:#38bdf8;--accent2:#22c55e;--text:#f1f5f9;--muted:#94a3b8;--danger:#ef4444;
+}
+
+
+/* Toast notifications */
+.u-toast-container{position:fixed;bottom:24px;right:20px;z-index:99999;display:flex;flex-direction:column;gap:8px;max-width:320px}
+.u-toast{
+  background:var(--card);border:1px solid var(--border);color:var(--text);
+  padding:11px 16px;border-radius:10px;font-size:13px;font-weight:600;
+  box-shadow:0 4px 20px rgba(0,0,0,.35);
+  animation:uToastIn .3s ease;display:flex;align-items:center;gap:8px;
+}
+.u-toast.success{border-color:rgba(34,197,94,.5);background:rgba(34,197,94,.1)}
+.u-toast.error{border-color:rgba(239,68,68,.5);background:rgba(239,68,68,.1)}
+.u-toast.info{border-color:rgba(56,189,248,.5);background:rgba(56,189,248,.1)}
+@keyframes uToastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes uToastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(20px)}}
+
+/* Entrance animations */
+@keyframes uFadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes uFadeIn{from{opacity:0}to{opacity:1}}
+@keyframes uPulse{0%,100%{box-shadow:0 0 0 0 rgba(56,189,248,.4)}70%{box-shadow:0 0 0 8px rgba(56,189,248,0)}}
+.u-fade-up{animation:uFadeUp .45s ease both}
+.u-fade-in{animation:uFadeIn .4s ease both}
+.u-pulse{animation:uPulse 2s infinite}
+
+/* Button hover lift */
+.btn:hover,[class*="btn"]:not([class*="btn-"]):hover{transform:translateY(-2px)!important}
+
+/* Smooth card hover */
+.card:hover,[class*="card"]:hover{
+  border-color:var(--accent)!important;
+  box-shadow:0 6px 28px rgba(56,189,248,.12)!important;
+  transition:all .25s ease!important;
+}
+
+/* Loading skeleton */
+.u-skeleton{
+  background:linear-gradient(90deg,rgba(56,189,248,.06) 25%,rgba(56,189,248,.12) 50%,rgba(56,189,248,.06) 75%);
+  background-size:200% 100%;animation:uSkeleton 1.4s infinite;border-radius:6px;
+}
+@keyframes uSkeleton{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* Progress bar component */
+.u-progress{height:5px;background:rgba(56,189,248,.12);border-radius:3px;overflow:hidden;margin:8px 0}
+.u-progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:3px;transition:width .5s ease}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(56,189,248,.3);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(56,189,248,.55)}
+
+/* Mobile responsive upgrades */
+@media(max-width:600px){
+  
+  .u-toast-container{right:10px;bottom:80px;max-width:calc(100vw - 20px)}
+}
+
+</style>
+</head>
+<body>
+    <div class="container">
+        <div class="app-header">
+            <div>
+                <a href="../index.html" class="back-link" onclick="window.close(); return false;">← Back to Portfolio</a>
+                <h1>🖩 Calculator Pro</h1>
+                <p class="subtitle">Advanced calculator with history</p>
+            </div>
+        </div>
+        
+        <div class="calculator">
+            <div class="display" id="display">0</div>
+            
+            <div class="buttons">
+                <button onclick="clearDisplay()">C</button>
+                <button onclick="addToDisplay('/')">÷</button>
+                <button onclick="addToDisplay('*')">×</button>
+                <button onclick="deleteLast()">⌫</button>
+                
+                <button onclick="addToDisplay('7')">7</button>
+                <button onclick="addToDisplay('8')">8</button>
+                <button onclick="addToDisplay('9')">9</button>
+                <button onclick="addToDisplay('-')" class="operator">-</button>
+                
+                <button onclick="addToDisplay('4')">4</button>
+                <button onclick="addToDisplay('5')">5</button>
+                <button onclick="addToDisplay('6')">6</button>
+                <button onclick="addToDisplay('+')" class="operator">+</button>
+                
+                <button onclick="addToDisplay('1')">1</button>
+                <button onclick="addToDisplay('2')">2</button>
+                <button onclick="addToDisplay('3')">3</button>
+                <button onclick="addToDisplay('.')" class="operator">.</button>
+                
+                <button onclick="addToDisplay('0')" style="grid-column: span 2;">0</button>
+                <button onclick="calculate()" class="equals">=</button>
+            </div>
+            
+            <div class="history-section">
+                <div class="history-title">Calculation History</div>
+                <div class="history-controls" id="historyControls" style="display: none;">
+                    <button class="clear-all-btn" onclick="clearAllHistory()">🗑️ Clear All</button>
+                </div>
+                <div class="history-list" id="historyList">
+                    <div class="empty-state">No calculations yet</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let display = document.getElementById('display');
+        let historyList = document.getElementById('historyList');
+        let currentExpression = '';
+        let calculations = [];
+
+        function getDisplayText() {
+            return display.textContent.trim();
+        }
+
+        function setDisplayText(text) {
+            display.textContent = text;
+        }
+
+        function addToDisplay(value) {
+            const text = getDisplayText();
+            if (text === '0' && value !== '.') {
+                setDisplayText(value);
+                currentExpression = value;
+            } else {
+                currentExpression += value;
+                setDisplayText(currentExpression);
+            }
+        }
+
+        function clearDisplay() {
+            currentExpression = '';
+            setDisplayText('0');
+        }
+
+        function deleteLast() {
+            currentExpression = currentExpression.slice(0, -1);
+            setDisplayText(currentExpression || '0');
+        }
+
+        function calculate() {
+            try {
+                if (!currentExpression) return;
+                const result = Function('"use strict"; return (' + currentExpression + ')')();
+                const calculation = currentExpression + ' = ' + result;
+                calculations.unshift(calculation);
+                if (calculations.length > 20) calculations.pop();
+                renderHistory();
+                currentExpression = result.toString();
+                setDisplayText(result);
+                showNotification('✓ Calculated', 'success');
+            } catch (e) {
+                showNotification('❌ Invalid expression', 'error');
+                clearDisplay();
+            }
+        }
+
+        function renderHistory() {
+            const historyControls = document.getElementById('historyControls');
+            
+            if (calculations.length === 0) {
+                historyList.innerHTML = '<div class="empty-state">No calculations yet</div>';
+                historyControls.style.display = 'none';
+                return;
+            }
+
+            historyControls.style.display = 'flex';
+            let html = '';
+            for (let i = 0; i < Math.min(10, calculations.length); i++) {
+                const calc = calculations[i];
+                const parts = calc.split(' = ');
+                const value = parts[parts.length - 1];
+                html += '<div class="history-item"><div class="history-item-text" onclick="useFromHistory(\'' + value + '\')">' + calc + '</div><button class="delete-btn" onclick="deleteHistoryItem(' + i + ')" title="Delete this calculation">✕</button></div>';
+            }
+            historyList.innerHTML = html;
+        }
+        
+        function deleteHistoryItem(index) {
+            calculations.splice(index, 1);
+            renderHistory();
+            showNotification('✓ Deleted from history', 'success');
+        }
+        
+        function clearAllHistory() {
+            if (confirm('Clear all history? This cannot be undone.')) {
+                calculations = [];
+                renderHistory();
+                showNotification('✓ History cleared', 'success');
+            }
+        }
+
+        function useFromHistory(value) {
+            currentExpression = value;
+            setDisplayText(value);
+            showNotification('✓ Loaded from history', 'info');
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
+
+            const keyMap = {
+                '0': '0', '1': '1', '2': '2', '3': '3', '4': '4',
+                '5': '5', '6': '6', '7': '7', '8': '8', '9': '9',
+                '+': '+', '-': '-', '*': '*', '/': '/',
+                '.': '.'
+            };
+
+            if (keyMap[e.key]) {
+                e.preventDefault();
+                addToDisplay(keyMap[e.key]);
+            } else if (e.key === 'Enter' || e.key === '=') {
+                e.preventDefault();
+                calculate();
+            } else if (e.key === 'Backspace') {
+                e.preventDefault();
+                deleteLast();
+            } else if (e.key === 'Escape' || e.key.toLowerCase() === 'c') {
+                e.preventDefault();
+                clearDisplay();
+            }
+        });
+
+        function showNotification(message, type) {
+            console.log('[' + type.toUpperCase() + '] ' + message);
+        }
+
+        function closeWindow(e) {
+            if (e) { try { e.stopPropagation(); } catch(x) {} }
+            try { window.close(); } catch(x) {}
+            try {
+                if (window.opener) {
+                    window.opener.postMessage({ type: 'requestClose', url: window.location.href }, '*');
+                    setTimeout(function() { window.location.href = '../index.html'; }, 300);
+                    return;
+                }
+            } catch(x) {}
+            window.location.href = '../index.html';
+        }
+
+        renderHistory();
+        console.log('Calculator ready!');
+    </script>
+<script>
+// ── UNIVERSAL UPGRADE: Theme, localStorage, Toast, Animations ──
+(function(){
+'use strict';
+
+// ── 2. TOAST SYSTEM ──────────────────────────────────────────────
+var toastContainer = null;
+function getToastContainer(){
+  if(!toastContainer || !document.body.contains(toastContainer)){
+    toastContainer = document.createElement('div');
+    toastContainer.className = 'u-toast-container';
+    document.body.appendChild(toastContainer);
+  }
+  return toastContainer;
+}
+
+window.uToast = function(msg, type, duration){
+  type = type || 'info';
+  duration = duration || 2800;
+  var icons = {success:'✅', error:'❌', info:'💡', warning:'⚠️'};
+  var c = getToastContainer();
+  var t = document.createElement('div');
+  t.className = 'u-toast ' + type;
+  t.innerHTML = '<span>' + (icons[type]||'💡') + '</span><span>' + msg + '</span>';
+  c.appendChild(t);
+  setTimeout(function(){
+    t.style.animation = 'uToastOut .3s ease forwards';
+    setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 300);
+  }, duration);
+};
+
+// ── 3. LOCALSTORAGE HELPERS ──────────────────────────────────────
+var APP_KEY = 'uapp_' + location.pathname.split('/').pop().replace('.html','');
+window.uSave = function(key, val){
+  try { localStorage.setItem(APP_KEY + '_' + key, JSON.stringify(val)); return true; }
+  catch(e){ return false; }
+};
+window.uLoad = function(key, def){
+  try {
+    var v = localStorage.getItem(APP_KEY + '_' + key);
+    return v !== null ? JSON.parse(v) : def;
+  } catch(e){ return def; }
+};
+window.uClear = function(key){
+  try { localStorage.removeItem(APP_KEY + '_' + key); } catch(e){}
+};
+
+// ── 4. ENTRANCE ANIMATIONS ───────────────────────────────────────
+function animateEntrance(){
+  var cards = document.querySelectorAll('.card, [class*="card"]');
+  cards.forEach(function(el, i){
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(18px)';
+    setTimeout(function(){
+      el.style.transition = 'opacity .4s ease, transform .4s ease';
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+    }, i * 60);
+  });
+}
+
+// ── 5. SMOOTH COUNTER ANIMATION ──────────────────────────────────
+window.uAnimCount = function(el, target, duration, prefix, suffix){
+  prefix = prefix || '';
+  suffix = suffix || '';
+  duration = duration || 1200;
+  var start = 0;
+  var step = target / (duration / 16);
+  var iv = setInterval(function(){
+    start = Math.min(start + step, target);
+    el.textContent = prefix + Math.round(start).toLocaleString() + suffix;
+    if(start >= target) clearInterval(iv);
+  }, 16);
+};
+
+// ── 6. EXPORT HELPER ─────────────────────────────────────────────
+window.uExportJSON = function(data, filename){
+  var blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.json';
+  a.click();
+  uToast('Data exported!', 'success');
+};
+window.uExportCSV = function(rows, filename){
+  var csv = rows.map(function(r){ return r.join(','); }).join('\n');
+  var blob = new Blob([csv], {type:'text/csv'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.csv';
+  a.click();
+  uToast('CSV exported!', 'success');
+};
+
+// ── 8. INIT ──────────────────────────────────────────────────────
+function init(){
+  setTimeout(animateEntrance, 100);
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+})();
+</script>
+<script>
+(function(){
+  // Save/load history
+  var history = uLoad('calc_history', []);
+  var histEl = document.getElementById('history') || document.querySelector('.history') || null;
+  
+  // Patch calculate/eval to save results
+  var origCalc = window.calculate || window.calc;
+  if(typeof origCalc === 'function'){
+    window.calculate = window.calc = function(){
+      origCalc.apply(this, arguments);
+      var display = document.getElementById('display') || document.querySelector('[id*="display"],[id*="result"],[id*="output"]');
+      if(display && display.value){
+        history.unshift({expr: display.value, time: new Date().toLocaleTimeString()});
+        if(history.length > 20) history.pop();
+        uSave('calc_history', history);
+        renderHistory();
+      }
+    };
+  }
+  
+  // Add scientific buttons if not present
+  var calcBody = document.querySelector('.calculator, .calc-body, main, .container > div:first-child');
+  if(calcBody && !document.getElementById('sciPanel')){
+    var sci = document.createElement('div');
+    sci.id = 'sciPanel';
+    sci.style.cssText = 'margin-top:10px;display:grid;grid-template-columns:repeat(4,1fr);gap:6px';
+    var sciBtns = [
+      {l:'sin', f:"Math.sin(parseFloat(document.querySelector('[id*=display],[id*=result]').value||0)*Math.PI/180)"},
+      {l:'cos', f:"Math.cos(parseFloat(document.querySelector('[id*=display],[id*=result]').value||0)*Math.PI/180)"},
+      {l:'tan', f:"Math.tan(parseFloat(document.querySelector('[id*=display],[id*=result]').value||0)*Math.PI/180)"},
+      {l:'√',   f:"Math.sqrt(parseFloat(document.querySelector('[id*=display],[id*=result]').value||0))"},
+      {l:'x²',  f:"Math.pow(parseFloat(document.querySelector('[id*=display],[id*=result]').value||0),2)"},
+      {l:'x³',  f:"Math.pow(parseFloat(document.querySelector('[id*=display],[id*=result]').value||0),3)"},
+      {l:'log', f:"Math.log10(parseFloat(document.querySelector('[id*=display],[id*=result]').value||0))"},
+      {l:'ln',  f:"Math.log(parseFloat(document.querySelector('[id*=display],[id*=result]').value||0))"},
+      {l:'π',   f:"Math.PI"},
+      {l:'e',   f:"Math.E"},
+      {l:'1/x', f:"1/parseFloat(document.querySelector('[id*=display],[id*=result]').value||1)"},
+      {l:'|x|', f:"Math.abs(parseFloat(document.querySelector('[id*=display],[id*=result]').value||0))"},
+    ];
+    sci.innerHTML = sciBtns.map(function(b){
+      return `<button onclick="(function(){var d=document.querySelector('[id*=display],[id*=result],[id*=output]');if(d){var r=${b.f};d.value=isNaN(r)?'Error':parseFloat(r.toFixed(10));}uToast('${b.l} applied','info',1000)})()" style="padding:7px;background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.25);color:#38bdf8;border-radius:7px;cursor:pointer;font-weight:700;font-size:12px;transition:.2s" onmouseover="this.style.background='rgba(56,189,248,.25)'" onmouseout="this.style.background='rgba(56,189,248,.1)'">${b.l}</button>`;
+    }).join('');
+    calcBody.appendChild(sci);
+    
+    // History panel
+    var histPanel = document.createElement('div');
+    histPanel.style.cssText = 'margin-top:10px;max-height:120px;overflow-y:auto';
+    histPanel.innerHTML = '<div style="font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">History</div><div id="uCalcHist"></div>';
+    calcBody.appendChild(histPanel);
+  }
+  
+  function renderHistory(){
+    var el = document.getElementById('uCalcHist');
+    if(!el) return;
+    el.innerHTML = history.slice(0,10).map(function(h){
+      return '<div style="font-size:12px;font-family:monospace;color:#94a3b8;padding:3px 0;border-bottom:1px solid rgba(56,189,248,.06)">' + h.expr + ' <span style="color:#475569;float:right">' + h.time + '</span></div>';
+    }).join('');
+  }
+  renderHistory();
+})();
+</script>
+</body>

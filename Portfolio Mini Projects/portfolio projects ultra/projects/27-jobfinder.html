@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8">
+<meta name="description" content="Job Finder — part of a professional web developer portfolio with 50+ projects.">
+<meta name="robots" content="index, follow">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Job Finder</title><style>*{margin:0;padding:0;box-sizing:border-box}
+body{background:linear-gradient(135deg,#020617 0%,#0f172a 100%);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#fff;min-height:100vh;padding:40px 20px;overflow-x:hidden}
+.container{max-width:1000px;margin:0 auto}
+h1{background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:36px;margin-bottom:8px}
+.subtitle{color:#94a3b8;margin-bottom:28px;font-size:15px}
+.back-link{display:inline-flex;align-items:center;gap:6px;margin-bottom:20px;color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;padding:8px 14px;border:1px solid rgba(56,189,248,.3);border-radius:8px;transition:.2s}
+.back-link:hover{background:rgba(56,189,248,.1)}
+.card{background:rgba(30,41,59,.8);backdrop-filter:blur(10px);padding:24px;border-radius:16px;border:1px solid rgba(56,189,248,.2);margin-bottom:20px}
+.btn{padding:10px 22px;border:none;border-radius:8px;cursor:pointer;font-weight:700;font-size:14px;transition:.2s;background:linear-gradient(90deg,#38bdf8,#22c55e);color:#000}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(56,189,248,.35)}
+.btn-outline{background:transparent;border:1px solid rgba(56,189,248,.4);color:#38bdf8}
+.btn-red{background:linear-gradient(90deg,#ef4444,#dc2626);color:#fff}
+input,textarea,select{background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.3);color:#fff;border-radius:8px;padding:10px 14px;font-size:14px;width:100%;outline:none;transition:.2s}
+input:focus,textarea:focus,select:focus{border-color:#38bdf8;box-shadow:0 0 0 3px rgba(56,189,248,.15)}
+input::placeholder,textarea::placeholder{color:#64748b}
+label{display:block;font-size:13px;font-weight:600;color:#94a3b8;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.flex{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;background:rgba(56,189,248,.15);color:#38bdf8;border:1px solid rgba(56,189,248,.3)}
+.badge-green{background:rgba(34,197,94,.15);color:#22c55e;border-color:rgba(34,197,94,.3)}
+.badge-red{background:rgba(239,68,68,.15);color:#ef4444;border-color:rgba(239,68,68,.3)}
+.badge-yellow{background:rgba(234,179,8,.15);color:#eab308;border-color:rgba(234,179,8,.3)}
+.stat-box{background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.15);border-radius:12px;padding:20px;text-align:center}
+.stat-num{font-size:32px;font-weight:800;background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-label{font-size:12px;color:#64748b;margin-top:4px;text-transform:uppercase;letter-spacing:.5px}
+hr{border:none;border-top:1px solid rgba(56,189,248,.1);margin:20px 0}
+@media(max-width:768px){body{padding:15px 12px}h1{font-size:26px}.grid2,.grid3,.grid4{grid-template-columns:1fr}.card{padding:16px 14px}}
+.job-card{background:rgba(30,41,59,.8);border:1px solid rgba(56,189,248,.15);border-radius:12px;padding:16px;margin-bottom:10px;cursor:pointer;transition:.2s}
+.job-card:hover,.job-card.active{border-color:rgba(56,189,248,.5);background:rgba(56,189,248,.06)}
+.job-company{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.company-logo{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.job-title{font-weight:800;font-size:15px;margin-bottom:4px}
+.job-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.job-tag{padding:3px 8px;border-radius:6px;font-size:11px;font-weight:600;background:rgba(56,189,248,.1);color:#38bdf8;border:1px solid rgba(56,189,248,.2)}
+.app-item{display:flex;align-items:center;gap:10px;padding:10px;border-radius:8px;background:rgba(56,189,248,.05);border:1px solid rgba(56,189,248,.1);margin-bottom:6px}
+.app-status{padding:3px 8px;border-radius:20px;font-size:10px;font-weight:700;margin-left:auto}
+.detail-section{margin-bottom:16px}
+.detail-section h4{font-size:14px;font-weight:700;color:#38bdf8;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
+.detail-section ul{padding-left:16px}
+.detail-section li{font-size:14px;color:#94a3b8;margin-bottom:4px;line-height:1.5}
+/* ── UNIVERSAL UPGRADE: Theme, Animations, Toast ── */
+:root{
+  --bg:#020617;--bg2:#0f172a;--card:rgba(30,41,59,.85);--border:rgba(56,189,248,.22);
+  --accent:#38bdf8;--accent2:#22c55e;--text:#f1f5f9;--muted:#94a3b8;--danger:#ef4444;
+}
+
+
+/* Toast notifications */
+.u-toast-container{position:fixed;bottom:24px;right:20px;z-index:99999;display:flex;flex-direction:column;gap:8px;max-width:320px}
+.u-toast{
+  background:var(--card);border:1px solid var(--border);color:var(--text);
+  padding:11px 16px;border-radius:10px;font-size:13px;font-weight:600;
+  box-shadow:0 4px 20px rgba(0,0,0,.35);
+  animation:uToastIn .3s ease;display:flex;align-items:center;gap:8px;
+}
+.u-toast.success{border-color:rgba(34,197,94,.5);background:rgba(34,197,94,.1)}
+.u-toast.error{border-color:rgba(239,68,68,.5);background:rgba(239,68,68,.1)}
+.u-toast.info{border-color:rgba(56,189,248,.5);background:rgba(56,189,248,.1)}
+@keyframes uToastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes uToastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(20px)}}
+
+/* Entrance animations */
+@keyframes uFadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes uFadeIn{from{opacity:0}to{opacity:1}}
+@keyframes uPulse{0%,100%{box-shadow:0 0 0 0 rgba(56,189,248,.4)}70%{box-shadow:0 0 0 8px rgba(56,189,248,0)}}
+.u-fade-up{animation:uFadeUp .45s ease both}
+.u-fade-in{animation:uFadeIn .4s ease both}
+.u-pulse{animation:uPulse 2s infinite}
+
+/* Button hover lift */
+.btn:hover,[class*="btn"]:not([class*="btn-"]):hover{transform:translateY(-2px)!important}
+
+/* Smooth card hover */
+.card:hover,[class*="card"]:hover{
+  border-color:var(--accent)!important;
+  box-shadow:0 6px 28px rgba(56,189,248,.12)!important;
+  transition:all .25s ease!important;
+}
+
+/* Loading skeleton */
+.u-skeleton{
+  background:linear-gradient(90deg,rgba(56,189,248,.06) 25%,rgba(56,189,248,.12) 50%,rgba(56,189,248,.06) 75%);
+  background-size:200% 100%;animation:uSkeleton 1.4s infinite;border-radius:6px;
+}
+@keyframes uSkeleton{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* Progress bar component */
+.u-progress{height:5px;background:rgba(56,189,248,.12);border-radius:3px;overflow:hidden;margin:8px 0}
+.u-progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:3px;transition:width .5s ease}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(56,189,248,.3);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(56,189,248,.55)}
+
+/* Mobile responsive upgrades */
+@media(max-width:600px){
+  
+  .u-toast-container{right:10px;bottom:80px;max-width:calc(100vw - 20px)}
+}
+
+</style></head>
+<body><div class="container">
+<a href="../index.html" class="back-link" onclick="window.close(); return false;">← Back to Portfolio</a>
+
+<h1>💼 Job Finder Pro</h1>
+<p class="subtitle">Search, filter and apply to jobs — track your applications</p>
+<div class="card">
+  <div class="flex" style="gap:10px;flex-wrap:wrap">
+    <input id="jobSearch" placeholder="Job title, company, skill..." style="flex:2;min-width:180px" oninput="renderJobs()">
+    <select id="jobType" onchange="renderJobs()" style="flex:1;min-width:130px">
+      <option value="">All Types</option><option value="full">Full-time</option><option value="part">Part-time</option>
+      <option value="contract">Contract</option><option value="remote">Remote</option>
+    </select>
+    <select id="jobLevel" onchange="renderJobs()" style="flex:1;min-width:130px">
+      <option value="">All Levels</option><option value="junior">Junior</option><option value="mid">Mid</option>
+      <option value="senior">Senior</option><option value="lead">Lead/Principal</option>
+    </select>
+    <select id="jobSalary" onchange="renderJobs()" style="flex:1;min-width:130px">
+      <option value="0">Any Salary</option><option value="50">$50k+</option>
+      <option value="80">$80k+</option><option value="100">$100k+</option><option value="150">$150k+</option>
+    </select>
+  </div>
+</div>
+<div class="grid2" style="align-items:start">
+  <div>
+    <div class="flex" style="justify-content:space-between;margin-bottom:12px">
+      <span id="jobCount" style="color:#64748b;font-size:14px">0 jobs found</span>
+      <select id="jobSort" onchange="renderJobs()" style="width:auto;padding:6px 10px;font-size:13px">
+        <option value="date">Newest</option><option value="salary">Highest Pay</option><option value="match">Best Match</option>
+      </select>
+    </div>
+    <div id="jobList"></div>
+  </div>
+  <div>
+    <div id="jobDetail" class="card">
+      <div style="text-align:center;padding:30px;color:#64748b">
+        <div style="font-size:48px;margin-bottom:12px">💼</div>
+        <div>Select a job to see details</div>
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="color:#38bdf8;margin-bottom:14px">My Applications (<span id="appCount">0</span>)</h3>
+      <div id="appList"><p style="color:#64748b;font-size:14px">No applications yet.</p></div>
+    </div>
+  </div>
+</div>
+</div><script>
+const jobs=[
+  {id:1,title:'Senior Frontend Developer',company:'TechCorp',logo:'💻',color:'#38bdf8',location:'San Francisco, CA',type:'full',level:'senior',salary:145000,posted:'2 days ago',tags:['React','TypeScript','GraphQL'],desc:'We are looking for a passionate Senior Frontend Developer to join our growing product team. You will lead the development of our customer-facing web applications.',requirements:['5+ years React experience','TypeScript proficiency','Experience with GraphQL','Strong eye for design','Team leadership'],benefits:['$145k-$175k salary','Stock options','Health insurance','Remote-friendly','$2k learning budget'],match:95},
+  {id:2,title:'Full Stack Engineer',company:'StartupXYZ',logo:'🚀',color:'#22c55e',location:'Remote',type:'remote',level:'mid',salary:120000,posted:'1 day ago',tags:['Node.js','React','PostgreSQL'],desc:'Join our early-stage startup building the future of fintech. Fast-paced environment, high ownership, and great equity package.',requirements:['3+ years full stack experience','Node.js and React','Database design skills','Problem-solving mindset'],benefits:['$120k-$140k','Significant equity','Fully remote','Unlimited PTO'],match:88},
+  {id:3,title:'Junior React Developer',company:'DigitalAgency',logo:'🎨',color:'#a855f7',location:'New York, NY',type:'full',level:'junior',salary:75000,posted:'3 days ago',tags:['React','JavaScript','CSS'],desc:'Perfect role for a motivated developer early in their career. You will work alongside senior developers and learn from the best.',requirements:['1+ year React experience','Good JavaScript fundamentals','Responsive design skills','Team player attitude'],benefits:['$75k-$90k','Mentorship program','Health coverage','Hybrid work'],match:72},
+  {id:4,title:'Lead Software Engineer',company:'Enterprise Co',logo:'🏢',color:'#f59e0b',location:'Austin, TX',type:'full',level:'lead',salary:185000,posted:'5 days ago',tags:['System Design','Java','AWS','Leadership'],desc:'Lead a team of 8 engineers building our core platform. You will set technical direction and mentor junior team members.',requirements:['8+ years engineering experience','Team lead experience','System design expertise','Cloud architecture (AWS/GCP)'],benefits:['$185k-$220k','Executive bonus','401k match','5 weeks PTO'],match:65},
+  {id:5,title:'React Native Developer',company:'MobileFirst',logo:'📱',color:'#ef4444',location:'Remote',type:'remote',level:'mid',salary:110000,posted:'1 week ago',tags:['React Native','iOS','Android','TypeScript'],desc:'Build beautiful mobile apps used by millions of users. Work with a talented cross-functional team on exciting products.',requirements:['3+ years React Native','iOS and Android experience','REST API integration','Performance optimization'],benefits:['$110k-$130k','Remote','Health & dental','Learning budget'],match:80},
+  {id:6,title:'DevOps / Cloud Engineer',company:'CloudSystems',logo:'☁️',color:'#06b6d4',location:'Seattle, WA',type:'contract',level:'senior',salary:160000,posted:'4 days ago',tags:['AWS','Kubernetes','Terraform','CI/CD'],desc:'12-month contract with strong chance of conversion to full-time. Help us scale our infrastructure to support rapid growth.',requirements:['5+ years DevOps experience','AWS certification preferred','Kubernetes administration','Infrastructure as Code'],benefits:['$160k contract rate','Potential full-time','Latest tooling','Flexible hours'],match:55},
+];
+
+let applications=[],activeJob=null;
+
+function renderJobs(){
+  const q=document.getElementById('jobSearch').value.toLowerCase();
+  const type=document.getElementById('jobType').value;
+  const level=document.getElementById('jobLevel').value;
+  const salary=parseInt(document.getElementById('jobSalary').value)||0;
+  const sort=document.getElementById('jobSort').value;
+  let list=jobs.filter(j=>{
+    const matchQ=!q||j.title.toLowerCase().includes(q)||j.company.toLowerCase().includes(q)||j.tags.some(t=>t.toLowerCase().includes(q));
+    const matchType=!type||j.type===type;
+    const matchLevel=!level||j.level===level;
+    const matchSalary=j.salary>=salary*1000;
+    return matchQ&&matchType&&matchLevel&&matchSalary;
+  });
+  if(sort==='salary')list.sort((a,b)=>b.salary-a.salary);
+  else if(sort==='match')list.sort((a,b)=>b.match-a.match);
+  else list.sort((a,b)=>a.id-b.id);
+  document.getElementById('jobCount').textContent=list.length+' job'+(list.length!==1?'s':'')+' found';
+  document.getElementById('jobList').innerHTML=list.map(j=>`
+    <div class="job-card ${activeJob===j.id?'active':''}" onclick="showJob(${j.id})">
+      <div class="job-company">
+        <div class="company-logo" style="background:${j.color}22;border:1px solid ${j.color}44">${j.logo}</div>
+        <div><div class="job-title">${j.title}</div><div style="font-size:12px;color:#64748b">${j.company} · ${j.location}</div></div>
+        <div style="margin-left:auto;text-align:right"><div style="font-weight:700;color:#22c55e;font-size:14px">$${(j.salary/1000).toFixed(0)}k</div><div style="font-size:11px;color:#64748b">${j.posted}</div></div>
+      </div>
+      <div class="job-tags">
+        ${j.tags.map(t=>`<span class="job-tag">${t}</span>`).join('')}
+        <span class="job-tag" style="background:rgba(34,197,94,.1);color:#22c55e;border-color:rgba(34,197,94,.2)">${j.match}% match</span>
+      </div>
+    </div>`).join('');
+}
+
+function showJob(id){
+  activeJob=id;
+  const j=jobs.find(j=>j.id===id);
+  const applied=applications.find(a=>a.jobId===id);
+  document.getElementById('jobDetail').innerHTML=`
+    <div class="flex" style="gap:12px;margin-bottom:16px;flex-wrap:wrap">
+      <div class="company-logo" style="background:${j.color}22;border:1px solid ${j.color}44;width:52px;height:52px;font-size:24px">${j.logo}</div>
+      <div><h3 style="font-size:20px;font-weight:800;margin-bottom:4px">${j.title}</h3><div style="color:#64748b;font-size:14px">${j.company} · ${j.location}</div></div>
+      <div style="margin-left:auto;text-align:right"><div style="font-size:22px;font-weight:800;color:#22c55e">$${(j.salary/1000).toFixed(0)}k/yr</div><span class="badge">${j.match}% match</span></div>
+    </div>
+    <div class="job-tags" style="margin-bottom:16px">${j.tags.map(t=>`<span class="job-tag">${t}</span>`).join('')}<span class="job-tag">${j.type}</span><span class="job-tag">${j.level}</span></div>
+    <div class="detail-section"><h4>About the Role</h4><p style="font-size:14px;color:#94a3b8;line-height:1.7">${j.desc}</p></div>
+    <div class="detail-section"><h4>Requirements</h4><ul>${j.requirements.map(r=>`<li>${r}</li>`).join('')}</ul></div>
+    <div class="detail-section"><h4>Benefits & Compensation</h4><ul>${j.benefits.map(b=>`<li>${b}</li>`).join('')}</ul></div>
+    ${applied
+      ?`<div class="badge badge-green" style="padding:10px 18px;font-size:13px">✓ Applied ${applied.date}</div>`
+      :`<button class="btn" onclick="applyJob(${j.id})" style="width:100%">Apply Now →</button>`}`;
+  renderJobs();
+}
+
+function applyJob(id){
+  const j=jobs.find(j=>j.id===id);
+  applications.push({jobId:id,title:j.title,company:j.company,logo:j.logo,status:'Applied',date:new Date().toLocaleDateString()});
+  renderApplications();showJob(id);
+}
+
+function renderApplications(){
+  const statuses=['Applied','Screening','Interview','Offer'];
+  const statusColors=['badge','badge','badge-yellow','badge-green'];
+  document.getElementById('appCount').textContent=applications.length;
+  document.getElementById('appList').innerHTML=applications.length
+    ?applications.map((a,i)=>`<div class="app-item"><span style="font-size:20px">${a.logo}</span><div><div style="font-weight:700;font-size:13px">${a.title}</div><div style="font-size:12px;color:#64748b">${a.company} · ${a.date}</div></div><span class="badge ${statusColors[i%4]} app-status">${statuses[i%4]}</span></div>`).join('')
+    :'<p style="color:#64748b;font-size:14px">No applications yet.</p>';
+}
+
+renderJobs();
+</script><script>
+// ── UNIVERSAL UPGRADE: Theme, localStorage, Toast, Animations ──
+(function(){
+'use strict';
+
+// ── 2. TOAST SYSTEM ──────────────────────────────────────────────
+var toastContainer = null;
+function getToastContainer(){
+  if(!toastContainer || !document.body.contains(toastContainer)){
+    toastContainer = document.createElement('div');
+    toastContainer.className = 'u-toast-container';
+    document.body.appendChild(toastContainer);
+  }
+  return toastContainer;
+}
+
+window.uToast = function(msg, type, duration){
+  type = type || 'info';
+  duration = duration || 2800;
+  var icons = {success:'✅', error:'❌', info:'💡', warning:'⚠️'};
+  var c = getToastContainer();
+  var t = document.createElement('div');
+  t.className = 'u-toast ' + type;
+  t.innerHTML = '<span>' + (icons[type]||'💡') + '</span><span>' + msg + '</span>';
+  c.appendChild(t);
+  setTimeout(function(){
+    t.style.animation = 'uToastOut .3s ease forwards';
+    setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 300);
+  }, duration);
+};
+
+// ── 3. LOCALSTORAGE HELPERS ──────────────────────────────────────
+var APP_KEY = 'uapp_' + location.pathname.split('/').pop().replace('.html','');
+window.uSave = function(key, val){
+  try { localStorage.setItem(APP_KEY + '_' + key, JSON.stringify(val)); return true; }
+  catch(e){ return false; }
+};
+window.uLoad = function(key, def){
+  try {
+    var v = localStorage.getItem(APP_KEY + '_' + key);
+    return v !== null ? JSON.parse(v) : def;
+  } catch(e){ return def; }
+};
+window.uClear = function(key){
+  try { localStorage.removeItem(APP_KEY + '_' + key); } catch(e){}
+};
+
+// ── 4. ENTRANCE ANIMATIONS ───────────────────────────────────────
+function animateEntrance(){
+  var cards = document.querySelectorAll('.card, [class*="card"]');
+  cards.forEach(function(el, i){
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(18px)';
+    setTimeout(function(){
+      el.style.transition = 'opacity .4s ease, transform .4s ease';
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+    }, i * 60);
+  });
+}
+
+// ── 5. SMOOTH COUNTER ANIMATION ──────────────────────────────────
+window.uAnimCount = function(el, target, duration, prefix, suffix){
+  prefix = prefix || '';
+  suffix = suffix || '';
+  duration = duration || 1200;
+  var start = 0;
+  var step = target / (duration / 16);
+  var iv = setInterval(function(){
+    start = Math.min(start + step, target);
+    el.textContent = prefix + Math.round(start).toLocaleString() + suffix;
+    if(start >= target) clearInterval(iv);
+  }, 16);
+};
+
+// ── 6. EXPORT HELPER ─────────────────────────────────────────────
+window.uExportJSON = function(data, filename){
+  var blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.json';
+  a.click();
+  uToast('Data exported!', 'success');
+};
+window.uExportCSV = function(rows, filename){
+  var csv = rows.map(function(r){ return r.join(','); }).join('\n');
+  var blob = new Blob([csv], {type:'text/csv'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.csv';
+  a.click();
+  uToast('CSV exported!', 'success');
+};
+
+// ── 8. INIT ──────────────────────────────────────────────────────
+function init(){
+  setTimeout(animateEntrance, 100);
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+})();
+</script>
+<script>
+(function(){
+  var appNotes = uLoad('app_notes', {});
+  var interviews = uLoad('interviews', []);
+  
+  // Persist applications
+  var origApply = window.applyJob;
+  if(origApply){
+    window.applyJob = function(id){
+      origApply.apply(this,[id]);
+      setTimeout(function(){ if(window.applications) uSave('job_applications', window.applications); }, 100);
+    };
+  }
+  
+  // Restore applications
+  setTimeout(function(){
+    var saved = uLoad('job_applications', null);
+    if(saved && saved.length && window.applications && !window.applications.length){
+      window.applications = saved;
+      if(window.renderApplications) renderApplications();
+    }
+  }, 300);
+  
+  // Interview tracker panel
+  function injectInterviewTracker(){
+    if(document.getElementById('uInterviewTracker')) return;
+    var container = document.querySelector('.container,.grid2');
+    if(!container) return;
+    var panel = document.createElement('div');
+    panel.className = 'card u-fade-up';
+    panel.id = 'uInterviewTracker';
+    panel.innerHTML = '<div style="font-weight:700;color:#38bdf8;margin-bottom:14px">📅 Interview Tracker</div>' +
+      '<div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">' +
+      '<input id="uIntCompany" placeholder="Company" style="flex:1;min-width:120px;font-size:13px">' +
+      '<input id="uIntDate" type="date" style="flex:1;min-width:120px;font-size:13px">' +
+      '<select id="uIntStage" style="flex:1;min-width:120px;font-size:13px"><option>Phone Screen</option><option>Technical</option><option>System Design</option><option>Onsite</option><option>Final</option></select>' +
+      '<button onclick="addInterview()" style="padding:8px 14px;background:linear-gradient(90deg,#38bdf8,#22c55e);border:none;color:#000;border-radius:8px;cursor:pointer;font-weight:700;font-size:13px;flex-shrink:0">Add</button>' +
+      '</div><div id="uIntList"></div>';
+    container.parentNode?.appendChild(panel);
+    renderInterviews();
+  }
+  
+  window.addInterview = function(){
+    var co = document.getElementById('uIntCompany')?.value.trim();
+    var dt = document.getElementById('uIntDate')?.value;
+    var st = document.getElementById('uIntStage')?.value;
+    if(!co||!dt){uToast('Fill company and date','error');return;}
+    interviews.push({company:co,date:dt,stage:st,id:Date.now()});
+    uSave('interviews',interviews);
+    document.getElementById('uIntCompany').value='';
+    renderInterviews();
+    uToast('Interview added! 📅','success');
+  };
+  
+  function renderInterviews(){
+    var el = document.getElementById('uIntList');
+    if(!el) return;
+    interviews.sort(function(a,b){return a.date.localeCompare(b.date);});
+    el.innerHTML = interviews.length ? interviews.map(function(iv,i){
+      var isUpcoming = iv.date >= new Date().toISOString().split('T')[0];
+      return '<div style="display:flex;align-items:center;gap:10px;padding:10px;background:rgba(56,189,248,.04);border:1px solid rgba(56,189,248,.1);border-radius:8px;margin-bottom:6px;font-size:13px">' +
+        '<div style="flex:1"><div style="font-weight:700">' + iv.company + '</div><div style="font-size:11px;color:#64748b">' + iv.stage + ' · ' + iv.date + '</div></div>' +
+        '<span class="badge ' + (isUpcoming?'badge-green':'') + '" style="font-size:10px">' + (isUpcoming?'Upcoming':'Past') + '</span>' +
+        '<button onclick="interviews.splice('+i+',1);uSave(\'interviews\',interviews);renderInterviews()" style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#ef4444;border-radius:5px;padding:3px 7px;cursor:pointer;font-size:11px;font-weight:700">✕</button>' +
+        '</div>';
+    }).join('') : '<p style="color:#64748b;font-size:13px">No interviews scheduled.</p>';
+  }
+  window.renderInterviews = renderInterviews;
+  
+  injectInterviewTracker();
+})();
+</script>
+</body></html>

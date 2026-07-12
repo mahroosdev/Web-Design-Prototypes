@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8">
+<meta name="description" content="Satellite Tracker — part of a professional web developer portfolio with 50+ projects.">
+<meta name="robots" content="index, follow">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Satellite Tracker</title><style>*{margin:0;padding:0;box-sizing:border-box}
+body{background:linear-gradient(135deg,#020617 0%,#0f172a 100%);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#fff;min-height:100vh;padding:40px 20px;overflow-x:hidden}
+.container{max-width:1000px;margin:0 auto}
+h1{background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:36px;margin-bottom:8px}
+.subtitle{color:#94a3b8;margin-bottom:28px;font-size:15px}
+.back-link{display:inline-flex;align-items:center;gap:6px;margin-bottom:20px;color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;padding:8px 14px;border:1px solid rgba(56,189,248,.3);border-radius:8px;transition:.2s}
+.back-link:hover{background:rgba(56,189,248,.1)}
+.card{background:rgba(30,41,59,.8);backdrop-filter:blur(10px);padding:24px;border-radius:16px;border:1px solid rgba(56,189,248,.2);margin-bottom:20px}
+.btn{padding:10px 22px;border:none;border-radius:8px;cursor:pointer;font-weight:700;font-size:14px;transition:.2s;background:linear-gradient(90deg,#38bdf8,#22c55e);color:#000}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(56,189,248,.35)}
+.btn-outline{background:transparent;border:1px solid rgba(56,189,248,.4);color:#38bdf8}
+input,textarea,select{background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.3);color:#fff;border-radius:8px;padding:10px 14px;font-size:14px;width:100%;outline:none;transition:.2s}
+input:focus,textarea:focus,select:focus{border-color:#38bdf8;box-shadow:0 0 0 3px rgba(56,189,248,.15)}
+input::placeholder,textarea::placeholder{color:#64748b}
+label{display:block;font-size:13px;font-weight:600;color:#94a3b8;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.flex{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;background:rgba(56,189,248,.15);color:#38bdf8;border:1px solid rgba(56,189,248,.3)}
+.badge-green{background:rgba(34,197,94,.15);color:#22c55e;border-color:rgba(34,197,94,.3)}
+.badge-red{background:rgba(239,68,68,.15);color:#ef4444;border-color:rgba(239,68,68,.3)}
+.stat-box{background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.15);border-radius:12px;padding:20px;text-align:center}
+.stat-num{font-size:32px;font-weight:800;background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-label{font-size:12px;color:#64748b;margin-top:4px;text-transform:uppercase;letter-spacing:.5px}
+@media(max-width:768px){body{padding:15px 12px}h1{font-size:26px}.grid2,.grid3,.grid4{grid-template-columns:1fr}.card{padding:16px 14px}}
+.sat-item{display:flex;align-items:center;gap:10px;padding:11px;border-radius:10px;cursor:pointer;transition:.2s;border:1px solid transparent;margin-bottom:6px}
+.sat-item:hover,.sat-item.active{background:rgba(56,189,248,.08);border-color:rgba(56,189,248,.3)}
+.sat-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.sat-name{font-weight:700;font-size:14px}
+.sat-info{font-size:12px;color:#64748b;margin-top:1px}
+.pass-item{display:flex;align-items:center;gap:12px;padding:10px;border-radius:8px;background:rgba(56,189,248,.04);border:1px solid rgba(56,189,248,.1);margin-bottom:8px;font-size:13px}
+.cat-btn{padding:5px 12px;border:1px solid rgba(56,189,248,.3);background:transparent;color:#64748b;border-radius:20px;cursor:pointer;font-size:11px;font-weight:700;transition:.2s}
+.cat-btn.active{background:rgba(56,189,248,.2);color:#38bdf8;border-color:#38bdf8}
+.detail-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(56,189,248,.08);font-size:14px}
+.detail-row:last-child{border:none}
+/* ── UNIVERSAL UPGRADE: Theme, Animations, Toast ── */
+:root{
+  --bg:#020617;--bg2:#0f172a;--card:rgba(30,41,59,.85);--border:rgba(56,189,248,.22);
+  --accent:#38bdf8;--accent2:#22c55e;--text:#f1f5f9;--muted:#94a3b8;--danger:#ef4444;
+}
+
+
+/* Toast notifications */
+.u-toast-container{position:fixed;bottom:24px;right:20px;z-index:99999;display:flex;flex-direction:column;gap:8px;max-width:320px}
+.u-toast{
+  background:var(--card);border:1px solid var(--border);color:var(--text);
+  padding:11px 16px;border-radius:10px;font-size:13px;font-weight:600;
+  box-shadow:0 4px 20px rgba(0,0,0,.35);
+  animation:uToastIn .3s ease;display:flex;align-items:center;gap:8px;
+}
+.u-toast.success{border-color:rgba(34,197,94,.5);background:rgba(34,197,94,.1)}
+.u-toast.error{border-color:rgba(239,68,68,.5);background:rgba(239,68,68,.1)}
+.u-toast.info{border-color:rgba(56,189,248,.5);background:rgba(56,189,248,.1)}
+@keyframes uToastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes uToastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(20px)}}
+
+/* Entrance animations */
+@keyframes uFadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes uFadeIn{from{opacity:0}to{opacity:1}}
+@keyframes uPulse{0%,100%{box-shadow:0 0 0 0 rgba(56,189,248,.4)}70%{box-shadow:0 0 0 8px rgba(56,189,248,0)}}
+.u-fade-up{animation:uFadeUp .45s ease both}
+.u-fade-in{animation:uFadeIn .4s ease both}
+.u-pulse{animation:uPulse 2s infinite}
+
+/* Button hover lift */
+.btn:hover,[class*="btn"]:not([class*="btn-"]):hover{transform:translateY(-2px)!important}
+
+/* Smooth card hover */
+.card:hover,[class*="card"]:hover{
+  border-color:var(--accent)!important;
+  box-shadow:0 6px 28px rgba(56,189,248,.12)!important;
+  transition:all .25s ease!important;
+}
+
+/* Loading skeleton */
+.u-skeleton{
+  background:linear-gradient(90deg,rgba(56,189,248,.06) 25%,rgba(56,189,248,.12) 50%,rgba(56,189,248,.06) 75%);
+  background-size:200% 100%;animation:uSkeleton 1.4s infinite;border-radius:6px;
+}
+@keyframes uSkeleton{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* Progress bar component */
+.u-progress{height:5px;background:rgba(56,189,248,.12);border-radius:3px;overflow:hidden;margin:8px 0}
+.u-progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:3px;transition:width .5s ease}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(56,189,248,.3);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(56,189,248,.55)}
+
+/* Mobile responsive upgrades */
+@media(max-width:600px){
+  
+  .u-toast-container{right:10px;bottom:80px;max-width:calc(100vw - 20px)}
+}
+
+</style></head>
+<body><div class="container">
+<a href="../index.html" class="back-link" onclick="window.close(); return false;">← Back to Portfolio</a>
+
+<h1>🛰 Satellite Tracker</h1>
+<p class="subtitle">Real-time orbital tracking and pass prediction system</p>
+<div class="grid2" style="align-items:start">
+  <div>
+    <div class="card">
+      <h3 style="color:#38bdf8;margin-bottom:14px">Active Satellites</h3>
+      <input id="satSearch" placeholder="Search satellites..." oninput="filterSats()" style="margin-bottom:12px">
+      <div class="flex" style="gap:6px;flex-wrap:wrap;margin-bottom:12px" id="catBtns"></div>
+      <div id="satList"></div>
+    </div>
+  </div>
+  <div>
+    <div class="card">
+      <div class="flex" style="justify-content:space-between;margin-bottom:14px">
+        <h3 style="color:#38bdf8">Orbital View</h3>
+        <button class="btn btn-outline" onclick="toggleAnim()" id="animBtn" style="padding:6px 14px;font-size:12px">▶ Animate</button>
+      </div>
+      <canvas id="orbitCanvas" style="width:100%;border-radius:12px;background:radial-gradient(ellipse at center,#0c1445 0%,#020617 100%)"></canvas>
+      <div id="orbitLegend" style="display:flex;gap:12px;flex-wrap:wrap;margin-top:10px;font-size:12px"></div>
+    </div>
+    <div id="satDetail" class="card" style="display:none"></div>
+    <div class="card">
+      <h3 style="color:#38bdf8;margin-bottom:14px">Next Visible Passes</h3>
+      <div id="passList"></div>
+    </div>
+  </div>
+</div>
+</div><script>
+const rnd=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+const satellites=[
+  {id:1,name:'ISS',cat:'Station',color:'#22c55e',alt:408,inc:51.6,period:92.9,icon:'🏠',lat:48.2,lng:-122.3,vel:27600,country:'International'},
+  {id:2,name:'Hubble',cat:'Science',color:'#38bdf8',alt:547,inc:28.5,period:95.6,icon:'🔭',lat:22.1,lng:45.2,vel:27300,country:'USA'},
+  {id:3,name:'Starlink-1',cat:'Comms',color:'#a855f7',alt:550,inc:53.0,period:95.5,icon:'📡',lat:-12.4,lng:88.7,vel:27500,country:'USA'},
+  {id:4,name:'NOAA-19',cat:'Weather',color:'#f59e0b',alt:870,inc:99.1,period:102.1,icon:'🌤',lat:72.3,lng:-45.6,vel:26300,country:'USA'},
+  {id:5,name:'GPS-IIF-2',cat:'Navigation',color:'#ef4444',alt:20180,inc:55.0,period:718,icon:'📍',lat:33.4,lng:112.8,vel:14000,country:'USA'},
+  {id:6,name:'Landsat-9',cat:'Science',color:'#06b6d4',alt:705,inc:98.2,period:99.0,icon:'🌍',lat:-28.7,lng:156.3,vel:26800,country:'USA'},
+  {id:7,name:'Tiangong',cat:'Station',color:'#22c55e',alt:389,inc:41.5,period:92.1,icon:'🏠',lat:15.6,lng:-88.2,vel:27700,country:'China'},
+  {id:8,name:'Sentinel-2A',cat:'Science',color:'#38bdf8',alt:786,inc:98.6,period:100.6,icon:'🌿',lat:58.4,lng:23.1,vel:26600,country:'ESA'},
+  {id:9,name:'Iridium-100',cat:'Comms',color:'#a855f7',alt:780,inc:86.4,period:100.4,icon:'📡',lat:-45.2,lng:-178.3,vel:26600,country:'USA'},
+  {id:10,name:'GOES-16',cat:'Weather',color:'#f59e0b',alt:35786,inc:0.1,period:1436,icon:'🌤',lat:0.1,lng:-75.2,vel:11000,country:'USA'},
+];
+const cats=['All','Station','Science','Comms','Weather','Navigation'];
+let activeCat=null,activeSat=null,animRunning=false,animFrame=null,angles={};
+satellites.forEach((s,i)=>angles[s.id]=i*(Math.PI*2/satellites.length));
+
+function filterSats(){
+  const q=document.getElementById('satSearch').value.toLowerCase();
+  const list=satellites.filter(s=>(!q||s.name.toLowerCase().includes(q)||s.cat.toLowerCase().includes(q))&&(!activeCat||s.cat===activeCat));
+  document.getElementById('satList').innerHTML=list.map(s=>`
+    <div class="sat-item ${s.id===activeSat?'active':''}" onclick="selectSat(${s.id})">
+      <div class="sat-dot" style="background:${s.color};box-shadow:0 0 6px ${s.color}"></div>
+      <div><div class="sat-name">${s.icon} ${s.name}</div><div class="sat-info">${s.cat} · Alt: ${s.alt>1000?(s.alt/1000).toFixed(1)+'K':s.alt} km · Inc: ${s.inc}°</div></div>
+      <span class="badge" style="margin-left:auto;background:${s.color}22;color:${s.color};border-color:${s.color}44;font-size:10px">${s.cat}</span>
+    </div>`).join('');
+}
+
+document.getElementById('catBtns').innerHTML=cats.map(c=>`<button class="cat-btn ${(!activeCat&&c==='All')||activeCat===c?'active':''}" onclick="setCat('${c}')">${c}</button>`).join('');
+function setCat(c){activeCat=c==='All'?null:c;document.querySelectorAll('.cat-btn').forEach(b=>b.classList.toggle('active',b.textContent===c));filterSats();}
+
+function selectSat(id){
+  activeSat=id;const s=satellites.find(s=>s.id===id);
+  const detail=document.getElementById('satDetail');detail.style.display='block';
+  detail.innerHTML=`
+    <div class="flex" style="margin-bottom:14px">
+      <span style="font-size:32px">${s.icon}</span>
+      <div><h3 style="font-size:18px;font-weight:800">${s.name}</h3><span class="badge" style="background:${s.color}22;color:${s.color};border-color:${s.color}44">${s.cat}</span></div>
+    </div>
+    <div class="detail-row"><span style="color:#64748b">Altitude</span><span style="font-weight:700">${s.alt.toLocaleString()} km</span></div>
+    <div class="detail-row"><span style="color:#64748b">Inclination</span><span style="font-weight:700">${s.inc}°</span></div>
+    <div class="detail-row"><span style="color:#64748b">Orbital Period</span><span style="font-weight:700">${s.period} min</span></div>
+    <div class="detail-row"><span style="color:#64748b">Velocity</span><span style="font-weight:700">${s.vel.toLocaleString()} km/h</span></div>
+    <div class="detail-row"><span style="color:#64748b">Latitude</span><span style="font-weight:700">${s.lat.toFixed(1)}°</span></div>
+    <div class="detail-row"><span style="color:#64748b">Longitude</span><span style="font-weight:700">${s.lng.toFixed(1)}°</span></div>
+    <div class="detail-row"><span style="color:#64748b">Country/Org</span><span style="font-weight:700">${s.country}</span></div>`;
+  filterSats();drawOrbit();
+}
+
+function drawOrbit(){
+  const canvas=document.getElementById('orbitCanvas');
+  canvas.width=canvas.parentElement?.offsetWidth-48||400;
+  canvas.height=canvas.width*0.6;
+  const W=canvas.width,H=canvas.height,cx=W/2,cy=H/2;
+  const ctx=canvas.getContext('2d');
+  ctx.clearRect(0,0,W,H);
+  // Earth
+  const eg=ctx.createRadialGradient(cx,cy,0,cx,cy,40);
+  eg.addColorStop(0,'#1e40af');eg.addColorStop(0.6,'#1d4ed8');eg.addColorStop(1,'#1e3a5f');
+  ctx.beginPath();ctx.arc(cx,cy,40,0,Math.PI*2);ctx.fillStyle=eg;ctx.fill();
+  // Continents (simplified blobs)
+  ctx.fillStyle='rgba(34,197,94,.4)';
+  [[cx-10,cy-15,18],[cx+8,cy-8,12],[cx-18,cy+10,14],[cx+16,cy+12,10]].forEach(([x,y,r])=>{
+    ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();
+  });
+  // Satellites
+  const scale=Math.min(W,H)*0.38/36000;
+  satellites.forEach(s=>{
+    const r=Math.max(48,Math.min((s.alt*scale)+45, H/2-10));
+    const a=angles[s.id];
+    const isActive=s.id===activeSat;
+    // Orbit ring
+    ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);
+    ctx.strokeStyle=isActive?s.color+'88':'rgba(56,189,248,.06)';ctx.lineWidth=isActive?1.5:1;ctx.stroke();
+    // Satellite dot
+    const sx=cx+r*Math.cos(a),sy=cy+r*Math.sin(a);
+    ctx.beginPath();ctx.arc(sx,sy,isActive?5:3,0,Math.PI*2);
+    ctx.fillStyle=s.color;
+    if(isActive){ctx.shadowColor=s.color;ctx.shadowBlur=10;}
+    ctx.fill();ctx.shadowBlur=0;
+    if(isActive){ctx.fillStyle=s.color;ctx.font='bold 10px sans-serif';ctx.textAlign='center';ctx.fillText(s.name,sx,sy-10);}
+  });
+  document.getElementById('orbitLegend').innerHTML=[...new Set(satellites.map(s=>s.cat))].map(cat=>{
+    const s=satellites.find(s=>s.cat===cat);
+    return `<span style="display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:50%;background:${s.color};display:inline-block"></span>${cat}</span>`;
+  }).join('');
+}
+
+function toggleAnim(){
+  animRunning=!animRunning;
+  document.getElementById('animBtn').textContent=animRunning?'⏸ Pause':'▶ Animate';
+  if(animRunning)animate();else cancelAnimationFrame(animFrame);
+}
+function animate(){
+  satellites.forEach(s=>{angles[s.id]+=0.002*(550/s.alt)*2;});
+  drawOrbit();
+  if(animRunning)animFrame=requestAnimationFrame(animate);
+}
+
+// Next passes
+const now=new Date();
+document.getElementById('passList').innerHTML=satellites.slice(0,5).map(s=>{
+  const passTime=new Date(now.getTime()+rnd(10,180)*60000);
+  const dur=rnd(3,8);
+  const el=rnd(20,82);
+  return `<div class="pass-item">
+    <span style="font-size:20px">${s.icon}</span>
+    <div style="flex:1"><div style="font-weight:700">${s.name}</div><div style="font-size:12px;color:#64748b">${passTime.toLocaleTimeString([])} · ${dur} min duration · Max elev: ${el}°</div></div>
+    <span class="badge badge-green" style="font-size:10px">Visible</span>
+  </div>`;
+}).join('');
+
+filterSats();drawOrbit();window.addEventListener('resize',drawOrbit);
+</script><script>
+// ── UNIVERSAL UPGRADE: Theme, localStorage, Toast, Animations ──
+(function(){
+'use strict';
+
+// ── 2. TOAST SYSTEM ──────────────────────────────────────────────
+var toastContainer = null;
+function getToastContainer(){
+  if(!toastContainer || !document.body.contains(toastContainer)){
+    toastContainer = document.createElement('div');
+    toastContainer.className = 'u-toast-container';
+    document.body.appendChild(toastContainer);
+  }
+  return toastContainer;
+}
+
+window.uToast = function(msg, type, duration){
+  type = type || 'info';
+  duration = duration || 2800;
+  var icons = {success:'✅', error:'❌', info:'💡', warning:'⚠️'};
+  var c = getToastContainer();
+  var t = document.createElement('div');
+  t.className = 'u-toast ' + type;
+  t.innerHTML = '<span>' + (icons[type]||'💡') + '</span><span>' + msg + '</span>';
+  c.appendChild(t);
+  setTimeout(function(){
+    t.style.animation = 'uToastOut .3s ease forwards';
+    setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 300);
+  }, duration);
+};
+
+// ── 3. LOCALSTORAGE HELPERS ──────────────────────────────────────
+var APP_KEY = 'uapp_' + location.pathname.split('/').pop().replace('.html','');
+window.uSave = function(key, val){
+  try { localStorage.setItem(APP_KEY + '_' + key, JSON.stringify(val)); return true; }
+  catch(e){ return false; }
+};
+window.uLoad = function(key, def){
+  try {
+    var v = localStorage.getItem(APP_KEY + '_' + key);
+    return v !== null ? JSON.parse(v) : def;
+  } catch(e){ return def; }
+};
+window.uClear = function(key){
+  try { localStorage.removeItem(APP_KEY + '_' + key); } catch(e){}
+};
+
+// ── 4. ENTRANCE ANIMATIONS ───────────────────────────────────────
+function animateEntrance(){
+  var cards = document.querySelectorAll('.card, [class*="card"]');
+  cards.forEach(function(el, i){
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(18px)';
+    setTimeout(function(){
+      el.style.transition = 'opacity .4s ease, transform .4s ease';
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+    }, i * 60);
+  });
+}
+
+// ── 5. SMOOTH COUNTER ANIMATION ──────────────────────────────────
+window.uAnimCount = function(el, target, duration, prefix, suffix){
+  prefix = prefix || '';
+  suffix = suffix || '';
+  duration = duration || 1200;
+  var start = 0;
+  var step = target / (duration / 16);
+  var iv = setInterval(function(){
+    start = Math.min(start + step, target);
+    el.textContent = prefix + Math.round(start).toLocaleString() + suffix;
+    if(start >= target) clearInterval(iv);
+  }, 16);
+};
+
+// ── 6. EXPORT HELPER ─────────────────────────────────────────────
+window.uExportJSON = function(data, filename){
+  var blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.json';
+  a.click();
+  uToast('Data exported!', 'success');
+};
+window.uExportCSV = function(rows, filename){
+  var csv = rows.map(function(r){ return r.join(','); }).join('\n');
+  var blob = new Blob([csv], {type:'text/csv'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.csv';
+  a.click();
+  uToast('CSV exported!', 'success');
+};
+
+// ── 8. INIT ──────────────────────────────────────────────────────
+function init(){
+  setTimeout(animateEntrance, 100);
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+})();
+</script>
+<script>
+(function(){
+  var trackedSats = uLoad('tracked_sats', [1, 2]);
+  var location = uLoad('observer_location', {lat:51.5, lng:-0.1, city:'London'});
+  
+  // Location input
+  function injectLocationInput(){
+    if(document.getElementById('uLocationInput')) return;
+    var container = document.querySelector('.card:first-child');
+    if(!container) return;
+    var locDiv = document.createElement('div');
+    locDiv.id = 'uLocationInput';
+    locDiv.style.cssText = 'margin-top:14px;padding:12px;background:rgba(56,189,248,.04);border:1px solid rgba(56,189,248,.1);border-radius:10px';
+    locDiv.innerHTML = '<div style="font-size:12px;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">📍 Observer Location</div>' +
+      '<div style="display:flex;gap:8px;flex-wrap:wrap">' +
+      '<input id="uObsCity" value="'+location.city+'" placeholder="City name" style="flex:1;min-width:120px;font-size:13px">' +
+      '<button onclick="saveObserverLocation()" style="padding:7px 14px;background:linear-gradient(90deg,#38bdf8,#22c55e);border:none;color:#000;border-radius:8px;cursor:pointer;font-weight:700;font-size:12px;flex-shrink:0">Set Location</button>' +
+      '</div>';
+    container.appendChild(locDiv);
+  }
+  
+  window.saveObserverLocation = function(){
+    var city = document.getElementById('uObsCity')?.value.trim();
+    if(!city){uToast('Enter a city name','error');return;}
+    location.city = city;
+    uSave('observer_location', location);
+    uToast('Location set: '+city+' 📍', 'success');
+    updatePassList();
+  };
+  
+  function updatePassList(){
+    var el = document.getElementById('passList');
+    if(!el) return;
+    var sats = (window.satellites||[]).slice(0,5);
+    var now = new Date();
+    el.innerHTML = sats.map(function(s){
+      var mins = Math.floor(Math.random()*120+5);
+      var passTime = new Date(now.getTime() + mins*60000);
+      var dur = Math.floor(Math.random()*8+2);
+      return '<div class="pass-item" style="cursor:pointer" onclick="selectSat('+s.id+')">' +
+        '<span style="font-size:20px">'+s.icon+'</span>' +
+        '<div style="flex:1"><div style="font-weight:700;font-size:13px">'+s.name+'</div>' +
+        '<div style="font-size:11px;color:#64748b">'+passTime.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})+' · '+dur+'min · from '+location.city+'</div></div>' +
+        '<span class="badge badge-green" style="font-size:10px">Visible</span></div>';
+    }).join('');
+  }
+  
+  // Tracking toggle
+  var origSelect = window.selectSat;
+  if(origSelect){
+    window.selectSat = function(id){
+      origSelect.apply(this,[id]);
+      setTimeout(function(){
+        var detail = document.getElementById('satDetail');
+        if(!detail || document.getElementById('uTrackBtn')) return;
+        var isTracked = trackedSats.includes(id);
+        var btn = document.createElement('button');
+        btn.id = 'uTrackBtn';
+        btn.style.cssText = 'display:block;width:100%;margin-top:10px;padding:9px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:#22c55e;border-radius:8px;cursor:pointer;font-size:13px;font-weight:700';
+        btn.textContent = isTracked ? '✓ Tracking — Click to untrack' : '+ Track this satellite';
+        btn.onclick = function(){
+          var idx = trackedSats.indexOf(id);
+          if(idx>=0){ trackedSats.splice(idx,1); btn.textContent='+ Track this satellite'; uToast('Satellite untracked','info'); }
+          else { trackedSats.push(id); btn.textContent='✓ Tracking — Click to untrack'; uToast('Now tracking! 🛰', 'success'); }
+          uSave('tracked_sats', trackedSats);
+        };
+        detail.appendChild(btn);
+      }, 200);
+    };
+  }
+  
+  injectLocationInput();
+  updatePassList();
+})();
+</script>
+</body></html>

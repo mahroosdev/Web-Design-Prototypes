@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <html lang="en">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <title>Analytics Dashboard | DevOS</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+</head>
+<body>
+<div id="topbar">
+  <div class="topbar-left">
+    <a class="back-btn" href="index.html">← BACK</a>
+    <span class="topbar-logo">DASH_OS</span>
+  </div>
+  <div class="topbar-right">
+    <button class="theme-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle theme">🌙</button>
+  </div>
+</div>
+<div id="toast"></div>
+<div class="wrap">
+<div class="page-header animate-in">
+  <div class="row align" style="gap:10px;margin-bottom:8px"><span style="font-size:28px">📊</span><h1>Analytics Dashboard</h1></div>
+  <p>Full KPI dashboard with charts, tables and real-time counters.</p>
+</div>
+
+
+<h1>📊 Analytics Dashboard</h1>
+<p>Full analytics dashboard with charts, KPIs and data tables.</p>
+<div style="margin-top:16px"><div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px">
+  <div class="card" style="text-align:center"><div style="font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--muted);letter-spacing:.1em;margin-bottom:6px">TOTAL USERS</div><div style="font-size:32px;font-weight:800;color:var(--accent)">24,891</div><div style="font-size:11px;color:var(--accent3);margin-top:4px">↑ 12.4% this month</div></div>
+  <div class="card" style="text-align:center"><div style="font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--muted);letter-spacing:.1em;margin-bottom:6px">REVENUE</div><div style="font-size:32px;font-weight:800;color:var(--accent2)">$48.2K</div><div style="font-size:11px;color:var(--accent3);margin-top:4px">↑ 8.7% this month</div></div>
+  <div class="card" style="text-align:center"><div style="font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--muted);letter-spacing:.1em;margin-bottom:6px">CONVERSION</div><div style="font-size:32px;font-weight:800;color:var(--accent4)">3.24%</div><div style="font-size:11px;color:var(--muted);margin-top:4px">↓ 0.3% this month</div></div>
+  <div class="card" style="text-align:center"><div style="font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--muted);letter-spacing:.1em;margin-bottom:6px">AVG SESSION</div><div style="font-size:32px;font-weight:800;color:var(--accent3)">4m 32s</div><div style="font-size:11px;color:var(--accent3);margin-top:4px">↑ 0.5% this month</div></div>
+</div>
+<div class="card" style="margin-bottom:14px">
+  <h2 style="font-size:14px;margin-bottom:14px">Weekly Traffic</h2>
+  <canvas id="db-chart" height="150" style="touch-action:none"></canvas>
+</div>
+<div class="card">
+  <h2 style="font-size:14px;margin-bottom:12px">Top Pages</h2>
+  <table style="width:100%;border-collapse:collapse;font-size:12px">
+    <tr style="color:var(--muted);border-bottom:1px solid var(--border)"><th style="text-align:left;padding:6px 0;font-weight:600">Page</th><th style="text-align:right;padding:6px 0;font-weight:600">Views</th><th style="text-align:right;padding:6px 0;font-weight:600">Bounce</th></tr>
+    <tr style="border-bottom:1px solid rgba(0,224,255,.05)"><td style="padding:8px 0">/home</td><td style="text-align:right;color:var(--accent)">12,450</td><td style="text-align:right;color:var(--accent3)">32%</td></tr>
+    <tr style="border-bottom:1px solid rgba(0,224,255,.05)"><td style="padding:8px 0">/projects</td><td style="text-align:right;color:var(--accent)">8,231</td><td style="text-align:right;color:var(--accent3)">41%</td></tr>
+    <tr style="border-bottom:1px solid rgba(0,224,255,.05)"><td style="padding:8px 0">/about</td><td style="text-align:right;color:var(--accent)">5,102</td><td style="text-align:right;color:var(--muted)">58%</td></tr>
+    <tr><td style="padding:8px 0">/contact</td><td style="text-align:right;color:var(--accent)">2,889</td><td style="text-align:right;color:var(--accent3)">28%</td></tr>
+  </table>
+</div></div>
+<script>const canvas=document.getElementById('db-chart');const ctx=canvas.getContext('2d');canvas.width=canvas.offsetWidth||400;canvas.height=150;
+const days=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];const data=[3200,4100,3800,5200,4700,3100,4400];
+const max=Math.max(...data)*1.2;const w=canvas.width;const h=canvas.height;const pw=w/(data.length-1);
+// Gradient fill
+const grad=ctx.createLinearGradient(0,0,0,h);grad.addColorStop(0,'rgba(0,224,255,.3)');grad.addColorStop(1,'rgba(0,224,255,.0)');
+ctx.beginPath();ctx.moveTo(0,h-(data[0]/max)*h);data.forEach((v,i)=>{if(i>0){const x=i*pw;const y=h-(v/max)*h;ctx.lineTo(x,y);}});ctx.lineTo(w,h);ctx.lineTo(0,h);ctx.closePath();ctx.fillStyle=grad;ctx.fill();
+// Line
+ctx.beginPath();ctx.moveTo(0,h-(data[0]/max)*h);data.forEach((v,i)=>{if(i>0)ctx.lineTo(i*pw,h-(v/max)*h);});ctx.strokeStyle='#00e0ff';ctx.lineWidth=2.5;ctx.stroke();
+// Dots & labels
+data.forEach((v,i)=>{const x=i*pw;const y=h-(v/max)*h;ctx.beginPath();ctx.arc(x,y,4,0,Math.PI*2);ctx.fillStyle='#00e0ff';ctx.fill();ctx.fillStyle='#8aa0b8';ctx.font='11px JetBrains Mono,monospace';ctx.textAlign='center';ctx.fillText(days[i],x,h+14<150?h-4:h-2);});</script>
+
+
+</div>
+  <script src="../shared-back.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

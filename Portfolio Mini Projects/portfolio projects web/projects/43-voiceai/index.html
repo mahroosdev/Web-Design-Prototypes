@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <html lang="en">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <title>Voice AI | DevOS</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+</head>
+<body>
+<div id="topbar">
+  <div class="topbar-left">
+    <a class="back-btn" href="index.html">← BACK</a>
+    <span class="topbar-logo">VOICE_OS</span>
+  </div>
+  <div class="topbar-right">
+    <button class="theme-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle theme">🌙</button>
+  </div>
+</div>
+<div id="toast"></div>
+<div class="wrap">
+<div class="page-header animate-in">
+  <div class="row align" style="gap:10px;margin-bottom:8px"><span style="font-size:28px">🎙</span><h1>Voice AI</h1></div>
+  <p>Voice recording UI with waveform animation and AI transcription.</p>
+</div>
+
+
+<h1>🎙 Voice AI Interface</h1>
+<p>Voice recording UI with waveform visualization and transcription.</p>
+<div style="margin-top:16px"><div class="card" style="text-align:center;margin-top:8px">
+  <div id="va-waveform" style="height:80px;background:var(--card2);border-radius:12px;margin-bottom:20px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;gap:2px;padding:0 10px">
+    <div id="va-bars"></div>
+    <div id="va-idle" style="color:var(--muted);font-size:13px">Press record to start</div>
+  </div>
+  <button id="va-btn" onclick="toggleRecord()" style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;font-size:32px;cursor:pointer;margin-bottom:16px;box-shadow:0 0 30px rgba(0,224,255,.4);transition:all .2s;touch-action:manipulation">🎙</button>
+  <div id="va-status" style="font-size:13px;color:var(--muted);margin-bottom:16px">Ready</div>
+  <div id="va-transcript" style="text-align:left"></div>
+</div></div>
+<script>let recording=false,barsIv=null,recIv=null,seconds=0;
+const responses=['I understand. How can I assist you further?','That is a great point! Let me think about that.','Interesting request. Processing your input now.','Sure! I can help you with that task.','I have analyzed your voice input. Here is what I found...','Your query has been processed successfully.'];
+const demos=['Tell me about the weather today','Schedule a meeting for tomorrow','Set a reminder for 3pm','Search for JavaScript tutorials','What is the latest news?'];
+function toggleRecord(){
+  recording=!recording;
+  const btn=document.getElementById('va-btn');
+  const status=document.getElementById('va-status');
+  if(recording){
+    btn.textContent='⏹';btn.style.background='linear-gradient(135deg,var(--accent4),#dc2626)';btn.style.animation='pulse 1s infinite';
+    status.textContent='Recording... (tap to stop)';status.style.color='var(--accent4)';
+    document.getElementById('va-idle').style.display='none';
+    document.getElementById('va-bars').style.display='flex';
+    document.getElementById('va-bars').style.gap='3px';
+    document.getElementById('va-bars').style.alignItems='center';
+    document.getElementById('va-bars').style.height='100%';
+    seconds=0;
+    barsIv=setInterval(()=>{
+      document.getElementById('va-bars').innerHTML=Array.from({length:30},(_,i)=>`<div style="width:4px;height:${10+Math.random()*50}px;background:var(--accent);border-radius:2px;opacity:${0.4+Math.random()*.6};transition:height .1s"></div>`).join('');
+    },100);
+    recIv=setInterval(()=>{seconds++;document.getElementById('va-status').textContent=`Recording ${seconds}s...`;if(seconds>=5)toggleRecord();},1000);
+  } else {
+    clearInterval(barsIv);clearInterval(recIv);
+    btn.textContent='🎙';btn.style.background='linear-gradient(135deg,var(--accent),var(--accent2))';btn.style.animation='none';
+    document.getElementById('va-bars').style.display='none';
+    document.getElementById('va-idle').style.display='block';
+    status.textContent='Processing...';status.style.color='var(--accent)';
+    setTimeout(()=>{
+      const demo=demos[Math.floor(Math.random()*demos.length)];
+      const resp=responses[Math.floor(Math.random()*responses.length)];
+      const el=document.getElementById('va-transcript');
+      el.innerHTML=`<div class="card" style="margin-bottom:8px"><div style="font-size:10px;font-family:JetBrains Mono,monospace;color:var(--muted);margin-bottom:6px">YOU SAID</div><div style="font-size:14px">"${demo}"</div></div><div class="card" style="background:rgba(0,224,255,.05);border-color:rgba(0,224,255,.2)"><div style="font-size:10px;font-family:JetBrains Mono,monospace;color:var(--accent);margin-bottom:6px">AI RESPONSE</div><div style="font-size:13px;color:var(--text)">${resp}</div></div>`+el.innerHTML;
+      status.textContent='Ready';status.style.color='var(--muted)';
+    },800);
+  }
+}
+const style=document.createElement('style');style.textContent='@keyframes pulse{0%,100%{box-shadow:0 0 30px rgba(244,114,182,.4)}50%{box-shadow:0 0 50px rgba(244,114,182,.8)}}';document.head.appendChild(style);</script>
+
+
+</div>
+  <script src="../shared-back.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

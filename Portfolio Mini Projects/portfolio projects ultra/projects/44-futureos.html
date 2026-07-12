@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8">
+<meta name="description" content="Future OS — part of a professional web developer portfolio with 50+ projects.">
+<meta name="robots" content="index, follow">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Future OS</title><style>*{margin:0;padding:0;box-sizing:border-box}
+body{background:linear-gradient(135deg,#020617 0%,#0f172a 100%);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#fff;min-height:100vh;padding:40px 20px;overflow-x:hidden}
+.container{max-width:1000px;margin:0 auto}
+h1{background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:36px;margin-bottom:8px}
+.subtitle{color:#94a3b8;margin-bottom:28px;font-size:15px}
+.back-link{display:inline-flex;align-items:center;gap:6px;margin-bottom:20px;color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;padding:8px 14px;border:1px solid rgba(56,189,248,.3);border-radius:8px;transition:.2s}
+.back-link:hover{background:rgba(56,189,248,.1)}
+.card{background:rgba(30,41,59,.8);backdrop-filter:blur(10px);padding:24px;border-radius:16px;border:1px solid rgba(56,189,248,.2);margin-bottom:20px}
+.btn{padding:10px 22px;border:none;border-radius:8px;cursor:pointer;font-weight:700;font-size:14px;transition:.2s;background:linear-gradient(90deg,#38bdf8,#22c55e);color:#000}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(56,189,248,.35)}
+.btn-outline{background:transparent;border:1px solid rgba(56,189,248,.4);color:#38bdf8}
+input,textarea,select{background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.3);color:#fff;border-radius:8px;padding:10px 14px;font-size:14px;width:100%;outline:none;transition:.2s}
+input:focus,textarea:focus,select:focus{border-color:#38bdf8;box-shadow:0 0 0 3px rgba(56,189,248,.15)}
+input::placeholder,textarea::placeholder{color:#64748b}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.flex{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;background:rgba(56,189,248,.15);color:#38bdf8;border:1px solid rgba(56,189,248,.3)}
+.badge-green{background:rgba(34,197,94,.15);color:#22c55e;border-color:rgba(34,197,94,.3)}
+.stat-box{background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.15);border-radius:12px;padding:20px;text-align:center}
+.stat-num{font-size:32px;font-weight:800;background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-label{font-size:12px;color:#64748b;margin-top:4px;text-transform:uppercase;letter-spacing:.5px}
+@media(max-width:768px){body{padding:15px 12px}h1{font-size:26px}.grid2,.grid3,.grid4{grid-template-columns:1fr}.card{padding:16px 14px}}
+.tb-app{background:none;border:none;color:#94a3b8;font-size:20px;padding:6px 8px;border-radius:8px;cursor:pointer;transition:.2s}
+.tb-app:hover{background:rgba(56,189,248,.1);color:#38bdf8}
+.desk-icon{display:flex;flex-direction:column;align-items:center;gap:5px;padding:10px 6px;border-radius:12px;cursor:pointer;font-size:32px;transition:.2s;user-select:none}
+.desk-icon div{font-size:11px;font-weight:600;color:#94a3b8;text-align:center}
+.desk-icon:hover{background:rgba(56,189,248,.1)}
+.desk-icon:active{background:rgba(56,189,248,.2)}
+.sm-app{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 6px;border-radius:10px;cursor:pointer;font-size:24px;transition:.2s;text-align:center}
+.sm-app div{font-size:10px;font-weight:600;color:#94a3b8}
+.sm-app:hover{background:rgba(56,189,248,.1)}
+.os-window{position:fixed;background:rgba(6,12,28,.95);backdrop-filter:blur(20px);border:1px solid rgba(56,189,248,.25);border-radius:12px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.5);min-width:340px;min-height:200px}
+.win-bar{background:rgba(56,189,248,.08);padding:10px 14px;display:flex;align-items:center;gap:8px;cursor:move;border-bottom:1px solid rgba(56,189,248,.1);user-select:none}
+.win-title{font-size:13px;font-weight:700;color:#38bdf8;flex:1}
+.win-btn{width:12px;height:12px;border-radius:50%;border:none;cursor:pointer}
+.win-close{background:#ef4444}
+.win-min{background:#f59e0b}
+.win-max{background:#22c55e}
+.win-body{padding:16px;color:#e2e8f0;font-size:14px;overflow:auto}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+/* ── UNIVERSAL UPGRADE: Theme, Animations, Toast ── */
+:root{
+  --bg:#020617;--bg2:#0f172a;--card:rgba(30,41,59,.85);--border:rgba(56,189,248,.22);
+  --accent:#38bdf8;--accent2:#22c55e;--text:#f1f5f9;--muted:#94a3b8;--danger:#ef4444;
+}
+
+
+/* Toast notifications */
+.u-toast-container{position:fixed;bottom:24px;right:20px;z-index:99999;display:flex;flex-direction:column;gap:8px;max-width:320px}
+.u-toast{
+  background:var(--card);border:1px solid var(--border);color:var(--text);
+  padding:11px 16px;border-radius:10px;font-size:13px;font-weight:600;
+  box-shadow:0 4px 20px rgba(0,0,0,.35);
+  animation:uToastIn .3s ease;display:flex;align-items:center;gap:8px;
+}
+.u-toast.success{border-color:rgba(34,197,94,.5);background:rgba(34,197,94,.1)}
+.u-toast.error{border-color:rgba(239,68,68,.5);background:rgba(239,68,68,.1)}
+.u-toast.info{border-color:rgba(56,189,248,.5);background:rgba(56,189,248,.1)}
+@keyframes uToastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes uToastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(20px)}}
+
+/* Entrance animations */
+@keyframes uFadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes uFadeIn{from{opacity:0}to{opacity:1}}
+@keyframes uPulse{0%,100%{box-shadow:0 0 0 0 rgba(56,189,248,.4)}70%{box-shadow:0 0 0 8px rgba(56,189,248,0)}}
+.u-fade-up{animation:uFadeUp .45s ease both}
+.u-fade-in{animation:uFadeIn .4s ease both}
+.u-pulse{animation:uPulse 2s infinite}
+
+/* Button hover lift */
+.btn:hover,[class*="btn"]:not([class*="btn-"]):hover{transform:translateY(-2px)!important}
+
+/* Smooth card hover */
+.card:hover,[class*="card"]:hover{
+  border-color:var(--accent)!important;
+  box-shadow:0 6px 28px rgba(56,189,248,.12)!important;
+  transition:all .25s ease!important;
+}
+
+/* Loading skeleton */
+.u-skeleton{
+  background:linear-gradient(90deg,rgba(56,189,248,.06) 25%,rgba(56,189,248,.12) 50%,rgba(56,189,248,.06) 75%);
+  background-size:200% 100%;animation:uSkeleton 1.4s infinite;border-radius:6px;
+}
+@keyframes uSkeleton{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* Progress bar component */
+.u-progress{height:5px;background:rgba(56,189,248,.12);border-radius:3px;overflow:hidden;margin:8px 0}
+.u-progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:3px;transition:width .5s ease}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(56,189,248,.3);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(56,189,248,.55)}
+
+/* Mobile responsive upgrades */
+@media(max-width:600px){
+  
+  .u-toast-container{right:10px;bottom:80px;max-width:calc(100vw - 20px)}
+}
+
+</style></head>
+<body><div class="container">
+<a href="../index.html" class="back-link" onclick="window.close(); return false;">← Back to Portfolio</a>
+
+<style>
+body{background:#050a14!important;padding:0!important}
+.container{max-width:100%!important;padding:0!important}
+</style>
+<div id="desktop" style="width:100%;min-height:100vh;position:relative;background:radial-gradient(ellipse at 30% 20%,rgba(56,189,248,.08) 0%,transparent 60%),radial-gradient(ellipse at 70% 80%,rgba(34,197,94,.05) 0%,transparent 60%),#050a14">
+  <!-- Taskbar -->
+  <div id="taskbar" style="position:fixed;bottom:0;left:0;right:0;height:56px;background:rgba(6,12,28,.95);backdrop-filter:blur(20px);border-top:1px solid rgba(56,189,248,.15);display:flex;align-items:center;padding:0 16px;gap:8px;z-index:1000">
+    <button class="tb-app" onclick="openApp('start')" title="Start Menu" style="font-size:20px">🚀</button>
+    <div style="width:1px;height:30px;background:rgba(56,189,248,.2);margin:0 4px"></div>
+    <button class="tb-app" id="tb-files" onclick="openApp('files')" title="Files">📁</button>
+    <button class="tb-app" id="tb-browser" onclick="openApp('browser')" title="Browser">🌐</button>
+    <button class="tb-app" id="tb-terminal" onclick="openApp('terminal')" title="Terminal">💻</button>
+    <button class="tb-app" id="tb-settings" onclick="openApp('settings')" title="Settings">⚙️</button>
+    <button class="tb-app" id="tb-music" onclick="openApp('music')" title="Music">🎵</button>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:12px">
+      <div id="clock" style="font-family:monospace;font-size:14px;color:#94a3b8"></div>
+      <div style="display:flex;gap:6px;font-size:16px">
+        <span title="Network">📶</span>
+        <span title="Battery">🔋</span>
+        <button onclick="document.querySelector('.back-link').click()" style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#ef4444;padding:4px 10px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:700">Exit</button>
+      </div>
+    </div>
+  </div>
+  <!-- Desktop Icons -->
+  <div style="padding:20px;padding-bottom:70px;display:grid;grid-template-columns:repeat(auto-fill,80px);gap:16px;align-content:start">
+    <div class="desk-icon" ondblclick="openApp('files')">📁<div>Files</div></div>
+    <div class="desk-icon" ondblclick="openApp('browser')">🌐<div>Browser</div></div>
+    <div class="desk-icon" ondblclick="openApp('terminal')">💻<div>Terminal</div></div>
+    <div class="desk-icon" ondblclick="openApp('settings')">⚙️<div>Settings</div></div>
+    <div class="desk-icon" ondblclick="openApp('music')">🎵<div>Music</div></div>
+    <div class="desk-icon" ondblclick="openApp('gallery')">🖼️<div>Gallery</div></div>
+    <div class="desk-icon" ondblclick="openApp('notes')">📝<div>Notes</div></div>
+    <div class="desk-icon" ondblclick="openApp('calc')">🧮<div>Calc</div></div>
+  </div>
+  <!-- Window container -->
+  <div id="windows"></div>
+  <!-- Start Menu -->
+  <div id="startMenu" style="display:none;position:fixed;bottom:60px;left:0;width:320px;background:rgba(6,12,28,.97);backdrop-filter:blur(20px);border:1px solid rgba(56,189,248,.2);border-radius:0 12px 0 0;z-index:2000;padding:20px">
+    <div style="font-size:14px;font-weight:700;color:#38bdf8;margin-bottom:14px">🚀 NEON OS</div>
+    <input placeholder="Search apps..." style="margin-bottom:14px;font-size:13px">
+    <div class="grid3" style="gap:10px">
+      <div class="sm-app" onclick="openApp('files')">📁<div>Files</div></div>
+      <div class="sm-app" onclick="openApp('browser')">🌐<div>Browser</div></div>
+      <div class="sm-app" onclick="openApp('terminal')">💻<div>Terminal</div></div>
+      <div class="sm-app" onclick="openApp('settings')">⚙️<div>Settings</div></div>
+      <div class="sm-app" onclick="openApp('music')">🎵<div>Music</div></div>
+      <div class="sm-app" onclick="openApp('calc')">🧮<div>Calc</div></div>
+    </div>
+    <div style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(56,189,248,.1);display:flex;justify-content:space-between">
+      <span style="font-size:13px;color:#64748b">NeonOS v4.7 · Alex</span>
+      <button onclick="closeStart()" style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#ef4444;padding:4px 10px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:700">⏻ Shut Down</button>
+    </div>
+  </div>
+</div>
+</div><script>
+let zIndex=100,windows={};
+function updateClock(){const d=new Date();document.getElementById('clock').textContent=d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});}
+setInterval(updateClock,1000);updateClock();
+
+const appContent={
+  files:`<div style="font-weight:700;margin-bottom:12px;color:#38bdf8">📁 File Manager</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+      ${['Documents','Downloads','Pictures','Music','Videos','Projects','Desktop','Archives'].map(f=>`<div style="background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.15);border-radius:8px;padding:12px;text-align:center;cursor:pointer;font-size:11px;transition:.2s" onmouseover="this.style.background='rgba(56,189,248,.15)'" onmouseout="this.style.background='rgba(56,189,248,.06)'"><div style="font-size:24px;margin-bottom:4px">📁</div>${f}</div>`).join('')}
+    </div>`,
+  browser:`<div style="margin-bottom:10px;display:flex;gap:8px">
+    <button onclick="this.parentElement.nextElementSibling.src=''" style="background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.3);color:#38bdf8;padding:5px 10px;border-radius:6px;cursor:pointer">←</button>
+    <input value="https://neon.os/home" style="flex:1;font-family:monospace;font-size:13px">
+    <button style="background:linear-gradient(90deg,#38bdf8,#22c55e);border:none;color:#000;padding:5px 12px;border-radius:6px;cursor:pointer;font-weight:700">Go</button>
+  </div>
+  <div style="background:rgba(56,189,248,.04);border:1px solid rgba(56,189,248,.1);border-radius:8px;padding:20px;text-align:center;min-height:180px;display:flex;align-items:center;justify-content:center;flex-direction:column;color:#64748b">
+    <div style="font-size:40px;margin-bottom:10px">🌐</div>
+    <div style="font-size:14px">NeonBrowser · v4.7</div>
+    <div style="font-size:12px;margin-top:6px">Type a URL to navigate</div>
+  </div>`,
+  terminal:`<div style="background:#000;border-radius:8px;padding:14px;font-family:monospace;font-size:12px;min-height:200px">
+    <div style="color:#22c55e;margin-bottom:8px">NeonOS Terminal v4.7 — type commands below</div>
+    <div id="termOut" style="color:#00ff41;line-height:1.8;max-height:140px;overflow-y:auto"></div>
+    <div style="display:flex;gap:8px;margin-top:10px;align-items:center">
+      <span style="color:#22c55e">user@neon:~$</span>
+      <input id="termIn" style="flex:1;background:transparent;border:none;color:#22c55e;font-family:monospace;font-size:12px;box-shadow:none;padding:0" placeholder="type command..." onkeydown="if(event.key==='Enter'){const v=this.value.trim();if(v){document.getElementById('termOut').innerHTML+='<div><span style=color:#fff>$ '+v+'</span></div><div>'+(['ls','pwd','whoami','date','echo'].includes(v)?{ls:'Documents Downloads Pictures Music',pwd:'/home/user',whoami:'alex_runner',date:new Date().toString(),echo:'Hello, NeonOS!'}[v]:'Command not found: '+v)+'</div>';this.value='';document.getElementById('termOut').scrollTop=9999;}}">
+    </div>
+  </div>`,
+  settings:`<div style="font-weight:700;margin-bottom:16px;color:#38bdf8;font-size:16px">⚙️ System Settings</div>
+    ${[{n:'Theme',v:'Neon Dark'},{n:'Language',v:'English'},{n:'Resolution',v:'2560×1440'},{n:'Timezone',v:'UTC+0'},{n:'Notifications',v:'Enabled'},{n:'Auto-update',v:'On'}].map(s=>`<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(56,189,248,.08);font-size:14px"><span style="color:#94a3b8">${s.n}</span><span style="font-weight:600;color:#38bdf8">${s.v}</span></div>`).join('')}`,
+  music:`<div style="text-align:center;padding:10px 0">
+    <div style="font-size:52px;margin-bottom:10px" id="musicNote">🎵</div>
+    <div style="font-weight:700;font-size:16px;margin-bottom:4px">Neon Nights</div>
+    <div style="color:#64748b;font-size:13px;margin-bottom:14px">Synthwave Artist · 4:32</div>
+    <div style="height:4px;background:rgba(56,189,248,.1);border-radius:2px;margin-bottom:12px;overflow:hidden">
+      <div id="musicBar" style="height:100%;background:linear-gradient(90deg,#38bdf8,#22c55e);border-radius:2px;width:35%;transition:.3s"></div>
+    </div>
+    <div style="display:flex;justify-content:center;gap:12px">
+      <button onclick="document.getElementById('musicBar').style.width=Math.max(0,parseInt(document.getElementById('musicBar').style.width)-5)+'%'" style="background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.3);color:#38bdf8;padding:8px 16px;border-radius:8px;cursor:pointer;font-size:16px">⏮</button>
+      <button id="playBtn" onclick="this.textContent=this.textContent==='▶'?'⏸':'▶'" style="background:linear-gradient(90deg,#38bdf8,#22c55e);border:none;color:#000;padding:10px 20px;border-radius:8px;cursor:pointer;font-size:18px;font-weight:700">▶</button>
+      <button onclick="document.getElementById('musicBar').style.width=Math.min(100,parseInt(document.getElementById('musicBar').style.width)+5)+'%'" style="background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.3);color:#38bdf8;padding:8px 16px;border-radius:8px;cursor:pointer;font-size:16px">⏭</button>
+    </div>
+  </div>`,
+  calc:`<div style="background:rgba(0,0,0,.3);border-radius:12px;padding:16px;max-width:280px;margin:0 auto">
+    <input id="calcDisp" value="0" readonly style="font-family:monospace;font-size:24px;font-weight:700;text-align:right;background:rgba(56,189,248,.05);border-color:rgba(56,189,248,.2);margin-bottom:10px;color:#38bdf8">
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
+      ${['C','±','%','÷','7','8','9','×','4','5','6','-','1','2','3','+','0','.','⌫','='].map(b=>`<button onclick="calcBtn('${b}')" style="padding:12px;border:1px solid rgba(56,189,248,${['÷','×','-','+','='].includes(b)?'.4':'.15'});background:${b==='='?'linear-gradient(90deg,#38bdf8,#22c55e)':['÷','×','-','+'].includes(b)?'rgba(56,189,248,.15)':'rgba(56,189,248,.06)'};color:${b==='='?'#000':'#e2e8f0'};border-radius:8px;cursor:pointer;font-size:16px;font-weight:600;transition:.2s" onmouseover="this.style.opacity='.8'" onmouseout="this.style.opacity='1'">${b}</button>`).join('')}
+    </div>
+  </div>`,
+  gallery:`<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+    ${['🌅','🌊','🏔','🌸','🎨','🌆','🦋','🌙','⚡','🌿','🔥','❄️'].map(e=>`<div style="aspect-ratio:1;background:linear-gradient(135deg,rgba(56,189,248,.1),rgba(34,197,94,.05));border:1px solid rgba(56,189,248,.2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:36px;cursor:pointer;transition:.2s" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">${e}</div>`).join('')}
+  </div>`,
+  notes:`<textarea placeholder="Start typing your note..." style="width:100%;height:200px;resize:none;font-size:14px;line-height:1.7;background:rgba(56,189,248,.05);border-color:rgba(56,189,248,.2)"></textarea>
+    <div style="display:flex;gap:8px;margin-top:10px">
+      <button onclick="var ta=this.closest('div').previousSibling;if(ta&&ta.value){uSave('notes_content',ta.value);this.textContent='✅ Saved!';setTimeout(()=>this.textContent='💾 Save',1500);uToast('Note saved!','success');}else uToast('Nothing to save','info')" style="flex:1;padding:8px;background:linear-gradient(90deg,#38bdf8,#22c55e);border:none;color:#000;border-radius:8px;cursor:pointer;font-weight:700;font-size:13px">💾 Save</button>
+      <button onclick="var ta=this.closest('div').previousSibling;if(ta){navigator.clipboard?.writeText(ta.value).then(()=>uToast('Copied!','success')).catch(()=>uToast('Copy failed','error'));}" style="flex:1;padding:8px;background:transparent;border:1px solid rgba(56,189,248,.3);color:#38bdf8;border-radius:8px;cursor:pointer;font-weight:700;font-size:13px">📋 Copy</button>
+    </div>`,
+};
+
+const appTitles={files:'File Manager',browser:'NeonBrowser',terminal:'Terminal',settings:'Settings',music:'Music Player',calc:'Calculator',gallery:'Gallery',notes:'Notes'};
+const appSizes={files:[500,350],browser:[520,300],terminal:[480,300],settings:[400,320],music:[320,280],calc:[320,360],gallery:[420,320],notes:[400,280]};
+
+function openApp(id){
+  if(id==='start'){toggleStart();return;}
+  closeStart();
+  if(windows[id]){document.getElementById('win_'+id).style.zIndex=++zIndex;return;}
+  const [w,h]=appSizes[id]||[420,300];
+  const left=50+Object.keys(windows).length*25;
+  const top=50+Object.keys(windows).length*25;
+  windows[id]=true;
+  const win=document.createElement('div');
+  win.className='os-window';win.id='win_'+id;
+  win.style.cssText=`left:${left}px;top:${top}px;width:${w}px;z-index:${++zIndex}`;
+  win.innerHTML=`
+    <div class="win-bar" id="winbar_${id}">
+      <button class="win-btn win-close" onclick="closeWin('${id}')"></button>
+      <button class="win-btn win-min" onclick="minWin('${id}')"></button>
+      <button class="win-btn win-max"></button>
+      <span class="win-title">${appTitles[id]||id}</span>
+    </div>
+    <div class="win-body" style="height:${h}px">${appContent[id]||'<div style="color:#64748b;padding:20px;text-align:center">App content loading...</div>'}</div>`;
+  document.getElementById('windows').appendChild(win);
+  makeDraggable(win,document.getElementById('winbar_'+id));
+}
+
+function closeWin(id){const el=document.getElementById('win_'+id);if(el)el.remove();delete windows[id];}
+function minWin(id){const el=document.getElementById('win_'+id);if(el){const body=el.querySelector('.win-body');body.style.display=body.style.display==='none'?'block':'none';}}
+
+function makeDraggable(win,bar){
+  let ox=0,oy=0,dx=0,dy=0;
+  bar.addEventListener('mousedown',e=>{
+    win.style.zIndex=++zIndex;
+    dx=e.clientX-win.getBoundingClientRect().left;
+    dy=e.clientY-win.getBoundingClientRect().top;
+    document.addEventListener('mousemove',onMove);
+    document.addEventListener('mouseup',()=>document.removeEventListener('mousemove',onMove),{once:true});
+  });
+  function onMove(e){win.style.left=(e.clientX-dx)+'px';win.style.top=(e.clientY-dy)+'px';}
+}
+
+let calcCur='0',calcPrev='',calcOp='';
+function calcBtn(b){
+  const disp=document.getElementById('calcDisp');
+  if(!disp)return;
+  if(b==='C'){calcCur='0';calcPrev='';calcOp='';}
+  else if(b==='='){
+    if(calcOp&&calcPrev){
+      const a=parseFloat(calcPrev),c=parseFloat(calcCur);
+      const res={'+':a+c,'-':a-c,'×':a*c,'÷':a/c}[calcOp];
+      calcCur=String(parseFloat(res.toFixed(10)));calcPrev='';calcOp='';
+    }
+  }
+  else if(['+','-','×','÷'].includes(b)){calcPrev=calcCur;calcOp=b;calcCur='0';}
+  else if(b==='⌫'){calcCur=calcCur.length>1?calcCur.slice(0,-1):'0';}
+  else if(b==='±'){calcCur=String(-parseFloat(calcCur));}
+  else if(b==='%'){calcCur=String(parseFloat(calcCur)/100);}
+  else if(b==='.'){if(!calcCur.includes('.'))calcCur+='.'}
+  else{calcCur=calcCur==='0'?b:calcCur+b;}
+  disp.value=calcCur;
+}
+
+function toggleStart(){
+  const sm=document.getElementById('startMenu');
+  sm.style.display=sm.style.display==='none'?'block':'none';
+}
+function closeStart(){document.getElementById('startMenu').style.display='none';}
+document.addEventListener('click',e=>{
+  if(!e.target.closest('#startMenu')&&!e.target.closest('[onclick*="start"]'))closeStart();
+});
+</script><script>
+// ── UNIVERSAL UPGRADE: Theme, localStorage, Toast, Animations ──
+(function(){
+'use strict';
+
+// ── 2. TOAST SYSTEM ──────────────────────────────────────────────
+var toastContainer = null;
+function getToastContainer(){
+  if(!toastContainer || !document.body.contains(toastContainer)){
+    toastContainer = document.createElement('div');
+    toastContainer.className = 'u-toast-container';
+    document.body.appendChild(toastContainer);
+  }
+  return toastContainer;
+}
+
+window.uToast = function(msg, type, duration){
+  type = type || 'info';
+  duration = duration || 2800;
+  var icons = {success:'✅', error:'❌', info:'💡', warning:'⚠️'};
+  var c = getToastContainer();
+  var t = document.createElement('div');
+  t.className = 'u-toast ' + type;
+  t.innerHTML = '<span>' + (icons[type]||'💡') + '</span><span>' + msg + '</span>';
+  c.appendChild(t);
+  setTimeout(function(){
+    t.style.animation = 'uToastOut .3s ease forwards';
+    setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 300);
+  }, duration);
+};
+
+// ── 3. LOCALSTORAGE HELPERS ──────────────────────────────────────
+var APP_KEY = 'uapp_' + location.pathname.split('/').pop().replace('.html','');
+window.uSave = function(key, val){
+  try { localStorage.setItem(APP_KEY + '_' + key, JSON.stringify(val)); return true; }
+  catch(e){ return false; }
+};
+window.uLoad = function(key, def){
+  try {
+    var v = localStorage.getItem(APP_KEY + '_' + key);
+    return v !== null ? JSON.parse(v) : def;
+  } catch(e){ return def; }
+};
+window.uClear = function(key){
+  try { localStorage.removeItem(APP_KEY + '_' + key); } catch(e){}
+};
+
+// ── 4. ENTRANCE ANIMATIONS ───────────────────────────────────────
+function animateEntrance(){
+  var cards = document.querySelectorAll('.card, [class*="card"]');
+  cards.forEach(function(el, i){
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(18px)';
+    setTimeout(function(){
+      el.style.transition = 'opacity .4s ease, transform .4s ease';
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+    }, i * 60);
+  });
+}
+
+// ── 5. SMOOTH COUNTER ANIMATION ──────────────────────────────────
+window.uAnimCount = function(el, target, duration, prefix, suffix){
+  prefix = prefix || '';
+  suffix = suffix || '';
+  duration = duration || 1200;
+  var start = 0;
+  var step = target / (duration / 16);
+  var iv = setInterval(function(){
+    start = Math.min(start + step, target);
+    el.textContent = prefix + Math.round(start).toLocaleString() + suffix;
+    if(start >= target) clearInterval(iv);
+  }, 16);
+};
+
+// ── 6. EXPORT HELPER ─────────────────────────────────────────────
+window.uExportJSON = function(data, filename){
+  var blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.json';
+  a.click();
+  uToast('Data exported!', 'success');
+};
+window.uExportCSV = function(rows, filename){
+  var csv = rows.map(function(r){ return r.join(','); }).join('\n');
+  var blob = new Blob([csv], {type:'text/csv'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.csv';
+  a.click();
+  uToast('CSV exported!', 'success');
+};
+
+// ── 8. INIT ──────────────────────────────────────────────────────
+function init(){
+  setTimeout(animateEntrance, 100);
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+})();
+</script>
+<script>
+(function(){
+  var wallpapers = [
+    'radial-gradient(ellipse at 20% 30%, rgba(56,189,248,.15) 0%, transparent 60%), radial-gradient(ellipse at 80% 70%, rgba(34,197,94,.1) 0%, transparent 60%), #050a14',
+    'radial-gradient(ellipse at 50% 50%, rgba(168,85,247,.15) 0%, transparent 70%), #0a0514',
+    'radial-gradient(ellipse at 30% 80%, rgba(245,158,11,.12) 0%, transparent 60%), #14100a',
+    'radial-gradient(ellipse at 70% 20%, rgba(239,68,68,.12) 0%, transparent 60%), #140a0a',
+    'linear-gradient(135deg, #050a14 0%, #0a1428 50%, #050a14 100%)',
+  ];
+  var curWall = uLoad('os_wallpaper', 0);
+  var recentFiles = uLoad('os_recent', []);
+  
+  // Apply saved wallpaper
+  var desktop = document.getElementById('desktop');
+  if(desktop && curWall !== 0) desktop.style.background = wallpapers[curWall];
+  
+  // Wallpaper switcher
+  var taskbar = document.getElementById('retro-taskbar') || document.getElementById('taskbar');
+  if(taskbar && !document.getElementById('uWallBtn')){
+    var wallBtn = document.createElement('button');
+    wallBtn.id = 'uWallBtn';
+    wallBtn.title = 'Change wallpaper';
+    wallBtn.style.cssText = 'background:none;border:none;color:#94a3b8;font-size:16px;padding:6px 8px;border-radius:8px;cursor:pointer;transition:.2s;margin-left:4px';
+    wallBtn.innerHTML = '🖼';
+    wallBtn.onclick = function(){
+      curWall = (curWall + 1) % wallpapers.length;
+      uSave('os_wallpaper', curWall);
+      var d = document.getElementById('desktop');
+      if(d){ d.style.transition='background 1s'; d.style.background = wallpapers[curWall]; setTimeout(function(){d.style.transition='';},1000); }
+      uToast('Wallpaper changed 🖼', 'info', 1000);
+    };
+    taskbar.insertBefore(wallBtn, taskbar.querySelector('#retro-tb-items, #clock')?.previousSibling || taskbar.firstChild);
+  }
+  
+  // Track recently opened apps
+  var origOpen = window.openApp || window.openRetro;
+  var fnName = window.openApp ? 'openApp' : 'openRetro';
+  if(window[fnName]){
+    window[fnName] = function(id){
+      (window.openApp || window.openRetro).apply(this,[id]);
+      if(id !== 'start'){
+        recentFiles = recentFiles.filter(function(r){return r!==id;});
+        recentFiles.unshift(id);
+        if(recentFiles.length > 5) recentFiles.pop();
+        uSave('os_recent', recentFiles);
+      }
+    };
+  }
+})();
+</script>
+</body></html>

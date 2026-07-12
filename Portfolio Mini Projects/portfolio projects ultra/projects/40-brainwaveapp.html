@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8">
+<meta name="description" content="Brainwave App — part of a professional web developer portfolio with 50+ projects.">
+<meta name="robots" content="index, follow">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Brainwave App</title><style>*{margin:0;padding:0;box-sizing:border-box}
+body{background:linear-gradient(135deg,#020617 0%,#0f172a 100%);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#fff;min-height:100vh;padding:40px 20px;overflow-x:hidden}
+.container{max-width:1000px;margin:0 auto}
+h1{background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:36px;margin-bottom:8px}
+.subtitle{color:#94a3b8;margin-bottom:28px;font-size:15px}
+.back-link{display:inline-flex;align-items:center;gap:6px;margin-bottom:20px;color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;padding:8px 14px;border:1px solid rgba(56,189,248,.3);border-radius:8px;transition:.2s}
+.back-link:hover{background:rgba(56,189,248,.1)}
+.card{background:rgba(30,41,59,.8);backdrop-filter:blur(10px);padding:24px;border-radius:16px;border:1px solid rgba(56,189,248,.2);margin-bottom:20px}
+.btn{padding:10px 22px;border:none;border-radius:8px;cursor:pointer;font-weight:700;font-size:14px;transition:.2s;background:linear-gradient(90deg,#38bdf8,#22c55e);color:#000}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(56,189,248,.35)}
+.btn-outline{background:transparent;border:1px solid rgba(56,189,248,.4);color:#38bdf8}
+.btn-red{background:linear-gradient(90deg,#ef4444,#dc2626);color:#fff}
+input,textarea,select{background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.3);color:#fff;border-radius:8px;padding:10px 14px;font-size:14px;width:100%;outline:none;transition:.2s}
+input:focus,textarea:focus,select:focus{border-color:#38bdf8;box-shadow:0 0 0 3px rgba(56,189,248,.15)}
+input::placeholder,textarea::placeholder{color:#64748b}
+label{display:block;font-size:13px;font-weight:600;color:#94a3b8;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.flex{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;background:rgba(56,189,248,.15);color:#38bdf8;border:1px solid rgba(56,189,248,.3)}
+.badge-green{background:rgba(34,197,94,.15);color:#22c55e;border-color:rgba(34,197,94,.3)}
+.badge-red{background:rgba(239,68,68,.15);color:#ef4444;border-color:rgba(239,68,68,.3)}
+.badge-yellow{background:rgba(234,179,8,.15);color:#eab308;border-color:rgba(234,179,8,.3)}
+.stat-box{background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.15);border-radius:12px;padding:20px;text-align:center}
+.stat-num{font-size:32px;font-weight:800;background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-label{font-size:12px;color:#64748b;margin-top:4px;text-transform:uppercase;letter-spacing:.5px}
+hr{border:none;border-top:1px solid rgba(56,189,248,.1);margin:20px 0}
+@media(max-width:768px){body{padding:15px 12px}h1{font-size:26px}.grid2,.grid3,.grid4{grid-template-columns:1fr}.card{padding:16px 14px}}
+.wave-stat{background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.1);border-radius:10px;padding:12px;text-align:center}
+.wave-val{font-size:20px;font-weight:800;background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.wave-label{font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+.state-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid rgba(56,189,248,.08)}
+.state-row:last-child{border:none}
+.state-bar{flex:1;height:8px;background:rgba(56,189,248,.1);border-radius:4px;overflow:hidden}
+.state-fill{height:100%;border-radius:4px;transition:width .5s}
+.perf-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(56,189,248,.08);font-size:14px}
+.perf-row:last-child{border:none}
+.hist-item{display:flex;align-items:center;gap:10px;padding:10px;border-radius:8px;background:rgba(56,189,248,.04);border:1px solid rgba(56,189,248,.1);margin-bottom:8px;font-size:13px}
+/* ── UNIVERSAL UPGRADE: Theme, Animations, Toast ── */
+:root{
+  --bg:#020617;--bg2:#0f172a;--card:rgba(30,41,59,.85);--border:rgba(56,189,248,.22);
+  --accent:#38bdf8;--accent2:#22c55e;--text:#f1f5f9;--muted:#94a3b8;--danger:#ef4444;
+}
+
+
+/* Toast notifications */
+.u-toast-container{position:fixed;bottom:24px;right:20px;z-index:99999;display:flex;flex-direction:column;gap:8px;max-width:320px}
+.u-toast{
+  background:var(--card);border:1px solid var(--border);color:var(--text);
+  padding:11px 16px;border-radius:10px;font-size:13px;font-weight:600;
+  box-shadow:0 4px 20px rgba(0,0,0,.35);
+  animation:uToastIn .3s ease;display:flex;align-items:center;gap:8px;
+}
+.u-toast.success{border-color:rgba(34,197,94,.5);background:rgba(34,197,94,.1)}
+.u-toast.error{border-color:rgba(239,68,68,.5);background:rgba(239,68,68,.1)}
+.u-toast.info{border-color:rgba(56,189,248,.5);background:rgba(56,189,248,.1)}
+@keyframes uToastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes uToastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(20px)}}
+
+/* Entrance animations */
+@keyframes uFadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes uFadeIn{from{opacity:0}to{opacity:1}}
+@keyframes uPulse{0%,100%{box-shadow:0 0 0 0 rgba(56,189,248,.4)}70%{box-shadow:0 0 0 8px rgba(56,189,248,0)}}
+.u-fade-up{animation:uFadeUp .45s ease both}
+.u-fade-in{animation:uFadeIn .4s ease both}
+.u-pulse{animation:uPulse 2s infinite}
+
+/* Button hover lift */
+.btn:hover,[class*="btn"]:not([class*="btn-"]):hover{transform:translateY(-2px)!important}
+
+/* Smooth card hover */
+.card:hover,[class*="card"]:hover{
+  border-color:var(--accent)!important;
+  box-shadow:0 6px 28px rgba(56,189,248,.12)!important;
+  transition:all .25s ease!important;
+}
+
+/* Loading skeleton */
+.u-skeleton{
+  background:linear-gradient(90deg,rgba(56,189,248,.06) 25%,rgba(56,189,248,.12) 50%,rgba(56,189,248,.06) 75%);
+  background-size:200% 100%;animation:uSkeleton 1.4s infinite;border-radius:6px;
+}
+@keyframes uSkeleton{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* Progress bar component */
+.u-progress{height:5px;background:rgba(56,189,248,.12);border-radius:3px;overflow:hidden;margin:8px 0}
+.u-progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:3px;transition:width .5s ease}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(56,189,248,.3);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(56,189,248,.55)}
+
+/* Mobile responsive upgrades */
+@media(max-width:600px){
+  
+  .u-toast-container{right:10px;bottom:80px;max-width:calc(100vw - 20px)}
+}
+
+</style></head>
+<body><div class="container">
+<a href="../index.html" class="back-link" onclick="window.close(); return false;">← Back to Portfolio</a>
+
+<h1>🧠 BrainWave Pro</h1>
+<p class="subtitle">Neural monitoring, focus training and cognitive performance tracker</p>
+<div class="grid2" style="align-items:start">
+  <div>
+    <div class="card" style="text-align:center">
+      <div style="font-size:48px;margin-bottom:12px">🧠</div>
+      <h3 style="margin-bottom:4px" id="sessionState">Ready to Start</h3>
+      <div style="color:#64748b;font-size:14px;margin-bottom:20px" id="sessionDesc">Select a session type and begin</div>
+      <canvas id="brainCanvas" height="120" style="width:100%;border-radius:12px;background:rgba(56,189,248,.03);border:1px solid rgba(56,189,248,.1);margin-bottom:16px"></canvas>
+      <div class="grid3" style="gap:8px;margin-bottom:16px" id="waveStats"></div>
+      <select id="sessionType" style="margin-bottom:12px">
+        <option value="focus">Deep Focus</option>
+        <option value="relax">Relaxation</option>
+        <option value="meditate">Meditation</option>
+        <option value="sleep">Sleep Prep</option>
+        <option value="energy">Energy Boost</option>
+      </select>
+      <div class="flex" style="gap:10px;justify-content:center">
+        <button class="btn" id="startBtn" onclick="toggleSession()" style="padding:12px 24px">▶ Start Session</button>
+        <button class="btn btn-outline" onclick="resetSession()" style="padding:12px 20px">↺ Reset</button>
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="color:#38bdf8;margin-bottom:14px">Session Timer</h3>
+      <div style="font-size:48px;font-weight:900;text-align:center;font-family:monospace;background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent" id="sessionTimer">00:00</div>
+      <div style="height:6px;background:rgba(56,189,248,.1);border-radius:3px;margin:14px 0;overflow:hidden">
+        <div id="sessionProgress" style="height:100%;background:linear-gradient(90deg,#38bdf8,#22c55e);border-radius:3px;width:0%;transition:.5s"></div>
+      </div>
+      <div style="font-size:13px;color:#64748b;text-align:center" id="sessionGoal">Goal: 20 minutes</div>
+    </div>
+  </div>
+  <div>
+    <div class="card">
+      <h3 style="color:#38bdf8;margin-bottom:14px">Brain States</h3>
+      <div id="brainStates"></div>
+    </div>
+    <div class="card">
+      <h3 style="color:#38bdf8;margin-bottom:14px">Performance Scores</h3>
+      <div id="perfScores"></div>
+    </div>
+    <div class="card">
+      <h3 style="color:#38bdf8;margin-bottom:14px">Session History</h3>
+      <div id="sessionHistory"><p style="color:#64748b;font-size:14px">No sessions yet. Complete one to see history.</p></div>
+    </div>
+  </div>
+</div>
+</div><script>
+const sessionTypes={
+  focus:{name:'Deep Focus',color:'#38bdf8',waves:{delta:8,theta:18,alpha:25,beta:72,gamma:45},desc:'Maximize concentration and cognitive performance',goal:20},
+  relax:{name:'Relaxation',color:'#22c55e',waves:{delta:15,theta:35,alpha:68,beta:22,gamma:12},desc:'Reduce stress and achieve calm awareness',goal:15},
+  meditate:{name:'Meditation',color:'#a855f7',waves:{delta:12,theta:55,alpha:78,beta:15,gamma:8},desc:'Deep meditative state with heightened theta waves',goal:25},
+  sleep:{name:'Sleep Prep',color:'#6366f1',waves:{delta:72,theta:45,alpha:30,beta:8,gamma:3},desc:'Prepare your brain for deep restorative sleep',goal:10},
+  energy:{name:'Energy Boost',color:'#f59e0b',waves:{delta:5,theta:12,alpha:35,beta:82,gamma:65},desc:'Activate high-frequency waves for peak performance',goal:15},
+};
+const brainStates=[
+  {name:'Delta (0.5-4 Hz)',desc:'Deep sleep & healing',color:'#6366f1'},
+  {name:'Theta (4-8 Hz)',desc:'Creativity & meditation',color:'#a855f7'},
+  {name:'Alpha (8-13 Hz)',desc:'Relaxed focus',color:'#22c55e'},
+  {name:'Beta (13-30 Hz)',desc:'Active thinking',color:'#38bdf8'},
+  {name:'Gamma (30-100 Hz)',desc:'Peak cognition',color:'#f59e0b'},
+];
+const perfMetrics=[
+  {name:'Focus Score',key:'focus',unit:'%',max:100},
+  {name:'Stress Level',key:'stress',unit:'%',max:100},
+  {name:'Coherence',key:'coherence',unit:'%',max:100},
+  {name:'Relaxation',key:'relax',unit:'%',max:100},
+  {name:'Mental Energy',key:'energy',unit:'%',max:100},
+];
+
+let running=false,seconds=0,timer=null,waveAnim=null,sessions=[];
+let perf={focus:72,stress:28,coherence:65,relax:45,energy:68};
+let waveVals={delta:15,theta:25,alpha:55,beta:42,gamma:30};
+
+function getType(){return document.getElementById('sessionType').value;}
+
+function renderStates(){
+  const st=sessionTypes[getType()];
+  document.getElementById('brainStates').innerHTML=brainStates.map((b,i)=>{
+    const keys=['delta','theta','alpha','beta','gamma'];
+    const v=waveVals[keys[i]];
+    return `<div class="state-row">
+      <div style="width:100px;flex-shrink:0">
+        <div style="font-weight:700;font-size:13px">${b.name}</div>
+        <div style="font-size:11px;color:#64748b">${b.desc}</div>
+      </div>
+      <div class="state-bar"><div class="state-fill" style="width:${v}%;background:${b.color}"></div></div>
+      <span style="font-size:13px;font-weight:700;color:${b.color};width:36px;text-align:right">${v}%</span>
+    </div>`;
+  }).join('');
+}
+
+function renderPerf(){
+  document.getElementById('perfScores').innerHTML=perfMetrics.map(m=>`
+    <div class="perf-row">
+      <span>${m.name}</span>
+      <span style="font-weight:800;color:${perf[m.key]>70?'#22c55e':perf[m.key]>40?'#f59e0b':'#ef4444'}">${perf[m.key]}${m.unit}</span>
+    </div>`).join('');
+}
+
+function renderWaveStats(){
+  const st=sessionTypes[getType()];
+  document.getElementById('waveStats').innerHTML=[
+    {l:'Alpha',v:waveVals.alpha},{l:'Beta',v:waveVals.beta},{l:'Theta',v:waveVals.theta}
+  ].map(w=>`<div class="wave-stat"><div class="wave-val">${w.v}%</div><div class="wave-label">${w.l}</div></div>`).join('');
+}
+
+function drawWave(){
+  const canvas=document.getElementById('brainCanvas');
+  canvas.width=canvas.parentElement?.offsetWidth-48||400;
+  const W=canvas.width,H=120;
+  const ctx=canvas.getContext('2d');
+  ctx.clearRect(0,0,W,H);
+  const st=sessionTypes[getType()];
+  const waves=[
+    {freq:st.waves.alpha/100*3+1,amp:running?20:8,color:st.color+'66',phase:0},
+    {freq:st.waves.beta/100*5+2,amp:running?14:6,color:st.color+'44',phase:1},
+    {freq:st.waves.theta/100*2+0.5,amp:running?28:10,color:st.color+'33',phase:2},
+  ];
+  waves.forEach(w=>{
+    ctx.beginPath();
+    for(let x=0;x<W;x++){
+      const y=H/2+Math.sin((x/W)*Math.PI*2*w.freq+w.phase+Date.now()/1000*w.freq)*w.amp;
+      x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    }
+    ctx.strokeStyle=w.color;ctx.lineWidth=2;ctx.stroke();
+  });
+  // Main wave
+  ctx.beginPath();
+  for(let x=0;x<W;x++){
+    const y=H/2+Math.sin((x/W)*Math.PI*2*2+(Date.now()/1000))*(running?22:10)+
+             Math.sin((x/W)*Math.PI*2*5+(Date.now()/800))*(running?8:4);
+    x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+  }
+  const grad=ctx.createLinearGradient(0,0,W,0);
+  grad.addColorStop(0,st.color);grad.addColorStop(1,'#22c55e');
+  ctx.strokeStyle=grad;ctx.lineWidth=2.5;ctx.stroke();
+  if(running)requestAnimationFrame(drawWave);
+}
+
+function toggleSession(){
+  running=!running;
+  const btn=document.getElementById('startBtn');
+  if(running){
+    btn.textContent='⏸ Pause';
+    document.getElementById('sessionState').textContent=sessionTypes[getType()].name+' Active';
+    document.getElementById('sessionDesc').textContent=sessionTypes[getType()].desc;
+    const target=sessionTypes[getType()];
+    waveVals={...target.waves};
+    timer=setInterval(()=>{
+      seconds++;
+      const m=Math.floor(seconds/60),s=seconds%60;
+      document.getElementById('sessionTimer').textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+      const goal=sessionTypes[getType()].goal*60;
+      document.getElementById('sessionProgress').style.width=Math.min(100,(seconds/goal)*100)+'%';
+      // Fluctuate perf
+      Object.keys(perf).forEach(k=>{perf[k]=Math.max(10,Math.min(95,perf[k]+(Math.random()>.5?1:-1)*Math.floor(Math.random()*3)));});
+      Object.keys(waveVals).forEach(k=>{waveVals[k]=Math.max(5,Math.min(95,waveVals[k]+(Math.random()>.5?1:-1)*2));});
+      renderStates();renderPerf();renderWaveStats();
+    },1000);
+    drawWave();
+  }else{
+    btn.textContent='▶ Resume';
+    clearInterval(timer);
+    document.getElementById('sessionState').textContent='Session Paused';
+  }
+}
+
+function resetSession(){
+  running=false;clearInterval(timer);seconds=0;
+  document.getElementById('startBtn').textContent='▶ Start Session';
+  document.getElementById('sessionTimer').textContent='00:00';
+  document.getElementById('sessionProgress').style.width='0%';
+  document.getElementById('sessionState').textContent='Ready to Start';
+  document.getElementById('sessionDesc').textContent='Select a session type and begin';
+  if(seconds>10){
+    sessions.unshift({type:getType(),dur:seconds,score:Math.round(Object.values(perf).reduce((a,b)=>a+b)/5)});
+    renderHistory();
+  }
+  const canvas=document.getElementById('brainCanvas');
+  const ctx=canvas.getContext('2d');ctx.clearRect(0,0,canvas.width,120);
+}
+
+function renderHistory(){
+  const hist=sessions.slice(0,5);
+  document.getElementById('sessionHistory').innerHTML=hist.length?hist.map(s=>{
+    const st=sessionTypes[s.type];
+    const m=Math.floor(s.dur/60),sec=s.dur%60;
+    return `<div class="hist-item"><span style="font-size:20px">${{focus:'🎯',relax:'😌',meditate:'🧘',sleep:'😴',energy:'⚡'}[s.type]}</span><div style="flex:1"><div style="font-weight:700">${st.name}</div><div style="font-size:12px;color:#64748b">${m}m ${sec}s · Score: ${s.score}%</div></div></div>`;
+  }).join(''):'<p style="color:#64748b;font-size:14px">No sessions yet.</p>';
+}
+
+document.getElementById('sessionType').addEventListener('change',()=>{
+  if(!running){waveVals={...sessionTypes[getType()].waves};renderStates();renderPerf();renderWaveStats();}
+  document.getElementById('sessionGoal').textContent='Goal: '+sessionTypes[getType()].goal+' minutes';
+});
+
+renderStates();renderPerf();renderWaveStats();drawWave();
+</script><script>
+// ── UNIVERSAL UPGRADE: Theme, localStorage, Toast, Animations ──
+(function(){
+'use strict';
+
+// ── 2. TOAST SYSTEM ──────────────────────────────────────────────
+var toastContainer = null;
+function getToastContainer(){
+  if(!toastContainer || !document.body.contains(toastContainer)){
+    toastContainer = document.createElement('div');
+    toastContainer.className = 'u-toast-container';
+    document.body.appendChild(toastContainer);
+  }
+  return toastContainer;
+}
+
+window.uToast = function(msg, type, duration){
+  type = type || 'info';
+  duration = duration || 2800;
+  var icons = {success:'✅', error:'❌', info:'💡', warning:'⚠️'};
+  var c = getToastContainer();
+  var t = document.createElement('div');
+  t.className = 'u-toast ' + type;
+  t.innerHTML = '<span>' + (icons[type]||'💡') + '</span><span>' + msg + '</span>';
+  c.appendChild(t);
+  setTimeout(function(){
+    t.style.animation = 'uToastOut .3s ease forwards';
+    setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 300);
+  }, duration);
+};
+
+// ── 3. LOCALSTORAGE HELPERS ──────────────────────────────────────
+var APP_KEY = 'uapp_' + location.pathname.split('/').pop().replace('.html','');
+window.uSave = function(key, val){
+  try { localStorage.setItem(APP_KEY + '_' + key, JSON.stringify(val)); return true; }
+  catch(e){ return false; }
+};
+window.uLoad = function(key, def){
+  try {
+    var v = localStorage.getItem(APP_KEY + '_' + key);
+    return v !== null ? JSON.parse(v) : def;
+  } catch(e){ return def; }
+};
+window.uClear = function(key){
+  try { localStorage.removeItem(APP_KEY + '_' + key); } catch(e){}
+};
+
+// ── 4. ENTRANCE ANIMATIONS ───────────────────────────────────────
+function animateEntrance(){
+  var cards = document.querySelectorAll('.card, [class*="card"]');
+  cards.forEach(function(el, i){
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(18px)';
+    setTimeout(function(){
+      el.style.transition = 'opacity .4s ease, transform .4s ease';
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+    }, i * 60);
+  });
+}
+
+// ── 5. SMOOTH COUNTER ANIMATION ──────────────────────────────────
+window.uAnimCount = function(el, target, duration, prefix, suffix){
+  prefix = prefix || '';
+  suffix = suffix || '';
+  duration = duration || 1200;
+  var start = 0;
+  var step = target / (duration / 16);
+  var iv = setInterval(function(){
+    start = Math.min(start + step, target);
+    el.textContent = prefix + Math.round(start).toLocaleString() + suffix;
+    if(start >= target) clearInterval(iv);
+  }, 16);
+};
+
+// ── 6. EXPORT HELPER ─────────────────────────────────────────────
+window.uExportJSON = function(data, filename){
+  var blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.json';
+  a.click();
+  uToast('Data exported!', 'success');
+};
+window.uExportCSV = function(rows, filename){
+  var csv = rows.map(function(r){ return r.join(','); }).join('\n');
+  var blob = new Blob([csv], {type:'text/csv'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.csv';
+  a.click();
+  uToast('CSV exported!', 'success');
+};
+
+// ── 8. INIT ──────────────────────────────────────────────────────
+function init(){
+  setTimeout(animateEntrance, 100);
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+})();
+</script>
+<script>
+(function(){
+  var totalTime = uLoad('brainwave_total_time', 0);
+  var customGoal = uLoad('brainwave_goal', 20);
+  
+  // Patch resetSession to accumulate total time
+  var origReset = window.resetSession;
+  if(origReset){
+    window.resetSession = function(){
+      if(window.seconds && window.seconds > 10){
+        totalTime += window.seconds;
+        uSave('brainwave_total_time', totalTime);
+        updateTotalTime();
+      }
+      origReset.apply(this, arguments);
+    };
+  }
+  
+  function updateTotalTime(){
+    var el = document.getElementById('uBrainTotalTime');
+    if(el){ var h=Math.floor(totalTime/3600), m=Math.floor((totalTime%3600)/60); el.textContent=(h?h+'h ':'') + m + 'm total'; }
+  }
+  
+  // Total time badge
+  if(!document.getElementById('uBrainTotalTime')){
+    var badge = document.createElement('div');
+    badge.id = 'uBrainTotalTime';
+    badge.style.cssText = 'text-align:center;font-size:12px;color:#64748b;margin-top:8px;font-weight:600';
+    document.querySelector('.card:first-child')?.appendChild(badge);
+    updateTotalTime();
+  }
+  
+  // Guided breathing exercise
+  function injectBreathing(){
+    if(document.getElementById('uBreathing')) return;
+    var panel = document.createElement('div');
+    panel.id = 'uBreathing';
+    panel.className = 'card u-fade-up';
+    panel.style.marginTop = '16px';
+    panel.innerHTML = '<div style="font-weight:700;color:#38bdf8;margin-bottom:14px;font-size:15px">🌬 Guided Breathing</div>' +
+      '<div style="text-align:center">' +
+      '<div id="uBreathCircle" style="width:100px;height:100px;border-radius:50%;background:radial-gradient(circle,rgba(56,189,248,.3),rgba(56,189,248,.05));border:2px solid rgba(56,189,248,.4);margin:0 auto 14px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#38bdf8;transition:all 4s ease">Breathe</div>' +
+      '<div id="uBreathText" style="font-size:16px;font-weight:700;color:#38bdf8;margin-bottom:12px">Ready</div>' +
+      '<div style="display:flex;gap:8px;justify-content:center">' +
+      '<button id="uBreathBtn" onclick="toggleBreathing()" style="padding:9px 22px;background:linear-gradient(90deg,#38bdf8,#22c55e);border:none;color:#000;border-radius:10px;cursor:pointer;font-weight:700;font-size:14px">▶ Start</button>' +
+      '</div></div>';
+    document.querySelector('.grid2 > div:last-child,.container')?.appendChild(panel);
+  }
+  
+  var breathPhase = 0, breathInterval = null, breathRunning = false;
+  var breathPhases = [{text:'Inhale',dur:4000,scale:1.4},{text:'Hold',dur:4000,scale:1.4},{text:'Exhale',dur:6000,scale:0.8},{text:'Hold',dur:2000,scale:0.8}];
+  
+  window.toggleBreathing = function(){
+    breathRunning = !breathRunning;
+    var btn = document.getElementById('uBreathBtn');
+    if(btn) btn.textContent = breathRunning ? '⏸ Pause' : '▶ Start';
+    if(breathRunning){ runBreathPhase(); }
+    else { clearTimeout(breathInterval); document.getElementById('uBreathText').textContent = 'Paused'; }
+  };
+  
+  function runBreathPhase(){
+    if(!breathRunning) return;
+    var phase = breathPhases[breathPhase % breathPhases.length];
+    var circle = document.getElementById('uBreathCircle');
+    var text = document.getElementById('uBreathText');
+    if(circle){ circle.style.transform = 'scale('+phase.scale+')'; circle.style.boxShadow = '0 0 '+(phase.scale>1?'30px':'5px')+' rgba(56,189,248,'+(phase.scale>1?'.4':'.1')+')'; }
+    if(text) text.textContent = phase.text + ' (' + (phase.dur/1000) + 's)';
+    breathInterval = setTimeout(function(){ breathPhase++; runBreathPhase(); }, phase.dur);
+  }
+  
+  injectBreathing();
+})();
+</script>
+</body></html>

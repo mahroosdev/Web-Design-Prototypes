@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <html lang="en">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <title>Brainwave Viz | DevOS</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+</head>
+<body>
+<div id="topbar">
+  <div class="topbar-left">
+    <a class="back-btn" href="index.html">← BACK</a>
+    <span class="topbar-logo">BRAIN_OS</span>
+  </div>
+  <div class="topbar-right">
+    <button class="theme-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle theme">🌙</button>
+  </div>
+</div>
+<div id="toast"></div>
+<div class="wrap">
+<div class="page-header animate-in">
+  <div class="row align" style="gap:10px;margin-bottom:8px"><span style="font-size:28px">🌊</span><h1>Brainwave Viz</h1></div>
+  <p>Real-time brainwave visualizer with frequency band controls.</p>
+</div>
+
+
+<h1>🌊 Brainwave Visualizer</h1>
+<p>Real-time animated brainwave patterns with frequency bands.</p>
+<div style="margin-top:16px"><canvas id="bw-canvas" style="width:100%;height:300px;border-radius:14px;border:1px solid var(--border);display:block;touch-action:none"></canvas>
+<div class="card" style="margin-top:12px">
+  <div class="row" style="gap:8px;flex-wrap:wrap;margin-bottom:12px" id="bw-btns"></div>
+  <div id="bw-desc"></div>
+</div></div>
+<script>const waves=[{name:'Delta',freq:'0.5-4 Hz',color:'#818cf8',desc:'Deep sleep, healing. Associated with unconscious mind and regeneration.',amp:60,speed:0.3},{name:'Theta',freq:'4-8 Hz',color:'#34d399',desc:'Drowsiness, meditation, creativity. The gateway to learning and memory.',amp:45,speed:0.8},{name:'Alpha',freq:'8-13 Hz',color:'#00e0ff',desc:'Relaxed focus, calm alertness. Present when you close your eyes and relax.',amp:30,speed:1.5},{name:'Beta',freq:'13-30 Hz',color:'#f472b6',desc:'Active thinking, focus, problem solving. Dominant during normal waking.',amp:20,speed:3},{name:'Gamma',freq:'30-100 Hz',color:'#fbbf24',desc:'Higher processing, peak concentration. Associated with conscious perception.',amp:12,speed:7}];
+let activeWave=2,t=0;
+const canvas=document.getElementById('bw-canvas');const ctx=canvas.getContext('2d');
+canvas.width=canvas.offsetWidth;canvas.height=300;
+document.getElementById('bw-btns').innerHTML=waves.map((w,i)=>`<button onclick="activeWave=${i};renderDesc()" style="padding:7px 14px;border:1px solid ${w.color}66;background:${w.color}11;color:${w.color};font-family:JetBrains Mono,monospace;font-size:11px;border-radius:20px;cursor:pointer;letter-spacing:.08em">${w.name}</button>`).join('');
+function renderDesc(){const w=waves[activeWave];document.getElementById('bw-desc').innerHTML=`<div style="font-size:13px;font-weight:600;color:${w.color};margin-bottom:4px">${w.name} Waves — ${w.freq}</div><p style="font-size:12px;color:var(--muted)">${w.desc}</p>`;}
+function draw(){
+  ctx.fillStyle='rgba(6,10,16,.15)';ctx.fillRect(0,0,canvas.width,canvas.height);
+  waves.forEach((w,wi)=>{
+    if(wi!==activeWave&&Math.random()>.7)return;
+    const alpha=wi===activeWave?0.9:0.15;
+    ctx.beginPath();
+    for(let x=0;x<=canvas.width;x+=2){
+      const freq=w.speed*(1+(wi*.2));const amp=wi===activeWave?w.amp:w.amp*.3;
+      const y=canvas.height/2+Math.sin((x/canvas.width*Math.PI*6)+(t*freq))*amp+Math.sin((x/canvas.width*Math.PI*11)+(t*freq*.7))*amp*.4;
+      x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    }
+    ctx.strokeStyle=w.color+(Math.round(alpha*255)).toString(16).padStart(2,'0');ctx.lineWidth=wi===activeWave?2.5:1;ctx.stroke();
+  });
+  t+=0.02;requestAnimationFrame(draw);
+}
+renderDesc();draw();</script>
+
+
+</div>
+  <script src="../shared-back.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

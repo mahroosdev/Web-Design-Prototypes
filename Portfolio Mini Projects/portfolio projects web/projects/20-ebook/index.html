@@ -1,0 +1,97 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <html lang="en">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <title>eBook Reader | DevOS</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+</head>
+<body>
+<div id="topbar">
+  <div class="topbar-left">
+    <a class="back-btn" href="index.html">← BACK</a>
+    <span class="topbar-logo">READ_OS</span>
+  </div>
+  <div class="topbar-right">
+    <button class="theme-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle theme">🌙</button>
+  </div>
+</div>
+<div id="toast"></div>
+<div class="wrap">
+<div class="page-header animate-in">
+  <div class="row align" style="gap:10px;margin-bottom:8px"><span style="font-size:28px">📚</span><h1>eBook Reader</h1></div>
+  <p>Read chapters with bookmarks, highlights, font control and dark mode.</p>
+</div>
+
+
+<h1>📚 eBook Reader</h1>
+<p>Read books with chapters, bookmarks, font size and dark/light mode.</p>
+<div style="margin-top:16px"><div class="card" style="margin-bottom:12px">
+  <div class="row" style="justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+    <select id="eb-book" onchange="loadBook()" style="flex:1;min-width:140px"><option value="0">📖 The Art of Code</option><option value="1">🚀 Startup Secrets</option><option value="2">🎨 Design Thinking</option></select>
+    <div class="row" style="gap:6px">
+      <button class="btn btn-outline" onclick="fontSize(-1)" style="width:36px;height:36px;padding:0;font-size:16px;min-height:36px">A-</button>
+      <button class="btn btn-outline" onclick="fontSize(1)" style="width:36px;height:36px;padding:0;font-size:18px;min-height:36px">A+</button>
+      <button class="btn btn-outline" onclick="toggleReaderTheme()" style="width:36px;height:36px;padding:0;min-height:36px" id="eb-theme-btn">☀️</button>
+      <button class="btn btn-outline" onclick="bookmark()" style="width:36px;height:36px;padding:0;min-height:36px">🔖</button>
+    </div>
+  </div>
+</div>
+<div class="card" style="margin-bottom:12px">
+  <div class="row" style="gap:6px;overflow-x:auto;flex-wrap:nowrap;padding-bottom:4px" id="eb-chapters"></div>
+</div>
+<div id="eb-reader" style="background:var(--card2);border:1px solid var(--border);border-radius:14px;padding:24px 20px;line-height:1.9;max-height:400px;overflow-y:auto"></div>
+<div class="row" style="justify-content:space-between;margin-top:12px">
+  <button class="btn btn-outline" onclick="prevChap()">← Previous</button>
+  <span id="eb-prog" style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);line-height:44px">1 / 3</span>
+  <button class="btn btn-primary" onclick="nextChap()">Next →</button>
+</div></div>
+<script>const books=[[{title:'Introduction',text:`Welcome to The Art of Code. Programming is not just about writing instructions for computers — it is about creating elegant solutions to complex problems. The best code reads like poetry: clean, expressive, and purposeful.
+
+In this book, we explore the philosophy behind great software. We discuss patterns, principles, and the mindset that separates good developers from great ones.`},{title:'Clean Code',text:`Clean code is not about clever tricks or showing off. It is about clarity, communication, and care. When you write code, you write it once — but it is read dozens, hundreds, or thousands of times.
+
+"Any fool can write code that a computer can understand. Good programmers write code that humans can understand." — Martin Fowler
+
+The principles are simple: meaningful names, small functions, single responsibility, and no surprises.`},{title:'The Future',text:`The future of programming is exciting and uncertain. AI is already writing code, low-code tools are empowering non-developers, and web technologies are powering everything from watches to satellites.
+
+But the core skill — thinking systematically, breaking problems down, and building reliable solutions — will never go out of style. The tools change; the thinking remains.`}],[{title:'The Idea',text:`Every startup begins with a simple question: what problem can I solve better than anyone else? The most successful companies — Airbnb, Uber, Stripe — did not invent new technology. They applied existing technology to old problems in new ways.
+
+Your idea does not need to be revolutionary. It needs to be real: a genuine pain that real people experience, that you can relieve better than the alternatives.`},{title:'Building Fast',text:`Speed is everything in a startup. The faster you can build, test, and learn, the better your chances of survival. The lean startup methodology — build, measure, learn — has changed how companies develop products.
+
+Do not wait for perfection. Ship something small that works, get it in front of real users, and iterate relentlessly based on what you learn.`},{title:'Scaling Up',text:`When growth comes, it comes fast. The systems that worked for 100 users will break at 10,000. The team that launched the product cannot scale the company.
+
+Scaling is about building repeatable processes, delegating effectively, and maintaining culture while everything changes. It is the hardest part of building a company — and the most rewarding.`}],[{title:'Design Basics',text:`Design is not decoration. It is problem-solving. Good design makes the complex simple, the confusing clear, and the frustrating delightful.
+
+The foundations of visual design — contrast, alignment, repetition, and proximity — apply whether you are designing a poster, a website, or a physical product. Master the principles before the tools.`},{title:'User Research',text:`You are not your user. This is the most important thing a designer can learn. The assumptions you make about how people will use your product are almost always wrong in some way.
+
+User research — interviews, observation, usability testing — closes the gap between what you think users want and what they actually need. Even one hour of watching a real person use your product will teach you more than a week of speculation.`},{title:'Systems Thinking',text:`Modern design is systems design. Logos, colors, typography, spacing — these are not individual decisions. They are parts of a system that must work together coherently at every scale.
+
+Design systems save time, ensure consistency, and allow teams to move faster without sacrificing quality. Building a small design system for your next project — even just a color palette and type scale — will change how you work.`}]];
+let bk=0,ch=0,fs=16,light=false,bookmarks=[];
+function loadBook(){bk=parseInt(document.getElementById('eb-book').value);ch=0;renderReader();}
+function renderReader(){
+  const book=books[bk];
+  document.getElementById('eb-chapters').innerHTML=book.map((c,i)=>`<button onclick="ch=${i};renderReader()" class="btn btn-outline" style="font-size:11px;padding:6px 12px;min-height:32px;flex-shrink:0;${i===ch?'border-color:var(--accent);color:var(--accent)':''}">${c.title}</button>`).join('');
+  const r=document.getElementById('eb-reader');
+  r.style.fontSize=fs+'px';r.style.background=light?'#f9fafb':'var(--card2)';r.style.color=light?'#111':'var(--text)';
+  r.innerHTML=`<h2 style="font-size:${fs+6}px;margin-bottom:16px;color:${light?'#111':'var(--accent)'}">${book[ch].title}</h2><p style="white-space:pre-line">${book[ch].text}</p>`;
+  document.getElementById('eb-prog').textContent=`${ch+1} / ${book.length}`;
+}
+function nextChap(){if(ch<books[bk].length-1){ch++;renderReader();}}
+function prevChap(){if(ch>0){ch--;renderReader();}}
+function fontSize(d){fs=Math.max(12,Math.min(24,fs+d));renderReader();}
+function toggleReaderTheme(){light=!light;document.getElementById('eb-theme-btn').textContent=light?'🌙':'☀️';renderReader();}
+function bookmark(){toast('🔖 Bookmarked: '+books[bk][ch].title);}
+loadBook();</script>
+
+
+</div>
+  <script src="../shared-back.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

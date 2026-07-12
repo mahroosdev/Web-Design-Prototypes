@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <html lang="en">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <title>AI Chat | DevOS</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+</head>
+<body>
+<div id="topbar">
+  <div class="topbar-left">
+    <a class="back-btn" href="index.html">← BACK</a>
+    <span class="topbar-logo">AI_OS</span>
+  </div>
+  <div class="topbar-right">
+    <button class="theme-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle theme">🌙</button>
+  </div>
+</div>
+<div id="toast"></div>
+<div class="wrap">
+<div class="page-header animate-in">
+  <div class="row align" style="gap:10px;margin-bottom:8px"><span style="font-size:28px">🤖</span><h1>AI Chat</h1></div>
+  <p>Intelligent chat interface with code highlighting and conversation history.</p>
+</div>
+
+
+<h1>🤖 AI Chat Interface</h1>
+<p>Beautiful AI chat UI with streaming, code highlighting and history.</p>
+<div style="margin-top:16px"><div class="card" style="display:flex;flex-direction:column;height:520px;padding:0;overflow:hidden">
+  <div style="padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+    <div class="row" style="gap:10px;align-items:center"><div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:18px">🤖</div><div><div style="font-size:14px;font-weight:600">DevOS AI</div><div style="font-size:11px;color:var(--accent3)">● Online</div></div></div>
+    <button onclick="clearChat()" class="btn btn-outline" style="font-size:11px;padding:6px 10px;min-height:32px">Clear</button>
+  </div>
+  <div id="ai-msgs" style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px"></div>
+  <div style="padding:12px;border-top:1px solid var(--border)">
+    <div class="row" style="gap:8px;margin-bottom:8px;flex-wrap:wrap">
+      <button onclick="quickMsg('Explain async/await')" class="chip" style="cursor:pointer;-webkit-tap-highlight-color:transparent">async/await</button>
+      <button onclick="quickMsg('What is React?')" class="chip" style="cursor:pointer;-webkit-tap-highlight-color:transparent">React basics</button>
+      <button onclick="quickMsg('CSS Grid vs Flexbox')" class="chip" style="cursor:pointer;-webkit-tap-highlight-color:transparent">CSS Grid</button>
+    </div>
+    <div class="row" style="gap:8px">
+      <input id="ai-in" placeholder="Ask me anything..." style="flex:1" onkeydown="if(event.key==='Enter'&&!event.shiftKey)sendAI()">
+      <button class="btn btn-primary" onclick="sendAI()" style="min-height:44px">Send</button>
+    </div>
+  </div>
+</div></div>
+<script>const answers={'async':'**async/await** makes asynchronous code look synchronous. An `async` function always returns a Promise. Use `await` inside it to pause execution until the Promise resolves:\n```js\nasync function getData() {\n  const res = await fetch(url);\n  const data = await res.json();\n  return data;\n}\n```','react':'**React** is a JavaScript library for building UIs. Key concepts:\n- **Components** — reusable UI pieces\n- **JSX** — HTML-like syntax in JS\n- **State** — dynamic data that triggers re-renders\n- **Props** — data passed between components\n- **Hooks** — useState, useEffect, etc.','css':'**CSS Grid vs Flexbox:**\n- **Flexbox** — 1D layout (row OR column). Great for nav bars, centering, small components.\n- **Grid** — 2D layout (rows AND columns). Great for page layouts, galleries, dashboards.\nUse both together! Grid for the overall layout, Flexbox inside grid cells.','default':'That is a great question! As an AI assistant, I can help with coding, design, web development, and technology questions. Try asking me about JavaScript, React, CSS, or any web development topic!'};
+let msgs=[{role:'ai',text:'Hello! I am DevOS AI. Ask me anything about web development, JavaScript, React, CSS, or design! 🚀'}];
+function quickMsg(m){document.getElementById('ai-in').value=m;sendAI();}
+function sendAI(){const v=document.getElementById('ai-in').value.trim();if(!v)return;msgs.push({role:'user',text:v});document.getElementById('ai-in').value='';renderMsgs();setTimeout(()=>{const k=v.toLowerCase().includes('async')?'async':v.toLowerCase().includes('react')?'react':v.toLowerCase().includes('css')||v.toLowerCase().includes('grid')||v.toLowerCase().includes('flex')?'css':'default';msgs.push({role:'ai',text:answers[k]});renderMsgs();},600+Math.random()*400);}
+function clearChat(){msgs=[{role:'ai',text:'Chat cleared! How can I help you? 🚀'}];renderMsgs();}
+function renderMsgs(){const el=document.getElementById('ai-msgs');el.innerHTML=msgs.map(m=>`<div style="display:flex;gap:10px;align-items:flex-start;flex-direction:${m.role==='user'?'row-reverse':'row'}"><div style="width:32px;height:32px;border-radius:50%;background:${m.role==='ai'?'linear-gradient(135deg,var(--accent),var(--accent2))':'rgba(129,140,248,.3)'};display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">${m.role==='ai'?'🤖':'👤'}</div><div style="max-width:80%;padding:12px 14px;border-radius:${m.role==='user'?'14px 14px 4px 14px':'14px 14px 14px 4px'};background:${m.role==='user'?'linear-gradient(135deg,var(--accent2),var(--accent))':'var(--card2)'};color:${m.role==='user'?'#fff':'var(--text)'};font-size:13px;line-height:1.65;white-space:pre-wrap">${m.text}</div></div>`).join('');el.scrollTop=el.scrollHeight;}
+renderMsgs();</script>
+
+
+</div>
+  <script src="../shared-back.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <html lang="en">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <title>Tic Tac Toe | DevOS</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+</head>
+<body>
+<div id="topbar">
+  <div class="topbar-left">
+    <a class="back-btn" href="index.html">← BACK</a>
+    <span class="topbar-logo">TIC_OS</span>
+  </div>
+  <div class="topbar-right">
+    <button class="theme-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle theme">🌙</button>
+  </div>
+</div>
+<div id="toast"></div>
+<div class="wrap">
+
+<div class="page-header animate-in">
+  <div class="row align" style="gap:10px;margin-bottom:8px"><span style="font-size:28px">⭕</span><h1>Tic Tac Toe</h1><span class="badge badge-accent" id="ttt-mode-badge">vs AI</span></div>
+  <p>Play against unbeatable AI (minimax) or a friend. Track scores and review game history.</p>
+</div>
+<div class="stats-grid animate-in" style="grid-template-columns:repeat(3,1fr)">
+  <div class="stat-card"><div class="stat-val" id="ttt-sw" style="color:var(--accent3)">0</div><div class="stat-lbl">You Win</div></div>
+  <div class="stat-card"><div class="stat-val" id="ttt-sd" style="color:var(--muted)">0</div><div class="stat-lbl">Draws</div></div>
+  <div class="stat-card"><div class="stat-val" id="ttt-sl" style="color:var(--accent4)">0</div><div class="stat-lbl">AI Wins</div></div>
+</div>
+<div class="card animate-in" style="text-align:center;margin-bottom:14px">
+  <div id="ttt-status" style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent);margin-bottom:16px;min-height:20px;letter-spacing:.08em">YOUR TURN (X)</div>
+  <div id="ttt-board" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:260px;margin:0 auto 20px"></div>
+  <div class="row center" style="gap:8px;flex-wrap:wrap">
+    <button class="btn btn-outline" onclick="resetTTT()">New Game</button>
+    <button class="btn btn-outline" onclick="toggleTTTMode()" id="ttt-mode-btn">AI: ON</button>
+    <button class="btn btn-ghost" onclick="resetTTTScores()">Reset Scores</button>
+  </div>
+</div>
+<div class="section-title">Game History</div>
+<div id="ttt-history"></div>
+
+</div>
+  <script src="../shared-back.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8">
+<meta name="description" content="Cyberpunk UI — part of a professional web developer portfolio with 50+ projects.">
+<meta name="robots" content="index, follow">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Cyberpunk UI</title><style>*{margin:0;padding:0;box-sizing:border-box}
+body{background:linear-gradient(135deg,#020617 0%,#0f172a 100%);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#fff;min-height:100vh;padding:40px 20px;overflow-x:hidden}
+.container{max-width:1000px;margin:0 auto}
+h1{background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:36px;margin-bottom:8px}
+.subtitle{color:#94a3b8;margin-bottom:28px;font-size:15px}
+.back-link{display:inline-flex;align-items:center;gap:6px;margin-bottom:20px;color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;padding:8px 14px;border:1px solid rgba(56,189,248,.3);border-radius:8px;transition:.2s}
+.back-link:hover{background:rgba(56,189,248,.1)}
+.card{background:rgba(30,41,59,.8);backdrop-filter:blur(10px);padding:24px;border-radius:16px;border:1px solid rgba(56,189,248,.2);margin-bottom:20px}
+.btn{padding:10px 22px;border:none;border-radius:8px;cursor:pointer;font-weight:700;font-size:14px;transition:.2s;background:linear-gradient(90deg,#38bdf8,#22c55e);color:#000}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(56,189,248,.35)}
+.btn-outline{background:transparent;border:1px solid rgba(56,189,248,.4);color:#38bdf8}
+.btn-red{background:linear-gradient(90deg,#ef4444,#dc2626);color:#fff}
+input,textarea,select{background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.3);color:#fff;border-radius:8px;padding:10px 14px;font-size:14px;width:100%;outline:none;transition:.2s}
+input:focus,textarea:focus,select:focus{border-color:#38bdf8;box-shadow:0 0 0 3px rgba(56,189,248,.15)}
+input::placeholder,textarea::placeholder{color:#64748b}
+label{display:block;font-size:13px;font-weight:600;color:#94a3b8;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.flex{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;background:rgba(56,189,248,.15);color:#38bdf8;border:1px solid rgba(56,189,248,.3)}
+.badge-green{background:rgba(34,197,94,.15);color:#22c55e;border-color:rgba(34,197,94,.3)}
+.badge-red{background:rgba(239,68,68,.15);color:#ef4444;border-color:rgba(239,68,68,.3)}
+.badge-yellow{background:rgba(234,179,8,.15);color:#eab308;border-color:rgba(234,179,8,.3)}
+.stat-box{background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.15);border-radius:12px;padding:20px;text-align:center}
+.stat-num{font-size:32px;font-weight:800;background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-label{font-size:12px;color:#64748b;margin-top:4px;text-transform:uppercase;letter-spacing:.5px}
+hr{border:none;border-top:1px solid rgba(56,189,248,.1);margin:20px 0}
+@media(max-width:768px){body{padding:15px 12px}h1{font-size:26px}.grid2,.grid3,.grid4{grid-template-columns:1fr}.card{padding:16px 14px}}
+body{background:radial-gradient(ellipse at center,#050a0e 0%,#000 100%)!important}
+h1{text-shadow:0 0 20px rgba(56,189,248,.5)}
+.cp-btn{background:rgba(0,255,65,.08);border:1px solid rgba(0,255,65,.3);color:#00ff41;padding:6px 14px;border-radius:4px;cursor:pointer;font-family:monospace;font-size:12px;font-weight:700;transition:.2s}
+.cp-btn:hover{background:rgba(0,255,65,.2);box-shadow:0 0 10px rgba(0,255,65,.3)}
+.stat-row{display:flex;justify-content:space-between;margin-bottom:8px;font-family:monospace;font-size:12px}
+.stat-bar{height:4px;background:rgba(0,255,65,.15);border-radius:2px;overflow:hidden;margin-top:3px}
+.stat-fill{height:100%;background:linear-gradient(90deg,#00ff41,#00cc33);border-radius:2px}
+.app-btn{display:block;width:100%;text-align:left;background:rgba(0,255,65,.05);border:1px solid rgba(0,255,65,.15);color:#00ff41;padding:8px 10px;border-radius:4px;cursor:pointer;font-family:monospace;font-size:12px;margin-bottom:6px;transition:.2s}
+.app-btn:hover{background:rgba(0,255,65,.15);border-color:rgba(0,255,65,.4)}
+.term-line{margin-bottom:2px}
+.term-cmd{color:#fff}
+.term-out{color:#00ff41}
+.term-err{color:#ff4141}
+.term-info{color:#38bdf8}
+.scan-bar{background:rgba(0,255,65,.08);border:1px solid rgba(0,255,65,.15);border-radius:4px;padding:8px;margin-top:4px}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.cursor{animation:blink 1s infinite}
+/* ── UNIVERSAL UPGRADE: Theme, Animations, Toast ── */
+:root{
+  --bg:#020617;--bg2:#0f172a;--card:rgba(30,41,59,.85);--border:rgba(56,189,248,.22);
+  --accent:#38bdf8;--accent2:#22c55e;--text:#f1f5f9;--muted:#94a3b8;--danger:#ef4444;
+}
+
+
+/* Toast notifications */
+.u-toast-container{position:fixed;bottom:24px;right:20px;z-index:99999;display:flex;flex-direction:column;gap:8px;max-width:320px}
+.u-toast{
+  background:var(--card);border:1px solid var(--border);color:var(--text);
+  padding:11px 16px;border-radius:10px;font-size:13px;font-weight:600;
+  box-shadow:0 4px 20px rgba(0,0,0,.35);
+  animation:uToastIn .3s ease;display:flex;align-items:center;gap:8px;
+}
+.u-toast.success{border-color:rgba(34,197,94,.5);background:rgba(34,197,94,.1)}
+.u-toast.error{border-color:rgba(239,68,68,.5);background:rgba(239,68,68,.1)}
+.u-toast.info{border-color:rgba(56,189,248,.5);background:rgba(56,189,248,.1)}
+@keyframes uToastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes uToastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(20px)}}
+
+/* Entrance animations */
+@keyframes uFadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes uFadeIn{from{opacity:0}to{opacity:1}}
+@keyframes uPulse{0%,100%{box-shadow:0 0 0 0 rgba(56,189,248,.4)}70%{box-shadow:0 0 0 8px rgba(56,189,248,0)}}
+.u-fade-up{animation:uFadeUp .45s ease both}
+.u-fade-in{animation:uFadeIn .4s ease both}
+.u-pulse{animation:uPulse 2s infinite}
+
+/* Button hover lift */
+.btn:hover,[class*="btn"]:not([class*="btn-"]):hover{transform:translateY(-2px)!important}
+
+/* Smooth card hover */
+.card:hover,[class*="card"]:hover{
+  border-color:var(--accent)!important;
+  box-shadow:0 6px 28px rgba(56,189,248,.12)!important;
+  transition:all .25s ease!important;
+}
+
+/* Loading skeleton */
+.u-skeleton{
+  background:linear-gradient(90deg,rgba(56,189,248,.06) 25%,rgba(56,189,248,.12) 50%,rgba(56,189,248,.06) 75%);
+  background-size:200% 100%;animation:uSkeleton 1.4s infinite;border-radius:6px;
+}
+@keyframes uSkeleton{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* Progress bar component */
+.u-progress{height:5px;background:rgba(56,189,248,.12);border-radius:3px;overflow:hidden;margin:8px 0}
+.u-progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:3px;transition:width .5s ease}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(56,189,248,.3);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(56,189,248,.55)}
+
+/* Mobile responsive upgrades */
+@media(max-width:600px){
+  
+  .u-toast-container{right:10px;bottom:80px;max-width:calc(100vw - 20px)}
+}
+
+</style></head>
+<body><div class="container">
+<a href="../index.html" class="back-link" onclick="window.close(); return false;">← Back to Portfolio</a>
+
+<div id="bootSeq" style="position:fixed;inset:0;background:#000;z-index:1000;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:monospace">
+  <div style="color:#00ff41;font-size:18px;margin-bottom:20px">NEON OS v4.7.2 BOOTING...</div>
+  <div style="width:300px;height:4px;background:#111;border-radius:2px;overflow:hidden;margin-bottom:16px">
+    <div id="bootBar" style="height:100%;background:#00ff41;width:0%;transition:.1s"></div>
+  </div>
+  <div id="bootLog" style="color:#00ff41;font-size:12px;opacity:.7;height:120px;overflow:hidden;text-align:left;width:300px"></div>
+</div>
+<h1>⚡ NeonOS Terminal</h1>
+<p class="subtitle">Cyberpunk-themed interactive OS simulation</p>
+<div style="display:grid;grid-template-columns:240px 1fr;gap:16px;align-items:start">
+  <div>
+    <div class="card" style="border-color:rgba(0,255,65,.3);background:rgba(0,0,0,.6)">
+      <div style="font-family:monospace;font-size:12px;color:#00ff41;margin-bottom:12px">SYS_STATUS</div>
+      <div id="sysStats"></div>
+    </div>
+    <div class="card" style="border-color:rgba(0,255,65,.2);background:rgba(0,0,0,.5)">
+      <div style="font-family:monospace;font-size:12px;color:#00ff41;margin-bottom:12px">APPS</div>
+      <div id="appList"></div>
+    </div>
+  </div>
+  <div>
+    <div class="card" style="border-color:rgba(0,255,65,.3);background:rgba(0,0,0,.8);padding:0;overflow:hidden">
+      <div style="background:rgba(0,255,65,.1);padding:10px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(0,255,65,.2)">
+        <span style="color:#00ff41;font-family:monospace;font-size:13px">NEON_TERMINAL v4.7</span>
+        <span id="termBadge" class="badge" style="background:rgba(0,255,65,.15);color:#00ff41;border-color:rgba(0,255,65,.3);font-size:10px;margin-left:auto">ONLINE</span>
+      </div>
+      <div id="termOutput" style="padding:16px;font-family:monospace;font-size:13px;height:340px;overflow-y:auto;color:#00ff41;line-height:1.7"></div>
+      <div style="padding:10px 16px;border-top:1px solid rgba(0,255,65,.15);display:flex;gap:8px;align-items:center">
+        <span style="color:#00ff41;font-family:monospace;font-size:13px">user@neon:~$</span>
+        <input id="termInput" placeholder="type command..." style="flex:1;background:transparent;border:none;color:#00ff41;font-family:monospace;font-size:13px;box-shadow:none;padding:4px 0" onkeydown="if(event.key==='Enter')runCmd()">
+        <button class="btn" onclick="runCmd()" style="padding:6px 14px;font-size:12px;background:linear-gradient(90deg,#00ff41,#00cc33);color:#000">RUN</button>
+      </div>
+    </div>
+    <div class="card" style="border-color:rgba(0,255,65,.2);background:rgba(0,0,0,.5)">
+      <div style="font-family:monospace;font-size:12px;color:#00ff41;margin-bottom:12px">QUICK_CMDS</div>
+      <div class="flex" style="gap:8px;flex-wrap:wrap">
+        <button class="cp-btn" onclick="quickCmd('help')">help</button>
+        <button class="cp-btn" onclick="quickCmd('status')">status</button>
+        <button class="cp-btn" onclick="quickCmd('scan')">scan</button>
+        <button class="cp-btn" onclick="quickCmd('hack')">hack</button>
+        <button class="cp-btn" onclick="quickCmd('matrix')">matrix</button>
+        <button class="cp-btn" onclick="quickCmd('ls')">ls</button>
+        <button class="cp-btn" onclick="quickCmd('whoami')">whoami</button>
+        <button class="cp-btn" onclick="quickCmd('uptime')">uptime</button>
+        <button class="cp-btn" onclick="quickCmd('ping')">ping</button>
+        <button class="cp-btn" onclick="quickCmd('clear')">clear</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div><script>
+const bootLines=['Initializing kernel...','Loading NEON modules...','Mounting /dev/neon0...','Starting neural interface...','Bypassing ICE protocols...','Connecting to the NET...','Loading user profile: ghost_runner','System ready. Welcome back.'];
+let bootIdx=0;const bootInterval=setInterval(()=>{
+  const bar=document.getElementById('bootBar');
+  const log=document.getElementById('bootLog');
+  if(bootIdx<bootLines.length){
+    const pct=((bootIdx+1)/bootLines.length)*100;
+    bar.style.width=pct+'%';
+    log.innerHTML+='<div>> '+bootLines[bootIdx]+'</div>';
+    log.scrollTop=log.scrollHeight;
+    bootIdx++;
+  }else{
+    clearInterval(bootInterval);
+    setTimeout(()=>{document.getElementById('bootSeq').style.display='none';},500);
+  }
+},300);
+
+const cmds={
+  help:()=>`<div class="term-info">Available commands:</div>
+<div>  help      - Show this help</div>
+<div>  status    - System status</div>
+<div>  scan      - Network scan</div>
+<div>  hack [ip] - Attempt intrusion</div>
+<div>  matrix    - Enter the matrix</div>
+<div>  ls        - List files</div>
+<div>  whoami    - Current user</div>
+<div>  uptime    - System uptime</div>
+<div>  ping [ip] - Ping host</div>
+<div>  clear     - Clear terminal</div>`,
+  status:()=>`<div class="term-info">SYSTEM STATUS</div>
+<div>CPU:    [████████░░] 82% - 8 cores active</div>
+<div>RAM:    [██████░░░░] 64% - 16.4GB / 32GB</div>
+<div>NET:    [█████████░] 91% uplink - 1.2 Gbps</div>
+<div>ICE:    [██░░░░░░░░] 18% engaged</div>
+<div class="term-info">All systems nominal. Ghost protocol: ACTIVE</div>`,
+  scan:()=>{
+    const ips=Array.from({length:8},()=>`${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}`);
+    return `<div class="term-info">Scanning network...</div>`+ips.map(ip=>`<div>${ip} - ${['OPEN','CLOSED','FILTERED'][Math.floor(Math.random()*3)]} - Port ${[22,80,443,8080,3306][Math.floor(Math.random()*5)]}</div>`).join('')+'<div class="term-info">Scan complete. '+ips.length+' hosts found.</div>';
+  },
+  hack:(arg)=>{
+    const ip=arg||'192.168.1.1';
+    return `<div class="term-info">Targeting: ${ip}</div>
+<div>Probing open ports...</div>
+<div>Found: SSH(22), HTTP(80), HTTPS(443)</div>
+<div>Deploying exploit: CVE-2024-NEON...</div>
+<div>Bypassing firewall rules...</div>
+<div class="term-info">ROOT ACCESS GRANTED. You are in.</div>`;
+  },
+  matrix:()=>`<div style="color:#00ff41;font-family:monospace">Wake up, Neo...<br>The Matrix has you.<br>Follow the white rabbit.<br><br>01001110 01100101 01101111<br>01001101 01100001 01110100 01110010 01101001 01111000</div>`,
+  ls:()=>`<div class="term-info">total 48</div>
+<div>drwxr-xr-x  ghost_runner  /home/user</div>
+<div>-rw-r--r--  exploit.sh        8.4K</div>
+<div>-rw-r--r--  neon_config.json  2.1K</div>
+<div>drwxrwxrwx  /missions/          --</div>
+<div>-rw-------  .ghost_key          512</div>
+<div>-rwxr-xr-x  bypass_ice.bin    44K</div>`,
+  whoami:()=>`<div>ghost_runner</div><div class="term-info">Role: Elite Hacker | Level: 47 | Rep: 9820</div><div>Faction: Neon Collective | Status: ACTIVE</div>`,
+  uptime:()=>`<div>System uptime: ${Math.floor(Math.random()*90)+1} days, ${Math.floor(Math.random()*24)}h ${Math.floor(Math.random()*60)}m</div><div class="term-info">Last reboot: Grid maintenance cycle</div>`,
+  ping:(arg)=>{
+    const ip=arg||'8.8.8.8';
+    const ms=Array.from({length:4},()=>Math.floor(Math.random()*40+5));
+    return `<div>PING ${ip}</div>`+ms.map(m=>`<div>64 bytes from ${ip}: time=${m}ms</div>`).join('')+`<div class="term-info">Round-trip min/avg/max = ${Math.min(...ms)}/${Math.round(ms.reduce((a,b)=>a+b)/4)}/${Math.max(...ms)} ms</div>`;
+  },
+  clear:'CLEAR',
+};
+
+let cmdHistory=[],histIdx=-1;
+function quickCmd(c){document.getElementById('termInput').value=c;runCmd();}
+function runCmd(){
+  const input=document.getElementById('termInput');
+  const raw=input.value.trim();
+  if(!raw)return;
+  const [cmd,...args]=raw.toLowerCase().split(' ');
+  input.value='';
+  cmdHistory.unshift(raw);histIdx=-1;
+  const out=document.getElementById('termOutput');
+  const cmdLine=document.createElement('div');
+  cmdLine.className='term-line term-cmd';
+  cmdLine.innerHTML='<span style="color:#a855f7">user@neon</span><span style="color:#64748b">:~$</span> '+raw;
+  out.appendChild(cmdLine);
+  if(cmds[cmd]==='CLEAR'){out.innerHTML='';return;}
+  const result=cmds[cmd]?cmds[cmd](args[0]):null;
+  if(result){
+    const res=document.createElement('div');
+    res.className='term-line term-out';
+    res.innerHTML=result;
+    out.appendChild(res);
+  }else{
+    const err=document.createElement('div');
+    err.className='term-line term-err';
+    err.textContent='Command not found: '+cmd+'. Type "help" for commands.';
+    out.appendChild(err);
+  }
+  out.scrollTop=out.scrollHeight;
+}
+document.getElementById('termInput').addEventListener('keydown',e=>{
+  if(e.key==='ArrowUp'){histIdx=Math.min(histIdx+1,cmdHistory.length-1);document.getElementById('termInput').value=cmdHistory[histIdx]||'';}
+  if(e.key==='ArrowDown'){histIdx=Math.max(histIdx-1,-1);document.getElementById('termInput').value=histIdx>=0?cmdHistory[histIdx]:'';}
+});
+
+const stats=[{l:'CPU',v:82},{l:'RAM',v:64},{l:'NET',v:91},{l:'ICE',v:18}];
+document.getElementById('sysStats').innerHTML=stats.map(s=>`
+  <div class="stat-row">
+    <span>${s.l}</span><span style="color:${s.v>80?'#ef4444':s.v>60?'#f59e0b':'#00ff41'}">${s.v}%</span>
+  </div>
+  <div class="stat-bar"><div class="stat-fill" style="width:${s.v}%;background:${s.v>80?'#ef4444':s.v>60?'#f59e0b':'#00ff41'}"></div></div>`).join('');
+
+const apps=['NET_SCANNER','EXPLOIT_DB','ICE_BREAKER','GHOST_VPN','DATA_VAULT','MISSION_LOG'];
+document.getElementById('appList').innerHTML=apps.map(a=>`<button class="app-btn" onclick="quickCmd('status')">▶ ${a}</button>`).join('');
+
+// Welcome message
+setTimeout(()=>{
+  const out=document.getElementById('termOutput');
+  out.innerHTML=`<div class="term-info">NeonOS Terminal v4.7.2</div>
+<div style="color:#64748b">Last login: ${new Date().toLocaleString()}</div>
+<div class="term-info">Type "help" for available commands.</div>
+<div>Welcome back, ghost_runner. 3 new missions available.</div>`;
+},3000);
+
+// Animate stats
+setInterval(()=>{
+  const fills=document.querySelectorAll('.stat-fill');
+  fills.forEach(f=>{const v=Math.max(5,Math.min(99,parseInt(f.style.width)+(Math.random()>.5?1:-1)*Math.floor(Math.random()*5)));f.style.width=v+'%';});
+},2000);
+</script><script>
+// ── UNIVERSAL UPGRADE: Theme, localStorage, Toast, Animations ──
+(function(){
+'use strict';
+
+// ── 2. TOAST SYSTEM ──────────────────────────────────────────────
+var toastContainer = null;
+function getToastContainer(){
+  if(!toastContainer || !document.body.contains(toastContainer)){
+    toastContainer = document.createElement('div');
+    toastContainer.className = 'u-toast-container';
+    document.body.appendChild(toastContainer);
+  }
+  return toastContainer;
+}
+
+window.uToast = function(msg, type, duration){
+  type = type || 'info';
+  duration = duration || 2800;
+  var icons = {success:'✅', error:'❌', info:'💡', warning:'⚠️'};
+  var c = getToastContainer();
+  var t = document.createElement('div');
+  t.className = 'u-toast ' + type;
+  t.innerHTML = '<span>' + (icons[type]||'💡') + '</span><span>' + msg + '</span>';
+  c.appendChild(t);
+  setTimeout(function(){
+    t.style.animation = 'uToastOut .3s ease forwards';
+    setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 300);
+  }, duration);
+};
+
+// ── 3. LOCALSTORAGE HELPERS ──────────────────────────────────────
+var APP_KEY = 'uapp_' + location.pathname.split('/').pop().replace('.html','');
+window.uSave = function(key, val){
+  try { localStorage.setItem(APP_KEY + '_' + key, JSON.stringify(val)); return true; }
+  catch(e){ return false; }
+};
+window.uLoad = function(key, def){
+  try {
+    var v = localStorage.getItem(APP_KEY + '_' + key);
+    return v !== null ? JSON.parse(v) : def;
+  } catch(e){ return def; }
+};
+window.uClear = function(key){
+  try { localStorage.removeItem(APP_KEY + '_' + key); } catch(e){}
+};
+
+// ── 4. ENTRANCE ANIMATIONS ───────────────────────────────────────
+function animateEntrance(){
+  var cards = document.querySelectorAll('.card, [class*="card"]');
+  cards.forEach(function(el, i){
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(18px)';
+    setTimeout(function(){
+      el.style.transition = 'opacity .4s ease, transform .4s ease';
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+    }, i * 60);
+  });
+}
+
+// ── 5. SMOOTH COUNTER ANIMATION ──────────────────────────────────
+window.uAnimCount = function(el, target, duration, prefix, suffix){
+  prefix = prefix || '';
+  suffix = suffix || '';
+  duration = duration || 1200;
+  var start = 0;
+  var step = target / (duration / 16);
+  var iv = setInterval(function(){
+    start = Math.min(start + step, target);
+    el.textContent = prefix + Math.round(start).toLocaleString() + suffix;
+    if(start >= target) clearInterval(iv);
+  }, 16);
+};
+
+// ── 6. EXPORT HELPER ─────────────────────────────────────────────
+window.uExportJSON = function(data, filename){
+  var blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.json';
+  a.click();
+  uToast('Data exported!', 'success');
+};
+window.uExportCSV = function(rows, filename){
+  var csv = rows.map(function(r){ return r.join(','); }).join('\n');
+  var blob = new Blob([csv], {type:'text/csv'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.csv';
+  a.click();
+  uToast('CSV exported!', 'success');
+};
+
+// ── 8. INIT ──────────────────────────────────────────────────────
+function init(){
+  setTimeout(animateEntrance, 100);
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+})();
+</script>
+<script>
+(function(){
+  var macros = uLoad('cyber_macros', {});
+  var cmdHistory = uLoad('cyber_cmd_history', []);
+  
+  // Persist command history
+  var origRun = window.runCmd;
+  if(origRun){
+    window.runCmd = function(){
+      var input = document.getElementById('termInput');
+      if(input && input.value.trim()){
+        cmdHistory.unshift(input.value.trim());
+        if(cmdHistory.length > 50) cmdHistory.pop();
+        uSave('cyber_cmd_history', cmdHistory);
+      }
+      origRun.apply(this, arguments);
+    };
+  }
+  
+  // Macro system - add 'macro' command
+  if(window.cmds){
+    window.cmds['macro'] = function(arg){
+      if(!arg) return '<div class="term-info">Usage: macro [name] [command] — create custom command aliases</div><div>Saved macros: ' + Object.keys(macros).join(', ') + '</div>';
+      var parts = arg.split(' ');
+      var name = parts[0];
+      var cmd = parts.slice(1).join(' ');
+      if(!cmd){ return macros[name] ? '<div>Macro "'+name+'": '+macros[name]+'</div>' : '<div class="term-err">Macro "'+name+'" not found</div>'; }
+      macros[name] = cmd;
+      uSave('cyber_macros', macros);
+      return '<div class="term-info">Macro created: <strong>' + name + '</strong> → ' + cmd + '</div>';
+    };
+    
+    window.cmds['history'] = function(){
+      return '<div class="term-info">Command History (last 10):</div>' +
+        cmdHistory.slice(0,10).map(function(c,i){ return '<div style="color:#00f3ff66">' + (i+1) + '. ' + c + '</div>'; }).join('');
+    };
+    
+    window.cmds['sysinfo'] = function(){
+      return '<div class="term-info">SYSTEM INFORMATION</div>' +
+        '<div>OS: NeonOS v4.7.2</div>' +
+        '<div>Platform: ' + navigator.platform + '</div>' +
+        '<div>Browser: ' + navigator.userAgent.split(' ').pop() + '</div>' +
+        '<div>Language: ' + navigator.language + '</div>' +
+        '<div>Timezone: ' + Intl.DateTimeFormat().resolvedOptions().timeZone + '</div>' +
+        '<div>Screen: ' + screen.width + 'x' + screen.height + '</div>' +
+        '<div class="term-info">Session commands run: ' + cmdHistory.length + '</div>';
+    };
+    
+    window.cmds['clear_history'] = function(){
+      cmdHistory = [];
+      uSave('cyber_cmd_history', []);
+      return '<div class="term-info">Command history cleared.</div>';
+    };
+  }
+  
+  // Update help with new commands
+  if(window.cmds && window.cmds['help']){
+    var origHelp = window.cmds['help'];
+    window.cmds['help'] = function(){
+      return origHelp() + '<div>  macro     - Create command aliases</div><div>  history   - Show command history</div><div>  sysinfo   - System information</div><div>  clear_history - Clear history</div>';
+    };
+  }
+  
+  uToast('New commands: macro, history, sysinfo 💻', 'info', 2500);
+})();
+</script>
+</body></html>

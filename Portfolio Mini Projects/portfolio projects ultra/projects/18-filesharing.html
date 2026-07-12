@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8">
+<meta name="description" content="File Sharing — part of a professional web developer portfolio with 50+ projects.">
+<meta name="robots" content="index, follow">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>File Sharing</title><style>*{margin:0;padding:0;box-sizing:border-box}
+body{background:linear-gradient(135deg,#020617 0%,#0f172a 100%);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#fff;min-height:100vh;padding:40px 20px;overflow-x:hidden}
+.container{max-width:1000px;margin:0 auto}
+a{color:#38bdf8;text-decoration:none;font-weight:600}a:hover{color:#4ade80}
+h1{background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:36px;margin-bottom:8px}
+.subtitle{color:#94a3b8;margin-bottom:28px;font-size:15px}
+.back-link{display:inline-flex;align-items:center;gap:6px;margin-bottom:20px;color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;padding:8px 14px;border:1px solid rgba(56,189,248,.3);border-radius:8px;transition:.2s}
+.back-link:hover{background:rgba(56,189,248,.1)}
+.card{background:rgba(30,41,59,.8);backdrop-filter:blur(10px);padding:24px;border-radius:16px;border:1px solid rgba(56,189,248,.2);margin-bottom:20px}
+.btn{padding:10px 22px;border:none;border-radius:8px;cursor:pointer;font-weight:700;font-size:14px;transition:.2s;background:linear-gradient(90deg,#38bdf8,#22c55e);color:#000}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(56,189,248,.35)}
+.btn-outline{background:transparent;border:1px solid rgba(56,189,248,.4);color:#38bdf8}
+.btn-red{background:linear-gradient(90deg,#ef4444,#dc2626);color:#fff}
+input,textarea,select{background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.3);color:#fff;border-radius:8px;padding:10px 14px;font-size:14px;width:100%;outline:none;transition:.2s}
+input:focus,textarea:focus,select:focus{border-color:#38bdf8;box-shadow:0 0 0 3px rgba(56,189,248,.15)}
+input::placeholder,textarea::placeholder{color:#64748b}
+label{display:block;font-size:13px;font-weight:600;color:#94a3b8;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.flex{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;background:rgba(56,189,248,.15);color:#38bdf8;border:1px solid rgba(56,189,248,.3)}
+.badge-green{background:rgba(34,197,94,.15);color:#22c55e;border-color:rgba(34,197,94,.3)}
+.badge-red{background:rgba(239,68,68,.15);color:#ef4444;border-color:rgba(239,68,68,.3)}
+.badge-yellow{background:rgba(234,179,8,.15);color:#eab308;border-color:rgba(234,179,8,.3)}
+.stat-box{background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.15);border-radius:12px;padding:20px;text-align:center}
+.stat-num{font-size:32px;font-weight:800;background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-label{font-size:12px;color:#64748b;margin-top:4px;text-transform:uppercase;letter-spacing:.5px}
+hr{border:none;border-top:1px solid rgba(56,189,248,.1);margin:20px 0}
+@media(max-width:768px){body{padding:15px 12px}h1{font-size:26px}.grid2,.grid3,.grid4{grid-template-columns:1fr}.card{padding:16px 14px}}
+.drop-active{border-color:#38bdf8!important;background:rgba(56,189,248,.1)!important}
+.file-item{display:flex;align-items:center;gap:12px;padding:12px;border-radius:10px;border:1px solid rgba(56,189,248,.1);margin-bottom:8px;transition:.2s}
+.file-item:hover{background:rgba(56,189,248,.05);border-color:rgba(56,189,248,.3)}
+.file-icon{font-size:28px;flex-shrink:0;width:40px;text-align:center}
+.file-name{font-weight:600;font-size:14px;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.file-meta{font-size:12px;color:#64748b;margin-top:2px}
+.file-actions{display:flex;gap:6px;flex-shrink:0}
+.f-btn{background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.2);color:#38bdf8;border-radius:6px;padding:5px 10px;cursor:pointer;font-size:12px;font-weight:600;transition:.2s}
+.f-btn:hover{background:rgba(56,189,248,.2)}
+.f-btn-red{background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.2);color:#ef4444}
+.f-btn-red:hover{background:rgba(239,68,68,.2)}
+.progress-wrap{height:3px;background:rgba(56,189,248,.1);border-radius:2px;margin-top:6px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#38bdf8,#22c55e);border-radius:2px;transition:width .1s}
+.sl-item{background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.15);border-radius:8px;padding:10px 12px;margin-bottom:8px;font-size:13px}
+/* ── UNIVERSAL UPGRADE: Theme, Animations, Toast ── */
+:root{
+  --bg:#020617;--bg2:#0f172a;--card:rgba(30,41,59,.85);--border:rgba(56,189,248,.22);
+  --accent:#38bdf8;--accent2:#22c55e;--text:#f1f5f9;--muted:#94a3b8;--danger:#ef4444;
+}
+
+
+/* Toast notifications */
+.u-toast-container{position:fixed;bottom:24px;right:20px;z-index:99999;display:flex;flex-direction:column;gap:8px;max-width:320px}
+.u-toast{
+  background:var(--card);border:1px solid var(--border);color:var(--text);
+  padding:11px 16px;border-radius:10px;font-size:13px;font-weight:600;
+  box-shadow:0 4px 20px rgba(0,0,0,.35);
+  animation:uToastIn .3s ease;display:flex;align-items:center;gap:8px;
+}
+.u-toast.success{border-color:rgba(34,197,94,.5);background:rgba(34,197,94,.1)}
+.u-toast.error{border-color:rgba(239,68,68,.5);background:rgba(239,68,68,.1)}
+.u-toast.info{border-color:rgba(56,189,248,.5);background:rgba(56,189,248,.1)}
+@keyframes uToastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes uToastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(20px)}}
+
+/* Entrance animations */
+@keyframes uFadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes uFadeIn{from{opacity:0}to{opacity:1}}
+@keyframes uPulse{0%,100%{box-shadow:0 0 0 0 rgba(56,189,248,.4)}70%{box-shadow:0 0 0 8px rgba(56,189,248,0)}}
+.u-fade-up{animation:uFadeUp .45s ease both}
+.u-fade-in{animation:uFadeIn .4s ease both}
+.u-pulse{animation:uPulse 2s infinite}
+
+/* Button hover lift */
+.btn:hover,[class*="btn"]:not([class*="btn-"]):hover{transform:translateY(-2px)!important}
+
+/* Smooth card hover */
+.card:hover,[class*="card"]:hover{
+  border-color:var(--accent)!important;
+  box-shadow:0 6px 28px rgba(56,189,248,.12)!important;
+  transition:all .25s ease!important;
+}
+
+/* Loading skeleton */
+.u-skeleton{
+  background:linear-gradient(90deg,rgba(56,189,248,.06) 25%,rgba(56,189,248,.12) 50%,rgba(56,189,248,.06) 75%);
+  background-size:200% 100%;animation:uSkeleton 1.4s infinite;border-radius:6px;
+}
+@keyframes uSkeleton{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* Progress bar component */
+.u-progress{height:5px;background:rgba(56,189,248,.12);border-radius:3px;overflow:hidden;margin:8px 0}
+.u-progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:3px;transition:width .5s ease}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(56,189,248,.3);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(56,189,248,.55)}
+
+/* Mobile responsive upgrades */
+@media(max-width:600px){
+  
+  .u-toast-container{right:10px;bottom:80px;max-width:calc(100vw - 20px)}
+}
+
+</style></head>
+<body><div class="container">
+<a href="../index.html" class="back-link" onclick="window.close(); return false;">← Back to Portfolio</a>
+
+<h1>📁 File Share Pro</h1>
+<p class="subtitle">Upload, organize and share files with ease</p>
+<div class="grid2" style="align-items:start">
+  <div>
+    <div class="card" id="dropZone" ondragover="drag(event)" ondragleave="dragLeave()" ondrop="drop(event)">
+      <div style="text-align:center;padding:20px 0">
+        <div style="font-size:48px;margin-bottom:12px">📤</div>
+        <div style="font-weight:700;font-size:16px;margin-bottom:6px">Drop files here</div>
+        <div style="color:#64748b;font-size:14px;margin-bottom:16px">or click to browse</div>
+        <input type="file" id="fileInput" multiple style="display:none" onchange="uploadFiles(this.files)">
+        <button class="btn" onclick="document.getElementById('fileInput').click()">Choose Files</button>
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="color:#38bdf8;margin-bottom:14px">Storage</h3>
+      <div style="height:8px;background:rgba(56,189,248,.1);border-radius:4px;margin-bottom:8px">
+        <div id="storageBar" style="height:100%;background:linear-gradient(90deg,#38bdf8,#22c55e);border-radius:4px;width:0%;transition:.5s"></div>
+      </div>
+      <div class="flex" style="justify-content:space-between;font-size:13px">
+        <span id="usedStorage" style="color:#38bdf8">0 MB used</span>
+        <span style="color:#64748b">5 GB total</span>
+      </div>
+      <hr>
+      <div class="grid3" style="gap:10px;margin-top:4px">
+        <div style="text-align:center"><div style="font-size:20px">📄</div><div id="docCount" style="font-weight:700">0</div><div style="font-size:11px;color:#64748b">Docs</div></div>
+        <div style="text-align:center"><div style="font-size:20px">🖼</div><div id="imgCount" style="font-weight:700">0</div><div style="font-size:11px;color:#64748b">Images</div></div>
+        <div style="text-align:center"><div style="font-size:20px">📦</div><div id="otherCount" style="font-weight:700">0</div><div style="font-size:11px;color:#64748b">Other</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="color:#38bdf8;margin-bottom:12px">Shared Links</h3>
+      <div id="sharedLinks"><p style="color:#64748b;font-size:14px">No shared links yet.</p></div>
+    </div>
+  </div>
+  <div>
+    <div class="card">
+      <div class="flex" style="justify-content:space-between;margin-bottom:14px">
+        <h3 style="color:#38bdf8">Files (<span id="fileCount">0</span>)</h3>
+        <div class="flex" style="gap:8px">
+          <input id="fileSearch" placeholder="Search..." oninput="renderFiles()" style="width:140px;padding:6px 10px;font-size:13px">
+          <select id="sortBy" onchange="renderFiles()" style="width:auto;padding:6px 10px;font-size:13px">
+            <option value="date">Date</option><option value="name">Name</option><option value="size">Size</option>
+          </select>
+        </div>
+      </div>
+      <div id="fileList"></div>
+    </div>
+  </div>
+</div>
+</div><script>
+let files=[],totalSize=0;
+const MAX=5*1024*1024*1024;
+
+function getIcon(name){
+  const ext=name.split('.').pop().toLowerCase();
+  if(['jpg','jpeg','png','gif','webp','svg'].includes(ext))return'🖼';
+  if(['mp4','mov','avi','mkv'].includes(ext))return'🎬';
+  if(['mp3','wav','ogg'].includes(ext))return'🎵';
+  if(['pdf'].includes(ext))return'📕';
+  if(['doc','docx'].includes(ext))return'📝';
+  if(['xls','xlsx'].includes(ext))return'📊';
+  if(['zip','rar','tar','gz'].includes(ext))return'📦';
+  if(['js','ts','html','css','py','java'].includes(ext))return'💻';
+  return'📄';
+}
+function fmtSize(b){if(b<1024)return b+'B';if(b<1048576)return(b/1024).toFixed(1)+'KB';return(b/1048576).toFixed(1)+'MB';}
+function drag(e){e.preventDefault();document.getElementById('dropZone').classList.add('drop-active');}
+function dragLeave(){document.getElementById('dropZone').classList.remove('drop-active');}
+function drop(e){e.preventDefault();dragLeave();uploadFiles(e.dataTransfer.files);}
+
+function uploadFiles(fileList){
+  Array.from(fileList).forEach(f=>{
+    if(files.find(x=>x.name===f.name&&x.size===f.size))return;
+    const id=Date.now()+Math.random();
+    const newFile={id,name:f.name,size:f.size,type:f.type,date:new Date(),icon:getIcon(f.name),progress:0,url:URL.createObjectURL(f)};
+    files.unshift(newFile);totalSize+=f.size;
+    // Simulate upload progress
+    let p=0;const iv=setInterval(()=>{p+=Math.random()*20+10;newFile.progress=Math.min(100,p);renderFiles();if(p>=100){clearInterval(iv);}},150);
+  });
+  renderFiles();updateStats();
+}
+
+function renderFiles(){
+  const q=document.getElementById('fileSearch').value.toLowerCase();
+  const sort=document.getElementById('sortBy').value;
+  let list=files.filter(f=>f.name.toLowerCase().includes(q));
+  list.sort((a,b)=>sort==='name'?a.name.localeCompare(b.name):sort==='size'?b.size-a.size:b.date-a.date);
+  document.getElementById('fileCount').textContent=files.length;
+  if(!list.length){document.getElementById('fileList').innerHTML='<p style="color:#64748b;text-align:center;padding:20px">'+(q?'No files match your search.':'No files yet.')+'</p>';return;}
+  document.getElementById('fileList').innerHTML=list.map(f=>`
+    <div class="file-item">
+      <div class="file-icon">${f.icon}</div>
+      <div style="flex:1;min-width:0">
+        <div class="file-name">${f.name}</div>
+        <div class="file-meta">${fmtSize(f.size)} · ${f.date.toLocaleDateString()}</div>
+        ${f.progress<100?`<div class="progress-wrap"><div class="progress-fill" style="width:${f.progress}%"></div></div>`:''}
+      </div>
+      ${f.progress>=100?`<div class="file-actions">
+        <button class="f-btn" onclick="shareFile('${f.id}','${f.name}')">🔗</button>
+        <a class="f-btn" href="${f.url}" download="${f.name}" style="text-decoration:none;display:flex;align-items:center">⬇</a>
+        <button class="f-btn f-btn-red" onclick="deleteFile('${f.id}')">✕</button>
+      </div>`:'<span style="font-size:12px;color:#38bdf8">Uploading...</span>'}
+    </div>`).join('');
+}
+
+function updateStats(){
+  const pct=Math.min(100,(totalSize/MAX)*100);
+  document.getElementById('storageBar').style.width=pct+'%';
+  document.getElementById('usedStorage').textContent=fmtSize(totalSize)+' used';
+  document.getElementById('docCount').textContent=files.filter(f=>['📄','📝','📊','📕'].includes(f.icon)).length;
+  document.getElementById('imgCount').textContent=files.filter(f=>f.icon==='🖼').length;
+  document.getElementById('otherCount').textContent=files.filter(f=>!['📄','📝','📊','📕','🖼'].includes(f.icon)).length;
+}
+
+function deleteFile(id){const f=files.find(f=>f.id==id);if(f){totalSize-=f.size;files=files.filter(f=>f.id!=id);renderFiles();updateStats();}}
+let links=[];
+function shareFile(id,name){
+  const link='https://share.filehub/'+Math.random().toString(36).slice(2,8);
+  links.unshift({name,link,exp:'24h'});
+  document.getElementById('sharedLinks').innerHTML=links.map(l=>`<div class="sl-item"><div style="font-weight:600;margin-bottom:4px">📄 ${l.name}</div><div style="color:#38bdf8;font-size:12px;font-family:monospace">${l.link}</div><div style="font-size:11px;color:#64748b;margin-top:2px">Expires in ${l.exp}</div></div>`).join('');
+  navigator.clipboard?.writeText(link);
+}
+// Seed demo files
+[{name:'Project_Report.pdf',size:2456000},{name:'design_mockup.png',size:845000},{name:'app_bundle.zip',size:12400000},{name:'data_export.xlsx',size:156000},{name:'README.md',size:8200}].forEach(f=>{f.date=new Date();f.icon=getIcon(f.name);f.progress=100;f.id=Date.now()+Math.random();f.url='#';totalSize+=f.size;files.push(f);});
+renderFiles();updateStats();
+</script><script>
+// ── UNIVERSAL UPGRADE: Theme, localStorage, Toast, Animations ──
+(function(){
+'use strict';
+
+// ── 2. TOAST SYSTEM ──────────────────────────────────────────────
+var toastContainer = null;
+function getToastContainer(){
+  if(!toastContainer || !document.body.contains(toastContainer)){
+    toastContainer = document.createElement('div');
+    toastContainer.className = 'u-toast-container';
+    document.body.appendChild(toastContainer);
+  }
+  return toastContainer;
+}
+
+window.uToast = function(msg, type, duration){
+  type = type || 'info';
+  duration = duration || 2800;
+  var icons = {success:'✅', error:'❌', info:'💡', warning:'⚠️'};
+  var c = getToastContainer();
+  var t = document.createElement('div');
+  t.className = 'u-toast ' + type;
+  t.innerHTML = '<span>' + (icons[type]||'💡') + '</span><span>' + msg + '</span>';
+  c.appendChild(t);
+  setTimeout(function(){
+    t.style.animation = 'uToastOut .3s ease forwards';
+    setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 300);
+  }, duration);
+};
+
+// ── 3. LOCALSTORAGE HELPERS ──────────────────────────────────────
+var APP_KEY = 'uapp_' + location.pathname.split('/').pop().replace('.html','');
+window.uSave = function(key, val){
+  try { localStorage.setItem(APP_KEY + '_' + key, JSON.stringify(val)); return true; }
+  catch(e){ return false; }
+};
+window.uLoad = function(key, def){
+  try {
+    var v = localStorage.getItem(APP_KEY + '_' + key);
+    return v !== null ? JSON.parse(v) : def;
+  } catch(e){ return def; }
+};
+window.uClear = function(key){
+  try { localStorage.removeItem(APP_KEY + '_' + key); } catch(e){}
+};
+
+// ── 4. ENTRANCE ANIMATIONS ───────────────────────────────────────
+function animateEntrance(){
+  var cards = document.querySelectorAll('.card, [class*="card"]');
+  cards.forEach(function(el, i){
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(18px)';
+    setTimeout(function(){
+      el.style.transition = 'opacity .4s ease, transform .4s ease';
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+    }, i * 60);
+  });
+}
+
+// ── 5. SMOOTH COUNTER ANIMATION ──────────────────────────────────
+window.uAnimCount = function(el, target, duration, prefix, suffix){
+  prefix = prefix || '';
+  suffix = suffix || '';
+  duration = duration || 1200;
+  var start = 0;
+  var step = target / (duration / 16);
+  var iv = setInterval(function(){
+    start = Math.min(start + step, target);
+    el.textContent = prefix + Math.round(start).toLocaleString() + suffix;
+    if(start >= target) clearInterval(iv);
+  }, 16);
+};
+
+// ── 6. EXPORT HELPER ─────────────────────────────────────────────
+window.uExportJSON = function(data, filename){
+  var blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.json';
+  a.click();
+  uToast('Data exported!', 'success');
+};
+window.uExportCSV = function(rows, filename){
+  var csv = rows.map(function(r){ return r.join(','); }).join('\n');
+  var blob = new Blob([csv], {type:'text/csv'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.csv';
+  a.click();
+  uToast('CSV exported!', 'success');
+};
+
+// ── 8. INIT ──────────────────────────────────────────────────────
+function init(){
+  setTimeout(animateEntrance, 100);
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+})();
+</script>
+<script>
+(function(){
+  // Tag system for files
+  var fileTags = uLoad('file_tags', {});
+  var tagColors = {'Work':'#38bdf8','Personal':'#22c55e','Media':'#a855f7','Archive':'#f59e0b','Important':'#ef4444'};
+  
+  // Inject tag panel
+  setTimeout(function(){
+    var header = document.querySelector('#fileList')?.closest('.card')?.querySelector('h3,div');
+    if(header && !document.getElementById('uTagPanel')){
+      var tagPanel = document.createElement('div');
+      tagPanel.id = 'uTagPanel';
+      tagPanel.style.cssText = 'display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 12px;padding:10px;background:rgba(56,189,248,.04);border:1px solid rgba(56,189,248,.1);border-radius:8px';
+      tagPanel.innerHTML = '<div style="font-size:11px;color:#64748b;width:100%;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">Filter by Tag</div>' +
+        Object.keys(tagColors).map(function(tag){
+          return '<button onclick="filterByTag(\''+tag+'\')" style="padding:4px 10px;background:'+tagColors[tag]+'22;border:1px solid '+tagColors[tag]+'44;color:'+tagColors[tag]+';border-radius:20px;cursor:pointer;font-size:11px;font-weight:700;transition:.2s">'+tag+'</button>';
+        }).join('') +
+        '<button onclick="filterByTag(null)" style="padding:4px 10px;background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.2);color:#38bdf8;border-radius:20px;cursor:pointer;font-size:11px;font-weight:700">All</button>';
+      header.after(tagPanel);
+    }
+  }, 300);
+  
+  window.filterByTag = function(tag){
+    var items = document.querySelectorAll('.file-item');
+    items.forEach(function(item){
+      var id = item.getAttribute('data-file-id');
+      item.style.display = (!tag || fileTags[id]===tag) ? '' : 'none';
+    });
+    uToast(tag ? 'Filtered: '+tag : 'Showing all files', 'info', 1200);
+  };
+  
+  // Keyboard shortcuts
+  document.addEventListener('keydown', function(e){
+    if(e.ctrlKey && e.key==='u'){ e.preventDefault(); document.getElementById('fileInput')?.click(); uToast('Ctrl+U: Upload file', 'info', 1000); }
+    if(e.ctrlKey && e.key==='f'){ e.preventDefault(); document.getElementById('fileSearch')?.focus(); }
+  });
+  
+  uToast('💡 Ctrl+U to upload, Ctrl+F to search', 'info', 2500);
+})();
+</script>
+</body></html>

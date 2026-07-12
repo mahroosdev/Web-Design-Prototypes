@@ -1,0 +1,169 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Professional web developer portfolio showcasing 50 modern web applications built with HTML, CSS and JavaScript.">
+<meta name="author" content="Mahroos">
+<meta name="robots" content="index, follow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<title>Portfolio Pro</title>
+<link rel="stylesheet" href="style.css">
+</head>
+</head>
+<body>
+<div id="cur"></div><div id="cur-r"></div>
+<div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+
+<!-- ═══ MOBILE HEADER — icon nav ═══ -->
+<div id="mob-header">
+  <div id="mob-logo">PORTFOLIO</div>
+  <div id="mob-icon-nav">
+    <button class="mob-icon-btn mob-act" onclick="mobGo(0)" aria-label="Home">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    </button>
+    <button class="mob-icon-btn" onclick="mobGo(1)" aria-label="Projects">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+    </button>
+    <button class="mob-icon-btn" onclick="mobGo(2)" aria-label="About">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="8" stroke-width="2.5" stroke-linecap="round"/><line x1="12" y1="12" x2="12" y2="16"/></svg>
+    </button>
+  </div>
+</div>
+
+<nav>
+  <div class="n-logo">PORTFOLIO</div>
+  <ul class="n-links">
+    <li><a href="#" onclick="go(0);return false;" data-s="0" class="act">HOME</a></li>
+    <li><a href="#" onclick="go(1);return false;" data-s="1">PROJECTS</a></li>
+    <li><a href="#" onclick="go(2);return false;" data-s="2">ABOUT</a></li>
+  </ul>
+  <div class="n-status">AVAILABLE FOR HIRE</div>
+</nav>
+<div id="dots">
+  <div class="dot on" onclick="go(0)"></div>
+  <div class="dot" onclick="go(1)"></div>
+  <div class="dot" onclick="go(2)"></div>
+  <div class="dot" onclick="go(3)"></div>
+</div>
+<div id="wrap">
+  <div class="pg hero on" id="pg-home">
+    <!-- DESKTOP hero (hidden on mobile) -->
+    <div class="h-tag">FRONTEND DEVELOPER · UI ENGINEER · 2026</div>
+    <div class="h1">BUILD.<br>DESIGN.<br>DELIVER.</div>
+    <p class="h-sub">50 live projects · Modern UI · <span>Freelance Ready</span></p>
+    <div class="stats">
+      <div class="stat"><div class="stat-n" id="c1">0</div><div class="stat-l">PROJECTS</div></div>
+      <div class="stat"><div class="stat-n" id="c2">0</div><div class="stat-l">CATEGORIES</div></div>
+      <div class="stat"><div class="stat-n" id="c3">0</div><div class="stat-l">TECHNOLOGIES</div></div>
+    </div>
+    <div class="s-hint"><div class="s-line"></div><span>SCROLL</span></div>
+    <!-- MOBILE hero — wrapped in full-height flex column -->
+    <div class="mob-home-inner">
+      <div class="mob-top-block">
+        <div class="mob-hero-tag">FRONTEND DEV · UI ENGINEER · 2026</div>
+        <div class="mob-h1">BUILD.<br>DESIGN.<br>DELIVER.</div>
+        <p class="mob-h-sub">50 live projects · Modern UI · <span>Freelance Ready</span></p>
+      </div>
+      <div class="mob-stats">
+        <div class="mob-stat"><div class="mob-stat-n" id="mc1">0</div><div class="mob-stat-l">PROJECTS</div></div>
+        <div class="mob-stat"><div class="mob-stat-n" id="mc2">0</div><div class="mob-stat-l">CATEG.</div></div>
+        <div class="mob-stat"><div class="mob-stat-n" id="mc3">0</div><div class="mob-stat-l">TECHS</div></div>
+      </div>
+      <div class="mob-bottom-block">
+        <div class="mob-cta-row">
+          <button class="mob-cta-primary" onclick="mobGo(1)">VIEW PROJECTS →</button>
+        </div>
+      </div>
+    </div>
+    <!-- Swipe hint — absolute to #pg-home, centred at bottom -->
+    <div class="mob-scroll-hint"><div class="mob-scroll-dot"></div><span>SWIPE UP</span></div>
+  </div>
+  <div class="pg" id="pg-proj">
+    <div class="sh"><div class="sn">01</div><div class="st">Projects</div><div class="sl"></div></div>
+    <div class="filters">
+      <button class="fb act" onclick="filt('all',this)">ALL (50)</button>
+      <button class="fb" onclick="filt('tools',this)">TOOLS</button>
+      <button class="fb" onclick="filt('apps',this)">APPS</button>
+      <button class="fb" onclick="filt('ui',this)">UI / CLONES</button>
+      <button class="fb" onclick="filt('games',this)">GAMES</button>
+      <button class="fb" onclick="filt('futuristic',this)">FUTURISTIC</button>
+      <button class="fb" onclick="filt('dashboard',this)">DASHBOARDS</button>
+    </div>
+    <div class="grid" id="pgrid"></div>
+    <!-- MOBILE layout -->
+    <div class="mob-proj-wrap">
+      <div class="mob-section-header">
+        <div class="mob-sec-num">01</div>
+        <div class="mob-sec-title">Projects</div>
+        <div class="mob-sec-line"></div>
+      </div>
+      <div class="mob-filters" id="mob-filter-row">
+        <button class="mob-fb act" onclick="mobFilt('all',this)">ALL (50)</button>
+        <button class="mob-fb" onclick="mobFilt('tools',this)">TOOLS</button>
+        <button class="mob-fb" onclick="mobFilt('apps',this)">APPS</button>
+        <button class="mob-fb" onclick="mobFilt('ui',this)">UI/CLONES</button>
+        <button class="mob-fb" onclick="mobFilt('games',this)">GAMES</button>
+        <button class="mob-fb" onclick="mobFilt('futuristic',this)">FUTURISTIC</button>
+        <button class="mob-fb" onclick="mobFilt('dashboard',this)">DASHBOARDS</button>
+      </div>
+      <div class="mob-grid" id="mob-pgrid"></div>
+    </div>
+  </div>
+  <div class="pg" id="pg-about">
+    <!-- desktop header (hidden on mobile) -->
+    <div class="sh"><div class="sn">02</div><div class="st">About</div><div class="sl"></div></div>
+    <!-- mobile header (hidden on desktop) — must be FIRST so it sits at the top -->
+    <div class="mob-section-header">
+      <div class="mob-sec-num">02</div>
+      <div class="mob-sec-title">About</div>
+      <div class="mob-sec-line"></div>
+    </div>
+    <div class="ag">
+      <div class="ac"><h3>TECH STACK</h3>
+        <div class="sr"><span class="sname">HTML / CSS</span><div class="sbg"><div class="sb" style="width:95%"></div></div><span class="spct">95%</span></div>
+        <div class="sr"><span class="sname">JavaScript</span><div class="sbg"><div class="sb" style="width:90%"></div></div><span class="spct">90%</span></div>
+        <div class="sr"><span class="sname">React.js</span><div class="sbg"><div class="sb" style="width:82%"></div></div><span class="spct">82%</span></div>
+        <div class="sr"><span class="sname">APIs / REST</span><div class="sbg"><div class="sb" style="width:78%"></div></div><span class="spct">78%</span></div>
+        <div class="sr"><span class="sname">UI / UX Design</span><div class="sbg"><div class="sb" style="width:86%"></div></div><span class="spct">86%</span></div>
+        <div class="sr"><span class="sname">Node.js</span><div class="sbg"><div class="sb" style="width:65%"></div></div><span class="spct">65%</span></div>
+      </div>
+      <div class="ac"><h3>SERVICES</h3>
+        <div class="svi"><div class="svd"></div><div><h4>Frontend Development</h4><p>Modern responsive web apps with pixel-perfect UI.</p></div></div>
+        <div class="svi"><div class="svd" style="background:var(--accent2)"></div><div><h4>UI / UX Design</h4><p>Glassmorphism, futuristic & minimalist interfaces.</p></div></div>
+        <div class="svi"><div class="svd" style="background:var(--accent4)"></div><div><h4>Dashboard & Admin Panels</h4><p>Analytics, CRM & admin dashboards for businesses.</p></div></div>
+        <div class="svi"><div class="svd" style="background:#fbbf24"></div><div><h4>Web App Clones</h4><p>Netflix, Instagram, WhatsApp — pixel-perfect replicas.</p></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="pg" id="pg-foot">
+    <p> 2026 <span>Portfolio</span> · Built with HTML, CSS & JavaScript · 50 Live Projects</p>
+    <div class="flinks">
+      <a href="#" onclick="go(0);return false;">HOME</a>
+      <a href="#" onclick="go(1);return false;">PROJECTS</a>
+      <a href="#" onclick="go(2);return false;">ABOUT</a>
+    </div>
+  </div>
+</div>
+<div id="toast">✓ Message sent!</div>
+
+<!-- MODAL -->
+<div id="modal-backdrop" onclick="handleBD(event)">
+  <div class="modal-box">
+    <button class="modal-x" onclick="closeModal()">✕</button>
+    <div class="modal-icon-row"><span class="modal-big-icon" id="m-icon"></span></div>
+    <div class="modal-cat" id="m-cat"></div>
+    <div class="modal-title" id="m-title"></div>
+    <div class="modal-desc" id="m-desc"></div>
+    <div class="modal-feat-label">FEATURES</div>
+    <div class="modal-feats" id="m-feats"></div>
+    <div class="modal-tags" id="m-tags"></div>
+    <a class="modal-view-btn" id="m-link" href="#" target="_blank">
+      VIEW PROJECT <span class="btn-arrow">→</span>
+    </a>
+  </div>
+<script src="script.js"></script>
+</body>
+</html>

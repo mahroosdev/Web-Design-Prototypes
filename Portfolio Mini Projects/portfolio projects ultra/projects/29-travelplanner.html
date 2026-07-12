@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8">
+<meta name="description" content="Travel Planner — part of a professional web developer portfolio with 50+ projects.">
+<meta name="robots" content="index, follow">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Travel Planner</title><style>*{margin:0;padding:0;box-sizing:border-box}
+body{background:linear-gradient(135deg,#020617 0%,#0f172a 100%);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#fff;min-height:100vh;padding:40px 20px;overflow-x:hidden}
+.container{max-width:1000px;margin:0 auto}
+h1{background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:36px;margin-bottom:8px}
+.subtitle{color:#94a3b8;margin-bottom:28px;font-size:15px}
+.back-link{display:inline-flex;align-items:center;gap:6px;margin-bottom:20px;color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;padding:8px 14px;border:1px solid rgba(56,189,248,.3);border-radius:8px;transition:.2s}
+.back-link:hover{background:rgba(56,189,248,.1)}
+.card{background:rgba(30,41,59,.8);backdrop-filter:blur(10px);padding:24px;border-radius:16px;border:1px solid rgba(56,189,248,.2);margin-bottom:20px}
+.btn{padding:10px 22px;border:none;border-radius:8px;cursor:pointer;font-weight:700;font-size:14px;transition:.2s;background:linear-gradient(90deg,#38bdf8,#22c55e);color:#000}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(56,189,248,.35)}
+.btn-outline{background:transparent;border:1px solid rgba(56,189,248,.4);color:#38bdf8}
+.btn-red{background:linear-gradient(90deg,#ef4444,#dc2626);color:#fff}
+input,textarea,select{background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.3);color:#fff;border-radius:8px;padding:10px 14px;font-size:14px;width:100%;outline:none;transition:.2s}
+input:focus,textarea:focus,select:focus{border-color:#38bdf8;box-shadow:0 0 0 3px rgba(56,189,248,.15)}
+input::placeholder,textarea::placeholder{color:#64748b}
+label{display:block;font-size:13px;font-weight:600;color:#94a3b8;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.flex{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;background:rgba(56,189,248,.15);color:#38bdf8;border:1px solid rgba(56,189,248,.3)}
+.badge-green{background:rgba(34,197,94,.15);color:#22c55e;border-color:rgba(34,197,94,.3)}
+.badge-red{background:rgba(239,68,68,.15);color:#ef4444;border-color:rgba(239,68,68,.3)}
+.badge-yellow{background:rgba(234,179,8,.15);color:#eab308;border-color:rgba(234,179,8,.3)}
+.stat-box{background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.15);border-radius:12px;padding:20px;text-align:center}
+.stat-num{font-size:32px;font-weight:800;background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-label{font-size:12px;color:#64748b;margin-top:4px;text-transform:uppercase;letter-spacing:.5px}
+hr{border:none;border-top:1px solid rgba(56,189,248,.1);margin:20px 0}
+@media(max-width:768px){body{padding:15px 12px}h1{font-size:26px}.grid2,.grid3,.grid4{grid-template-columns:1fr}.card{padding:16px 14px}}
+.trip-card{background:rgba(30,41,59,.8);border:1px solid rgba(56,189,248,.15);border-radius:12px;padding:14px;margin-bottom:10px;cursor:pointer;transition:.2s}
+.trip-card:hover,.trip-card.active{border-color:rgba(56,189,248,.5);background:rgba(56,189,248,.06)}
+.trip-emoji{font-size:28px;margin-bottom:6px}
+.trip-name{font-weight:800;font-size:16px}
+.trip-dates{font-size:12px;color:#64748b;margin-top:2px}
+.tab-btn{padding:8px 16px;border:1px solid rgba(56,189,248,.3);background:transparent;color:#64748b;cursor:pointer;font-size:13px;font-weight:600;transition:.2s}
+.tab-btn:first-child{border-radius:8px 0 0 8px}
+.tab-btn:last-child{border-radius:0 8px 8px 0}
+.tab-btn.active{background:rgba(56,189,248,.2);color:#38bdf8;border-color:#38bdf8}
+.day-header{background:rgba(56,189,248,.08);border-radius:8px;padding:10px 14px;font-weight:700;color:#38bdf8;margin-bottom:8px;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.activity-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;background:rgba(56,189,248,.04);border:1px solid rgba(56,189,248,.1);margin-bottom:6px}
+.exp-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(56,189,248,.08);font-size:14px}
+.budget-bar{height:8px;background:rgba(56,189,248,.1);border-radius:4px;overflow:hidden;margin-top:8px}
+.budget-fill{height:100%;border-radius:4px;transition:width .5s}
+/* ── UNIVERSAL UPGRADE: Theme, Animations, Toast ── */
+:root{
+  --bg:#020617;--bg2:#0f172a;--card:rgba(30,41,59,.85);--border:rgba(56,189,248,.22);
+  --accent:#38bdf8;--accent2:#22c55e;--text:#f1f5f9;--muted:#94a3b8;--danger:#ef4444;
+}
+
+
+/* Toast notifications */
+.u-toast-container{position:fixed;bottom:24px;right:20px;z-index:99999;display:flex;flex-direction:column;gap:8px;max-width:320px}
+.u-toast{
+  background:var(--card);border:1px solid var(--border);color:var(--text);
+  padding:11px 16px;border-radius:10px;font-size:13px;font-weight:600;
+  box-shadow:0 4px 20px rgba(0,0,0,.35);
+  animation:uToastIn .3s ease;display:flex;align-items:center;gap:8px;
+}
+.u-toast.success{border-color:rgba(34,197,94,.5);background:rgba(34,197,94,.1)}
+.u-toast.error{border-color:rgba(239,68,68,.5);background:rgba(239,68,68,.1)}
+.u-toast.info{border-color:rgba(56,189,248,.5);background:rgba(56,189,248,.1)}
+@keyframes uToastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes uToastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(20px)}}
+
+/* Entrance animations */
+@keyframes uFadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes uFadeIn{from{opacity:0}to{opacity:1}}
+@keyframes uPulse{0%,100%{box-shadow:0 0 0 0 rgba(56,189,248,.4)}70%{box-shadow:0 0 0 8px rgba(56,189,248,0)}}
+.u-fade-up{animation:uFadeUp .45s ease both}
+.u-fade-in{animation:uFadeIn .4s ease both}
+.u-pulse{animation:uPulse 2s infinite}
+
+/* Button hover lift */
+.btn:hover,[class*="btn"]:not([class*="btn-"]):hover{transform:translateY(-2px)!important}
+
+/* Smooth card hover */
+.card:hover,[class*="card"]:hover{
+  border-color:var(--accent)!important;
+  box-shadow:0 6px 28px rgba(56,189,248,.12)!important;
+  transition:all .25s ease!important;
+}
+
+/* Loading skeleton */
+.u-skeleton{
+  background:linear-gradient(90deg,rgba(56,189,248,.06) 25%,rgba(56,189,248,.12) 50%,rgba(56,189,248,.06) 75%);
+  background-size:200% 100%;animation:uSkeleton 1.4s infinite;border-radius:6px;
+}
+@keyframes uSkeleton{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* Progress bar component */
+.u-progress{height:5px;background:rgba(56,189,248,.12);border-radius:3px;overflow:hidden;margin:8px 0}
+.u-progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:3px;transition:width .5s ease}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(56,189,248,.3);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(56,189,248,.55)}
+
+/* Mobile responsive upgrades */
+@media(max-width:600px){
+  
+  .u-toast-container{right:10px;bottom:80px;max-width:calc(100vw - 20px)}
+}
+
+</style></head>
+<body><div class="container">
+<a href="../index.html" class="back-link" onclick="window.close(); return false;">← Back to Portfolio</a>
+
+<h1>✈️ Travel Planner Pro</h1>
+<p class="subtitle">Plan trips, manage itineraries, track expenses</p>
+<div class="grid2" style="align-items:start">
+  <div>
+    <div class="card">
+      <h3 style="color:#38bdf8;margin-bottom:14px">My Trips (<span id="tripCount">0</span>)</h3>
+      <div id="tripList"></div>
+      <button class="btn" onclick="showNewTrip()" style="width:100%;margin-top:10px">+ Plan New Trip</button>
+    </div>
+    <div class="card" id="newTripCard" style="display:none">
+      <h3 style="color:#38bdf8;margin-bottom:14px">New Trip</h3>
+      <input id="tripDest" placeholder="Destination (e.g. Tokyo, Japan)" style="margin-bottom:10px">
+      <div class="grid2" style="gap:10px;margin-bottom:10px">
+        <div><label>Departure</label><input type="date" id="tripStart"></div>
+        <div><label>Return</label><input type="date" id="tripEnd"></div>
+      </div>
+      <div class="grid2" style="gap:10px;margin-bottom:10px">
+        <div><label>Budget ($)</label><input type="number" id="tripBudget" placeholder="2000"></div>
+        <div><label>Travelers</label><input type="number" id="tripPeople" value="1" min="1"></div>
+      </div>
+      <div class="flex" style="gap:8px">
+        <button class="btn" onclick="createTrip()" style="flex:1">Create Trip</button>
+        <button class="btn btn-outline" onclick="document.getElementById('newTripCard').style.display='none'" style="flex:1">Cancel</button>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div id="tripDetail" class="card">
+      <div style="text-align:center;padding:30px;color:#64748b">
+        <div style="font-size:48px;margin-bottom:12px">✈️</div>
+        <div>Create or select a trip to get started</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div><script>
+const destData={
+  'tokyo':    {emoji:'🗼',tips:'Best visited in spring (March-May) for cherry blossoms. Get a Suica card for trains.',activities:['Visit Senso-ji Temple','Shibuya Crossing at night','TeamLab Planets','Tsukiji Fish Market','Mount Fuji day trip']},
+  'paris':    {emoji:'🗼',tips:'Book Eiffel Tower tickets in advance. Best croissants are at local boulangeries.',activities:['Eiffel Tower sunset','Louvre Museum','Montmartre neighborhood','Seine River cruise','Versailles day trip']},
+  'new york': {emoji:'🗽',tips:'Get an OMNY card for subway. Tipping 20% is standard.',activities:['Central Park morning','Times Square','Brooklyn Bridge walk','MOMA','Staten Island Ferry (free views)']},
+  'default':  {emoji:'✈️',tips:'Research local customs, get travel insurance, and book popular attractions early.',activities:['City walking tour','Local food market','Top landmark visit','Museum exploration','Sunset viewpoint']},
+};
+let trips=[],activeTrip=null,activeTab='itinerary';
+
+function getDestData(dest){const k=dest.toLowerCase();return destData[k]||destData[Object.keys(destData).find(d=>k.includes(d))||'default'];}
+function getDays(start,end){const d=Math.ceil((new Date(end)-new Date(start))/(1000*86400));return Math.max(1,d);}
+function fmtDate(d){return new Date(d).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});}
+
+function showNewTrip(){
+  document.getElementById('newTripCard').style.display='block';
+  const today=new Date().toISOString().split('T')[0];
+  document.getElementById('tripStart').value=today;
+  document.getElementById('tripEnd').value=new Date(Date.now()+7*86400000).toISOString().split('T')[0];
+}
+
+function createTrip(){
+  const dest=document.getElementById('tripDest').value.trim();
+  const start=document.getElementById('tripStart').value;
+  const end=document.getElementById('tripEnd').value;
+  const budget=parseFloat(document.getElementById('tripBudget').value)||2000;
+  const people=parseInt(document.getElementById('tripPeople').value)||1;
+  if(!dest||!start||!end)return;
+  const data=getDestData(dest);
+  const days=getDays(start,end);
+  const itinerary=[];
+  for(let i=0;i<days;i++){
+    const day={day:i+1,date:new Date(start),activities:[]};
+    day.date.setDate(day.date.getDate()+i);
+    const acts=data.activities.slice(i%data.activities.length,(i%data.activities.length)+2);
+    acts.forEach(a=>day.activities.push({text:a,time:i===0?'10:00 AM':'09:00 AM',icon:'📍'}));
+    itinerary.push(day);
+  }
+  const trip={id:Date.now(),dest,emoji:data.emoji,start,end,budget,people,spent:0,tips:data.tips,itinerary,expenses:[],packing:[],days};
+  trips.push(trip);
+  document.getElementById('newTripCard').style.display='none';
+  document.getElementById('tripDest').value='';
+  renderTripList();
+  openTrip(trip.id);
+}
+
+function renderTripList(){
+  document.getElementById('tripCount').textContent=trips.length;
+  document.getElementById('tripList').innerHTML=trips.length?trips.map(t=>`
+    <div class="trip-card ${activeTrip===t.id?'active':''}" onclick="openTrip(${t.id})">
+      <div class="flex" style="justify-content:space-between">
+        <div><span class="trip-emoji">${t.emoji}</span><div class="trip-name">${t.dest}</div><div class="trip-dates">${fmtDate(t.start)} - ${fmtDate(t.end)} · ${t.days} days</div></div>
+        <div style="text-align:right"><div style="font-weight:700;color:#22c55e">$${t.budget.toLocaleString()}</div><div style="font-size:12px;color:#64748b">${t.people} traveler${t.people>1?'s':''}</div></div>
+      </div>
+    </div>`).join(''):'<p style="color:#64748b;font-size:14px;text-align:center;padding:16px">No trips planned yet.</p>';
+}
+
+function openTrip(id){
+  activeTrip=id;activeTab='itinerary';renderTripDetail();renderTripList();
+}
+
+function renderTripDetail(){
+  const t=trips.find(t=>t.id===activeTrip);
+  if(!t){document.getElementById('tripDetail').innerHTML='<div style="text-align:center;padding:30px;color:#64748b"><div style="font-size:48px;margin-bottom:12px">✈️</div><div>Select a trip</div></div>';return;}
+  const pct=Math.min(100,Math.round((t.spent/t.budget)*100));
+  const barColor=pct>90?'#ef4444':pct>70?'#f59e0b':'#22c55e';
+  let content='';
+  if(activeTab==='itinerary'){
+    content=t.itinerary.map(d=>`
+      <div class="day-header" onclick="toggleDay(${t.id},${d.day})">
+        <span>Day ${d.day} — ${d.date.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'})}</span>
+        <span style="font-size:12px;color:#64748b">${d.activities.length} activities</span>
+      </div>
+      <div id="day-${t.id}-${d.day}">
+        ${d.activities.map((a,i)=>`<div class="activity-item"><span style="font-size:16px">${a.icon}</span><div style="flex:1"><div style="font-weight:600;font-size:13px">${a.text}</div><div style="font-size:11px;color:#64748b">${a.time}</div></div><button onclick="removeActivity(${t.id},${d.day},${i})" style="background:none;border:none;color:#64748b;cursor:pointer;font-size:14px">✕</button></div>`).join('')}
+        <div class="flex" style="gap:6px;margin:8px 0 14px">
+          <input id="act-${t.id}-${d.day}" placeholder="Add activity..." style="flex:1;font-size:13px;padding:8px 10px">
+          <button class="btn" onclick="addActivity(${t.id},${d.day})" style="padding:8px 14px;font-size:12px">+</button>
+        </div>
+      </div>`).join('');
+  }else if(activeTab==='expenses'){
+    content=`
+      <div class="flex" style="gap:8px;margin-bottom:14px">
+        <input id="expDesc" placeholder="Description" style="flex:2;font-size:13px">
+        <input id="expAmt" type="number" placeholder="Amount" style="flex:1;font-size:13px">
+        <select id="expCat" style="flex:1;font-size:13px"><option>Food</option><option>Transport</option><option>Hotel</option><option>Activity</option><option>Shopping</option><option>Other</option></select>
+        <button class="btn" onclick="addExpense(${t.id})" style="padding:8px 14px;font-size:12px">Add</button>
+      </div>
+      ${t.expenses.map((e,i)=>`<div class="exp-item"><div><span style="font-size:16px">${{'Food':'🍜','Transport':'🚌','Hotel':'🏨','Activity':'🎯','Shopping':'🛍','Other':'💰'}[e.cat]||'💰'}</span> ${e.desc}<br><span class="badge" style="font-size:10px">${e.cat}</span></div><div style="text-align:right"><span style="font-weight:700;color:#ef4444">-$${e.amt.toFixed(2)}</span><br><button onclick="removeExpense(${t.id},${i})" style="background:none;border:none;color:#64748b;cursor:pointer;font-size:12px">remove</button></div></div>`).join('')}
+      ${!t.expenses.length?'<p style="color:#64748b;font-size:14px">No expenses recorded.</p>':''}`;
+  }else if(activeTab==='packing'){
+    const cats=['Essentials','Clothing','Electronics','Toiletries','Documents'];
+    const defaults={Essentials:['Passport','Travel insurance','Local currency','Adapters'],Clothing:['Comfortable shoes','Weather-appropriate clothes','Swimwear','Jacket'],Electronics:['Phone charger','Camera','Portable battery','Headphones'],Toiletries:['Sunscreen','Medications','Toothbrush','Hand sanitizer'],Documents:['Printed itinerary','Hotel confirmations','Emergency contacts','Copies of ID']};
+    if(!t.packing.length)cats.forEach(c=>defaults[c].forEach(item=>t.packing.push({cat:c,item,done:false})));
+    content=cats.map(cat=>`
+      <div style="margin-bottom:14px">
+        <div style="font-weight:700;color:#38bdf8;font-size:13px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">${cat}</div>
+        ${t.packing.filter(p=>p.cat===cat).map((p,idx)=>`
+          <label style="display:flex;align-items:center;gap:8px;padding:7px 0;cursor:pointer;font-size:14px;text-transform:none;letter-spacing:0;font-weight:400;color:${p.done?'#64748b':'#e2e8f0'}">
+            <input type="checkbox" ${p.done?'checked':''} onchange="togglePack(${t.id},'${cat}',${t.packing.findIndex(x=>x.cat===cat&&x.item===p.item)})" style="width:auto;background:transparent;border:none;box-shadow:none">
+            <span style="${p.done?'text-decoration:line-through;':''}">${p.item}</span>
+          </label>`).join('')}
+      </div>`).join('');
+  }
+  document.getElementById('tripDetail').innerHTML=`
+    <div class="flex" style="justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
+      <div><div style="font-size:28px">${t.emoji} <span style="font-size:22px;font-weight:800">${t.dest}</span></div><div style="color:#64748b;font-size:13px;margin-top:2px">${fmtDate(t.start)} - ${fmtDate(t.end)} · ${t.days} days · ${t.people} traveler${t.people>1?'s':''}</div></div>
+      <button class="btn btn-red" onclick="deleteTrip(${t.id})" style="padding:7px 14px;font-size:12px">Delete</button>
+    </div>
+    <div style="margin-bottom:14px">
+      <div class="flex" style="justify-content:space-between;font-size:13px;margin-bottom:6px">
+        <span>Budget: <strong style="color:#22c55e">$${t.budget.toLocaleString()}</strong></span>
+        <span>Spent: <strong style="color:#ef4444">$${t.spent.toFixed(2)}</strong></span>
+        <span>Remaining: <strong style="color:#38bdf8">$${(t.budget-t.spent).toFixed(2)}</strong></span>
+      </div>
+      <div class="budget-bar"><div class="budget-fill" style="width:${pct}%;background:${barColor}"></div></div>
+    </div>
+    <div class="card" style="background:rgba(56,189,248,.06);padding:12px;margin-bottom:14px">
+      <div style="font-size:12px;font-weight:700;color:#38bdf8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Travel Tip</div>
+      <div style="font-size:13px;color:#94a3b8;line-height:1.6">${t.tips}</div>
+    </div>
+    <div class="flex" style="gap:0;margin-bottom:16px">
+      <button class="tab-btn ${activeTab==='itinerary'?'active':''}" onclick="setTab(${t.id},'itinerary')">Itinerary</button>
+      <button class="tab-btn ${activeTab==='expenses'?'active':''}" onclick="setTab(${t.id},'expenses')">Expenses</button>
+      <button class="tab-btn ${activeTab==='packing'?'active':''}" onclick="setTab(${t.id},'packing')">Packing</button>
+    </div>
+    ${content}`;
+}
+function setTab(id,tab){activeTab=tab;renderTripDetail();}
+function toggleDay(tid,day){}
+function addActivity(tid,day){
+  const t=trips.find(t=>t.id===tid);
+  const input=document.getElementById('act-'+tid+'-'+day);
+  if(!input||!input.value.trim())return;
+  const d=t.itinerary.find(d=>d.day===day);
+  if(d){d.activities.push({text:input.value.trim(),time:'12:00 PM',icon:'📍'});}
+  renderTripDetail();
+}
+function removeActivity(tid,day,idx){const t=trips.find(t=>t.id===tid);const d=t.itinerary.find(d=>d.day===day);if(d){d.activities.splice(idx,1);}renderTripDetail();}
+function addExpense(tid){
+  const t=trips.find(t=>t.id===tid);
+  const desc=document.getElementById('expDesc').value.trim();
+  const amt=parseFloat(document.getElementById('expAmt').value)||0;
+  const cat=document.getElementById('expCat').value;
+  if(!desc||!amt)return;
+  t.expenses.push({desc,amt,cat});t.spent+=amt;renderTripDetail();
+}
+function removeExpense(tid,idx){const t=trips.find(t=>t.id===tid);t.spent-=t.expenses[idx].amt;t.expenses.splice(idx,1);renderTripDetail();}
+function togglePack(tid,cat,idx){const t=trips.find(t=>t.id===tid);t.packing[idx].done=!t.packing[idx].done;renderTripDetail();}
+function deleteTrip(id){trips=trips.filter(t=>t.id!==id);activeTrip=null;renderTripList();document.getElementById('tripDetail').innerHTML='<div style="text-align:center;padding:30px;color:#64748b"><div style="font-size:48px;margin-bottom:12px">✈️</div><div>Trip deleted. Plan a new one!</div></div>';}
+
+// Seed one demo trip
+const today=new Date().toISOString().split('T')[0];
+const end=new Date(Date.now()+7*86400000).toISOString().split('T')[0];
+document.getElementById('tripDest').value='Tokyo, Japan';
+document.getElementById('tripStart').value=today;
+document.getElementById('tripEnd').value=end;
+document.getElementById('tripBudget').value='3500';
+document.getElementById('tripPeople').value='2';
+createTrip();
+</script><script>
+// ── UNIVERSAL UPGRADE: Theme, localStorage, Toast, Animations ──
+(function(){
+'use strict';
+
+// ── 2. TOAST SYSTEM ──────────────────────────────────────────────
+var toastContainer = null;
+function getToastContainer(){
+  if(!toastContainer || !document.body.contains(toastContainer)){
+    toastContainer = document.createElement('div');
+    toastContainer.className = 'u-toast-container';
+    document.body.appendChild(toastContainer);
+  }
+  return toastContainer;
+}
+
+window.uToast = function(msg, type, duration){
+  type = type || 'info';
+  duration = duration || 2800;
+  var icons = {success:'✅', error:'❌', info:'💡', warning:'⚠️'};
+  var c = getToastContainer();
+  var t = document.createElement('div');
+  t.className = 'u-toast ' + type;
+  t.innerHTML = '<span>' + (icons[type]||'💡') + '</span><span>' + msg + '</span>';
+  c.appendChild(t);
+  setTimeout(function(){
+    t.style.animation = 'uToastOut .3s ease forwards';
+    setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 300);
+  }, duration);
+};
+
+// ── 3. LOCALSTORAGE HELPERS ──────────────────────────────────────
+var APP_KEY = 'uapp_' + location.pathname.split('/').pop().replace('.html','');
+window.uSave = function(key, val){
+  try { localStorage.setItem(APP_KEY + '_' + key, JSON.stringify(val)); return true; }
+  catch(e){ return false; }
+};
+window.uLoad = function(key, def){
+  try {
+    var v = localStorage.getItem(APP_KEY + '_' + key);
+    return v !== null ? JSON.parse(v) : def;
+  } catch(e){ return def; }
+};
+window.uClear = function(key){
+  try { localStorage.removeItem(APP_KEY + '_' + key); } catch(e){}
+};
+
+// ── 4. ENTRANCE ANIMATIONS ───────────────────────────────────────
+function animateEntrance(){
+  var cards = document.querySelectorAll('.card, [class*="card"]');
+  cards.forEach(function(el, i){
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(18px)';
+    setTimeout(function(){
+      el.style.transition = 'opacity .4s ease, transform .4s ease';
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+    }, i * 60);
+  });
+}
+
+// ── 5. SMOOTH COUNTER ANIMATION ──────────────────────────────────
+window.uAnimCount = function(el, target, duration, prefix, suffix){
+  prefix = prefix || '';
+  suffix = suffix || '';
+  duration = duration || 1200;
+  var start = 0;
+  var step = target / (duration / 16);
+  var iv = setInterval(function(){
+    start = Math.min(start + step, target);
+    el.textContent = prefix + Math.round(start).toLocaleString() + suffix;
+    if(start >= target) clearInterval(iv);
+  }, 16);
+};
+
+// ── 6. EXPORT HELPER ─────────────────────────────────────────────
+window.uExportJSON = function(data, filename){
+  var blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.json';
+  a.click();
+  uToast('Data exported!', 'success');
+};
+window.uExportCSV = function(rows, filename){
+  var csv = rows.map(function(r){ return r.join(','); }).join('\n');
+  var blob = new Blob([csv], {type:'text/csv'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.csv';
+  a.click();
+  uToast('CSV exported!', 'success');
+};
+
+// ── 8. INIT ──────────────────────────────────────────────────────
+function init(){
+  setTimeout(animateEntrance, 100);
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+})();
+</script>
+<script>
+(function(){
+  // Persist trips to localStorage
+  setTimeout(function(){
+    var savedTrips = uLoad('travel_trips', null);
+    if(savedTrips && savedTrips.length && window.trips && !window.trips.length){
+      window.trips = savedTrips;
+      if(window.renderTripList) renderTripList();
+      uToast(savedTrips.length + ' trips restored ✈️', 'success', 1800);
+    }
+    
+    // Patch createTrip to save
+    var origCreate = window.createTrip;
+    if(origCreate){
+      window.createTrip = function(){
+        origCreate.apply(this,arguments);
+        setTimeout(function(){ if(window.trips) uSave('travel_trips', window.trips); }, 200);
+      };
+    }
+    
+    // Patch addExpense to save + show budget alert
+    var origAddExp = window.addExpense;
+    if(origAddExp){
+      window.addExpense = function(tid){
+        origAddExp.apply(this,[tid]);
+        setTimeout(function(){
+          if(window.trips) uSave('travel_trips', window.trips);
+          var trip = (window.trips||[]).find(function(t){return t.id===tid;});
+          if(trip){
+            var pct = trip.spent/trip.budget;
+            if(pct >= 0.9) uToast('⚠️ Budget alert: ' + Math.round(pct*100) + '% spent!', 'error');
+            else if(pct >= 0.7) uToast('💰 70% of budget used', 'warning');
+          }
+        }, 150);
+      };
+    }
+  }, 400);
+  
+  // Weather suggestion based on destination
+  window.getWeatherTip = function(dest){
+    var tips = {
+      'tokyo':'🌸 Spring (Mar-May) is best. Pack layers.',
+      'paris':'☂️ Pack an umbrella — rain is common year-round.',
+      'dubai':'☀️ Oct-Apr is ideal. Pack light, breathable clothing.',
+      'new york':'🧥 Winters are cold. Check the season before packing.',
+      'default':'🌍 Check local weather 2 weeks before departure.'
+    };
+    var key = dest.toLowerCase();
+    return Object.keys(tips).find(function(k){return k!=='default'&&key.includes(k);}) ? tips[Object.keys(tips).find(function(k){return k!=='default'&&key.includes(k);})] : tips.default;
+  };
+  
+  uToast('Trips auto-saved ✈️', 'info', 1500);
+})();
+</script>
+</body></html>

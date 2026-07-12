@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8">
+<meta name="description" content="URL Shortener — part of a professional web developer portfolio with 50+ projects.">
+<meta name="robots" content="index, follow">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>URL Shortener</title><style>*{margin:0;padding:0;box-sizing:border-box}
+body{background:linear-gradient(135deg,#020617 0%,#0f172a 100%);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#fff;min-height:100vh;padding:40px 20px;overflow-x:hidden}
+.container{max-width:1000px;margin:0 auto}
+h1{background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:36px;margin-bottom:8px}
+.subtitle{color:#94a3b8;margin-bottom:28px;font-size:15px}
+.back-link{display:inline-flex;align-items:center;gap:6px;margin-bottom:20px;color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;padding:8px 14px;border:1px solid rgba(56,189,248,.3);border-radius:8px;transition:.2s}
+.back-link:hover{background:rgba(56,189,248,.1)}
+.card{background:rgba(30,41,59,.8);backdrop-filter:blur(10px);padding:24px;border-radius:16px;border:1px solid rgba(56,189,248,.2);margin-bottom:20px}
+.btn{padding:10px 22px;border:none;border-radius:8px;cursor:pointer;font-weight:700;font-size:14px;transition:.2s;background:linear-gradient(90deg,#38bdf8,#22c55e);color:#000}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(56,189,248,.35)}
+.btn-outline{background:transparent;border:1px solid rgba(56,189,248,.4);color:#38bdf8}
+input,textarea,select{background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.3);color:#fff;border-radius:8px;padding:10px 14px;font-size:14px;width:100%;outline:none;transition:.2s}
+input:focus,textarea:focus,select:focus{border-color:#38bdf8;box-shadow:0 0 0 3px rgba(56,189,248,.15)}
+input::placeholder,textarea::placeholder{color:#64748b}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.flex{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;background:rgba(56,189,248,.15);color:#38bdf8;border:1px solid rgba(56,189,248,.3)}
+.badge-green{background:rgba(34,197,94,.15);color:#22c55e;border-color:rgba(34,197,94,.3)}
+.stat-box{background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.15);border-radius:12px;padding:20px;text-align:center}
+.stat-num{font-size:32px;font-weight:800;background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-label{font-size:12px;color:#64748b;margin-top:4px;text-transform:uppercase;letter-spacing:.5px}
+@media(max-width:768px){body{padding:15px 12px}h1{font-size:26px}.grid2,.grid3,.grid4{grid-template-columns:1fr}.card{padding:16px 14px}}
+.link-item{background:rgba(30,41,59,.8);border:1px solid rgba(56,189,248,.15);border-radius:12px;padding:14px;margin-bottom:10px;transition:.2s}
+.link-item:hover{border-color:rgba(56,189,248,.4)}
+.short-url{font-family:monospace;font-size:15px;font-weight:700;color:#38bdf8;word-break:break-all}
+.long-url{font-size:12px;color:#64748b;word-break:break-all;margin-top:3px;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+.link-meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;font-size:12px;color:#475569;align-items:center}
+.link-actions{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.l-btn{padding:5px 10px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:700;transition:.2s}
+.l-btn-copy{background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.3);color:#38bdf8}
+.l-btn-del{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#ef4444}
+.l-btn-stat{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:#22c55e}
+.click-bar{height:4px;background:rgba(56,189,248,.1);border-radius:2px;overflow:hidden;margin-top:6px}
+.click-fill{height:100%;background:linear-gradient(90deg,#38bdf8,#22c55e);border-radius:2px;transition:width .5s}
+.result-box{background:linear-gradient(135deg,rgba(56,189,248,.1),rgba(34,197,94,.05));border:1px solid rgba(56,189,248,.3);border-radius:12px;padding:16px}
+/* ── UNIVERSAL UPGRADE: Theme, Animations, Toast ── */
+:root{
+  --bg:#020617;--bg2:#0f172a;--card:rgba(30,41,59,.85);--border:rgba(56,189,248,.22);
+  --accent:#38bdf8;--accent2:#22c55e;--text:#f1f5f9;--muted:#94a3b8;--danger:#ef4444;
+}
+
+
+/* Toast notifications */
+.u-toast-container{position:fixed;bottom:24px;right:20px;z-index:99999;display:flex;flex-direction:column;gap:8px;max-width:320px}
+.u-toast{
+  background:var(--card);border:1px solid var(--border);color:var(--text);
+  padding:11px 16px;border-radius:10px;font-size:13px;font-weight:600;
+  box-shadow:0 4px 20px rgba(0,0,0,.35);
+  animation:uToastIn .3s ease;display:flex;align-items:center;gap:8px;
+}
+.u-toast.success{border-color:rgba(34,197,94,.5);background:rgba(34,197,94,.1)}
+.u-toast.error{border-color:rgba(239,68,68,.5);background:rgba(239,68,68,.1)}
+.u-toast.info{border-color:rgba(56,189,248,.5);background:rgba(56,189,248,.1)}
+@keyframes uToastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes uToastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(20px)}}
+
+/* Entrance animations */
+@keyframes uFadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes uFadeIn{from{opacity:0}to{opacity:1}}
+@keyframes uPulse{0%,100%{box-shadow:0 0 0 0 rgba(56,189,248,.4)}70%{box-shadow:0 0 0 8px rgba(56,189,248,0)}}
+.u-fade-up{animation:uFadeUp .45s ease both}
+.u-fade-in{animation:uFadeIn .4s ease both}
+.u-pulse{animation:uPulse 2s infinite}
+
+/* Button hover lift */
+.btn:hover,[class*="btn"]:not([class*="btn-"]):hover{transform:translateY(-2px)!important}
+
+/* Smooth card hover */
+.card:hover,[class*="card"]:hover{
+  border-color:var(--accent)!important;
+  box-shadow:0 6px 28px rgba(56,189,248,.12)!important;
+  transition:all .25s ease!important;
+}
+
+/* Loading skeleton */
+.u-skeleton{
+  background:linear-gradient(90deg,rgba(56,189,248,.06) 25%,rgba(56,189,248,.12) 50%,rgba(56,189,248,.06) 75%);
+  background-size:200% 100%;animation:uSkeleton 1.4s infinite;border-radius:6px;
+}
+@keyframes uSkeleton{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* Progress bar component */
+.u-progress{height:5px;background:rgba(56,189,248,.12);border-radius:3px;overflow:hidden;margin:8px 0}
+.u-progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:3px;transition:width .5s ease}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(56,189,248,.3);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(56,189,248,.55)}
+
+/* Mobile responsive upgrades */
+@media(max-width:600px){
+  
+  .u-toast-container{right:10px;bottom:80px;max-width:calc(100vw - 20px)}
+}
+
+</style></head>
+<body><div class="container">
+<a href="../index.html" class="back-link" onclick="window.close(); return false;">← Back to Portfolio</a>
+
+<h1>🔗 LinkSnap Pro</h1>
+<p class="subtitle">Shorten, track and manage your links</p>
+<div class="grid2" style="align-items:start">
+  <div>
+    <div class="card">
+      <h3 style="color:#38bdf8;margin-bottom:14px">Shorten a URL</h3>
+      <label>Long URL</label>
+      <input id="longUrl" placeholder="https://very-long-url.com/with/lots/of/parameters" style="margin-bottom:12px" oninput="validateUrl()">
+      <div class="grid2" style="gap:10px;margin-bottom:12px">
+        <div><label>Custom Alias (optional)</label><input id="customSlug" placeholder="my-link" maxlength="20"></div>
+        <div><label>Campaign Tag</label><select id="campaign"><option value="">None</option><option value="social">Social</option><option value="email">Email</option><option value="ads">Ads</option><option value="blog">Blog</option></select></div>
+      </div>
+      <label style="display:flex;align-items:center;gap:8px;margin-bottom:14px;cursor:pointer;text-transform:none;letter-spacing:0;font-weight:400;font-size:14px">
+        <input type="checkbox" id="withQR" style="width:auto;background:transparent;border:none;box-shadow:none"> Also generate QR code
+      </label>
+      <button class="btn" onclick="shortenUrl()" style="width:100%" id="shortenBtn">✂️ Shorten Link</button>
+      <div id="resultBox" style="margin-top:14px;display:none"></div>
+    </div>
+    <div class="card">
+      <h3 style="color:#38bdf8;margin-bottom:14px">Stats Overview</h3>
+      <div class="grid3" style="gap:10px">
+        <div class="stat-box"><div class="stat-num" id="totalLinks">0</div><div class="stat-label">Links</div></div>
+        <div class="stat-box"><div class="stat-num" id="totalClicks">0</div><div class="stat-label">Clicks</div></div>
+        <div class="stat-box"><div class="stat-num" id="avgCtr">0%</div><div class="stat-label">Avg CTR</div></div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="card">
+      <div class="flex" style="justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
+        <h3 style="color:#38bdf8">My Links</h3>
+        <div class="flex" style="gap:8px">
+          <input id="linkSearch" placeholder="Search..." oninput="renderLinks()" style="width:140px;padding:7px 12px;font-size:13px">
+          <select id="sortLinks" onchange="renderLinks()" style="width:auto;padding:7px 10px;font-size:13px">
+            <option value="date">Newest</option><option value="clicks">Most Clicks</option>
+          </select>
+        </div>
+      </div>
+      <div id="linkList"></div>
+    </div>
+  </div>
+</div>
+</div><script>
+let links=[],totalClickCount=0;
+const BASE='lnk.sn/';
+const domains=['lnk.sn','short.ly','go.link','qs.io','t.co','bit.do'];
+
+function validateUrl(){
+  const v=document.getElementById('longUrl').value.trim();
+  const btn=document.getElementById('shortenBtn');
+  btn.style.opacity=(v.length>5&&(v.startsWith('http')||v.startsWith('www')))?'1':'0.5';
+}
+
+function shortenUrl(){
+  const url=document.getElementById('longUrl').value.trim();
+  if(!url){document.getElementById('longUrl').style.borderColor='#ef4444';return;}
+  document.getElementById('longUrl').style.borderColor='';
+  const slug=document.getElementById('customSlug').value.trim()||Math.random().toString(36).slice(2,8);
+  const campaign=document.getElementById('campaign').value;
+  const withQR=document.getElementById('withQR').checked;
+  const domain=domains[Math.floor(Math.random()*2)];
+  const shortUrl=domain+'/'+slug;
+  const link={id:Date.now(),short:shortUrl,long:url,slug,campaign,clicks:0,created:new Date(),ctr:0,withQR};
+  links.unshift(link);
+  document.getElementById('longUrl').value='';
+  document.getElementById('customSlug').value='';
+  showResult(link);
+  renderLinks();updateStats();
+}
+
+function showResult(link){
+  const box=document.getElementById('resultBox');
+  box.style.display='block';
+  box.innerHTML=`<div class="result-box">
+    <div style="font-size:12px;color:#64748b;margin-bottom:6px">Your short link is ready!</div>
+    <div class="flex" style="gap:8px;margin-bottom:8px">
+      <code style="font-size:16px;font-weight:700;color:#38bdf8;flex:1">${link.short}</code>
+      <button class="l-btn l-btn-copy" onclick="copyUrl('${link.short}')">Copy</button>
+    </div>
+    ${link.withQR?`<div style="text-align:center;padding:12px;background:rgba(56,189,248,.06);border-radius:8px"><img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${encodeURIComponent('https://'+link.short)}" width="120" height="120" style="border-radius:6px" onerror="this.style.display='none';this.parentElement.textContent='QR generated!'"></div>`:''}
+  </div>`;
+}
+
+function copyUrl(url){navigator.clipboard?.writeText('https://'+url);showToast('Copied!');}
+function showToast(msg){const t=document.createElement('div');t.style.cssText='position:fixed;bottom:20px;right:20px;background:rgba(34,197,94,.9);color:#000;padding:10px 18px;border-radius:8px;font-weight:700;font-size:13px;z-index:9999';t.textContent='✓ '+msg;document.body.appendChild(t);setTimeout(()=>t.remove(),2000);}
+
+function renderLinks(){
+  const q=document.getElementById('linkSearch').value.toLowerCase();
+  const sort=document.getElementById('sortLinks').value;
+  let list=links.filter(l=>!q||l.short.includes(q)||l.long.toLowerCase().includes(q)||l.slug.includes(q));
+  if(sort==='clicks')list.sort((a,b)=>b.clicks-a.clicks);
+  const maxClicks=Math.max(1,...links.map(l=>l.clicks));
+  document.getElementById('linkList').innerHTML=list.length
+    ?list.map(l=>`<div class="link-item">
+      <div class="short-url">${l.short}</div>
+      <div class="long-url">${l.long}</div>
+      <div class="click-bar"><div class="click-fill" style="width:${(l.clicks/maxClicks)*100}%"></div></div>
+      <div class="link-meta">
+        <span>📅 ${l.created.toLocaleDateString()}</span>
+        <span>👆 ${l.clicks} clicks</span>
+        ${l.campaign?`<span class="badge" style="font-size:10px">${l.campaign}</span>`:''}
+      </div>
+      <div class="link-actions">
+        <button class="l-btn l-btn-copy" onclick="copyUrl('${l.short}')">📋 Copy</button>
+        <button class="l-btn l-btn-stat" onclick="simulateClick(${l.id})">+1 Click</button>
+        <button class="l-btn l-btn-del" onclick="deleteLink(${l.id})">🗑 Delete</button>
+      </div>
+    </div>`).join('')
+    :'<p style="color:#64748b;text-align:center;padding:20px">No links yet. Shorten one!</p>';
+}
+
+function simulateClick(id){const l=links.find(l=>l.id===id);if(l){l.clicks++;totalClickCount++;renderLinks();updateStats();}}
+function deleteLink(id){links=links.filter(l=>l.id!==id);renderLinks();updateStats();}
+function updateStats(){
+  document.getElementById('totalLinks').textContent=links.length;
+  const tc=links.reduce((s,l)=>s+l.clicks,0);
+  document.getElementById('totalClicks').textContent=tc;
+  document.getElementById('avgCtr').textContent=links.length?(Math.round(tc/links.length*10)/10)+'%':'0%';
+}
+
+// Seed demo links
+[{slug:'gh-repo',long:'https://github.com/alex/my-awesome-project',campaign:'social',clicks:142},
+ {slug:'my-portfolio',long:'https://alexjohnson.dev/portfolio/showcase',campaign:'email',clicks:89},
+ {slug:'blog-post',long:'https://dev.to/alex/building-modern-web-apps-2024',campaign:'blog',clicks:234},
+].forEach(d=>{links.push({id:Date.now()+Math.random(),short:domains[0]+'/'+d.slug,long:d.long,slug:d.slug,campaign:d.campaign,clicks:d.clicks,created:new Date(Date.now()-Math.random()*7*86400000),withQR:false});});
+renderLinks();updateStats();
+</script><script>
+// ── UNIVERSAL UPGRADE: Theme, localStorage, Toast, Animations ──
+(function(){
+'use strict';
+
+// ── 2. TOAST SYSTEM ──────────────────────────────────────────────
+var toastContainer = null;
+function getToastContainer(){
+  if(!toastContainer || !document.body.contains(toastContainer)){
+    toastContainer = document.createElement('div');
+    toastContainer.className = 'u-toast-container';
+    document.body.appendChild(toastContainer);
+  }
+  return toastContainer;
+}
+
+window.uToast = function(msg, type, duration){
+  type = type || 'info';
+  duration = duration || 2800;
+  var icons = {success:'✅', error:'❌', info:'💡', warning:'⚠️'};
+  var c = getToastContainer();
+  var t = document.createElement('div');
+  t.className = 'u-toast ' + type;
+  t.innerHTML = '<span>' + (icons[type]||'💡') + '</span><span>' + msg + '</span>';
+  c.appendChild(t);
+  setTimeout(function(){
+    t.style.animation = 'uToastOut .3s ease forwards';
+    setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 300);
+  }, duration);
+};
+
+// ── 3. LOCALSTORAGE HELPERS ──────────────────────────────────────
+var APP_KEY = 'uapp_' + location.pathname.split('/').pop().replace('.html','');
+window.uSave = function(key, val){
+  try { localStorage.setItem(APP_KEY + '_' + key, JSON.stringify(val)); return true; }
+  catch(e){ return false; }
+};
+window.uLoad = function(key, def){
+  try {
+    var v = localStorage.getItem(APP_KEY + '_' + key);
+    return v !== null ? JSON.parse(v) : def;
+  } catch(e){ return def; }
+};
+window.uClear = function(key){
+  try { localStorage.removeItem(APP_KEY + '_' + key); } catch(e){}
+};
+
+// ── 4. ENTRANCE ANIMATIONS ───────────────────────────────────────
+function animateEntrance(){
+  var cards = document.querySelectorAll('.card, [class*="card"]');
+  cards.forEach(function(el, i){
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(18px)';
+    setTimeout(function(){
+      el.style.transition = 'opacity .4s ease, transform .4s ease';
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+    }, i * 60);
+  });
+}
+
+// ── 5. SMOOTH COUNTER ANIMATION ──────────────────────────────────
+window.uAnimCount = function(el, target, duration, prefix, suffix){
+  prefix = prefix || '';
+  suffix = suffix || '';
+  duration = duration || 1200;
+  var start = 0;
+  var step = target / (duration / 16);
+  var iv = setInterval(function(){
+    start = Math.min(start + step, target);
+    el.textContent = prefix + Math.round(start).toLocaleString() + suffix;
+    if(start >= target) clearInterval(iv);
+  }, 16);
+};
+
+// ── 6. EXPORT HELPER ─────────────────────────────────────────────
+window.uExportJSON = function(data, filename){
+  var blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.json';
+  a.click();
+  uToast('Data exported!', 'success');
+};
+window.uExportCSV = function(rows, filename){
+  var csv = rows.map(function(r){ return r.join(','); }).join('\n');
+  var blob = new Blob([csv], {type:'text/csv'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.csv';
+  a.click();
+  uToast('CSV exported!', 'success');
+};
+
+// ── 8. INIT ──────────────────────────────────────────────────────
+function init(){
+  setTimeout(animateEntrance, 100);
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+})();
+</script>
+<script>
+(function(){
+  // Persist links
+  setTimeout(function(){
+    var savedLinks = uLoad('url_links', null);
+    if(savedLinks && savedLinks.length && window.links && !window.links.length){
+      window.links = savedLinks;
+      if(window.renderLinks) renderLinks();
+      if(window.updateStats) updateStats();
+      uToast(savedLinks.length + ' links restored 🔗', 'success', 1500);
+    }
+    var origShorten = window.shortenUrl;
+    if(origShorten){
+      window.shortenUrl = function(){
+        origShorten.apply(this,arguments);
+        setTimeout(function(){ if(window.links) uSave('url_links', window.links); }, 200);
+      };
+    }
+    var origDelete = window.deleteLink;
+    if(origDelete){
+      window.deleteLink = function(id){
+        origDelete.apply(this,[id]);
+        setTimeout(function(){ if(window.links) uSave('url_links', window.links); }, 100);
+      };
+    }
+  }, 300);
+  
+  // Click analytics chart
+  function injectAnalyticsChart(){
+    if(document.getElementById('uClickChart')) return;
+    var container = document.querySelector('.card:last-child,.grid2');
+    if(!container) return;
+    var panel = document.createElement('div');
+    panel.id = 'uClickChart';
+    panel.className = 'card u-fade-up';
+    panel.style.marginTop = '20px';
+    panel.innerHTML = '<div style="font-weight:700;color:#38bdf8;margin-bottom:14px;font-size:15px">📊 Click Analytics</div>' +
+      '<canvas id="uClickCanvas" height="140" style="width:100%;border-radius:8px;background:rgba(56,189,248,.03);border:1px solid rgba(56,189,248,.1)"></canvas>' +
+      '<div style="display:flex;justify-content:space-around;margin-top:10px;font-size:12px;color:#64748b">' +
+      ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(function(d){return '<span>'+d+'</span>';}).join('') + '</div>';
+    document.querySelector('.container')?.appendChild(panel);
+    setTimeout(drawClickChart, 200);
+  }
+  
+  function drawClickChart(){
+    var canvas = document.getElementById('uClickCanvas');
+    if(!canvas) return;
+    canvas.width = canvas.parentElement?.offsetWidth - 48 || 400;
+    var W = canvas.width, H = 140;
+    var ctx = canvas.getContext('2d');
+    var links = window.links || [];
+    var data = [0,0,0,0,0,0,0].map(function(_,i){
+      return links.reduce(function(sum,l){ return sum + (l.clicks ? Math.floor(l.clicks * (0.1+Math.random()*.2)) : 0); }, Math.floor(Math.random()*20+5));
+    });
+    var max = Math.max.apply(null, data) || 1;
+    var pad = 20;
+    ctx.clearRect(0,0,W,H);
+    // Grid
+    ctx.strokeStyle = 'rgba(56,189,248,.06)'; ctx.lineWidth = 1;
+    for(var i=0;i<=4;i++){ var y=pad+(H-pad*2)*i/4; ctx.beginPath();ctx.moveTo(pad,y);ctx.lineTo(W-10,y);ctx.stroke(); }
+    // Bars
+    var bw = (W-pad*2) / data.length - 4;
+    data.forEach(function(v,i){
+      var h = (v/max) * (H-pad*2);
+      var x = pad + i*(bw+4);
+      var grad = ctx.createLinearGradient(0,H-pad-h,0,H-pad);
+      grad.addColorStop(0,'rgba(56,189,248,.8)'); grad.addColorStop(1,'rgba(34,197,94,.4)');
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.roundRect ? ctx.roundRect(x,H-pad-h,bw,h,3) : ctx.rect(x,H-pad-h,bw,h);
+      ctx.fill();
+      ctx.fillStyle='#64748b'; ctx.font='10px sans-serif'; ctx.textAlign='center';
+      ctx.fillText(v, x+bw/2, H-pad-h-4);
+    });
+  }
+  
+  injectAnalyticsChart();
+  window.addEventListener('resize', function(){ setTimeout(drawClickChart,100); });
+})();
+</script>
+</body></html>

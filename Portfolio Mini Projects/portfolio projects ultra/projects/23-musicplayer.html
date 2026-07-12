@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="Music Player — part of a professional web developer portfolio with 50+ projects.">
+<meta name="robots" content="index, follow">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Music Player</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:linear-gradient(135deg,#020617 0%,#0f172a 100%);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#fff;min-height:100vh;padding:40px 20px}
+.container{max-width:900px;margin:0 auto}
+h1{background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:36px;margin-bottom:8px}
+.subtitle{color:#94a3b8;margin-bottom:28px;font-size:15px}
+.back-link{display:inline-flex;align-items:center;gap:6px;margin-bottom:20px;color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;padding:8px 14px;border:1px solid rgba(56,189,248,.3);border-radius:8px;transition:.2s}
+.back-link:hover{background:rgba(56,189,248,.1)}
+.card{background:rgba(30,41,59,.85);backdrop-filter:blur(12px);padding:24px;border-radius:16px;border:1px solid rgba(56,189,248,.2);margin-bottom:20px}
+.btn{padding:10px 22px;border:none;border-radius:8px;cursor:pointer;font-weight:700;font-size:14px;transition:.2s;background:linear-gradient(90deg,#38bdf8,#22c55e);color:#000}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(56,189,248,.35)}
+.btn-icon{background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.3);color:#38bdf8;padding:10px 16px;border-radius:8px;cursor:pointer;font-size:18px;transition:.2s;border:none}
+.btn-icon:hover{background:rgba(56,189,248,.25)}
+.btn-icon.active{color:#22c55e}
+.grid2{display:grid;grid-template-columns:1fr 1.4fr;gap:20px;align-items:start}
+.track-item{padding:12px 14px;border-radius:10px;cursor:pointer;transition:.2s;border:1px solid transparent;display:flex;align-items:center;gap:12px;margin-bottom:6px}
+.track-item:hover{background:rgba(56,189,248,.08);border-color:rgba(56,189,248,.2)}
+.track-item.active{background:rgba(56,189,248,.15);border-color:rgba(56,189,248,.4)}
+.track-num{font-size:12px;color:#475569;width:18px;text-align:center}
+.track-info{flex:1;min-width:0}
+.track-name{font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.track-artist{font-size:12px;color:#64748b;margin-top:2px}
+.track-dur{font-size:12px;color:#475569;font-family:monospace}
+.progress-wrap{position:relative;height:5px;background:rgba(56,189,248,.12);border-radius:3px;cursor:pointer;margin:14px 0}
+.progress-fill{height:100%;background:linear-gradient(90deg,#38bdf8,#22c55e);border-radius:3px;width:0%;transition:width .1s linear;pointer-events:none}
+.progress-dot{position:absolute;top:50%;right:0;transform:translate(50%,-50%);width:13px;height:13px;background:#38bdf8;border-radius:50%;box-shadow:0 0 8px rgba(56,189,248,.6);opacity:0;transition:opacity .2s;pointer-events:none}
+.progress-wrap:hover .progress-dot{opacity:1}
+.eq-bar{display:inline-block;width:4px;border-radius:2px;background:linear-gradient(to top,#38bdf8,#22c55e);vertical-align:bottom;transition:height .12s ease}
+canvas{border-radius:8px;background:rgba(56,189,248,.04);border:1px solid rgba(56,189,248,.1)}
+.vol-slider{-webkit-appearance:none;width:100%;height:4px;border-radius:2px;background:rgba(56,189,248,.2);outline:none;cursor:pointer}
+.vol-slider::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:#38bdf8;cursor:pointer;box-shadow:0 0 6px rgba(56,189,248,.5)}
+.badge{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;background:rgba(56,189,248,.15);color:#38bdf8;border:1px solid rgba(56,189,248,.3)}
+.u-toast-container{position:fixed;bottom:24px;right:20px;z-index:99999;display:flex;flex-direction:column;gap:8px;max-width:320px}
+.u-toast{background:rgba(30,41,59,.95);border:1px solid rgba(56,189,248,.22);color:#f1f5f9;padding:11px 16px;border-radius:10px;font-size:13px;font-weight:600;box-shadow:0 4px 20px rgba(0,0,0,.35);animation:tIn .3s ease;display:flex;align-items:center;gap:8px}
+.u-toast.success{border-color:rgba(34,197,94,.5);background:rgba(34,197,94,.1)}
+.u-toast.info{border-color:rgba(56,189,248,.5);background:rgba(56,189,248,.1)}
+@keyframes tIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+@media(max-width:768px){body{padding:15px 12px}h1{font-size:26px}.grid2{grid-template-columns:1fr}.card{padding:16px 14px}}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(56,189,248,.3);border-radius:3px}
+</style>
+</head>
+<body>
+<div class="container">
+<a href="../index.html" class="back-link" onclick="window.close(); return false;">← Back to Portfolio</a>
+<h1>🎵 Music Player</h1>
+<p class="subtitle">Synthesized music player powered by the Web Audio API — no files needed</p>
+
+<div class="grid2">
+  <!-- LEFT: Player -->
+  <div>
+    <div class="card" style="text-align:center">
+      <!-- Album art / visualizer -->
+      <canvas id="vizCanvas" width="240" height="240" style="width:100%;max-width:240px;margin:0 auto 20px;display:block"></canvas>
+
+      <!-- Track info -->
+      <div id="trackName" style="font-size:20px;font-weight:800;margin-bottom:4px">Select a track</div>
+      <div id="trackArtist" style="color:#64748b;font-size:13px;margin-bottom:20px">—</div>
+
+      <!-- Progress bar -->
+      <div class="progress-wrap" id="progressWrap" onclick="seekTrack(event)">
+        <div class="progress-fill" id="progressFill"></div>
+        <div class="progress-dot" id="progressDot"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:#475569;font-family:monospace;margin-bottom:18px">
+        <span id="curTime">0:00</span><span id="totTime">0:00</span>
+      </div>
+
+      <!-- Controls -->
+      <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:20px">
+        <button class="btn-icon" id="shuffleBtn" onclick="toggleShuffle()" title="Shuffle">🔀</button>
+        <button class="btn-icon" onclick="prevTrack()" title="Previous">⏮</button>
+        <button class="btn" id="playBtn" onclick="togglePlay()" style="padding:12px 28px;font-size:18px;border-radius:50px;min-width:70px">▶</button>
+        <button class="btn-icon" onclick="nextTrack()" title="Next">⏭</button>
+        <button class="btn-icon" id="repeatBtn" onclick="toggleRepeat()" title="Repeat">🔁</button>
+      </div>
+
+      <!-- Volume -->
+      <div style="display:flex;align-items:center;gap:10px;padding:0 10px">
+        <span id="volIcon" style="font-size:16px">🔊</span>
+        <input type="range" class="vol-slider" id="volSlider" min="0" max="100" value="70" oninput="setVolume(this.value)">
+        <span id="volVal" style="font-size:11px;color:#38bdf8;font-family:monospace;width:36px">70%</span>
+      </div>
+    </div>
+
+    <!-- Equalizer -->
+    <div class="card">
+      <h3 style="color:#38bdf8;margin-bottom:12px;font-size:14px">🎛 Equalizer (Live)</h3>
+      <canvas id="eqCanvas" width="400" height="60" style="width:100%;height:60px"></canvas>
+    </div>
+  </div>
+
+  <!-- RIGHT: Playlist -->
+  <div>
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+        <h3 style="color:#38bdf8">Playlist</h3>
+        <span class="badge" id="playingBadge" style="display:none">▶ Playing</span>
+      </div>
+      <div id="playlist"></div>
+    </div>
+
+    <div class="card" style="padding:16px 20px">
+      <div style="display:flex;gap:20px;text-align:center">
+        <div style="flex:1"><div style="font-size:22px;font-weight:800;background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent" id="statTracks">8</div><div style="font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:.5px">Tracks</div></div>
+        <div style="flex:1"><div style="font-size:22px;font-weight:800;background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent" id="statTime">—</div><div style="font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:.5px">Duration</div></div>
+        <div style="flex:1"><div style="font-size:22px;font-weight:800;background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Web</div><div style="font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:.5px">Audio API</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+// ── Web Audio Synthesizer ──────────────────────────────────────────────────
+let actx = null, gainNode = null, analyserNode = null;
+let currentOscs = [], currentLFO = null;
+let playing = false, currentIdx = 0, shuffle = false, repeat = false;
+let progressInterval = null, trackStart = 0, trackPaused = 0, pausedAt = 0;
+let volume = 0.7;
+
+// Ensure AudioContext is created only on user gesture
+function ensureCtx(){
+  if(!actx || actx.state==='closed'){
+    actx = new (window.AudioContext||window.webkitAudioContext)();
+    gainNode = actx.createGain();
+    gainNode.gain.value = volume;
+    analyserNode = actx.createAnalyser();
+    analyserNode.fftSize = 256;
+    gainNode.connect(analyserNode);
+    analyserNode.connect(actx.destination);
+  }
+  if(actx.state==='suspended') actx.resume();
+}
+
+// ── Tracks (synthesized, no files needed) ─────────────────────────────────
+// Each track defines: name, artist, genre, bpm, key, color, chords, melody, bass, duration
+const TRACKS = [
+  {
+    name:'Neon Horizon', artist:'Synth Wave', genre:'Synthwave', bpm:118, dur:28,
+    color:['#38bdf8','#818cf8'], wave:'sawtooth',
+    melody:[60,62,64,67,64,62,60,55, 60,62,64,67,69,67,64,60],
+    chord:[[48,52,55],[46,50,53],[43,47,50],[45,48,53]],
+    bass:[36,34,31,33]
+  },
+  {
+    name:'Chill Lounge', artist:'Lo-Fi Studio', genre:'Lo-Fi', bpm:80, dur:24,
+    color:['#22c55e','#84cc16'], wave:'triangle',
+    melody:[65,63,60,65,67,65,63,60, 65,67,69,67,65,63,62,60],
+    chord:[[53,57,60],[51,55,58],[48,52,55],[50,53,58]],
+    bass:[41,39,36,38]
+  },
+  {
+    name:'Digital Rain', artist:'Code Beats', genre:'Electronic', bpm:140, dur:22,
+    color:['#a78bfa','#ec4899'], wave:'square',
+    melody:[72,71,69,67,65,67,69,71, 72,74,72,71,69,67,65,64],
+    chord:[[60,64,67],[58,62,65],[57,61,64],[55,59,62]],
+    bass:[48,46,45,43]
+  },
+  {
+    name:'Midnight Drive', artist:'Dark Ambient', genre:'Ambient', bpm:70, dur:30,
+    color:['#f59e0b','#ef4444'], wave:'sine',
+    melody:[64,62,60,59,57,55,57,59, 60,62,64,65,64,62,60,59],
+    chord:[[52,55,59],[50,53,57],[48,52,55],[47,50,55]],
+    bass:[40,38,36,35]
+  },
+  {
+    name:'Pixel Party', artist:'8-Bit Hero', genre:'Chiptune', bpm:160, dur:18,
+    color:['#fb923c','#fbbf24'], wave:'square',
+    melody:[72,74,76,77,76,74,72,69, 72,74,76,77,79,77,76,74],
+    chord:[[60,64,67],[62,65,69],[64,67,71],[60,64,67]],
+    bass:[48,50,52,48]
+  },
+  {
+    name:'Ocean Drift', artist:'Ambient Keys', genre:'Ambient', bpm:65, dur:32,
+    color:['#06b6d4','#3b82f6'], wave:'sine',
+    melody:[67,65,64,62,60,62,64,65, 67,69,67,65,64,62,60,57],
+    chord:[[55,59,62],[53,57,60],[50,55,58],[52,55,59]],
+    bass:[43,41,38,40]
+  },
+  {
+    name:'Urban Pulse', artist:'City Beats', genre:'Hip-Hop', bpm:95, dur:26,
+    color:['#f43f5e','#fb7185'], wave:'sawtooth',
+    melody:[62,60,59,57,59,60,62,64, 62,60,59,57,55,57,59,60],
+    chord:[[50,53,57],[48,52,55],[46,50,53],[45,48,52]],
+    bass:[38,36,34,33]
+  },
+  {
+    name:'Crystal Garden', artist:'Dream Synth', genre:'Dream Pop', bpm:88, dur:25,
+    color:['#34d399','#6ee7b7'], wave:'triangle',
+    melody:[69,67,65,64,65,67,69,71, 69,67,65,64,62,64,65,67],
+    chord:[[57,60,64],[55,59,62],[53,57,60],[52,55,59]],
+    bass:[45,43,41,40]
+  }
+];
+
+function midiToFreq(m){ return 440 * Math.pow(2,(m-69)/12); }
+
+function stopSynth(){
+  currentOscs.forEach(o=>{ try{ o.stop(actx.currentTime+0.05); } catch(e){} });
+  currentOscs=[];
+  if(currentLFO){ try{ currentLFO.stop(); }catch(e){} currentLFO=null; }
+}
+
+function playTrack(t, startOffset=0){
+  ensureCtx();
+  stopSynth();
+
+  const bps = t.bpm/60;
+  const noteLen = 1/bps * 0.5; // 8th notes
+  const barLen = noteLen * t.melody.length;
+
+  // Master gain envelope
+  const masterGain = actx.createGain();
+  masterGain.gain.value = 0;
+  masterGain.connect(gainNode);
+  masterGain.gain.setTargetAtTime(0.8, actx.currentTime, 0.1);
+
+  const now = actx.currentTime - startOffset;
+
+  // MELODY layer
+  t.melody.forEach((note, i)=>{
+    const osc = actx.createOscillator();
+    const g = actx.createGain();
+    osc.type = t.wave;
+    osc.frequency.value = midiToFreq(note);
+    // Detune slightly for warmth
+    osc.detune.value = (Math.random()-0.5)*8;
+    g.gain.setValueAtTime(0, now + i*noteLen);
+    g.gain.linearRampToValueAtTime(0.35, now + i*noteLen + 0.02);
+    g.gain.exponentialRampToValueAtTime(0.001, now + i*noteLen + noteLen*0.9);
+    osc.connect(g); g.connect(masterGain);
+    osc.start(now + i*noteLen);
+    osc.stop(now + barLen + 0.1);
+    currentOscs.push(osc);
+  });
+
+  // CHORD layer
+  t.chord.forEach((chord, ci)=>{
+    const chordTime = ci * (barLen/4);
+    chord.forEach(note=>{
+      const osc = actx.createOscillator();
+      const g = actx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.value = midiToFreq(note);
+      const cDur = barLen/4;
+      g.gain.setValueAtTime(0, now+chordTime);
+      g.gain.linearRampToValueAtTime(0.15, now+chordTime+0.05);
+      g.gain.exponentialRampToValueAtTime(0.001, now+chordTime+cDur*0.95);
+      osc.connect(g); g.connect(masterGain);
+      osc.start(now+chordTime); osc.stop(now+chordTime+cDur+0.1);
+      currentOscs.push(osc);
+    });
+  });
+
+  // BASS layer
+  t.bass.forEach((note,bi)=>{
+    const osc = actx.createOscillator();
+    const g = actx.createGain();
+    const filter = actx.createBiquadFilter();
+    filter.type='lowpass'; filter.frequency.value=180;
+    osc.type='sawtooth'; osc.frequency.value=midiToFreq(note);
+    const bDur=barLen/4;
+    const bt=bi*bDur;
+    g.gain.setValueAtTime(0,now+bt);
+    g.gain.linearRampToValueAtTime(0.4,now+bt+0.04);
+    g.gain.exponentialRampToValueAtTime(0.001,now+bt+bDur*0.85);
+    osc.connect(filter); filter.connect(g); g.connect(masterGain);
+    osc.start(now+bt); osc.stop(now+bt+bDur+0.1);
+    currentOscs.push(osc);
+  });
+
+  // Loop scheduling
+  const loopDelay = (barLen - startOffset) * 1000;
+  setTimeout(()=>{
+    if(playing && TRACKS[currentIdx]===t){
+      const elapsed = (Date.now()-trackStart)/1000;
+      if(elapsed < t.dur) playTrack(t, elapsed % barLen);
+      else onTrackEnd();
+    }
+  }, Math.max(100, loopDelay));
+
+  trackStart = Date.now() - startOffset*1000;
+}
+
+function onTrackEnd(){
+  if(repeat){ playTrack(TRACKS[currentIdx]); return; }
+  if(shuffle){
+    let next;
+    do { next=Math.floor(Math.random()*TRACKS.length); } while(next===currentIdx && TRACKS.length>1);
+    currentIdx=next;
+  } else {
+    currentIdx=(currentIdx+1)%TRACKS.length;
+  }
+  renderPlaylist();
+  playTrack(TRACKS[currentIdx]);
+  updateTrackInfo();
+}
+
+// ── Controls ───────────────────────────────────────────────────────────────
+function togglePlay(){
+  if(!playing){
+    ensureCtx();
+    playing=true;
+    playTrack(TRACKS[currentIdx]);
+    document.getElementById('playBtn').textContent='⏸';
+    document.getElementById('playingBadge').style.display='';
+    startProgress();
+    toast(`Playing: ${TRACKS[currentIdx].name}`,'info');
+  } else {
+    playing=false;
+    stopSynth();
+    document.getElementById('playBtn').textContent='▶';
+    document.getElementById('playingBadge').style.display='none';
+    clearInterval(progressInterval);
+  }
+  renderPlaylist();
+}
+
+function prevTrack(){
+  const elapsed=(Date.now()-trackStart)/1000;
+  if(elapsed>2){ playTrack(TRACKS[currentIdx]); trackStart=Date.now(); return; }
+  currentIdx=(currentIdx-1+TRACKS.length)%TRACKS.length;
+  if(playing){ stopSynth(); playTrack(TRACKS[currentIdx]); }
+  updateTrackInfo(); renderPlaylist();
+}
+
+function nextTrack(){
+  if(shuffle){
+    let next;
+    do { next=Math.floor(Math.random()*TRACKS.length); } while(next===currentIdx&&TRACKS.length>1);
+    currentIdx=next;
+  } else {
+    currentIdx=(currentIdx+1)%TRACKS.length;
+  }
+  if(playing){ stopSynth(); playTrack(TRACKS[currentIdx]); }
+  updateTrackInfo(); renderPlaylist();
+}
+
+function selectTrack(i){
+  currentIdx=i;
+  if(!playing){ playing=true; document.getElementById('playBtn').textContent='⏸'; document.getElementById('playingBadge').style.display=''; startProgress(); }
+  else stopSynth();
+  playTrack(TRACKS[currentIdx]);
+  updateTrackInfo(); renderPlaylist();
+  toast(`Now playing: ${TRACKS[i].name}`,'info');
+}
+
+function toggleShuffle(){
+  shuffle=!shuffle;
+  document.getElementById('shuffleBtn').classList.toggle('active',shuffle);
+  toast(shuffle?'Shuffle on 🔀':'Shuffle off','info');
+}
+
+function toggleRepeat(){
+  repeat=!repeat;
+  document.getElementById('repeatBtn').classList.toggle('active',repeat);
+  toast(repeat?'Repeat on 🔁':'Repeat off','info');
+}
+
+function setVolume(v){
+  volume=v/100;
+  if(gainNode) gainNode.gain.setTargetAtTime(volume,actx.currentTime,0.05);
+  document.getElementById('volVal').textContent=v+'%';
+  document.getElementById('volIcon').textContent=v==0?'🔇':v<40?'🔈':'🔊';
+}
+
+function seekTrack(e){
+  if(!playing) return;
+  const wrap=document.getElementById('progressWrap');
+  const pct=(e.clientX-wrap.getBoundingClientRect().left)/wrap.offsetWidth;
+  const t=TRACKS[currentIdx];
+  const seekTo=pct*t.dur;
+  stopSynth();
+  trackStart=Date.now()-seekTo*1000;
+  playTrack(t, seekTo % ((t.bpm/60)*0.5*t.melody.length));
+}
+
+// ── Progress & UI ──────────────────────────────────────────────────────────
+function startProgress(){
+  clearInterval(progressInterval);
+  progressInterval=setInterval(()=>{
+    if(!playing) return;
+    const t=TRACKS[currentIdx];
+    const elapsed=Math.min((Date.now()-trackStart)/1000, t.dur);
+    const pct=(elapsed/t.dur)*100;
+    document.getElementById('progressFill').style.width=pct+'%';
+    document.getElementById('progressDot').style.right=(100-pct)+'%';
+    document.getElementById('curTime').textContent=fmtSec(elapsed);
+    document.getElementById('totTime').textContent=fmtSec(t.dur);
+    if(elapsed>=t.dur) clearInterval(progressInterval);
+  },100);
+}
+
+function fmtSec(s){ return `${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,'0')}`; }
+
+function updateTrackInfo(){
+  const t=TRACKS[currentIdx];
+  document.getElementById('trackName').textContent=t.name;
+  document.getElementById('trackArtist').textContent=t.artist+' • '+t.genre;
+  document.getElementById('totTime').textContent=fmtSec(t.dur);
+  document.getElementById('progressFill').style.width='0%';
+  trackStart=Date.now();
+}
+
+function renderPlaylist(){
+  document.getElementById('playlist').innerHTML = TRACKS.map((t,i)=>`
+    <div class="track-item ${i===currentIdx&&playing?'active':''}" onclick="selectTrack(${i})">
+      <div class="track-num">${i===currentIdx&&playing?'▶':i+1}</div>
+      <div class="track-info">
+        <div class="track-name">${t.name}</div>
+        <div class="track-artist">${t.artist} · <span style="color:#475569">${t.genre}</span></div>
+      </div>
+      <div class="track-dur">${fmtSec(t.dur)}</div>
+    </div>`).join('');
+
+  // Total duration stat
+  const total=TRACKS.reduce((s,t)=>s+t.dur,0);
+  document.getElementById('statTime').textContent=fmtSec(total);
+}
+
+// ── Canvas Visualizers ─────────────────────────────────────────────────────
+// Album art / circular visualizer
+function drawViz(){
+  const canvas=document.getElementById('vizCanvas');
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width, H=canvas.height, cx=W/2, cy=H/2, r=80;
+
+  const t=TRACKS[currentIdx];
+  const [c1,c2]=t.color;
+
+  ctx.clearRect(0,0,W,H);
+
+  if(analyserNode && playing){
+    const data=new Uint8Array(analyserNode.frequencyBinCount);
+    analyserNode.getByteFrequencyData(data);
+    const bars=48;
+    for(let i=0;i<bars;i++){
+      const angle=(i/bars)*Math.PI*2 - Math.PI/2;
+      const val=data[Math.floor(i*data.length/bars)]/255;
+      const len=val*55+4;
+      ctx.beginPath();
+      ctx.moveTo(cx+Math.cos(angle)*r, cy+Math.sin(angle)*r);
+      ctx.lineTo(cx+Math.cos(angle)*(r+len), cy+Math.sin(angle)*(r+len));
+      ctx.strokeStyle=i%2===0?c1:c2;
+      ctx.lineWidth=4; ctx.lineCap='round';
+      ctx.stroke();
+    }
+  } else {
+    // Static rings
+    for(let i=0;i<24;i++){
+      const angle=(i/24)*Math.PI*2-Math.PI/2;
+      const len=playing?0:8;
+      ctx.beginPath();
+      ctx.moveTo(cx+Math.cos(angle)*r, cy+Math.sin(angle)*r);
+      ctx.lineTo(cx+Math.cos(angle)*(r+len), cy+Math.sin(angle)*(r+len));
+      ctx.strokeStyle=i%2===0?c1:c2;
+      ctx.lineWidth=3; ctx.lineCap='round'; ctx.stroke();
+    }
+  }
+
+  // Center circle
+  const grad=ctx.createRadialGradient(cx,cy,20,cx,cy,r);
+  grad.addColorStop(0,c1+'33'); grad.addColorStop(1,c2+'11');
+  ctx.beginPath(); ctx.arc(cx,cy,r-2,0,Math.PI*2);
+  ctx.fillStyle=grad; ctx.fill();
+  ctx.beginPath(); ctx.arc(cx,cy,r-2,0,Math.PI*2);
+  ctx.strokeStyle=c1+'88'; ctx.lineWidth=2; ctx.stroke();
+
+  // Music note icon in center
+  ctx.fillStyle=playing?c1:'#475569';
+  ctx.font=`${playing?'44':'36'}px serif`;
+  ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText(playing?'♪':'♫', cx, cy);
+
+  requestAnimationFrame(drawViz);
+}
+
+// Equalizer bars
+function drawEQ(){
+  const canvas=document.getElementById('eqCanvas');
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width, H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+
+  if(analyserNode && playing){
+    const data=new Uint8Array(analyserNode.frequencyBinCount);
+    analyserNode.getByteFrequencyData(data);
+    const bars=32, bw=Math.floor(W/bars)-2;
+    for(let i=0;i<bars;i++){
+      const val=data[Math.floor(i*data.length/bars)]/255;
+      const bh=Math.max(2,val*H*0.9);
+      const x=i*(bw+2);
+      const grad=ctx.createLinearGradient(0,H,0,H-bh);
+      grad.addColorStop(0,'#38bdf8'); grad.addColorStop(1,'#22c55e');
+      ctx.fillStyle=grad;
+      ctx.fillRect(x,H-bh,bw,bh);
+    }
+  } else {
+    // Idle flat line
+    ctx.fillStyle='rgba(56,189,248,0.15)';
+    ctx.fillRect(0,H-3,W,3);
+  }
+  requestAnimationFrame(drawEQ);
+}
+
+// ── Toast ──────────────────────────────────────────────────────────────────
+function toast(msg,type='info'){
+  let c=document.querySelector('.u-toast-container');
+  if(!c){c=document.createElement('div');c.className='u-toast-container';document.body.appendChild(c);}
+  const t=document.createElement('div');
+  t.className='u-toast '+type;
+  t.innerHTML=`<span>${{success:'✅',info:'🎵'}[type]||'💡'}</span><span>${msg}</span>`;
+  c.appendChild(t);
+  setTimeout(()=>{t.style.opacity='0';setTimeout(()=>t.remove(),300);},2500);
+}
+
+// ── Init ───────────────────────────────────────────────────────────────────
+updateTrackInfo();
+renderPlaylist();
+drawViz();
+drawEQ();
+</script>
+</body>
+</html>

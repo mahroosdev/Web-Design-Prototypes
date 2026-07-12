@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8">
+<meta name="description" content="Analytics Dashboard — part of a professional web developer portfolio with 50+ projects.">
+<meta name="robots" content="index, follow">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Analytics Dashboard</title><style>*{margin:0;padding:0;box-sizing:border-box}
+body{background:linear-gradient(135deg,#020617 0%,#0f172a 100%);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#fff;min-height:100vh;padding:40px 20px;overflow-x:hidden}
+.container{max-width:1000px;margin:0 auto}
+h1{background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:36px;margin-bottom:8px}
+.subtitle{color:#94a3b8;margin-bottom:28px;font-size:15px}
+.back-link{display:inline-flex;align-items:center;gap:6px;margin-bottom:20px;color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;padding:8px 14px;border:1px solid rgba(56,189,248,.3);border-radius:8px;transition:.2s}
+.back-link:hover{background:rgba(56,189,248,.1)}
+.card{background:rgba(30,41,59,.8);backdrop-filter:blur(10px);padding:24px;border-radius:16px;border:1px solid rgba(56,189,248,.2);margin-bottom:20px}
+.btn{padding:10px 22px;border:none;border-radius:8px;cursor:pointer;font-weight:700;font-size:14px;transition:.2s;background:linear-gradient(90deg,#38bdf8,#22c55e);color:#000}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(56,189,248,.35)}
+.btn-outline{background:transparent;border:1px solid rgba(56,189,248,.4);color:#38bdf8}
+.btn-red{background:linear-gradient(90deg,#ef4444,#dc2626);color:#fff}
+input,textarea,select{background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.3);color:#fff;border-radius:8px;padding:10px 14px;font-size:14px;width:100%;outline:none;transition:.2s}
+input:focus,textarea:focus,select:focus{border-color:#38bdf8;box-shadow:0 0 0 3px rgba(56,189,248,.15)}
+input::placeholder,textarea::placeholder{color:#64748b}
+label{display:block;font-size:13px;font-weight:600;color:#94a3b8;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.flex{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;background:rgba(56,189,248,.15);color:#38bdf8;border:1px solid rgba(56,189,248,.3)}
+.badge-green{background:rgba(34,197,94,.15);color:#22c55e;border-color:rgba(34,197,94,.3)}
+.badge-red{background:rgba(239,68,68,.15);color:#ef4444;border-color:rgba(239,68,68,.3)}
+.badge-yellow{background:rgba(234,179,8,.15);color:#eab308;border-color:rgba(234,179,8,.3)}
+.stat-box{background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.15);border-radius:12px;padding:20px;text-align:center}
+.stat-num{font-size:32px;font-weight:800;background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-label{font-size:12px;color:#64748b;margin-top:4px;text-transform:uppercase;letter-spacing:.5px}
+hr{border:none;border-top:1px solid rgba(56,189,248,.1);margin:20px 0}
+@media(max-width:768px){body{padding:15px 12px}h1{font-size:26px}.grid2,.grid3,.grid4{grid-template-columns:1fr}.card{padding:16px 14px}}
+.kpi-card{background:rgba(30,41,59,.8);border:1px solid rgba(56,189,248,.2);border-radius:14px;padding:20px}
+.kpi-val{font-size:28px;font-weight:900;background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.kpi-label{font-size:12px;color:#64748b;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.kpi-delta{font-size:12px;font-weight:700;margin-top:4px}
+.period-btn.active{background:rgba(56,189,248,.2)!important;color:#38bdf8!important;border-color:#38bdf8!important}
+.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.bar-label{font-size:13px;width:100px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-track{flex:1;height:8px;background:rgba(56,189,248,.1);border-radius:4px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;transition:width .6s ease}
+.bar-val{font-size:12px;color:#64748b;width:50px;text-align:right;flex-shrink:0}
+.live-dot{width:8px;height:8px;border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+/* ── UNIVERSAL UPGRADE: Theme, Animations, Toast ── */
+:root{
+  --bg:#020617;--bg2:#0f172a;--card:rgba(30,41,59,.85);--border:rgba(56,189,248,.22);
+  --accent:#38bdf8;--accent2:#22c55e;--text:#f1f5f9;--muted:#94a3b8;--danger:#ef4444;
+}
+
+
+/* Toast notifications */
+.u-toast-container{position:fixed;bottom:24px;right:20px;z-index:99999;display:flex;flex-direction:column;gap:8px;max-width:320px}
+.u-toast{
+  background:var(--card);border:1px solid var(--border);color:var(--text);
+  padding:11px 16px;border-radius:10px;font-size:13px;font-weight:600;
+  box-shadow:0 4px 20px rgba(0,0,0,.35);
+  animation:uToastIn .3s ease;display:flex;align-items:center;gap:8px;
+}
+.u-toast.success{border-color:rgba(34,197,94,.5);background:rgba(34,197,94,.1)}
+.u-toast.error{border-color:rgba(239,68,68,.5);background:rgba(239,68,68,.1)}
+.u-toast.info{border-color:rgba(56,189,248,.5);background:rgba(56,189,248,.1)}
+@keyframes uToastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes uToastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(20px)}}
+
+/* Entrance animations */
+@keyframes uFadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes uFadeIn{from{opacity:0}to{opacity:1}}
+@keyframes uPulse{0%,100%{box-shadow:0 0 0 0 rgba(56,189,248,.4)}70%{box-shadow:0 0 0 8px rgba(56,189,248,0)}}
+.u-fade-up{animation:uFadeUp .45s ease both}
+.u-fade-in{animation:uFadeIn .4s ease both}
+.u-pulse{animation:uPulse 2s infinite}
+
+/* Button hover lift */
+.btn:hover,[class*="btn"]:not([class*="btn-"]):hover{transform:translateY(-2px)!important}
+
+/* Smooth card hover */
+.card:hover,[class*="card"]:hover{
+  border-color:var(--accent)!important;
+  box-shadow:0 6px 28px rgba(56,189,248,.12)!important;
+  transition:all .25s ease!important;
+}
+
+/* Loading skeleton */
+.u-skeleton{
+  background:linear-gradient(90deg,rgba(56,189,248,.06) 25%,rgba(56,189,248,.12) 50%,rgba(56,189,248,.06) 75%);
+  background-size:200% 100%;animation:uSkeleton 1.4s infinite;border-radius:6px;
+}
+@keyframes uSkeleton{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* Progress bar component */
+.u-progress{height:5px;background:rgba(56,189,248,.12);border-radius:3px;overflow:hidden;margin:8px 0}
+.u-progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:3px;transition:width .5s ease}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(56,189,248,.3);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(56,189,248,.55)}
+
+/* Mobile responsive upgrades */
+@media(max-width:600px){
+  
+  .u-toast-container{right:10px;bottom:80px;max-width:calc(100vw - 20px)}
+}
+
+</style></head>
+<body><div class="container">
+<a href="../index.html" class="back-link" onclick="window.close(); return false;">← Back to Portfolio</a>
+
+<h1>📈 Analytics Pro</h1>
+<p class="subtitle">Comprehensive web analytics and insights dashboard</p>
+<div class="flex" style="justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px">
+  <div class="flex" style="gap:8px">
+    <button class="btn btn-outline period-btn active" onclick="setPeriod('7d',this)">7 Days</button>
+    <button class="btn btn-outline period-btn" onclick="setPeriod('30d',this)">30 Days</button>
+    <button class="btn btn-outline period-btn" onclick="setPeriod('90d',this)">90 Days</button>
+    <button class="btn btn-outline period-btn" onclick="setPeriod('1y',this)">1 Year</button>
+  </div>
+  <select id="siteSelect" onchange="loadSite()" style="width:auto;padding:8px 14px">
+    <option value="main">myapp.com</option>
+    <option value="blog">blog.myapp.com</option>
+    <option value="docs">docs.myapp.com</option>
+  </select>
+</div>
+<div class="grid4" style="margin-bottom:20px" id="kpis"></div>
+<div class="grid2" style="margin-bottom:20px;align-items:start">
+  <div class="card">
+    <div class="flex" style="justify-content:space-between;margin-bottom:16px">
+      <h3 style="color:#38bdf8">Visitors Over Time</h3>
+      <div class="flex" style="gap:8px">
+        <span style="font-size:12px;color:#64748b;display:flex;align-items:center;gap:4px"><span style="width:10px;height:3px;background:#38bdf8;display:inline-block;border-radius:2px"></span>Visitors</span>
+        <span style="font-size:12px;color:#64748b;display:flex;align-items:center;gap:4px"><span style="width:10px;height:3px;background:#22c55e;display:inline-block;border-radius:2px"></span>Conversions</span>
+      </div>
+    </div>
+    <canvas id="visitorChart" height="180"></canvas>
+  </div>
+  <div class="card">
+    <h3 style="color:#38bdf8;margin-bottom:16px">Traffic Sources</h3>
+    <canvas id="sourceChart" height="180"></canvas>
+    <div id="sourceLegend" style="margin-top:12px"></div>
+  </div>
+</div>
+<div class="grid2" style="align-items:start">
+  <div>
+    <div class="card">
+      <h3 style="color:#38bdf8;margin-bottom:16px">Top Pages</h3>
+      <div id="topPages"></div>
+    </div>
+    <div class="card">
+      <h3 style="color:#38bdf8;margin-bottom:16px">Devices</h3>
+      <div id="deviceStats"></div>
+    </div>
+  </div>
+  <div>
+    <div class="card">
+      <h3 style="color:#38bdf8;margin-bottom:16px">Top Countries</h3>
+      <div id="countries"></div>
+    </div>
+    <div class="card">
+      <h3 style="color:#38bdf8;margin-bottom:16px">Real-Time</h3>
+      <div style="text-align:center;padding:10px 0">
+        <div class="stat-num" id="liveCount" style="font-size:52px">0</div>
+        <div style="color:#64748b;font-size:14px;margin-top:4px">Active users right now</div>
+        <div id="liveDots" style="display:flex;justify-content:center;gap:6px;margin-top:16px;flex-wrap:wrap"></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div><script>
+const rnd=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+const fmtK=n=>n>=1000?(n/1000).toFixed(1)+'K':n.toString();
+const periods={
+  '7d':{points:7,visitors:[1200,1450,1100,1800,2100,1750,2300],conv:[48,62,41,78,95,71,108]},
+  '30d':{points:30,visitors:Array.from({length:30},()=>rnd(800,2800)),conv:Array.from({length:30},()=>rnd(30,120))},
+  '90d':{points:12,visitors:Array.from({length:12},()=>rnd(20000,60000)),conv:Array.from({length:12},()=>rnd(800,3000))},
+  '1y':{points:12,visitors:Array.from({length:12},()=>rnd(80000,250000)),conv:Array.from({length:12},()=>rnd(3000,12000))},
+};
+let activePeriod='7d';
+const sources=[{name:'Organic Search',val:42,color:'#38bdf8'},{name:'Direct',val:26,color:'#22c55e'},{name:'Social',val:16,color:'#a855f7'},{name:'Email',val:10,color:'#f59e0b'},{name:'Referral',val:6,color:'#ef4444'}];
+const pages=[{p:'/home',v:8420,t:'2m 14s'},{p:'/pricing',v:5230,t:'3m 42s'},{p:'/docs',v:4100,t:'5m 18s'},{p:'/blog',v:3800,t:'4m 05s'},{p:'/login',v:2950,t:'1m 22s'},{p:'/signup',v:2100,t:'1m 48s'}];
+const devices=[{name:'Desktop',pct:58,icon:'💻',color:'#38bdf8'},{name:'Mobile',pct:34,icon:'📱',color:'#22c55e'},{name:'Tablet',pct:8,icon:'📟',color:'#a855f7'}];
+const countries=[{flag:'🇺🇸',name:'United States',pct:38},{flag:'🇬🇧',name:'United Kingdom',pct:14},{flag:'🇩🇪',name:'Germany',pct:10},{flag:'🇫🇷',name:'France',pct:8},{flag:'🇯🇵',name:'Japan',pct:7},{flag:'🇨🇦',name:'Canada',pct:6}];
+
+function setPeriod(p,btn){
+  activePeriod=p;
+  document.querySelectorAll('.period-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderAll();
+}
+function loadSite(){renderAll();}
+
+function renderKPIs(){
+  const d=periods[activePeriod];
+  const total=d.visitors.reduce((a,b)=>a+b,0);
+  const conv=d.conv.reduce((a,b)=>a+b,0);
+  const bounce=rnd(28,52);
+  const session=rnd(120,360);
+  const kpis=[
+    {label:'Total Visitors',val:fmtK(total),delta:'+12.4%',pos:true},
+    {label:'Conversions',val:fmtK(conv),delta:'+8.7%',pos:true},
+    {label:'Bounce Rate',val:bounce+'%',delta:'-3.2%',pos:true},
+    {label:'Avg Session',val:Math.floor(session/60)+'m '+session%60+'s',delta:'+0:24',pos:true},
+  ];
+  document.getElementById('kpis').innerHTML=kpis.map(k=>`
+    <div class="kpi-card">
+      <div class="kpi-label">${k.label}</div>
+      <div class="kpi-val">${k.val}</div>
+      <div class="kpi-delta" style="color:${k.pos?'#22c55e':'#ef4444'}">${k.delta} vs prev period</div>
+    </div>`).join('');
+}
+
+function renderVisitorChart(){
+  const canvas=document.getElementById('visitorChart');
+  const ctx=canvas.getContext('2d');
+  canvas.width=canvas.parentElement.offsetWidth-48;
+  const d=periods[activePeriod];
+  const W=canvas.width,H=180,pad=30;
+  ctx.clearRect(0,0,W,H);
+  const maxV=Math.max(...d.visitors);
+  const drawLine=(data,color,fill)=>{
+    const pts=data.map((v,i)=>({x:pad+(W-pad-10)*i/(data.length-1),y:pad+(H-pad*2)*(1-v/maxV)}));
+    if(fill){
+      const g=ctx.createLinearGradient(0,pad,0,H-pad);g.addColorStop(0,color+'44');g.addColorStop(1,color+'00');
+      ctx.beginPath();ctx.moveTo(pts[0].x,H-pad);pts.forEach(p=>ctx.lineTo(p.x,p.y));ctx.lineTo(pts[pts.length-1].x,H-pad);ctx.closePath();ctx.fillStyle=g;ctx.fill();
+    }
+    ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);pts.forEach(p=>ctx.lineTo(p.x,p.y));ctx.strokeStyle=color;ctx.lineWidth=2;ctx.stroke();
+  };
+  ctx.strokeStyle='rgba(56,189,248,.08)';ctx.lineWidth=1;for(let i=0;i<=4;i++){const y=pad+(H-pad*2)*i/4;ctx.beginPath();ctx.moveTo(pad,y);ctx.lineTo(W-10,y);ctx.stroke();}
+  drawLine(d.visitors,'#38bdf8',true);
+  const maxC=Math.max(...d.conv);
+  const convNorm=d.conv.map(v=>v/maxC*maxV);
+  drawLine(convNorm,'#22c55e',false);
+}
+
+function renderSourceChart(){
+  const canvas=document.getElementById('sourceChart');
+  const ctx=canvas.getContext('2d');
+  const size=Math.min(canvas.parentElement.offsetWidth-48,180);
+  canvas.width=size;canvas.height=size;
+  const cx=size/2,cy=size/2,r=size*0.4,inner=size*0.25;
+  let start=0;
+  sources.forEach(s=>{
+    const angle=(s.val/100)*Math.PI*2;
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,start,start+angle);ctx.closePath();
+    ctx.fillStyle=s.color;ctx.fill();
+    start+=angle;
+  });
+  ctx.beginPath();ctx.arc(cx,cy,inner,0,Math.PI*2);ctx.fillStyle='rgba(15,23,42,.95)';ctx.fill();
+  ctx.fillStyle='#fff';ctx.textAlign='center';ctx.font='bold 14px sans-serif';ctx.fillText('Traffic',cx,cy-4);ctx.fillText('Sources',cx,cy+14);
+  document.getElementById('sourceLegend').innerHTML=sources.map(s=>`<div class="flex" style="gap:8px;margin-bottom:6px"><span style="width:10px;height:10px;border-radius:50%;background:${s.color};flex-shrink:0;margin-top:2px"></span><span style="font-size:13px;flex:1">${s.name}</span><span style="font-size:13px;font-weight:700;color:${s.color}">${s.val}%</span></div>`).join('');
+}
+
+function renderTopPages(){
+  const max=pages[0].v;
+  document.getElementById('topPages').innerHTML=pages.map(p=>`
+    <div class="bar-row">
+      <span class="bar-label" style="color:#94a3b8">${p.p}</span>
+      <div class="bar-track"><div class="bar-fill" style="width:${Math.round(p.v/max*100)}%;background:linear-gradient(90deg,#38bdf8,#22c55e)"></div></div>
+      <span class="bar-val">${fmtK(p.v)}</span>
+    </div>`).join('');
+}
+
+function renderDevices(){
+  document.getElementById('deviceStats').innerHTML=devices.map(d=>`
+    <div class="bar-row">
+      <span class="bar-label">${d.icon} ${d.name}</span>
+      <div class="bar-track"><div class="bar-fill" style="width:${d.pct}%;background:${d.color}"></div></div>
+      <span class="bar-val">${d.pct}%</span>
+    </div>`).join('');
+}
+
+function renderCountries(){
+  document.getElementById('countries').innerHTML=countries.map(c=>`
+    <div class="bar-row">
+      <span class="bar-label">${c.flag} ${c.name}</span>
+      <div class="bar-track"><div class="bar-fill" style="width:${c.pct}%;background:linear-gradient(90deg,#a855f7,#38bdf8)"></div></div>
+      <span class="bar-val">${c.pct}%</span>
+    </div>`).join('');
+}
+
+function renderRealtime(){
+  const n=rnd(18,94);
+  document.getElementById('liveCount').textContent=n;
+  const colors=['#38bdf8','#22c55e','#a855f7','#f59e0b','#ef4444'];
+  document.getElementById('liveDots').innerHTML=Array.from({length:Math.min(n,40)},(_,i)=>`<div class="live-dot" style="background:${colors[i%5]};animation-delay:${(i*0.1)%2}s"></div>`).join('');
+}
+
+function renderAll(){renderKPIs();setTimeout(()=>{renderVisitorChart();renderSourceChart();},50);renderTopPages();renderDevices();renderCountries();renderRealtime();}
+renderAll();setInterval(renderRealtime,3000);window.addEventListener('resize',()=>{renderVisitorChart();renderSourceChart();});
+</script><script>
+// ── UNIVERSAL UPGRADE: Theme, localStorage, Toast, Animations ──
+(function(){
+'use strict';
+
+// ── 2. TOAST SYSTEM ──────────────────────────────────────────────
+var toastContainer = null;
+function getToastContainer(){
+  if(!toastContainer || !document.body.contains(toastContainer)){
+    toastContainer = document.createElement('div');
+    toastContainer.className = 'u-toast-container';
+    document.body.appendChild(toastContainer);
+  }
+  return toastContainer;
+}
+
+window.uToast = function(msg, type, duration){
+  type = type || 'info';
+  duration = duration || 2800;
+  var icons = {success:'✅', error:'❌', info:'💡', warning:'⚠️'};
+  var c = getToastContainer();
+  var t = document.createElement('div');
+  t.className = 'u-toast ' + type;
+  t.innerHTML = '<span>' + (icons[type]||'💡') + '</span><span>' + msg + '</span>';
+  c.appendChild(t);
+  setTimeout(function(){
+    t.style.animation = 'uToastOut .3s ease forwards';
+    setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 300);
+  }, duration);
+};
+
+// ── 3. LOCALSTORAGE HELPERS ──────────────────────────────────────
+var APP_KEY = 'uapp_' + location.pathname.split('/').pop().replace('.html','');
+window.uSave = function(key, val){
+  try { localStorage.setItem(APP_KEY + '_' + key, JSON.stringify(val)); return true; }
+  catch(e){ return false; }
+};
+window.uLoad = function(key, def){
+  try {
+    var v = localStorage.getItem(APP_KEY + '_' + key);
+    return v !== null ? JSON.parse(v) : def;
+  } catch(e){ return def; }
+};
+window.uClear = function(key){
+  try { localStorage.removeItem(APP_KEY + '_' + key); } catch(e){}
+};
+
+// ── 4. ENTRANCE ANIMATIONS ───────────────────────────────────────
+function animateEntrance(){
+  var cards = document.querySelectorAll('.card, [class*="card"]');
+  cards.forEach(function(el, i){
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(18px)';
+    setTimeout(function(){
+      el.style.transition = 'opacity .4s ease, transform .4s ease';
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+    }, i * 60);
+  });
+}
+
+// ── 5. SMOOTH COUNTER ANIMATION ──────────────────────────────────
+window.uAnimCount = function(el, target, duration, prefix, suffix){
+  prefix = prefix || '';
+  suffix = suffix || '';
+  duration = duration || 1200;
+  var start = 0;
+  var step = target / (duration / 16);
+  var iv = setInterval(function(){
+    start = Math.min(start + step, target);
+    el.textContent = prefix + Math.round(start).toLocaleString() + suffix;
+    if(start >= target) clearInterval(iv);
+  }, 16);
+};
+
+// ── 6. EXPORT HELPER ─────────────────────────────────────────────
+window.uExportJSON = function(data, filename){
+  var blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.json';
+  a.click();
+  uToast('Data exported!', 'success');
+};
+window.uExportCSV = function(rows, filename){
+  var csv = rows.map(function(r){ return r.join(','); }).join('\n');
+  var blob = new Blob([csv], {type:'text/csv'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.csv';
+  a.click();
+  uToast('CSV exported!', 'success');
+};
+
+// ── 8. INIT ──────────────────────────────────────────────────────
+function init(){
+  setTimeout(animateEntrance, 100);
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+})();
+</script>
+</body></html>

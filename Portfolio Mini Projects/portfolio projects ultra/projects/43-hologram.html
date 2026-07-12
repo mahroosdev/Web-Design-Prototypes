@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8">
+<meta name="description" content="Hologram UI — part of a professional web developer portfolio with 50+ projects.">
+<meta name="robots" content="index, follow">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Hologram UI</title><style>*{margin:0;padding:0;box-sizing:border-box}
+body{background:linear-gradient(135deg,#020617 0%,#0f172a 100%);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#fff;min-height:100vh;padding:40px 20px;overflow-x:hidden}
+.container{max-width:1000px;margin:0 auto}
+h1{background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:36px;margin-bottom:8px}
+.subtitle{color:#94a3b8;margin-bottom:28px;font-size:15px}
+.back-link{display:inline-flex;align-items:center;gap:6px;margin-bottom:20px;color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;padding:8px 14px;border:1px solid rgba(56,189,248,.3);border-radius:8px;transition:.2s}
+.back-link:hover{background:rgba(56,189,248,.1)}
+.card{background:rgba(30,41,59,.8);backdrop-filter:blur(10px);padding:24px;border-radius:16px;border:1px solid rgba(56,189,248,.2);margin-bottom:20px}
+.btn{padding:10px 22px;border:none;border-radius:8px;cursor:pointer;font-weight:700;font-size:14px;transition:.2s;background:linear-gradient(90deg,#38bdf8,#22c55e);color:#000}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(56,189,248,.35)}
+.btn-outline{background:transparent;border:1px solid rgba(56,189,248,.4);color:#38bdf8}
+input,textarea,select{background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.3);color:#fff;border-radius:8px;padding:10px 14px;font-size:14px;width:100%;outline:none;transition:.2s}
+input:focus,textarea:focus,select:focus{border-color:#38bdf8;box-shadow:0 0 0 3px rgba(56,189,248,.15)}
+input::placeholder,textarea::placeholder{color:#64748b}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.flex{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;background:rgba(56,189,248,.15);color:#38bdf8;border:1px solid rgba(56,189,248,.3)}
+.badge-green{background:rgba(34,197,94,.15);color:#22c55e;border-color:rgba(34,197,94,.3)}
+.stat-box{background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.15);border-radius:12px;padding:20px;text-align:center}
+.stat-num{font-size:32px;font-weight:800;background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-label{font-size:12px;color:#64748b;margin-top:4px;text-transform:uppercase;letter-spacing:.5px}
+@media(max-width:768px){body{padding:15px 12px}h1{font-size:26px}.grid2,.grid3,.grid4{grid-template-columns:1fr}.card{padding:16px 14px}}
+.holo-card{background:rgba(0,10,20,.85);border:1px solid rgba(0,243,255,.3);border-radius:16px;padding:24px;margin-bottom:20px;position:relative;overflow:hidden;backdrop-filter:blur(10px)}
+.holo-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,243,255,.05) 0%,transparent 50%,rgba(0,243,255,.03) 100%);pointer-events:none}
+.scan-lines{position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,243,255,.02) 2px,rgba(0,243,255,.02) 4px);pointer-events:none;z-index:1}
+.holo-stat{background:rgba(0,243,255,.06);border:1px solid rgba(0,243,255,.2);border-radius:10px;padding:14px;text-align:center}
+.holo-stat-val{font-size:20px;font-weight:800;color:#00f3ff;text-shadow:0 0 10px #00f3ff;font-family:monospace}
+.holo-stat-label{font-size:10px;color:#00f3ff66;margin-top:4px;text-transform:uppercase;letter-spacing:.5px;font-family:monospace}
+.ctrl-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(0,243,255,.08);font-size:13px}
+.ctrl-item:last-child{border:none}
+.ctrl-label{color:#00f3ff99;font-family:monospace;flex:1}
+.toggle{width:44px;height:24px;background:rgba(0,243,255,.1);border:1px solid rgba(0,243,255,.3);border-radius:12px;cursor:pointer;position:relative;transition:.3s;flex-shrink:0}
+.toggle.on{background:rgba(0,243,255,.3);border-color:#00f3ff}
+.toggle::after{content:'';position:absolute;width:18px;height:18px;border-radius:50%;background:#00f3ff33;top:2px;left:2px;transition:.3s}
+.toggle.on::after{left:22px;background:#00f3ff}
+.holo-mini{background:rgba(0,10,20,.85);border:1px solid rgba(0,243,255,.2);border-radius:14px;padding:16px;position:relative;overflow:hidden}
+.holo-mini::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,243,255,.015) 2px,rgba(0,243,255,.015) 4px);pointer-events:none}
+.holo-mini-title{font-family:monospace;font-size:11px;color:#00f3ff66;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+.holo-mini-val{font-size:24px;font-weight:800;color:#00f3ff;text-shadow:0 0 8px #00f3ff;font-family:monospace}
+@keyframes holoBlink{0%,90%,100%{opacity:1}95%{opacity:.5}}
+.blink{animation:holoBlink 3s infinite}
+/* ── UNIVERSAL UPGRADE: Theme, Animations, Toast ── */
+:root{
+  --bg:#020617;--bg2:#0f172a;--card:rgba(30,41,59,.85);--border:rgba(56,189,248,.22);
+  --accent:#38bdf8;--accent2:#22c55e;--text:#f1f5f9;--muted:#94a3b8;--danger:#ef4444;
+}
+
+
+/* Toast notifications */
+.u-toast-container{position:fixed;bottom:24px;right:20px;z-index:99999;display:flex;flex-direction:column;gap:8px;max-width:320px}
+.u-toast{
+  background:var(--card);border:1px solid var(--border);color:var(--text);
+  padding:11px 16px;border-radius:10px;font-size:13px;font-weight:600;
+  box-shadow:0 4px 20px rgba(0,0,0,.35);
+  animation:uToastIn .3s ease;display:flex;align-items:center;gap:8px;
+}
+.u-toast.success{border-color:rgba(34,197,94,.5);background:rgba(34,197,94,.1)}
+.u-toast.error{border-color:rgba(239,68,68,.5);background:rgba(239,68,68,.1)}
+.u-toast.info{border-color:rgba(56,189,248,.5);background:rgba(56,189,248,.1)}
+@keyframes uToastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes uToastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(20px)}}
+
+/* Entrance animations */
+@keyframes uFadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes uFadeIn{from{opacity:0}to{opacity:1}}
+@keyframes uPulse{0%,100%{box-shadow:0 0 0 0 rgba(56,189,248,.4)}70%{box-shadow:0 0 0 8px rgba(56,189,248,0)}}
+.u-fade-up{animation:uFadeUp .45s ease both}
+.u-fade-in{animation:uFadeIn .4s ease both}
+.u-pulse{animation:uPulse 2s infinite}
+
+/* Button hover lift */
+.btn:hover,[class*="btn"]:not([class*="btn-"]):hover{transform:translateY(-2px)!important}
+
+/* Smooth card hover */
+.card:hover,[class*="card"]:hover{
+  border-color:var(--accent)!important;
+  box-shadow:0 6px 28px rgba(56,189,248,.12)!important;
+  transition:all .25s ease!important;
+}
+
+/* Loading skeleton */
+.u-skeleton{
+  background:linear-gradient(90deg,rgba(56,189,248,.06) 25%,rgba(56,189,248,.12) 50%,rgba(56,189,248,.06) 75%);
+  background-size:200% 100%;animation:uSkeleton 1.4s infinite;border-radius:6px;
+}
+@keyframes uSkeleton{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* Progress bar component */
+.u-progress{height:5px;background:rgba(56,189,248,.12);border-radius:3px;overflow:hidden;margin:8px 0}
+.u-progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:3px;transition:width .5s ease}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(56,189,248,.3);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(56,189,248,.55)}
+
+/* Mobile responsive upgrades */
+@media(max-width:600px){
+  
+  .u-toast-container{right:10px;bottom:80px;max-width:calc(100vw - 20px)}
+}
+
+</style></head>
+<body><div class="container">
+<a href="../index.html" class="back-link" onclick="window.close(); return false;">← Back to Portfolio</a>
+
+<h1>💠 HoloInterface</h1>
+<p class="subtitle">Futuristic holographic interface with 3D depth effects</p>
+<div class="grid2" style="align-items:start">
+  <div>
+    <div class="holo-card" id="mainHolo">
+      <div class="scan-lines"></div>
+      <div style="position:relative;z-index:2">
+        <div style="text-align:center;padding:20px 0 10px">
+          <div id="holoIcon" style="font-size:64px;margin-bottom:10px;filter:drop-shadow(0 0 20px #00f3ff)">🌐</div>
+          <h3 id="holoTitle" style="font-size:22px;color:#00f3ff;text-shadow:0 0 20px #00f3ff;margin-bottom:6px">HOLO_SYSTEM</h3>
+          <div id="holoStatus" style="font-family:monospace;font-size:13px;color:#00f3ff99">ONLINE · ACTIVE</div>
+        </div>
+        <canvas id="holoCanvas" height="160" style="width:100%;margin:10px 0"></canvas>
+        <div class="grid3" style="gap:8px;margin-top:10px" id="holoStats"></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="color:#38bdf8;margin-bottom:14px">Control Panel</h3>
+      <div id="controls"></div>
+    </div>
+  </div>
+  <div>
+    <div class="holo-card" style="padding:0;overflow:hidden">
+      <div class="scan-lines"></div>
+      <div style="position:relative;z-index:2">
+        <div style="padding:14px 18px;border-bottom:1px solid rgba(0,243,255,.15);font-family:monospace;color:#00f3ff;font-size:13px">
+          SYSTEM_LOG v9.2 · <span style="color:#00f3ff66" id="logTime"></span>
+        </div>
+        <div id="holoLog" style="padding:14px 18px;font-family:monospace;font-size:12px;height:200px;overflow-y:auto;color:#00f3ff;line-height:1.8"></div>
+      </div>
+    </div>
+    <div class="grid2" id="holoGrid" style="gap:12px"></div>
+    <div class="holo-card">
+      <div class="scan-lines"></div>
+      <div style="position:relative;z-index:2">
+        <div style="color:#00f3ff;font-family:monospace;font-size:12px;margin-bottom:12px">FREQ_ANALYZER</div>
+        <canvas id="freqCanvas" height="80" style="width:100%"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+</div><script>
+const logMessages=[
+  'Neural interface established','Quantum tunnel active','Holographic matrix stable',
+  'Bio-sync calibrated','Neural uplink: 99.9%','Encrypting data stream',
+  'Scanning sector 7-G','Anomaly detected: sector 4','Firewall protocols engaged',
+  'Ghost signal traced','Memory banks online','Cognitive link established',
+  'System integrity: optimal','Power cells charged','Grid sync complete',
+];
+let logIdx=0,toggleStates={power:true,shields:true,comms:true,stealth:false,auto:true};
+let freqBars=Array.from({length:32},()=>Math.random());
+let holoAngle=0,animating=true;
+
+function addLog(){
+  const log=document.getElementById('holoLog');
+  const msg=logMessages[logIdx++%logMessages.length];
+  const d=new Date();
+  const time=d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  const line=document.createElement('div');
+  line.innerHTML=`<span style="color:#00f3ff44">[${time}]</span> <span>${msg}...</span>`;
+  log.appendChild(line);
+  log.scrollTop=log.scrollHeight;
+  if(log.children.length>20)log.removeChild(log.firstChild);
+}
+
+function updateLogTime(){
+  const el=document.getElementById('logTime');
+  if(el)el.textContent=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+}
+
+function drawHoloMain(){
+  const canvas=document.getElementById('holoCanvas');
+  canvas.width=canvas.parentElement?.offsetWidth-48||400;
+  const W=canvas.width,H=160,cx=W/2,cy=H/2;
+  const ctx=canvas.getContext('2d');
+  ctx.clearRect(0,0,W,H);
+  // Rotating circles
+  [80,55,30].forEach((r,i)=>{
+    ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);
+    ctx.strokeStyle=`rgba(0,243,255,${0.15+i*0.1})`;ctx.lineWidth=1;ctx.stroke();
+    // Rotating indicator
+    const a=holoAngle*(1+i*0.5);
+    const px=cx+r*Math.cos(a),py=cy+r*Math.sin(a);
+    ctx.beginPath();ctx.arc(px,py,3,0,Math.PI*2);
+    ctx.fillStyle='#00f3ff';ctx.shadowColor='#00f3ff';ctx.shadowBlur=8;ctx.fill();ctx.shadowBlur=0;
+  });
+  // Cross-hairs
+  ctx.strokeStyle='rgba(0,243,255,.15)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(cx-90,cy);ctx.lineTo(cx+90,cy);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(cx,cy-70);ctx.lineTo(cx,cy+70);ctx.stroke();
+  // Center dot
+  ctx.beginPath();ctx.arc(cx,cy,5,0,Math.PI*2);
+  ctx.fillStyle='#00f3ff';ctx.shadowColor='#00f3ff';ctx.shadowBlur=15;ctx.fill();ctx.shadowBlur=0;
+  // Rotating dashes
+  for(let i=0;i<12;i++){
+    const a=holoAngle+i*(Math.PI*2/12);
+    const x1=cx+70*Math.cos(a),y1=cy+70*Math.sin(a);
+    const x2=cx+78*Math.cos(a),y2=cy+78*Math.sin(a);
+    ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);
+    ctx.strokeStyle=`rgba(0,243,255,${i%3===0?0.8:0.3})`;ctx.lineWidth=i%3===0?2:1;ctx.stroke();
+  }
+  if(animating){holoAngle+=0.02;requestAnimationFrame(drawHoloMain);}
+}
+
+function drawFreq(){
+  const canvas=document.getElementById('freqCanvas');
+  canvas.width=canvas.parentElement?.offsetWidth-48||400;
+  const W=canvas.width,H=80;
+  const ctx=canvas.getContext('2d');
+  ctx.clearRect(0,0,W,H);
+  const bw=W/freqBars.length-1;
+  freqBars.forEach((v,i)=>{
+    freqBars[i]=Math.max(0.05,Math.min(1,v+(Math.random()-.5)*0.15));
+    const h=freqBars[i]*H*0.85;
+    const grad=ctx.createLinearGradient(0,H-h,0,H);
+    grad.addColorStop(0,'#00f3ff');grad.addColorStop(1,'rgba(0,243,255,.1)');
+    ctx.fillStyle=grad;
+    ctx.fillRect(i*(bw+1),H-h,bw,h);
+  });
+  if(animating)setTimeout(()=>requestAnimationFrame(drawFreq),80);
+}
+
+const stats=[{l:'CPU',v:'88%'},{l:'NET',v:'1.2G'},{l:'SYS',v:'OK'}];
+document.getElementById('holoStats').innerHTML=stats.map(s=>`<div class="holo-stat"><div class="holo-stat-val">${s.v}</div><div class="holo-stat-label">${s.l}</div></div>`).join('');
+
+const controls2=[
+  {key:'power',label:'POWER_CORE'},
+  {key:'shields',label:'SHIELD_MATRIX'},
+  {key:'comms',label:'COMMS_RELAY'},
+  {key:'stealth',label:'STEALTH_MODE'},
+  {key:'auto',label:'AUTO_PILOT'},
+];
+document.getElementById('controls').innerHTML=controls2.map(c=>`
+  <div class="ctrl-item">
+    <span class="ctrl-label">${c.label}</span>
+    <span class="badge" style="background:rgba(0,243,255,.${toggleStates[c.key]?'15':'05'});color:#00f3ff${toggleStates[c.key]?'':'66'};border-color:rgba(0,243,255,.${toggleStates[c.key]?'3':'1'})">${toggleStates[c.key]?'ON':'OFF'}</span>
+    <div class="toggle ${toggleStates[c.key]?'on':''}" id="tgl_${c.key}" onclick="toggleCtrl('${c.key}')"></div>
+  </div>`).join('');
+
+function toggleCtrl(key){
+  toggleStates[key]=!toggleStates[key];
+  const tgl=document.getElementById('tgl_'+key);
+  if(tgl)tgl.className='toggle'+(toggleStates[key]?' on':'');
+  // Re-render just the badge
+  document.getElementById('controls').innerHTML=controls2.map(c=>`
+    <div class="ctrl-item">
+      <span class="ctrl-label">${c.label}</span>
+      <span class="badge" style="background:rgba(0,243,255,.${toggleStates[c.key]?'15':'05'});color:#00f3ff${toggleStates[c.key]?'':'66'};border-color:rgba(0,243,255,.${toggleStates[c.key]?'3':'1'})">${toggleStates[c.key]?'ON':'OFF'}</span>
+      <div class="toggle ${toggleStates[c.key]?'on':''}" id="tgl_${c.key}" onclick="toggleCtrl('${c.key}')"></div>
+    </div>`).join('');
+}
+
+const miniCards=[
+  {title:'UPTIME',val:'99.97%',icon:'⚡'},{title:'NODES',val:'2,847',icon:'🔗'},
+  {title:'LATENCY',val:'4ms',icon:'📡'},{title:'PACKETS',val:'1.2M/s',icon:'📦'},
+];
+document.getElementById('holoGrid').innerHTML=miniCards.map(m=>`
+  <div class="holo-mini">
+    <div class="holo-mini-title">${m.icon} ${m.title}</div>
+    <div class="holo-mini-val">${m.val}</div>
+  </div>`).join('');
+
+drawHoloMain();drawFreq();
+setInterval(addLog,2000);setInterval(updateLogTime,1000);updateLogTime();
+</script><script>
+// ── UNIVERSAL UPGRADE: Theme, localStorage, Toast, Animations ──
+(function(){
+'use strict';
+
+// ── 2. TOAST SYSTEM ──────────────────────────────────────────────
+var toastContainer = null;
+function getToastContainer(){
+  if(!toastContainer || !document.body.contains(toastContainer)){
+    toastContainer = document.createElement('div');
+    toastContainer.className = 'u-toast-container';
+    document.body.appendChild(toastContainer);
+  }
+  return toastContainer;
+}
+
+window.uToast = function(msg, type, duration){
+  type = type || 'info';
+  duration = duration || 2800;
+  var icons = {success:'✅', error:'❌', info:'💡', warning:'⚠️'};
+  var c = getToastContainer();
+  var t = document.createElement('div');
+  t.className = 'u-toast ' + type;
+  t.innerHTML = '<span>' + (icons[type]||'💡') + '</span><span>' + msg + '</span>';
+  c.appendChild(t);
+  setTimeout(function(){
+    t.style.animation = 'uToastOut .3s ease forwards';
+    setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 300);
+  }, duration);
+};
+
+// ── 3. LOCALSTORAGE HELPERS ──────────────────────────────────────
+var APP_KEY = 'uapp_' + location.pathname.split('/').pop().replace('.html','');
+window.uSave = function(key, val){
+  try { localStorage.setItem(APP_KEY + '_' + key, JSON.stringify(val)); return true; }
+  catch(e){ return false; }
+};
+window.uLoad = function(key, def){
+  try {
+    var v = localStorage.getItem(APP_KEY + '_' + key);
+    return v !== null ? JSON.parse(v) : def;
+  } catch(e){ return def; }
+};
+window.uClear = function(key){
+  try { localStorage.removeItem(APP_KEY + '_' + key); } catch(e){}
+};
+
+// ── 4. ENTRANCE ANIMATIONS ───────────────────────────────────────
+function animateEntrance(){
+  var cards = document.querySelectorAll('.card, [class*="card"]');
+  cards.forEach(function(el, i){
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(18px)';
+    setTimeout(function(){
+      el.style.transition = 'opacity .4s ease, transform .4s ease';
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+    }, i * 60);
+  });
+}
+
+// ── 5. SMOOTH COUNTER ANIMATION ──────────────────────────────────
+window.uAnimCount = function(el, target, duration, prefix, suffix){
+  prefix = prefix || '';
+  suffix = suffix || '';
+  duration = duration || 1200;
+  var start = 0;
+  var step = target / (duration / 16);
+  var iv = setInterval(function(){
+    start = Math.min(start + step, target);
+    el.textContent = prefix + Math.round(start).toLocaleString() + suffix;
+    if(start >= target) clearInterval(iv);
+  }, 16);
+};
+
+// ── 6. EXPORT HELPER ─────────────────────────────────────────────
+window.uExportJSON = function(data, filename){
+  var blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.json';
+  a.click();
+  uToast('Data exported!', 'success');
+};
+window.uExportCSV = function(rows, filename){
+  var csv = rows.map(function(r){ return r.join(','); }).join('\n');
+  var blob = new Blob([csv], {type:'text/csv'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.csv';
+  a.click();
+  uToast('CSV exported!', 'success');
+};
+
+// ── 8. INIT ──────────────────────────────────────────────────────
+function init(){
+  setTimeout(animateEntrance, 100);
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+})();
+</script>
+<script>
+(function(){
+  var customMsg = uLoad('holo_message', 'SYSTEM ONLINE');
+  var animPreset = uLoad('holo_preset', 'default');
+  
+  // Custom message input
+  if(!document.getElementById('uHoloMsg')){
+    var msgDiv = document.createElement('div');
+    msgDiv.style.cssText = 'margin-top:16px;padding:14px;background:rgba(0,243,255,.06);border:1px solid rgba(0,243,255,.2);border-radius:12px';
+    msgDiv.innerHTML = '<div style="font-family:monospace;font-size:12px;color:#00f3ff66;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">Custom Holo Message</div>' +
+      '<div style="display:flex;gap:8px">' +
+      '<input id="uHoloMsg" value="'+customMsg+'" placeholder="Enter hologram message..." style="flex:1;font-family:monospace;font-size:13px;background:rgba(0,243,255,.06);border-color:rgba(0,243,255,.3);color:#00f3ff">' +
+      '<button onclick="updateHoloMsg()" style="padding:8px 14px;background:rgba(0,243,255,.15);border:1px solid rgba(0,243,255,.4);color:#00f3ff;border-radius:8px;cursor:pointer;font-family:monospace;font-weight:700;font-size:12px;flex-shrink:0">UPDATE</button>' +
+      '</div>' +
+      '<div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">' +
+      ['SYSTEMS NOMINAL','GRID ONLINE','GHOST PROTOCOL','NEURAL SYNC','QUANTUM LINK'].map(function(p){
+        return '<button onclick="document.getElementById(\'uHoloMsg\').value=\''+p+'\';updateHoloMsg()" style="padding:4px 10px;background:rgba(0,243,255,.06);border:1px solid rgba(0,243,255,.2);color:#00f3ff66;border-radius:4px;cursor:pointer;font-family:monospace;font-size:10px;font-weight:700">'+p+'</button>';
+      }).join('') + '</div>';
+    document.querySelector('.holo-card:first-of-type, .card')?.after(msgDiv);
+  }
+  
+  window.updateHoloMsg = function(){
+    var msg = document.getElementById('uHoloMsg')?.value.trim();
+    if(!msg) return;
+    customMsg = msg;
+    uSave('holo_message', msg);
+    // Update the hologram title if it exists
+    var title = document.getElementById('holoTitle');
+    if(title){ title.textContent = msg; title.style.animation='none'; setTimeout(function(){title.style.animation='';},10); }
+    uToast('Hologram updated: '+msg, 'info', 1500);
+  };
+  
+  // Apply saved message on load
+  setTimeout(function(){
+    var title = document.getElementById('holoTitle');
+    if(title && customMsg !== 'SYSTEM ONLINE') title.textContent = customMsg;
+  }, 500);
+})();
+</script>
+</body></html>

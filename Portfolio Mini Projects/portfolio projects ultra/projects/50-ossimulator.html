@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8">
+<meta name="description" content="OS Simulator — part of a professional web developer portfolio with 50+ projects.">
+<meta name="robots" content="index, follow">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>OS Simulator</title><style>*{margin:0;padding:0;box-sizing:border-box}
+body{background:linear-gradient(135deg,#020617 0%,#0f172a 100%);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#fff;min-height:100vh;padding:40px 20px;overflow-x:hidden}
+.container{max-width:1000px;margin:0 auto}
+h1{background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:36px;margin-bottom:8px}
+.subtitle{color:#94a3b8;margin-bottom:28px;font-size:15px}
+.back-link{display:inline-flex;align-items:center;gap:6px;margin-bottom:20px;color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;padding:8px 14px;border:1px solid rgba(56,189,248,.3);border-radius:8px;transition:.2s}
+.back-link:hover{background:rgba(56,189,248,.1)}
+.card{background:rgba(30,41,59,.8);backdrop-filter:blur(10px);padding:24px;border-radius:16px;border:1px solid rgba(56,189,248,.2);margin-bottom:20px}
+.btn{padding:10px 22px;border:none;border-radius:8px;cursor:pointer;font-weight:700;font-size:14px;transition:.2s;background:linear-gradient(90deg,#38bdf8,#22c55e);color:#000}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(56,189,248,.35)}
+.btn-outline{background:transparent;border:1px solid rgba(56,189,248,.4);color:#38bdf8}
+input,textarea,select{background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.3);color:#fff;border-radius:8px;padding:10px 14px;font-size:14px;width:100%;outline:none;transition:.2s}
+input:focus,textarea:focus,select:focus{border-color:#38bdf8;box-shadow:0 0 0 3px rgba(56,189,248,.15)}
+input::placeholder,textarea::placeholder{color:#64748b}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.flex{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;background:rgba(56,189,248,.15);color:#38bdf8;border:1px solid rgba(56,189,248,.3)}
+.badge-green{background:rgba(34,197,94,.15);color:#22c55e;border-color:rgba(34,197,94,.3)}
+.stat-box{background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.15);border-radius:12px;padding:20px;text-align:center}
+.stat-num{font-size:32px;font-weight:800;background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-label{font-size:12px;color:#64748b;margin-top:4px;text-transform:uppercase;letter-spacing:.5px}
+@media(max-width:768px){body{padding:15px 12px}h1{font-size:26px}.grid2,.grid3,.grid4{grid-template-columns:1fr}.card{padding:16px 14px}}
+.retro-icon{display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px;cursor:pointer;font-size:28px;width:64px;text-align:center;user-select:none;border:1px solid transparent}
+.retro-icon div{font-size:10px;font-family:'Courier New',monospace;color:#fff;text-shadow:1px 1px 0 #000;line-height:1.2;max-width:60px}
+.retro-icon:hover{background:rgba(0,0,128,.4);border-color:rgba(255,255,255,.5)}
+.retro-icon:active{background:rgba(0,0,128,.6)}
+.retro-win{position:absolute;background:#c0c0c0;border:2px solid;border-color:#fff #808080 #808080 #fff;box-shadow:2px 2px 0 #000;pointer-events:all;min-width:250px}
+.retro-titlebar{background:linear-gradient(90deg,#000080,#1084d0);padding:3px 6px;display:flex;align-items:center;gap:5px;cursor:move;user-select:none}
+.retro-titlebar span{color:#fff;font-family:'Courier New',monospace;font-size:12px;font-weight:700;flex:1}
+.retro-wbtn{background:#c0c0c0;border:1px solid;border-color:#fff #808080 #808080 #fff;width:15px;height:13px;cursor:pointer;font-size:9px;font-weight:700;line-height:1.4;text-align:center}
+.retro-menu-item{padding:5px 12px;font-family:'Courier New',monospace;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.retro-menu-item:hover{background:#000080;color:#fff}
+.retro-tb-btn{background:linear-gradient(180deg,#dfdfdf,#b0b0b0);border:2px solid;border-color:#fff #808080 #808080 #fff;padding:2px 8px;cursor:pointer;font-size:11px;font-family:'Courier New',monospace;white-space:nowrap}
+.retro-tb-btn.active{border-color:#808080 #fff #fff #808080;background:linear-gradient(180deg,#a0a0a0,#c0c0c0)}
+/* ── UNIVERSAL UPGRADE: Theme, Animations, Toast ── */
+:root{
+  --bg:#020617;--bg2:#0f172a;--card:rgba(30,41,59,.85);--border:rgba(56,189,248,.22);
+  --accent:#38bdf8;--accent2:#22c55e;--text:#f1f5f9;--muted:#94a3b8;--danger:#ef4444;
+}
+
+
+/* Toast notifications */
+.u-toast-container{position:fixed;bottom:24px;right:20px;z-index:99999;display:flex;flex-direction:column;gap:8px;max-width:320px}
+.u-toast{
+  background:var(--card);border:1px solid var(--border);color:var(--text);
+  padding:11px 16px;border-radius:10px;font-size:13px;font-weight:600;
+  box-shadow:0 4px 20px rgba(0,0,0,.35);
+  animation:uToastIn .3s ease;display:flex;align-items:center;gap:8px;
+}
+.u-toast.success{border-color:rgba(34,197,94,.5);background:rgba(34,197,94,.1)}
+.u-toast.error{border-color:rgba(239,68,68,.5);background:rgba(239,68,68,.1)}
+.u-toast.info{border-color:rgba(56,189,248,.5);background:rgba(56,189,248,.1)}
+@keyframes uToastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes uToastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(20px)}}
+
+/* Entrance animations */
+@keyframes uFadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes uFadeIn{from{opacity:0}to{opacity:1}}
+@keyframes uPulse{0%,100%{box-shadow:0 0 0 0 rgba(56,189,248,.4)}70%{box-shadow:0 0 0 8px rgba(56,189,248,0)}}
+.u-fade-up{animation:uFadeUp .45s ease both}
+.u-fade-in{animation:uFadeIn .4s ease both}
+.u-pulse{animation:uPulse 2s infinite}
+
+/* Button hover lift */
+.btn:hover,[class*="btn"]:not([class*="btn-"]):hover{transform:translateY(-2px)!important}
+
+/* Smooth card hover */
+.card:hover,[class*="card"]:hover{
+  border-color:var(--accent)!important;
+  box-shadow:0 6px 28px rgba(56,189,248,.12)!important;
+  transition:all .25s ease!important;
+}
+
+/* Loading skeleton */
+.u-skeleton{
+  background:linear-gradient(90deg,rgba(56,189,248,.06) 25%,rgba(56,189,248,.12) 50%,rgba(56,189,248,.06) 75%);
+  background-size:200% 100%;animation:uSkeleton 1.4s infinite;border-radius:6px;
+}
+@keyframes uSkeleton{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* Progress bar component */
+.u-progress{height:5px;background:rgba(56,189,248,.12);border-radius:3px;overflow:hidden;margin:8px 0}
+.u-progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:3px;transition:width .5s ease}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(56,189,248,.3);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(56,189,248,.55)}
+
+/* Mobile responsive upgrades */
+@media(max-width:600px){
+  
+  .u-toast-container{right:10px;bottom:80px;max-width:calc(100vw - 20px)}
+}
+
+</style></head>
+<body><div class="container">
+<a href="../index.html" class="back-link" onclick="window.close(); return false;">← Back to Portfolio</a>
+
+<h1>💾 RetroOS Simulator</h1>
+<p class="subtitle">A nostalgic retro operating system experience with classic UI</p>
+<div style="background:#008080;padding:16px;border-radius:12px;border:2px solid #000;box-shadow:4px 4px 0 rgba(0,0,0,.5)">
+  <!-- Title bar -->
+  <div style="background:linear-gradient(90deg,#000080,#1084d0);padding:4px 8px;border-radius:4px 4px 0 0;display:flex;align-items:center;gap:6px;margin-bottom:8px">
+    <span style="font-size:14px">💻</span>
+    <span style="color:#fff;font-family:'Courier New',monospace;font-size:13px;font-weight:700">RetroOS 95 — Desktop</span>
+    <div style="margin-left:auto;display:flex;gap:4px">
+      <button style="background:#c0c0c0;border:1px solid #000;width:16px;height:14px;cursor:pointer;font-size:9px;font-weight:700;line-height:1" onclick="minAll()">_</button>
+      <button style="background:#c0c0c0;border:1px solid #000;width:16px;height:14px;cursor:pointer;font-size:9px;font-weight:700;line-height:1">□</button>
+    </div>
+  </div>
+  <!-- Desktop area -->
+  <div id="retro-desktop" style="background:#008080;min-height:420px;position:relative;padding:12px;display:flex;flex-wrap:wrap;align-content:flex-start;gap:16px">
+    <div class="retro-icon" ondblclick="openRetro('mycomputer')">💻<div>My Computer</div></div>
+    <div class="retro-icon" ondblclick="openRetro('mydocs')">📁<div>My Documents</div></div>
+    <div class="retro-icon" ondblclick="openRetro('recycle')">🗑<div>Recycle Bin</div></div>
+    <div class="retro-icon" ondblclick="openRetro('notepad')">📝<div>Notepad</div></div>
+    <div class="retro-icon" ondblclick="openRetro('paint')">🎨<div>MS Paint</div></div>
+    <div class="retro-icon" ondblclick="openRetro('internet')">🌐<div>Internet</div></div>
+    <div class="retro-icon" ondblclick="openRetro('minesweeper')">💣<div>Minesweeper</div></div>
+    <div class="retro-icon" ondblclick="openRetro('solitaire')">🃏<div>Solitaire</div></div>
+    <div id="retro-windows" style="position:absolute;inset:0;pointer-events:none"></div>
+  </div>
+  <!-- Taskbar -->
+  <div id="retro-taskbar" style="background:#c0c0c0;border-top:2px solid #fff;border-right:2px solid #000;border-bottom:2px solid #000;border-left:2px solid #fff;padding:4px 6px;display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+    <button onclick="toggleRetroStart()" style="background:linear-gradient(180deg,#dfdfdf,#b0b0b0);border:2px solid;border-color:#fff #808080 #808080 #fff;padding:3px 10px;cursor:pointer;font-weight:700;font-size:13px;font-family:'Courier New',monospace;display:flex;align-items:center;gap:4px"><span>🚀</span> Start</button>
+    <div style="width:1px;height:20px;background:#808080;margin:0 4px"></div>
+    <div id="retro-tb-items" style="display:flex;gap:4px;flex-wrap:wrap;flex:1"></div>
+    <div style="margin-left:auto;background:rgba(0,0,0,.15);border:1px solid #808080;padding:2px 8px;font-family:'Courier New',monospace;font-size:12px" id="retro-clock"></div>
+  </div>
+</div>
+<!-- Start Menu -->
+<div id="retro-start" style="display:none;position:fixed;bottom:80px;left:40px;background:#c0c0c0;border:2px solid;border-color:#fff #808080 #808080 #fff;width:220px;z-index:9999;box-shadow:3px 3px 0 #000">
+  <div style="background:linear-gradient(180deg,#000080,#1084d0);width:22px;writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg);padding:8px 4px;color:#c0c0c0;font-weight:700;font-size:14px;font-family:'Courier New',monospace;float:left;height:200px">RetroOS 95</div>
+  <div style="margin-left:22px">
+    ${[['💻','My Computer'],['📁','My Documents'],['📝','Notepad'],['🎨','MS Paint'],['🌐','Internet'],['💣','Minesweeper'],['⚙️','Control Panel'],['📞','Dial-Up']].map(([i,n])=>`<div class="retro-menu-item" onclick="openRetro('${n.toLowerCase().replace(/ /g,'')}');toggleRetroStart()">${i} ${n}</div>`).join('')}
+    <div style="border-top:2px solid;border-color:#808080 #fff #fff #808080;margin:4px 0"></div>
+    <div class="retro-menu-item" onclick="toggleRetroStart()">⏻ Shut Down...</div>
+  </div>
+</div>
+</div><script>
+function updateRetroClock(){const d=new Date();document.getElementById('retro-clock').textContent=d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});}
+setInterval(updateRetroClock,1000);updateRetroClock();
+
+let rWinZ=10,openWins={};
+const winContent={
+  mycomputer:`<div style="font-family:'Courier New',monospace;font-size:12px;padding:8px">
+    <div style="margin-bottom:8px;font-weight:700">My Computer</div>
+    ${[['💾','(C:) Local Disk','15.3 GB free'],['💿','(D:) CD-ROM','Empty'],['📁','(A:) Floppy','1.44 MB'],['🖨','Printers','3 installed']].map(([i,n,d])=>`<div style="display:flex;align-items:center;gap:8px;padding:5px;cursor:pointer;border:1px solid transparent" onmouseover="this.style.background='#000080';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color=''">${i} <span style="flex:1">${n}</span> <span style="font-size:11px;color:inherit">${d}</span></div>`).join('')}
+  </div>`,
+  notepad:`<div style="display:flex;flex-direction:column;height:180px">
+    <div style="background:#c0c0c0;padding:2px 6px;font-family:'Courier New',monospace;font-size:11px;border-bottom:1px solid #808080">File  Edit  Search  Help</div>
+    <textarea style="flex:1;font-family:'Courier New',monospace;font-size:12px;background:#fff;border:none;border:2px inset #808080;resize:none;padding:4px;outline:none;color:#000" placeholder="Type your text here..."></textarea>
+  </div>`,
+  minesweeper:`<div style="font-family:'Courier New',monospace;font-size:12px;padding:8px">
+    <div style="display:flex;justify-content:space-between;margin-bottom:8px;padding:4px 6px;background:#c0c0c0;border:2px inset #808080">
+      <span id="mineCount">💣 010</span>
+      <button onclick="initMines()" style="background:#c0c0c0;border:2px solid;border-color:#fff #808080 #808080 #fff;padding:2px 8px;cursor:pointer;font-size:14px" id="mineEmoji">🙂</button>
+      <span id="mineTimer">⏱ 000</span>
+    </div>
+    <div id="mineGrid" style="display:grid;grid-template-columns:repeat(9,24px);gap:1px"></div>
+  </div>`,
+  internet:`<div style="font-family:'Courier New',monospace;font-size:12px">
+    <div style="background:#c0c0c0;padding:3px 6px;border-bottom:1px solid #808080;display:flex;gap:6px;align-items:center">
+      <span style="font-size:10px">Address:</span>
+      <input value="http://www.msn.com" style="flex:1;font-family:'Courier New',monospace;font-size:11px;background:#fff;border:2px inset #808080;padding:2px 4px;color:#000;outline:none">
+      <button style="background:#c0c0c0;border:2px solid;border-color:#fff #808080 #808080 #fff;padding:2px 8px;cursor:pointer;font-size:11px">Go</button>
+    </div>
+    <div style="background:#fff;padding:20px;text-align:center;min-height:140px;color:#000;border:2px inset #808080">
+      <div style="font-size:20px;font-weight:700;color:#000080;margin-bottom:8px">MSN.COM</div>
+      <div style="font-size:11px;margin-bottom:6px">Welcome to the Internet!</div>
+      <div style="font-size:10px;color:#808080">Connecting via 56K modem... 📞</div>
+    </div>
+  </div>`,
+};
+
+function openRetro(id){
+  const titles={mycomputer:'My Computer',notepad:'Notepad',minesweeper:'Minesweeper',internet:'Internet Explorer',mydocs:'My Documents',recycle:'Recycle Bin',paint:'MS Paint',solitaire:'Solitaire',controlpanel:'Control Panel',dialup:'Dial-Up Networking'};
+  const title=titles[id]||id;
+  if(openWins[id]){document.getElementById('rw_'+id).style.zIndex=++rWinZ;return;}
+  openWins[id]=true;
+  const win=document.createElement('div');
+  win.className='retro-win';win.id='rw_'+id;
+  const left=20+Object.keys(openWins).length*20;
+  const top=20+Object.keys(openWins).length*20;
+  win.style.cssText=`left:${left}px;top:${top}px;z-index:${++rWinZ}`;
+  win.innerHTML=`<div class="retro-titlebar" id="rtb_${id}">
+    <span>💻 ${title}</span>
+    <button class="retro-wbtn" onclick="closeRetro('${id}')">✕</button>
+  </div>
+  <div style="padding:4px;max-height:220px;overflow:auto">${winContent[id]||`<div style="padding:12px;font-family:'Courier New',monospace;font-size:12px;text-align:center"><div style="font-size:24px;margin-bottom:8px">💻</div>${title}<br><br>Application loaded.</div>`}</div>`;
+  document.getElementById('retro-windows').appendChild(win);
+  makeDraggableRetro(win,document.getElementById('rtb_'+id));
+  addTBItem(id,title);
+  if(id==='minesweeper')setTimeout(initMines,100);
+}
+
+function closeRetro(id){const el=document.getElementById('rw_'+id);if(el)el.remove();delete openWins[id];removeTBItem(id);}
+function minAll(){Object.keys(openWins).forEach(id=>{const el=document.getElementById('rw_'+id);if(el){const body=el.querySelector('[style*="padding:4px"]');if(body)body.style.display=body.style.display==='none'?'':none;}});}
+
+function addTBItem(id,title){
+  const tb=document.getElementById('retro-tb-items');
+  const btn=document.createElement('button');
+  btn.className='retro-tb-btn';btn.id='tbi_'+id;
+  btn.style.cssText='display:inline-flex;align-items:center;gap:5px;padding-right:6px';
+  const titleSpan=document.createElement('span');
+  titleSpan.textContent='💻 '+title.slice(0,12);
+  titleSpan.style.flex='1';
+  const closeBtn=document.createElement('span');
+  closeBtn.textContent='×';
+  closeBtn.style.cssText='font-size:14px;font-weight:900;padding:0 3px;opacity:.7;line-height:1;cursor:pointer;border-left:1px solid rgba(0,0,0,0.2);margin-left:4px';
+  closeBtn.title='Close';
+  closeBtn.onclick=(e)=>{e.stopPropagation();closeRetro(id);};
+  closeBtn.onmouseover=()=>{closeBtn.style.opacity='1';closeBtn.style.background='rgba(255,0,0,0.15)';};
+  closeBtn.onmouseout=()=>{closeBtn.style.opacity='.7';closeBtn.style.background='';};
+  btn.appendChild(titleSpan);
+  btn.appendChild(closeBtn);
+  btn.onclick=()=>{const w=document.getElementById('rw_'+id);if(w)w.style.zIndex=++rWinZ;};
+  tb.appendChild(btn);
+}
+function removeTBItem(id){const el=document.getElementById('tbi_'+id);if(el)el.remove();}
+
+function makeDraggableRetro(win,bar){
+  let dx=0,dy=0;
+  bar.addEventListener('mousedown',e=>{
+    win.style.zIndex=++rWinZ;
+    dx=e.clientX-win.getBoundingClientRect().left;
+    dy=e.clientY-win.getBoundingClientRect().top;
+    function onMove(e){win.style.left=(e.clientX-dx)+'px';win.style.top=(e.clientY-dy)+'px';}
+    document.addEventListener('mousemove',onMove);
+    document.addEventListener('mouseup',()=>document.removeEventListener('mousemove',onMove),{once:true});
+  });
+}
+
+function toggleRetroStart(){const s=document.getElementById('retro-start');s.style.display=s.style.display==='none'?'block':'none';}
+document.addEventListener('click',e=>{if(!e.target.closest('#retro-start')&&!e.target.closest('[onclick*="toggleRetroStart"]'))document.getElementById('retro-start').style.display='none';});
+
+// Minesweeper
+let mineData=[],mineTimer=0,mineInterval=null,mineStarted=false;
+function initMines(){
+  clearInterval(mineInterval);mineStarted=false;mineTimer=0;
+  const grid=document.getElementById('mineGrid');if(!grid)return;
+  document.getElementById('mineEmoji').textContent='🙂';
+  document.getElementById('mineTimer').textContent='⏱ 000';
+  mineData=Array.from({length:81},(_,i)=>({mine:false,revealed:false,flagged:false,adj:0}));
+  let placed=0;
+  while(placed<10){const i=Math.floor(Math.random()*81);if(!mineData[i].mine){mineData[i].mine=true;placed++;}}
+  mineData.forEach((_,i)=>{
+    if(mineData[i].mine)return;
+    const r=Math.floor(i/9),c=i%9;let adj=0;
+    for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){const nr=r+dr,nc=c+dc;if(nr>=0&&nr<9&&nc>=0&&nc<9&&mineData[nr*9+nc].mine)adj++;}
+    mineData[i].adj=adj;
+  });
+  renderMines();
+}
+function renderMines(){
+  const grid=document.getElementById('mineGrid');if(!grid)return;
+  const colors=['','#0000ff','#008000','#ff0000','#000080','#800000','#008080','#000000','#808080'];
+  grid.innerHTML=mineData.map((c,i)=>`<button onclick="revealMine(${i})" oncontextmenu="event.preventDefault();flagMine(${i})" style="width:23px;height:23px;background:${c.revealed?'#c0c0c0':'linear-gradient(135deg,#dfdfdf,#a0a0a0)'};border:${c.revealed?'1px solid #808080':'2px solid;border-color:#fff #808080 #808080 #fff'};font-size:11px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;color:${c.revealed&&!c.mine?colors[c.adj]:'inherit'};font-family:'Courier New',monospace">${c.flagged&&!c.revealed?'🚩':c.revealed?c.mine?'💣':c.adj||'':''}</button>`).join('');
+}
+function revealMine(i){
+  if(mineData[i].flagged||mineData[i].revealed)return;
+  if(!mineStarted){mineStarted=true;mineInterval=setInterval(()=>{mineTimer++;const el=document.getElementById('mineTimer');if(el)el.textContent='⏱ '+String(mineTimer).padStart(3,'0');},1000);}
+  if(mineData[i].mine){mineData[i].revealed=true;clearInterval(mineInterval);const el=document.getElementById('mineEmoji');if(el)el.textContent='😵';renderMines();return;}
+  flood(i);renderMines();
+  if(mineData.filter(c=>!c.mine&&!c.revealed).length===0){clearInterval(mineInterval);const el=document.getElementById('mineEmoji');if(el)el.textContent='😎';}
+}
+function flood(i){
+  if(i<0||i>=81||mineData[i].revealed||mineData[i].mine)return;
+  mineData[i].revealed=true;
+  if(mineData[i].adj===0){const r=Math.floor(i/9),c=i%9;for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){const nr=r+dr,nc=c+dc;if(nr>=0&&nr<9&&nc>=0&&nc<9)flood(nr*9+nc);}}
+}
+function flagMine(i){if(!mineData[i].revealed){mineData[i].flagged=!mineData[i].flagged;renderMines();}}
+</script><script>
+// ── UNIVERSAL UPGRADE: Theme, localStorage, Toast, Animations ──
+(function(){
+'use strict';
+
+// ── 2. TOAST SYSTEM ──────────────────────────────────────────────
+var toastContainer = null;
+function getToastContainer(){
+  if(!toastContainer || !document.body.contains(toastContainer)){
+    toastContainer = document.createElement('div');
+    toastContainer.className = 'u-toast-container';
+    document.body.appendChild(toastContainer);
+  }
+  return toastContainer;
+}
+
+window.uToast = function(msg, type, duration){
+  type = type || 'info';
+  duration = duration || 2800;
+  var icons = {success:'✅', error:'❌', info:'💡', warning:'⚠️'};
+  var c = getToastContainer();
+  var t = document.createElement('div');
+  t.className = 'u-toast ' + type;
+  t.innerHTML = '<span>' + (icons[type]||'💡') + '</span><span>' + msg + '</span>';
+  c.appendChild(t);
+  setTimeout(function(){
+    t.style.animation = 'uToastOut .3s ease forwards';
+    setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 300);
+  }, duration);
+};
+
+// ── 3. LOCALSTORAGE HELPERS ──────────────────────────────────────
+var APP_KEY = 'uapp_' + location.pathname.split('/').pop().replace('.html','');
+window.uSave = function(key, val){
+  try { localStorage.setItem(APP_KEY + '_' + key, JSON.stringify(val)); return true; }
+  catch(e){ return false; }
+};
+window.uLoad = function(key, def){
+  try {
+    var v = localStorage.getItem(APP_KEY + '_' + key);
+    return v !== null ? JSON.parse(v) : def;
+  } catch(e){ return def; }
+};
+window.uClear = function(key){
+  try { localStorage.removeItem(APP_KEY + '_' + key); } catch(e){}
+};
+
+// ── 4. ENTRANCE ANIMATIONS ───────────────────────────────────────
+function animateEntrance(){
+  var cards = document.querySelectorAll('.card, [class*="card"]');
+  cards.forEach(function(el, i){
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(18px)';
+    setTimeout(function(){
+      el.style.transition = 'opacity .4s ease, transform .4s ease';
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+    }, i * 60);
+  });
+}
+
+// ── 5. SMOOTH COUNTER ANIMATION ──────────────────────────────────
+window.uAnimCount = function(el, target, duration, prefix, suffix){
+  prefix = prefix || '';
+  suffix = suffix || '';
+  duration = duration || 1200;
+  var start = 0;
+  var step = target / (duration / 16);
+  var iv = setInterval(function(){
+    start = Math.min(start + step, target);
+    el.textContent = prefix + Math.round(start).toLocaleString() + suffix;
+    if(start >= target) clearInterval(iv);
+  }, 16);
+};
+
+// ── 6. EXPORT HELPER ─────────────────────────────────────────────
+window.uExportJSON = function(data, filename){
+  var blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.json';
+  a.click();
+  uToast('Data exported!', 'success');
+};
+window.uExportCSV = function(rows, filename){
+  var csv = rows.map(function(r){ return r.join(','); }).join('\n');
+  var blob = new Blob([csv], {type:'text/csv'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.csv';
+  a.click();
+  uToast('CSV exported!', 'success');
+};
+
+// ── 8. INIT ──────────────────────────────────────────────────────
+function init(){
+  setTimeout(animateEntrance, 100);
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+})();
+</script>
+<script>
+(function(){
+  var fileSystem = uLoad('retro_files', {'My Documents':['Resume.doc','Report.xls','Letter.txt'],'Desktop':['Shortcut.lnk','Notes.txt'],'Downloads':[]});
+  var settings = uLoad('retro_settings', {sound:true,wallpaper:0,username:'User'});
+  
+  // Enhanced file manager
+  var origContent = window.appContent || {};
+  if(origContent.mydocs !== undefined || origContent.files !== undefined){
+    var key = origContent.mydocs !== undefined ? 'mydocs' : 'files';
+    origContent[key] = '<div style="font-family:\'Courier New\',monospace;font-size:12px;padding:8px">' +
+      '<div style="margin-bottom:10px;display:flex;gap:6px">' +
+      '<button onclick="addFile()" style="padding:3px 10px;background:#c0c0c0;border:2px solid;border-color:#fff #808080 #808080 #fff;cursor:pointer;font-family:\'Courier New\',monospace;font-size:11px">New File</button>' +
+      '<button onclick="addFolder()" style="padding:3px 10px;background:#c0c0c0;border:2px solid;border-color:#fff #808080 #808080 #fff;cursor:pointer;font-family:\'Courier New\',monospace;font-size:11px">New Folder</button>' +
+      '</div><div id="uFileTree"></div></div>';
+    renderFileTree();
+  }
+  
+  function renderFileTree(){
+    var el = document.getElementById('uFileTree');
+    if(!el) return;
+    el.innerHTML = Object.keys(fileSystem).map(function(folder){
+      return '<div style="margin-bottom:8px">' +
+        '<div style="font-weight:700;color:#000080;margin-bottom:4px;cursor:pointer" onclick="this.nextSibling.style.display=this.nextSibling.style.display===\'none\'?\'block\':\'none\'">📁 '+folder+'</div>' +
+        '<div style="padding-left:16px">' +
+        (fileSystem[folder].length ? fileSystem[folder].map(function(f,i){
+          var icon = f.endsWith('.doc')||f.endsWith('.txt')?'📄':f.endsWith('.xls')?'📊':f.endsWith('.exe')?'⚙️':'📄';
+          return '<div style="display:flex;align-items:center;gap:6px;padding:3px;cursor:pointer;transition:.15s" onmouseover="this.style.background=\'#000080\';this.style.color=\'#fff\'" onmouseout="this.style.background=\'\';this.style.color=\'\'">' +
+            icon+' '+f+
+            '<button onclick="event.stopPropagation();fileSystem[\''+folder+'\'].splice('+i+',1);uSave(\'retro_files\',fileSystem);renderFileTree()" style="margin-left:auto;background:none;border:none;cursor:pointer;font-size:10px;color:inherit">✕</button></div>';
+        }).join('') : '<div style="color:#808080;font-size:11px">(empty)</div>') +
+        '</div></div>';
+    }).join('');
+  }
+  
+  window.addFile = function(){
+    var name = prompt('File name:');
+    if(!name) return;
+    var folder = Object.keys(fileSystem)[0];
+    fileSystem[folder].push(name.includes('.')?name:name+'.txt');
+    uSave('retro_files',fileSystem);
+    renderFileTree();
+  };
+  window.addFolder = function(){
+    var name = prompt('Folder name:');
+    if(!name) return;
+    fileSystem[name] = [];
+    uSave('retro_files',fileSystem);
+    renderFileTree();
+  };
+  window.renderFileTree = renderFileTree;
+  
+  setTimeout(renderFileTree, 600);
+})();
+</script>
+</body></html>

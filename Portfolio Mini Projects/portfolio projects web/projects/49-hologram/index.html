@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <html lang="en">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <title>Hologram Display | DevOS</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+</head>
+<body>
+<div id="topbar">
+  <div class="topbar-left">
+    <a class="back-btn" href="index.html">← BACK</a>
+    <span class="topbar-logo">HOLO_OS</span>
+  </div>
+  <div class="topbar-right">
+    <button class="theme-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle theme">🌙</button>
+  </div>
+</div>
+<div id="toast"></div>
+<div class="wrap">
+<div class="page-header animate-in">
+  <div class="row align" style="gap:10px;margin-bottom:8px"><span style="font-size:28px">💠</span><h1>Hologram Display</h1></div>
+  <p>Futuristic holographic data display with 3D spinning animations.</p>
+</div>
+
+
+<h1>💠 Hologram Display</h1>
+<p>Futuristic holographic data display with 3D effects.</p>
+<div style="margin-top:16px"><canvas id="holo-canvas" style="width:100%;height:400px;border-radius:14px;display:block;cursor:pointer;touch-action:none"></canvas>
+<div id="holo-info" class="card" style="margin-top:12px;text-align:center">
+  <p style="color:var(--muted);font-size:12px">Click the hologram to interact</p>
+</div></div>
+<script>const canvas=document.getElementById('holo-canvas');const ctx=canvas.getContext('2d');canvas.width=canvas.offsetWidth;canvas.height=400;
+const W=canvas.width,H=canvas.height;let t=0,mx=W/2,my=H/2;
+const rings=[{r:80,speed:.01,tilt:.3},{r:110,speed:-.007,tilt:.5},{r:140,speed:.005,tilt:.7}];
+const particles=Array.from({length:60},()=>({angle:Math.random()*Math.PI*2,orbit:80+Math.random()*80,speed:(Math.random()-.5)*.02,y:Math.random()*200-100,size:Math.random()*2+1}));
+function draw(){
+  ctx.fillStyle='rgba(6,10,16,.2)';ctx.fillRect(0,0,W,H);
+  const cx=W/2,cy=H/2;
+  // Grid
+  ctx.strokeStyle='rgba(0,224,255,.04)';ctx.lineWidth=1;for(let x=0;x<W;x+=30){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}for(let y=0;y<H;y+=30){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+  // Core sphere
+  const g=ctx.createRadialGradient(cx,cy,0,cx,cy,50);g.addColorStop(0,'rgba(0,224,255,.8)');g.addColorStop(.5,'rgba(0,224,255,.2)');g.addColorStop(1,'rgba(0,224,255,0)');ctx.beginPath();ctx.arc(cx,cy,50,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();
+  // Rings
+  rings.forEach((ring,i)=>{
+    ring.angle=(ring.angle||0)+ring.speed;
+    ctx.save();ctx.translate(cx,cy);ctx.rotate(ring.angle+t*.005);
+    ctx.beginPath();ctx.ellipse(0,0,ring.r,ring.r*Math.abs(Math.sin(t*.02+ring.tilt)),ring.tilt,0,Math.PI*2);ctx.strokeStyle=`rgba(0,224,255,${.3+i*.15})`;ctx.lineWidth=1.5;ctx.stroke();ctx.restore();
+  });
+  // Particles
+  particles.forEach(p=>{p.angle+=p.speed;const x=cx+Math.cos(p.angle)*p.orbit;const y=cy+Math.sin(p.angle)*p.orbit*.4;ctx.beginPath();ctx.arc(x,y,p.size,0,Math.PI*2);ctx.fillStyle='rgba(0,224,255,.7)';ctx.fill();});
+  // Data readouts
+  const data=[['SYS','ONLINE'],['TEMP','37.2°C'],['FREQ','2.4GHz'],['STAT','ACTIVE']];
+  data.forEach(([k,v],i)=>{const angle=t*.01+(i/4)*Math.PI*2;const rx=cx+Math.cos(angle)*180;const ry=cy+Math.sin(angle)*100;ctx.fillStyle='rgba(0,224,255,.6)';ctx.font='9px JetBrains Mono,monospace';ctx.textAlign='center';ctx.fillText(k,rx,ry-6);ctx.fillStyle='rgba(0,224,255,.9)';ctx.font='bold 11px JetBrains Mono,monospace';ctx.fillText(v,rx,ry+6);});
+  // Center text
+  ctx.fillStyle='rgba(0,224,255,.9)';ctx.font='bold 14px JetBrains Mono,monospace';ctx.textAlign='center';ctx.fillText('DEVOS_AI',cx,cy+4);
+  t++;requestAnimationFrame(draw);
+}
+// Touch support
+canvas.addEventListener('touchend',e=>{e.preventDefault();const t=e.changedTouches[0];const r=canvas.getBoundingClientRect();const me=new MouseEvent('click',{clientX:t.clientX,clientY:t.clientY});canvas.dispatchEvent(me);},{passive:false});
+canvas.addEventListener('click',e=>{const msgs=['Hologram interface activated','Scanning neural patterns...','Data stream synchronized','System integrity: 100%'];document.getElementById('holo-info').innerHTML=`<p style="color:var(--accent);font-size:13px">⚡ ${msgs[Math.floor(Math.random()*msgs.length)]}</p>`;});
+draw();</script>
+
+
+</div>
+  <script src="../shared-back.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

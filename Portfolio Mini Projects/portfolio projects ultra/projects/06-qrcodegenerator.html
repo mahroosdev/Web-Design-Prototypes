@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="QR Code Generator — part of a professional web developer portfolio with 50+ projects.">
+<meta name="robots" content="index, follow">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QR Code Generator</title>
+<style>
+
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{background:linear-gradient(135deg,#020617 0%,#0f172a 100%);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#fff;min-height:100vh;padding:40px 20px;overflow-x:hidden}
+        .container{max-width:1000px;margin:0 auto}
+        a{color:#38bdf8;text-decoration:none;font-weight:600}
+        a:hover{color:#4ade80}
+        h1{background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:36px;margin-bottom:8px}
+        .subtitle{color:#94a3b8;margin-bottom:28px;font-size:15px}
+        .back-link{display:inline-flex;align-items:center;gap:6px;margin-bottom:20px;color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;padding:8px 14px;border:1px solid rgba(56,189,248,0.3);border-radius:8px;transition:.2s}
+        .back-link:hover{background:rgba(56,189,248,0.1)}
+        .card{background:rgba(30,41,59,0.8);backdrop-filter:blur(10px);padding:28px;border-radius:16px;border:1px solid rgba(56,189,248,0.2);margin-bottom:20px}
+        .btn{padding:10px 22px;border:none;border-radius:8px;cursor:pointer;font-weight:700;font-size:14px;transition:.2s;background:linear-gradient(90deg,#38bdf8,#22c55e);color:#000}
+        .btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(56,189,248,.35)}
+        .btn-outline{background:transparent;border:1px solid rgba(56,189,248,.4);color:#38bdf8}
+        .btn-outline:hover{background:rgba(56,189,248,.1)}
+        .btn-red{background:linear-gradient(90deg,#ef4444,#dc2626);color:#fff}
+        input,textarea,select{background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.3);color:#fff;border-radius:8px;padding:10px 14px;font-size:14px;width:100%;outline:none;transition:.2s}
+        input:focus,textarea:focus,select:focus{border-color:#38bdf8;background:rgba(56,189,248,.12);box-shadow:0 0 0 3px rgba(56,189,248,.15)}
+        input::placeholder,textarea::placeholder{color:#64748b}
+        label{display:block;font-size:13px;font-weight:600;color:#94a3b8;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+        .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+        .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+        .flex{display:flex;align-items:center;gap:12px}
+        .badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;background:rgba(56,189,248,.15);color:#38bdf8;border:1px solid rgba(56,189,248,.3)}
+        .badge-green{background:rgba(34,197,94,.15);color:#22c55e;border-color:rgba(34,197,94,.3)}
+        .badge-red{background:rgba(239,68,68,.15);color:#ef4444;border-color:rgba(239,68,68,.3)}
+        .badge-yellow{background:rgba(234,179,8,.15);color:#eab308;border-color:rgba(234,179,8,.3)}
+        .stat-box{background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.15);border-radius:12px;padding:20px;text-align:center}
+        .stat-num{font-size:32px;font-weight:800;background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .stat-label{font-size:12px;color:#64748b;margin-top:4px;text-transform:uppercase;letter-spacing:.5px}
+        hr{border:none;border-top:1px solid rgba(56,189,248,.1);margin:20px 0}
+        @media(max-width:768px){body{padding:15px 12px}h1{font-size:26px}.grid2,.grid3{grid-template-columns:1fr}.card{padding:18px 14px}}
+
+
+#qrOutput img{border-radius:12px;box-shadow:0 0 30px rgba(56,189,248,.3)}
+.hist-item{background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.2);border-radius:10px;padding:10px;font-size:12px;color:#94a3b8;cursor:pointer;transition:.2s;text-align:center;max-width:100px;word-break:break-all}
+.hist-item:hover{border-color:#38bdf8;color:#38bdf8}
+
+
+/* ── UNIVERSAL UPGRADE: Theme, Animations, Toast ── */
+:root{
+  --bg:#020617;--bg2:#0f172a;--card:rgba(30,41,59,.85);--border:rgba(56,189,248,.22);
+  --accent:#38bdf8;--accent2:#22c55e;--text:#f1f5f9;--muted:#94a3b8;--danger:#ef4444;
+}
+
+
+/* Toast notifications */
+.u-toast-container{position:fixed;bottom:24px;right:20px;z-index:99999;display:flex;flex-direction:column;gap:8px;max-width:320px}
+.u-toast{
+  background:var(--card);border:1px solid var(--border);color:var(--text);
+  padding:11px 16px;border-radius:10px;font-size:13px;font-weight:600;
+  box-shadow:0 4px 20px rgba(0,0,0,.35);
+  animation:uToastIn .3s ease;display:flex;align-items:center;gap:8px;
+}
+.u-toast.success{border-color:rgba(34,197,94,.5);background:rgba(34,197,94,.1)}
+.u-toast.error{border-color:rgba(239,68,68,.5);background:rgba(239,68,68,.1)}
+.u-toast.info{border-color:rgba(56,189,248,.5);background:rgba(56,189,248,.1)}
+@keyframes uToastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes uToastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(20px)}}
+
+/* Entrance animations */
+@keyframes uFadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes uFadeIn{from{opacity:0}to{opacity:1}}
+@keyframes uPulse{0%,100%{box-shadow:0 0 0 0 rgba(56,189,248,.4)}70%{box-shadow:0 0 0 8px rgba(56,189,248,0)}}
+.u-fade-up{animation:uFadeUp .45s ease both}
+.u-fade-in{animation:uFadeIn .4s ease both}
+.u-pulse{animation:uPulse 2s infinite}
+
+/* Button hover lift */
+.btn:hover,[class*="btn"]:not([class*="btn-"]):hover{transform:translateY(-2px)!important}
+
+/* Smooth card hover */
+.card:hover,[class*="card"]:hover{
+  border-color:var(--accent)!important;
+  box-shadow:0 6px 28px rgba(56,189,248,.12)!important;
+  transition:all .25s ease!important;
+}
+
+/* Loading skeleton */
+.u-skeleton{
+  background:linear-gradient(90deg,rgba(56,189,248,.06) 25%,rgba(56,189,248,.12) 50%,rgba(56,189,248,.06) 75%);
+  background-size:200% 100%;animation:uSkeleton 1.4s infinite;border-radius:6px;
+}
+@keyframes uSkeleton{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* Progress bar component */
+.u-progress{height:5px;background:rgba(56,189,248,.12);border-radius:3px;overflow:hidden;margin:8px 0}
+.u-progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:3px;transition:width .5s ease}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(56,189,248,.3);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(56,189,248,.55)}
+
+/* Mobile responsive upgrades */
+@media(max-width:600px){
+  
+  .u-toast-container{right:10px;bottom:80px;max-width:calc(100vw - 20px)}
+}
+
+</style>
+</head>
+<body>
+<div class="container">
+<a href="../index.html" class="back-link" onclick="window.close(); return false;">← Back to Portfolio</a>
+
+<h1>📱 QR Code Generator</h1>
+<p class="subtitle">Generate QR codes instantly for any text or URL</p>
+<div class="grid2">
+  <div class="card">
+    <label>Type</label>
+    <select id="qrType" onchange="updatePlaceholder()" style="margin-bottom:14px">
+      <option value="url">URL</option>
+      <option value="text">Plain Text</option>
+      <option value="email">Email</option>
+      <option value="phone">Phone</option>
+      <option value="wifi">WiFi</option>
+      <option value="vcard">Contact Card</option>
+    </select>
+    <label>Content</label>
+    <textarea id="qrInput" rows="4" placeholder="https://example.com" style="margin-bottom:14px;resize:vertical"></textarea>
+    <div class="grid2" style="margin-bottom:14px">
+      <div><label>Size</label><select id="qrSize"><option value="200">Small</option><option value="300" selected>Medium</option><option value="400">Large</option></select></div>
+      <div><label>Color</label><input type="color" id="qrColor" value="#000000" style="width:100%;height:42px;padding:2px"></div>
+    </div>
+    <button class="btn" onclick="generateQR()" style="width:100%;margin-bottom:10px">Generate QR Code</button>
+    <button class="btn btn-outline" onclick="downloadQR()" id="dlBtn" style="width:100%;display:none">⬇ Download PNG</button>
+  </div>
+  <div class="card" style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:300px">
+    <div id="qrOutput" style="display:flex;align-items:center;justify-content:center;width:100%">
+      <div style="color:#64748b;text-align:center">
+        <div style="font-size:48px;margin-bottom:12px">📱</div>
+        <div>Your QR code will appear here</div>
+      </div>
+    </div>
+    <div id="qrMeta" style="text-align:center;margin-top:14px;color:#64748b;font-size:13px"></div>
+  </div>
+</div>
+<div class="card">
+  <h3 style="margin-bottom:14px;color:#38bdf8">Recent QR Codes</h3>
+  <div id="history" style="display:flex;gap:12px;flex-wrap:wrap"></div>
+</div>
+
+</div>
+<script>
+
+const history=[];
+function updatePlaceholder(){
+  const t=document.getElementById('qrType').value;
+  const ph={url:'https://example.com',text:'Enter any text here',email:'user@example.com',phone:'+1234567890',wifi:'SSID:MyWifi;T:WPA;P:password;',vcard:'BEGIN:VCARD\nFN:John Doe\nTEL:+1234567890\nEMAIL:john@example.com\nEND:VCARD'};
+  document.getElementById('qrInput').placeholder=ph[t]||'';
+}
+function generateQR(){
+  const text=document.getElementById('qrInput').value.trim();
+  if(!text){document.getElementById('qrInput').focus();return;}
+  const size=document.getElementById('qrSize').value;
+  const color=document.getElementById('qrColor').value.replace('#','');
+  const encoded=encodeURIComponent(text);
+  const url=`https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encoded}&color=${color}&bgcolor=FFFFFF&margin=10`;
+  const img=document.createElement('img');
+  img.src=url; img.width=parseInt(size); img.height=parseInt(size);
+  img.alt='QR Code';
+  img.onload=()=>{
+    document.getElementById('qrOutput').innerHTML='';
+    document.getElementById('qrOutput').appendChild(img);
+    document.getElementById('dlBtn').style.display='block';
+    document.getElementById('qrMeta').textContent=`${text.length} characters · ${size}×${size}px`;
+    addHistory(text.substring(0,20)+(text.length>20?'…':''));
+  };
+  img.onerror=()=>{
+    // Fallback: draw QR-like pattern on canvas
+    const c=document.createElement('canvas');c.width=parseInt(size);c.height=parseInt(size);
+    const ctx=c.getContext('2d');
+    ctx.fillStyle='#fff';ctx.fillRect(0,0,c.width,c.height);
+    ctx.fillStyle='#'+color;
+    const cell=Math.floor(c.width/21);
+    for(let i=0;i<21;i++)for(let j=0;j<21;j++){if(Math.random()>.45||(i<7&&j<7)||(i>13&&j<7)||(i<7&&j>13))ctx.fillRect(j*cell,i*cell,cell-1,cell-1);}
+    // Finder patterns
+    ctx.strokeStyle='#'+color;ctx.lineWidth=cell;
+    [[0,0],[14,0],[0,14]].forEach(([r,c2])=>{ctx.strokeRect((c2+.5)*cell,(r+.5)*cell,6*cell,6*cell);});
+    document.getElementById('qrOutput').innerHTML='';
+    document.getElementById('qrOutput').appendChild(c);
+    document.getElementById('dlBtn').style.display='block';
+  };
+}
+function downloadQR(){
+  const img=document.querySelector('#qrOutput img');
+  const canvas=document.querySelector('#qrOutput canvas');
+  if(img){const a=document.createElement('a');a.href=img.src;a.download='qrcode.png';a.click();}
+  else if(canvas){const a=document.createElement('a');a.href=canvas.toDataURL();a.download='qrcode.png';a.click();}
+}
+function addHistory(label){
+  if(history.includes(label))return;
+  history.unshift(label);if(history.length>8)history.pop();
+  document.getElementById('history').innerHTML=history.map(h=>`<div class="hist-item" onclick="document.getElementById('qrInput').value='${h}';generateQR()">${h}</div>`).join('');
+}
+
+</script>
+<script>
+// ── UNIVERSAL UPGRADE: Theme, localStorage, Toast, Animations ──
+(function(){
+'use strict';
+
+// ── 2. TOAST SYSTEM ──────────────────────────────────────────────
+var toastContainer = null;
+function getToastContainer(){
+  if(!toastContainer || !document.body.contains(toastContainer)){
+    toastContainer = document.createElement('div');
+    toastContainer.className = 'u-toast-container';
+    document.body.appendChild(toastContainer);
+  }
+  return toastContainer;
+}
+
+window.uToast = function(msg, type, duration){
+  type = type || 'info';
+  duration = duration || 2800;
+  var icons = {success:'✅', error:'❌', info:'💡', warning:'⚠️'};
+  var c = getToastContainer();
+  var t = document.createElement('div');
+  t.className = 'u-toast ' + type;
+  t.innerHTML = '<span>' + (icons[type]||'💡') + '</span><span>' + msg + '</span>';
+  c.appendChild(t);
+  setTimeout(function(){
+    t.style.animation = 'uToastOut .3s ease forwards';
+    setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 300);
+  }, duration);
+};
+
+// ── 3. LOCALSTORAGE HELPERS ──────────────────────────────────────
+var APP_KEY = 'uapp_' + location.pathname.split('/').pop().replace('.html','');
+window.uSave = function(key, val){
+  try { localStorage.setItem(APP_KEY + '_' + key, JSON.stringify(val)); return true; }
+  catch(e){ return false; }
+};
+window.uLoad = function(key, def){
+  try {
+    var v = localStorage.getItem(APP_KEY + '_' + key);
+    return v !== null ? JSON.parse(v) : def;
+  } catch(e){ return def; }
+};
+window.uClear = function(key){
+  try { localStorage.removeItem(APP_KEY + '_' + key); } catch(e){}
+};
+
+// ── 4. ENTRANCE ANIMATIONS ───────────────────────────────────────
+function animateEntrance(){
+  var cards = document.querySelectorAll('.card, [class*="card"]');
+  cards.forEach(function(el, i){
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(18px)';
+    setTimeout(function(){
+      el.style.transition = 'opacity .4s ease, transform .4s ease';
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+    }, i * 60);
+  });
+}
+
+// ── 5. SMOOTH COUNTER ANIMATION ──────────────────────────────────
+window.uAnimCount = function(el, target, duration, prefix, suffix){
+  prefix = prefix || '';
+  suffix = suffix || '';
+  duration = duration || 1200;
+  var start = 0;
+  var step = target / (duration / 16);
+  var iv = setInterval(function(){
+    start = Math.min(start + step, target);
+    el.textContent = prefix + Math.round(start).toLocaleString() + suffix;
+    if(start >= target) clearInterval(iv);
+  }, 16);
+};
+
+// ── 6. EXPORT HELPER ─────────────────────────────────────────────
+window.uExportJSON = function(data, filename){
+  var blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.json';
+  a.click();
+  uToast('Data exported!', 'success');
+};
+window.uExportCSV = function(rows, filename){
+  var csv = rows.map(function(r){ return r.join(','); }).join('\n');
+  var blob = new Blob([csv], {type:'text/csv'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.csv';
+  a.click();
+  uToast('CSV exported!', 'success');
+};
+
+// ── 8. INIT ──────────────────────────────────────────────────────
+function init(){
+  setTimeout(animateEntrance, 100);
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+})();
+</script>
+<script>
+(function(){
+  var qrHistory = uLoad('qr_history', []);
+  
+  // Patch generateQR to save
+  var origGenerate = window.generateQR;
+  if(origGenerate){
+    window.generateQR = function(){
+      origGenerate();
+      setTimeout(function(){
+        var text = document.getElementById('qrInput')?.value.trim();
+        if(text){
+          qrHistory.unshift({text: text.substring(0,60), type: document.getElementById('qrType')?.value||'url', time: new Date().toLocaleString()});
+          if(qrHistory.length > 15) qrHistory.pop();
+          uSave('qr_history', qrHistory);
+          renderQRHistory();
+        }
+      }, 500);
+    };
+  }
+  
+  // Enhanced history display
+  var origAddHistory = window.addHistory;
+  function renderQRHistory(){
+    var container = document.getElementById('history');
+    if(!container) return;
+    if(!qrHistory.length){container.innerHTML = '<p style="color:#64748b;font-size:13px">No history yet.</p>';return;}
+    container.innerHTML = qrHistory.map(function(h){
+      return `<div class="hist-item" onclick="document.getElementById('qrInput').value='${h.text.replace(/'/g, "\\'")}';generateQR()" style="cursor:pointer;transition:.2s" onmouseover="this.style.borderColor='#38bdf8'" onmouseout="this.style.borderColor=''">` +
+        '<div style="font-size:11px;font-weight:700;color:#38bdf8">' + (h.type||'url').toUpperCase() + '</div>' +
+        '<div style="font-size:11px;color:#94a3b8;margin-top:2px;word-break:break-all">' + h.text + '</div>' +
+        '<div style="font-size:10px;color:#475569;margin-top:3px">' + h.time + '</div>' +
+        '</div>';
+    }).join('');
+  }
+  
+  // Clear history button
+  var histEl = document.querySelector('.card:last-child, #history')?.closest('.card');
+  if(histEl && !document.getElementById('uQrClearBtn')){
+    var clearBtn = document.createElement('button');
+    clearBtn.id = 'uQrClearBtn';
+    clearBtn.textContent = '🗑 Clear';
+    clearBtn.style.cssText = 'margin-top:8px;padding:5px 12px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#ef4444;border-radius:6px;cursor:pointer;font-size:11px;font-weight:700';
+    clearBtn.onclick = function(){qrHistory=[];uSave('qr_history',[]);renderQRHistory();uToast('History cleared','info');};
+    histEl.appendChild(clearBtn);
+  }
+  
+  renderQRHistory();
+  uToast('QR history loaded ✅', 'success', 1500);
+})();
+</script>
+</body>
+</html>

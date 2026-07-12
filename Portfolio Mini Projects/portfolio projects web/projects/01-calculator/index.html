@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <html lang="en">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <title>Calculator Pro | DevOS</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+</head>
+<body>
+<div id="topbar">
+  <div class="topbar-left">
+    <a class="back-btn" href="index.html">← BACK</a>
+    <span class="topbar-logo">CALC_OS</span>
+  </div>
+  <div class="topbar-right">
+    <button class="theme-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle theme">🌙</button>
+  </div>
+</div>
+<div id="toast"></div>
+<div class="wrap">
+
+<div class="page-header animate-in">
+  <div class="row align" style="gap:10px;margin-bottom:8px">
+    <span style="font-size:28px">🧮</span>
+    <h1>Calculator Pro</h1>
+    <span class="badge badge-accent">Scientific</span>
+  </div>
+  <p>Full-featured calculator with history, scientific mode, keyboard support and dark/light theme.</p>
+</div>
+<div class="card animate-in" style="padding:0;overflow:hidden;max-width:360px;margin:0 auto">
+  <!-- Display -->
+  <div style="background:var(--bg);padding:20px 18px 14px;position:relative">
+    <div id="calc-mode-label" style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--accent);letter-spacing:.2em;margin-bottom:4px">STANDARD MODE</div>
+    <div id="calc-hist" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);min-height:16px;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:4px"></div>
+    <div id="calc-disp" style="font-family:'JetBrains Mono',monospace;font-size:clamp(28px,8vw,42px);color:var(--accent);text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;letter-spacing:-.02em;transition:color .15s">0</div>
+    <div id="calc-mem" style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--accent2);text-align:right;min-height:13px;margin-top:2px"></div>
+  </div>
+  <!-- Mode toggle -->
+  <div style="display:flex;border-bottom:1px solid var(--border)">
+    <button onclick="setMode('std')" id="mode-std" style="flex:1;padding:8px;background:rgba(0,229,255,.08);border:none;color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;cursor:pointer;border-right:1px solid var(--border)">STD</button>
+    <button onclick="setMode('sci')" id="mode-sci" style="flex:1;padding:8px;background:transparent;border:none;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;cursor:pointer">SCI</button>
+  </div>
+  <!-- Standard buttons -->
+  <div id="calc-std-pad" style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border)">
+  </div>
+  <!-- Scientific buttons -->
+  <div id="calc-sci-pad" style="display:none;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--border)">
+  </div>
+</div>
+<!-- History -->
+<div style="margin-top:20px">
+  <div class="section-title">History</div>
+  <div id="calc-history-list">
+    <div class="empty"><div class="empty-icon">📋</div><p>No calculations yet</p></div>
+  </div>
+</div>
+
+</div>
+  <script src="../shared-back.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <html lang="en">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <title>Stopwatch Pro | DevOS</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+</head>
+<body>
+<div id="topbar">
+  <div class="topbar-left">
+    <a class="back-btn" href="index.html">← BACK</a>
+    <span class="topbar-logo">CHRONO_OS</span>
+  </div>
+  <div class="topbar-right">
+    <button class="theme-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle theme">🌙</button>
+  </div>
+</div>
+<div id="toast"></div>
+<div class="wrap">
+
+<div class="page-header animate-in">
+  <div class="row align" style="gap:10px;margin-bottom:8px"><span style="font-size:28px">⏱</span><h1>Stopwatch Pro</h1></div>
+  <p>Precision stopwatch with lap tracking, countdown timer and animated progress ring.</p>
+</div>
+<div class="row center" style="gap:10px;margin-bottom:20px">
+  <button class="btn btn-outline" id="tab-sw" onclick="showTab('sw',this)" style="border-color:var(--accent);color:var(--accent)">Stopwatch</button>
+  <button class="btn btn-outline" id="tab-cd" onclick="showTab('cd',this)">Countdown</button>
+  <button class="btn btn-outline" id="tab-wc" onclick="showTab('wc',this)">World Clock</button>
+</div>
+<!-- Stopwatch -->
+<div id="sw-panel" class="card animate-in" style="text-align:center">
+  <div style="position:relative;width:200px;height:200px;margin:0 auto 20px">
+    <svg width="200" height="200" style="position:absolute;inset:0;transform:rotate(-90deg)">
+      <circle cx="100" cy="100" r="88" fill="none" stroke="var(--dim)" stroke-width="6"/>
+      <circle cx="100" cy="100" r="88" fill="none" stroke="var(--accent)" stroke-width="6" stroke-linecap="round"
+        id="sw-ring" stroke-dasharray="553" stroke-dashoffset="553" style="transition:stroke-dashoffset .1s linear"/>
+    </svg>
+    <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
+      <div id="sw-disp" style="font-family:'JetBrains Mono',monospace;font-size:clamp(28px,7vw,36px);color:var(--accent);letter-spacing:.04em">00:00.00</div>
+      <div id="sw-lap-disp" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-top:2px">LAP 00:00.00</div>
+    </div>
+  </div>
+  <div class="row center" style="gap:12px;margin-bottom:20px">
+    <button class="btn btn-outline" onclick="swLap()" id="sw-lap-btn" style="min-width:90px">Lap</button>
+    <button class="btn btn-primary" onclick="swToggle()" id="sw-start" style="min-width:90px">Start</button>
+    <button class="btn btn-outline" onclick="swReset()" style="min-width:90px">Reset</button>
+  </div>
+  <div id="sw-laps" style="max-height:200px;overflow-y:auto;text-align:left"></div>
+</div>
+<!-- Countdown -->
+<div id="cd-panel" class="card animate-in" style="text-align:center;display:none">
+  <div id="cd-disp" style="font-family:'JetBrains Mono',monospace;font-size:clamp(48px,12vw,72px);color:var(--accent);letter-spacing:.04em;margin:16px 0">00:00</div>
+  <div style="background:var(--card2);border-radius:6px;height:6px;margin-bottom:20px;overflow:hidden"><div id="cd-bar" style="height:100%;width:100%;background:linear-gradient(90deg,var(--accent3),var(--accent));border-radius:6px;transition:width .5s linear"></div></div>
+  <div class="row center" style="gap:10px;margin-bottom:16px">
+    <div><label>MIN</label><input type="number" id="cd-min" value="5" min="0" max="99" style="width:80px;text-align:center"></div>
+    <div style="font-size:24px;line-height:44px;color:var(--muted)">:</div>
+    <div><label>SEC</label><input type="number" id="cd-sec" value="0" min="0" max="59" style="width:80px;text-align:center"></div>
+  </div>
+  <div class="row center" style="gap:10px;flex-wrap:wrap;margin-bottom:16px">
+    <button class="chip" onclick="setPreset(5,0)">5 min</button>
+    <button class="chip" onclick="setPreset(10,0)">10 min</button>
+    <button class="chip" onclick="setPreset(25,0)">25 min 🍅</button>
+    <button class="chip" onclick="setPreset(1,0)">1 min</button>
+  </div>
+  <div class="row center" style="gap:10px">
+    <button class="btn btn-primary" id="cd-start-btn" onclick="cdToggle()" style="min-width:100px">Start</button>
+    <button class="btn btn-outline" onclick="cdReset()" style="min-width:100px">Reset</button>
+  </div>
+</div>
+<!-- World Clock -->
+<div id="wc-panel" style="display:none">
+  <div class="grid-2" id="wc-grid"></div>
+</div>
+
+</div>
+  <script src="../shared-back.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

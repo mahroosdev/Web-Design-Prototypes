@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <html lang="en">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <title>Real Estate | DevOS</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+</head>
+<body>
+<div id="topbar">
+  <div class="topbar-left">
+    <a class="back-btn" href="index.html">← BACK</a>
+    <span class="topbar-logo">ESTATE_OS</span>
+  </div>
+  <div class="topbar-right">
+    <button class="theme-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle theme">🌙</button>
+  </div>
+</div>
+<div id="toast"></div>
+<div class="wrap">
+<div class="page-header animate-in">
+  <div class="row align" style="gap:10px;margin-bottom:8px"><span style="font-size:28px">🏠</span><h1>Real Estate</h1></div>
+  <p>Browse properties with map pins, filters and mortgage calculator.</p>
+</div>
+
+
+<h1>🏠 Real Estate App</h1>
+<p>Browse property listings with filters, map view and details.</p>
+<div style="margin-top:16px"><div class="card" style="margin-bottom:12px">
+  <div class="row" style="gap:8px;flex-wrap:wrap;margin-bottom:8px">
+    <select id="re-type" style="flex:1;min-width:110px"><option value="">All Types</option><option>House</option><option>Apartment</option><option>Villa</option></select>
+    <select id="re-beds" style="flex:1;min-width:110px"><option value="">Any Beds</option><option value="1">1+</option><option value="2">2+</option><option value="3">3+</option></select>
+    <button class="btn btn-primary" onclick="filterProps()">Filter</button>
+  </div>
+</div>
+<div id="re-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px"></div></div>
+<script>const props=[{id:1,type:'House',title:'Modern Family Home',beds:4,baths:3,area:280,price:450000,loc:'Salmiya, Kuwait',icon:'🏡',tag:'For Sale'},{id:2,type:'Apartment',title:'Luxury City Apartment',beds:2,baths:2,area:120,price:1800,loc:'Kuwait City',icon:'🏢',tag:'For Rent'},{id:3,type:'Villa',title:'Beachfront Villa',beds:5,baths:4,area:520,price:1200000,loc:'Mangaf, Kuwait',icon:'🏖',tag:'For Sale'},{id:4,type:'Apartment',title:'Studio Downtown',beds:1,baths:1,area:55,price:800,loc:'Hawalli, Kuwait',icon:'🏠',tag:'For Rent'},{id:5,type:'House',title:'Suburban Family House',beds:3,baths:2,area:200,price:320000,loc:'Ahmadi, Kuwait',icon:'🏘',tag:'For Sale'},{id:6,type:'Villa',title:'Private Pool Villa',beds:6,baths:5,area:750,price:2500000,loc:'Mishref, Kuwait',icon:'🏰',tag:'For Sale'}];
+function filterProps(){const t=document.getElementById('re-type').value;const b=parseInt(document.getElementById('re-beds').value)||0;const list=props.filter(p=>(!t||p.type===t)&&p.beds>=b);renderProps(list);}
+function renderProps(list=props){document.getElementById('re-grid').innerHTML=list.map((p,i)=>`<div class="card" style="padding:0;overflow:hidden;cursor:pointer;transition:transform .2s" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='none'" onclick="propDetail(${i})"><div style="height:120px;background:linear-gradient(135deg,rgba(0,224,255,.08),rgba(129,140,248,.1));display:flex;align-items:center;justify-content:center;font-size:56px;position:relative"><span style="position:absolute;top:8px;right:8px;font-size:10px;padding:3px 8px;border-radius:10px;background:${p.tag==='For Sale'?'rgba(52,211,153,.2)':'rgba(244,114,182,.2)'};color:${p.tag==='For Sale'?'var(--accent3)':'var(--accent4)'};border:1px solid ${p.tag==='For Sale'?'rgba(52,211,153,.3)':'rgba(244,114,182,.3)'}">${p.tag}</span>${p.icon}</div><div style="padding:12px"><div style="font-size:13px;font-weight:600;margin-bottom:4px">${p.title}</div><div style="font-size:11px;color:var(--muted);margin-bottom:8px">📍 ${p.loc}</div><div class="row" style="gap:8px;font-size:11px;color:var(--muted);margin-bottom:8px"><span>🛏 ${p.beds}</span><span>🚿 ${p.baths}</span><span>📐 ${p.area}m²</span></div><div style="font-family:'JetBrains Mono',monospace;font-size:15px;color:var(--accent);font-weight:700">${p.tag==='For Rent'?'$'+p.price.toLocaleString()+'/mo':'$'+p.price.toLocaleString()}</div></div></div>`).join('');}
+function propDetail(i){const p=props[i];toast(`${p.icon} ${p.title} — ${p.tag==='For Rent'?'$'+p.price+'/mo':'$'+p.price.toLocaleString()}`);}
+document.getElementById('re-type').addEventListener('change',filterProps);
+document.getElementById('re-beds').addEventListener('change',filterProps);
+renderProps();</script>
+
+
+</div>
+  <script src="../shared-back.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

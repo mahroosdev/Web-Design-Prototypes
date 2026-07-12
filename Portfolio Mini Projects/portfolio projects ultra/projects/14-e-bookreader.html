@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8">
+<meta name="description" content="E-Book Reader — part of a professional web developer portfolio with 50+ projects.">
+<meta name="robots" content="index, follow">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>E-Book Reader</title>
+<style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{background:linear-gradient(135deg,#020617 0%,#0f172a 100%);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#fff;min-height:100vh;padding:40px 20px;overflow-x:hidden}
+        .container{max-width:1000px;margin:0 auto}
+        a{color:#38bdf8;text-decoration:none;font-weight:600}a:hover{color:#4ade80}
+        h1{background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:36px;margin-bottom:8px}
+        .subtitle{color:#94a3b8;margin-bottom:28px;font-size:15px}
+        .back-link{display:inline-flex;align-items:center;gap:6px;margin-bottom:20px;color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;padding:8px 14px;border:1px solid rgba(56,189,248,.3);border-radius:8px;transition:.2s}
+        .back-link:hover{background:rgba(56,189,248,.1)}
+        .card{background:rgba(30,41,59,.8);backdrop-filter:blur(10px);padding:24px;border-radius:16px;border:1px solid rgba(56,189,248,.2);margin-bottom:20px}
+        .btn{padding:10px 22px;border:none;border-radius:8px;cursor:pointer;font-weight:700;font-size:14px;transition:.2s;background:linear-gradient(90deg,#38bdf8,#22c55e);color:#000}
+        .btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(56,189,248,.35)}
+        .btn-outline{background:transparent;border:1px solid rgba(56,189,248,.4);color:#38bdf8}
+        .btn-red{background:linear-gradient(90deg,#ef4444,#dc2626);color:#fff}
+        input,textarea,select{background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.3);color:#fff;border-radius:8px;padding:10px 14px;font-size:14px;width:100%;outline:none;transition:.2s}
+        input:focus,textarea:focus,select:focus{border-color:#38bdf8;box-shadow:0 0 0 3px rgba(56,189,248,.15)}
+        input::placeholder,textarea::placeholder{color:#64748b}
+        label{display:block;font-size:13px;font-weight:600;color:#94a3b8;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+        .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+        .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+        .flex{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+        .badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;background:rgba(56,189,248,.15);color:#38bdf8;border:1px solid rgba(56,189,248,.3)}
+        .badge-green{background:rgba(34,197,94,.15);color:#22c55e;border-color:rgba(34,197,94,.3)}
+        .badge-red{background:rgba(239,68,68,.15);color:#ef4444;border-color:rgba(239,68,68,.3)}
+        .badge-yellow{background:rgba(234,179,8,.15);color:#eab308;border-color:rgba(234,179,8,.3)}
+        .stat-box{background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.15);border-radius:12px;padding:20px;text-align:center}
+        .stat-num{font-size:32px;font-weight:800;background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .stat-label{font-size:12px;color:#64748b;margin-top:4px;text-transform:uppercase;letter-spacing:.5px}
+        hr{border:none;border-top:1px solid rgba(56,189,248,.1);margin:20px 0}
+        @media(max-width:768px){body{padding:15px 12px}h1{font-size:26px}.grid2,.grid3{grid-template-columns:1fr}.card{padding:16px 14px}}
+
+.book-item{display:flex;align-items:center;gap:12px;padding:12px;border-radius:10px;cursor:pointer;transition:.2s;border:1px solid transparent;margin-bottom:8px}
+.book-item:hover,.book-item.active{background:rgba(56,189,248,.08);border-color:rgba(56,189,248,.3)}
+.book-cover{font-size:32px;width:48px;text-align:center;flex-shrink:0}
+.book-info-name{font-weight:700;font-size:14px}
+.book-info-auth{font-size:12px;color:#64748b}
+.book-progress-bar{height:3px;background:rgba(56,189,248,.2);border-radius:2px;margin-top:6px}
+.book-progress-fill{height:100%;background:linear-gradient(90deg,#38bdf8,#22c55e);border-radius:2px;transition:.5s}
+.bm-item{background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.15);border-radius:8px;padding:10px;margin-bottom:8px;cursor:pointer;font-size:13px;color:#94a3b8}
+.bm-item:hover{border-color:#38bdf8;color:#38bdf8}
+.dark-reader #pageContent{color:#e8dcc8 !important;background:#1a0f00 !important;padding:12px;border-radius:8px}
+
+/* ── UNIVERSAL UPGRADE: Theme, Animations, Toast ── */
+:root{
+  --bg:#020617;--bg2:#0f172a;--card:rgba(30,41,59,.85);--border:rgba(56,189,248,.22);
+  --accent:#38bdf8;--accent2:#22c55e;--text:#f1f5f9;--muted:#94a3b8;--danger:#ef4444;
+}
+
+
+/* Toast notifications */
+.u-toast-container{position:fixed;bottom:24px;right:20px;z-index:99999;display:flex;flex-direction:column;gap:8px;max-width:320px}
+.u-toast{
+  background:var(--card);border:1px solid var(--border);color:var(--text);
+  padding:11px 16px;border-radius:10px;font-size:13px;font-weight:600;
+  box-shadow:0 4px 20px rgba(0,0,0,.35);
+  animation:uToastIn .3s ease;display:flex;align-items:center;gap:8px;
+}
+.u-toast.success{border-color:rgba(34,197,94,.5);background:rgba(34,197,94,.1)}
+.u-toast.error{border-color:rgba(239,68,68,.5);background:rgba(239,68,68,.1)}
+.u-toast.info{border-color:rgba(56,189,248,.5);background:rgba(56,189,248,.1)}
+@keyframes uToastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes uToastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(20px)}}
+
+/* Entrance animations */
+@keyframes uFadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes uFadeIn{from{opacity:0}to{opacity:1}}
+@keyframes uPulse{0%,100%{box-shadow:0 0 0 0 rgba(56,189,248,.4)}70%{box-shadow:0 0 0 8px rgba(56,189,248,0)}}
+.u-fade-up{animation:uFadeUp .45s ease both}
+.u-fade-in{animation:uFadeIn .4s ease both}
+.u-pulse{animation:uPulse 2s infinite}
+
+/* Button hover lift */
+.btn:hover,[class*="btn"]:not([class*="btn-"]):hover{transform:translateY(-2px)!important}
+
+/* Smooth card hover */
+.card:hover,[class*="card"]:hover{
+  border-color:var(--accent)!important;
+  box-shadow:0 6px 28px rgba(56,189,248,.12)!important;
+  transition:all .25s ease!important;
+}
+
+/* Loading skeleton */
+.u-skeleton{
+  background:linear-gradient(90deg,rgba(56,189,248,.06) 25%,rgba(56,189,248,.12) 50%,rgba(56,189,248,.06) 75%);
+  background-size:200% 100%;animation:uSkeleton 1.4s infinite;border-radius:6px;
+}
+@keyframes uSkeleton{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* Progress bar component */
+.u-progress{height:5px;background:rgba(56,189,248,.12);border-radius:3px;overflow:hidden;margin:8px 0}
+.u-progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:3px;transition:width .5s ease}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(56,189,248,.3);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(56,189,248,.55)}
+
+/* Mobile responsive upgrades */
+@media(max-width:600px){
+  
+  .u-toast-container{right:10px;bottom:80px;max-width:calc(100vw - 20px)}
+}
+
+</style>
+</head>
+<body><div class="container">
+<a href="../index.html" class="back-link" onclick="window.close(); return false;">← Back to Portfolio</a>
+
+<h1>📚 E-Book Reader</h1>
+<p class="subtitle">Read, bookmark and track your reading progress</p>
+<div class="grid2" style="align-items:start">
+  <div>
+    <div class="card">
+      <h3 style="color:#38bdf8;margin-bottom:14px">Library</h3>
+      <div id="library"></div>
+    </div>
+    <div class="card">
+      <h3 style="color:#38bdf8;margin-bottom:14px">Reading Stats</h3>
+      <div class="stat-box" style="margin-bottom:10px"><div class="stat-num" id="pagesRead">0</div><div class="stat-label">Pages Read</div></div>
+      <div class="grid2">
+        <div class="stat-box"><div class="stat-num" id="timeRead">0m</div><div class="stat-label">Time</div></div>
+        <div class="stat-box"><div class="stat-num" id="booksComp">0</div><div class="stat-label">Completed</div></div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="card" id="readerPanel">
+      <div class="flex" style="justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px">
+        <div>
+          <div id="bookTitle" style="font-size:18px;font-weight:700;color:#38bdf8"></div>
+          <div id="chapterTitle" style="font-size:13px;color:#64748b;margin-top:2px"></div>
+        </div>
+        <div class="flex" style="gap:8px">
+          <button class="btn btn-outline" onclick="changeFontSize(-1)" title="Decrease font">A-</button>
+          <button class="btn btn-outline" onclick="changeFontSize(1)" title="Increase font">A+</button>
+          <button class="btn btn-outline" onclick="toggleTheme()">🌙</button>
+          <button class="btn btn-outline" onclick="addBookmark()">🔖</button>
+        </div>
+      </div>
+      <div id="readProgress" style="height:4px;background:rgba(56,189,248,.2);border-radius:2px;margin-bottom:16px"><div id="progressBar" style="height:100%;background:linear-gradient(90deg,#38bdf8,#22c55e);border-radius:2px;width:0%;transition:.3s"></div></div>
+      <div id="pageContent" style="line-height:1.9;font-size:16px;color:#cbd5e1;max-height:420px;overflow-y:auto;padding-right:8px"></div>
+      <div class="flex" style="justify-content:space-between;margin-top:20px">
+        <button class="btn btn-outline" onclick="prevPage()">← Prev</button>
+        <span id="pageNum" style="color:#64748b;font-size:14px">Page 1</span>
+        <button class="btn" onclick="nextPage()">Next →</button>
+      </div>
+    </div>
+    <div class="card" id="bookmarkCard">
+      <h3 style="color:#38bdf8;margin-bottom:12px">🔖 Bookmarks</h3>
+      <div id="bookmarkList"><p style="color:#64748b;font-size:14px">No bookmarks yet.</p></div>
+    </div>
+  </div>
+</div>
+</div>
+<script>
+const books=[
+  {id:1,title:'The Great Gatsby',author:'F. Scott Fitzgerald',cover:'📗',pages:[
+    `In my younger and more vulnerable years my father gave me some advice that I've been turning over in my mind ever since. "Whenever you feel like criticizing anyone," he told me, "just remember that all the people in this world haven't had the advantages that you've had." He didn't say any more, but we've always been unusually communicative in a reserved way, and I understood that he meant a great deal more than that.`,
+    `And so with the sunshine and the great bursts of leaves growing on the trees, just as things grow in fast movies, I had that familiar conviction that life was beginning over again with the summer. There was so much to look forward to from that elevated ground—a cool breeze came off the Sound, rustling the ivy on the walls.`,
+    `My house was at the tip of the egg, only fifty yards from the Sound, and squeezed between two huge places that rented for twelve or fifteen thousand a season. The one on my right was a colossal affair by any standard—it was a factual imitation of some Hôtel de Ville in Normandy, with a tower on one side, spanking new under a thin beard of raw ivy, and a marble swimming pool, and more than forty acres of lawn and garden.`,
+    `"Your place looks like Coney Island," she said. "If it's not a personal question, how did you get there?" "I bought it," I said, "because I could see the green light at the end of your dock from the water." "That's so romantic," said Jordan.`,
+    `So I walked away and left him standing there in the moonlight—watching over nothing. I spent a whole evening with him once, just the two of us, and he talked a lot about the past, and I didn't understand at first why he was so moved by a green light.`
+  ],progress:0},
+  {id:2,title:'1984',author:'George Orwell',cover:'📕',pages:[
+    `It was a bright cold day in April, and the clocks were striking thirteen. Winston Smith, his chin nuzzled into his breast in an effort to escape the vile wind, slipped quickly through the glass doors of Victory Mansions, though not quickly enough to prevent a swirl of gritty dust from entering along with him.`,
+    `The hallway smelt of boiled cabbage and old rag mats. At one end of it a coloured poster, too large for the hallway, had been tacked to the wall. It depicted simply an enormous face, more than a metre wide: the face of a man of about forty-five, with a heavy black moustache and ruggedly handsome features.`,
+    `Winston kept his back turned to the telescreen. It was safer; though, as he well knew, even a back can be revealing. A kilometre away the Ministry of Truth, his place of work, towered vast and white above the grimy landscape. He thought, with a sort of vague distaste, of the enormous pyramidal structure of glittering white concrete.`,
+    `He tried to squeeze out some childhood memory that should tell him whether London had always been quite like this. Were there always these vistas of rotting nineteenth-century houses, their sides shored up with baulks of timber, their windows patched with cardboard and their roofs with corrugated iron, their crazy garden walls sagging in all directions?`,
+    `Thoughtcrime does not entail death: thoughtcrime IS death. He had already committed himself. WAR IS PEACE. FREEDOM IS SLAVERY. IGNORANCE IS STRENGTH. The Party was conscious of no contradiction in this. The Party taught that the proles and the animals were free.`
+  ],progress:0},
+  {id:3,title:'The Alchemist',author:'Paulo Coelho',cover:'📘',pages:[
+    `The boy's name was Santiago. Dusk was falling as the boy arrived with his herd at an abandoned church. The roof had fallen in long ago, and an enormous sycamore had grown up through the spot where the sacristy had once stood.`,
+    `He had learned to read from the town priest. But one day the boy had encountered a Gypsy woman who was able to interpret dreams. "I dreamed that I was in a field with my sheep," the boy told her, "when a child appeared and began to play with the animals."`,
+    `"If you can concentrate always on the present, you'll be a happy man. Life will be a party for you, a grand festival, because life is the moment we're living now." This is what the old man told him, the old king of Salem, before sending him off to find his Personal Legend.`,
+    `"The secret of happiness is to see all the marvels of the world, and never to forget the drops of oil on the spoon." The boy understood what the old man was telling him. He was being asked to carry his greatest treasure—his ability to dream.`,
+    `And, when you want something, all the universe conspires in helping you to achieve it. Remember that wherever your heart is, there you will find your treasure. You've got to find the treasure, so that everything you have learned along the way can make sense.`
+  ],progress:0},
+];
+
+let cur=0,page=0,fontSize=16,bookmarks=[],startTime=Date.now(),pagesTotal=0;
+const stats={pages:0,books:0};
+
+function renderLibrary(){
+  document.getElementById('library').innerHTML=books.map((b,i)=>`
+    <div class="book-item ${i===cur?'active':''}" onclick="selectBook(${i})">
+      <div class="book-cover">${b.cover}</div>
+      <div style="flex:1;min-width:0">
+        <div class="book-info-name">${b.title}</div>
+        <div class="book-info-auth">${b.author}</div>
+        <div class="book-progress-bar"><div class="book-progress-fill" style="width:${Math.round(b.progress*100)}%"></div></div>
+      </div>
+      <span class="badge">${Math.round(b.progress*100)}%</span>
+    </div>`).join('');
+}
+
+function selectBook(i){cur=i;page=books[i].progress?Math.round(books[i].progress*(books[i].pages.length-1)):0;showPage();}
+function showPage(){
+  const b=books[cur];
+  document.getElementById('bookTitle').textContent=b.title;
+  document.getElementById('chapterTitle').textContent=`Chapter ${page+1} of ${b.pages.length}`;
+  document.getElementById('pageContent').innerHTML=`<p>${b.pages[page]}</p>`;
+  document.getElementById('pageContent').style.fontSize=fontSize+'px';
+  document.getElementById('pageNum').textContent=`Page ${page+1} / ${b.pages.length}`;
+  const pct=(page/(b.pages.length-1))*100;
+  document.getElementById('progressBar').style.width=pct+'%';
+  b.progress=page/(b.pages.length-1);
+  if(b.progress===1)b.completed=true;
+  renderLibrary();
+  stats.pages++;document.getElementById('pagesRead').textContent=stats.pages;
+  stats.books=books.filter(b=>b.completed).length;
+  document.getElementById('booksComp').textContent=stats.books;
+  const mins=Math.round((Date.now()-startTime)/60000);
+  document.getElementById('timeRead').textContent=mins+'m';
+}
+function prevPage(){if(page>0){page--;showPage();}}
+function nextPage(){if(page<books[cur].pages.length-1){page++;showPage();}}
+function changeFontSize(d){fontSize=Math.max(12,Math.min(24,fontSize+d));document.getElementById('pageContent').style.fontSize=fontSize+'px';}
+function toggleTheme(){document.querySelector('.container').classList.toggle('dark-reader');}
+function addBookmark(){
+  const b=books[cur];
+  const bm={book:b.title,page:page+1,text:b.pages[page].substring(0,60)+'…'};
+  bookmarks.unshift(bm);
+  document.getElementById('bookmarkList').innerHTML=bookmarks.map((bm,i)=>`<div class="bm-item" onclick="jumpToBookmark(${i})">📖 ${bm.book} · Page ${bm.page}<br><small>${bm.text}</small></div>`).join('');
+}
+function jumpToBookmark(i){const bm=bookmarks[i];const bi=books.findIndex(b=>b.title===bm.book);if(bi>=0){cur=bi;page=bm.page-1;showPage();}}
+selectBook(0);
+</script>
+<script>
+// ── UNIVERSAL UPGRADE: Theme, localStorage, Toast, Animations ──
+(function(){
+'use strict';
+
+// ── 2. TOAST SYSTEM ──────────────────────────────────────────────
+var toastContainer = null;
+function getToastContainer(){
+  if(!toastContainer || !document.body.contains(toastContainer)){
+    toastContainer = document.createElement('div');
+    toastContainer.className = 'u-toast-container';
+    document.body.appendChild(toastContainer);
+  }
+  return toastContainer;
+}
+
+window.uToast = function(msg, type, duration){
+  type = type || 'info';
+  duration = duration || 2800;
+  var icons = {success:'✅', error:'❌', info:'💡', warning:'⚠️'};
+  var c = getToastContainer();
+  var t = document.createElement('div');
+  t.className = 'u-toast ' + type;
+  t.innerHTML = '<span>' + (icons[type]||'💡') + '</span><span>' + msg + '</span>';
+  c.appendChild(t);
+  setTimeout(function(){
+    t.style.animation = 'uToastOut .3s ease forwards';
+    setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 300);
+  }, duration);
+};
+
+// ── 3. LOCALSTORAGE HELPERS ──────────────────────────────────────
+var APP_KEY = 'uapp_' + location.pathname.split('/').pop().replace('.html','');
+window.uSave = function(key, val){
+  try { localStorage.setItem(APP_KEY + '_' + key, JSON.stringify(val)); return true; }
+  catch(e){ return false; }
+};
+window.uLoad = function(key, def){
+  try {
+    var v = localStorage.getItem(APP_KEY + '_' + key);
+    return v !== null ? JSON.parse(v) : def;
+  } catch(e){ return def; }
+};
+window.uClear = function(key){
+  try { localStorage.removeItem(APP_KEY + '_' + key); } catch(e){}
+};
+
+// ── 4. ENTRANCE ANIMATIONS ───────────────────────────────────────
+function animateEntrance(){
+  var cards = document.querySelectorAll('.card, [class*="card"]');
+  cards.forEach(function(el, i){
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(18px)';
+    setTimeout(function(){
+      el.style.transition = 'opacity .4s ease, transform .4s ease';
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+    }, i * 60);
+  });
+}
+
+// ── 5. SMOOTH COUNTER ANIMATION ──────────────────────────────────
+window.uAnimCount = function(el, target, duration, prefix, suffix){
+  prefix = prefix || '';
+  suffix = suffix || '';
+  duration = duration || 1200;
+  var start = 0;
+  var step = target / (duration / 16);
+  var iv = setInterval(function(){
+    start = Math.min(start + step, target);
+    el.textContent = prefix + Math.round(start).toLocaleString() + suffix;
+    if(start >= target) clearInterval(iv);
+  }, 16);
+};
+
+// ── 6. EXPORT HELPER ─────────────────────────────────────────────
+window.uExportJSON = function(data, filename){
+  var blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.json';
+  a.click();
+  uToast('Data exported!', 'success');
+};
+window.uExportCSV = function(rows, filename){
+  var csv = rows.map(function(r){ return r.join(','); }).join('\n');
+  var blob = new Blob([csv], {type:'text/csv'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.csv';
+  a.click();
+  uToast('CSV exported!', 'success');
+};
+
+// ── 8. INIT ──────────────────────────────────────────────────────
+function init(){
+  setTimeout(animateEntrance, 100);
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+})();
+</script>
+<script>
+(function(){
+  // Persist reading progress
+  var origSelect = window.selectBook;
+  var origShowPage = window.showPage;
+  
+  if(origShowPage){
+    window.showPage = function(){
+      origShowPage.apply(this,arguments);
+      if(window.books && window.cur !== undefined && window.page !== undefined){
+        var b = window.books[window.cur];
+        if(b){ uSave('reading_pos_' + b.id, {page:window.page, progress:b.progress}); }
+      }
+    };
+  }
+  
+  // Restore progress on load
+  setTimeout(function(){
+    if(window.books){
+      window.books.forEach(function(b,i){
+        var saved = uLoad('reading_pos_' + b.id, null);
+        if(saved){
+          b.progress = saved.progress;
+          if(i === window.cur && window.page !== undefined){
+            window.page = saved.page;
+            if(window.showPage) window.showPage();
+          }
+        }
+      });
+      if(window.renderLibrary) window.renderLibrary();
+      uToast('Reading progress restored 📚', 'success', 1800);
+    }
+  }, 500);
+  
+  // Reading streak
+  var streak = uLoad('reading_streak', {lastDate:'', count:0});
+  var today = new Date().toDateString();
+  if(streak.lastDate !== today){
+    var yesterday = new Date(Date.now()-86400000).toDateString();
+    streak.count = streak.lastDate === yesterday ? streak.count + 1 : 1;
+    streak.lastDate = today;
+    uSave('reading_streak', streak);
+  }
+  
+  // Inject streak badge
+  if(streak.count > 0){
+    var badge = document.createElement('div');
+    badge.style.cssText = 'position:fixed;top:14px;left:14px;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.4);color:#f59e0b;padding:6px 12px;border-radius:20px;font-size:12px;font-weight:700;z-index:100';
+    badge.textContent = '🔥 ' + streak.count + ' day' + (streak.count>1?'s':'') + ' streak';
+    document.body.appendChild(badge);
+  }
+})();
+</script>
+</body></html>

@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8">
+<meta name="description" content="Space Explorer — part of a professional web developer portfolio with 50+ projects.">
+<meta name="robots" content="index, follow">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Space Explorer</title><style>*{margin:0;padding:0;box-sizing:border-box}
+body{background:linear-gradient(135deg,#020617 0%,#0f172a 100%);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#fff;min-height:100vh;padding:40px 20px;overflow-x:hidden}
+.container{max-width:1000px;margin:0 auto}
+h1{background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:36px;margin-bottom:8px}
+.subtitle{color:#94a3b8;margin-bottom:28px;font-size:15px}
+.back-link{display:inline-flex;align-items:center;gap:6px;margin-bottom:20px;color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;padding:8px 14px;border:1px solid rgba(56,189,248,.3);border-radius:8px;transition:.2s}
+.back-link:hover{background:rgba(56,189,248,.1)}
+.card{background:rgba(30,41,59,.8);backdrop-filter:blur(10px);padding:24px;border-radius:16px;border:1px solid rgba(56,189,248,.2);margin-bottom:20px}
+.btn{padding:10px 22px;border:none;border-radius:8px;cursor:pointer;font-weight:700;font-size:14px;transition:.2s;background:linear-gradient(90deg,#38bdf8,#22c55e);color:#000}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(56,189,248,.35)}
+.btn-outline{background:transparent;border:1px solid rgba(56,189,248,.4);color:#38bdf8}
+.btn-red{background:linear-gradient(90deg,#ef4444,#dc2626);color:#fff}
+input,textarea,select{background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.3);color:#fff;border-radius:8px;padding:10px 14px;font-size:14px;width:100%;outline:none;transition:.2s}
+input:focus,textarea:focus,select:focus{border-color:#38bdf8;box-shadow:0 0 0 3px rgba(56,189,248,.15)}
+input::placeholder,textarea::placeholder{color:#64748b}
+label{display:block;font-size:13px;font-weight:600;color:#94a3b8;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.flex{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;background:rgba(56,189,248,.15);color:#38bdf8;border:1px solid rgba(56,189,248,.3)}
+.badge-green{background:rgba(34,197,94,.15);color:#22c55e;border-color:rgba(34,197,94,.3)}
+.badge-red{background:rgba(239,68,68,.15);color:#ef4444;border-color:rgba(239,68,68,.3)}
+.stat-box{background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.15);border-radius:12px;padding:20px;text-align:center}
+.stat-num{font-size:32px;font-weight:800;background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-label{font-size:12px;color:#64748b;margin-top:4px;text-transform:uppercase;letter-spacing:.5px}
+hr{border:none;border-top:1px solid rgba(56,189,248,.1);margin:20px 0}
+@media(max-width:768px){body{padding:15px 12px}h1{font-size:26px}.grid2,.grid3,.grid4{grid-template-columns:1fr}.card{padding:16px 14px}}
+.obj-item{display:flex;align-items:center;gap:12px;padding:12px;border-radius:10px;cursor:pointer;transition:.2s;border:1px solid transparent;margin-bottom:6px}
+.obj-item:hover,.obj-item.active{background:rgba(56,189,248,.08);border-color:rgba(56,189,248,.3)}
+.obj-emoji{font-size:28px;width:44px;text-align:center;flex-shrink:0}
+.obj-name{font-weight:700;font-size:15px}
+.obj-type{font-size:12px;color:#64748b;margin-top:1px}
+.spec-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0}
+.spec-item{background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.1);border-radius:8px;padding:10px}
+.spec-label{font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}
+.spec-val{font-weight:700;font-size:14px;color:#e2e8f0}
+/* ── UNIVERSAL UPGRADE: Theme, Animations, Toast ── */
+:root{
+  --bg:#020617;--bg2:#0f172a;--card:rgba(30,41,59,.85);--border:rgba(56,189,248,.22);
+  --accent:#38bdf8;--accent2:#22c55e;--text:#f1f5f9;--muted:#94a3b8;--danger:#ef4444;
+}
+
+
+/* Toast notifications */
+.u-toast-container{position:fixed;bottom:24px;right:20px;z-index:99999;display:flex;flex-direction:column;gap:8px;max-width:320px}
+.u-toast{
+  background:var(--card);border:1px solid var(--border);color:var(--text);
+  padding:11px 16px;border-radius:10px;font-size:13px;font-weight:600;
+  box-shadow:0 4px 20px rgba(0,0,0,.35);
+  animation:uToastIn .3s ease;display:flex;align-items:center;gap:8px;
+}
+.u-toast.success{border-color:rgba(34,197,94,.5);background:rgba(34,197,94,.1)}
+.u-toast.error{border-color:rgba(239,68,68,.5);background:rgba(239,68,68,.1)}
+.u-toast.info{border-color:rgba(56,189,248,.5);background:rgba(56,189,248,.1)}
+@keyframes uToastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes uToastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(20px)}}
+
+/* Entrance animations */
+@keyframes uFadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes uFadeIn{from{opacity:0}to{opacity:1}}
+@keyframes uPulse{0%,100%{box-shadow:0 0 0 0 rgba(56,189,248,.4)}70%{box-shadow:0 0 0 8px rgba(56,189,248,0)}}
+.u-fade-up{animation:uFadeUp .45s ease both}
+.u-fade-in{animation:uFadeIn .4s ease both}
+.u-pulse{animation:uPulse 2s infinite}
+
+/* Button hover lift */
+.btn:hover,[class*="btn"]:not([class*="btn-"]):hover{transform:translateY(-2px)!important}
+
+/* Smooth card hover */
+.card:hover,[class*="card"]:hover{
+  border-color:var(--accent)!important;
+  box-shadow:0 6px 28px rgba(56,189,248,.12)!important;
+  transition:all .25s ease!important;
+}
+
+/* Loading skeleton */
+.u-skeleton{
+  background:linear-gradient(90deg,rgba(56,189,248,.06) 25%,rgba(56,189,248,.12) 50%,rgba(56,189,248,.06) 75%);
+  background-size:200% 100%;animation:uSkeleton 1.4s infinite;border-radius:6px;
+}
+@keyframes uSkeleton{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* Progress bar component */
+.u-progress{height:5px;background:rgba(56,189,248,.12);border-radius:3px;overflow:hidden;margin:8px 0}
+.u-progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:3px;transition:width .5s ease}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(56,189,248,.3);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(56,189,248,.55)}
+
+/* Mobile responsive upgrades */
+@media(max-width:600px){
+  
+  .u-toast-container{right:10px;bottom:80px;max-width:calc(100vw - 20px)}
+}
+
+</style></head>
+<body><div class="container">
+<a href="../index.html" class="back-link" onclick="window.close(); return false;">← Back to Portfolio</a>
+
+<h1>🚀 Space Explorer</h1>
+<p class="subtitle">Explore planets, moons and deep space objects interactively</p>
+<div class="grid2" style="align-items:start">
+  <div>
+    <div class="card">
+      <div class="flex" style="justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
+        <h3 style="color:#38bdf8">Solar System</h3>
+        <select id="categoryFilter" onchange="filterObjects()" style="width:auto;padding:6px 10px;font-size:13px">
+          <option value="all">All Objects</option>
+          <option value="planet">Planets</option><option value="moon">Moons</option>
+          <option value="dwarf">Dwarf Planets</option><option value="star">Stars</option>
+        </select>
+      </div>
+      <input id="spaceSearch" placeholder="Search space objects..." oninput="filterObjects()" style="margin-bottom:12px">
+      <div id="objectList"></div>
+    </div>
+  </div>
+  <div>
+    <div id="objectDetail" class="card">
+      <div style="text-align:center;padding:30px;color:#64748b">
+        <div style="font-size:64px;margin-bottom:12px">🌌</div>
+        <div>Select an object to explore</div>
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="color:#38bdf8;margin-bottom:14px">Space Simulator</h3>
+      <canvas id="simCanvas" style="width:100%;border-radius:12px;background:radial-gradient(ellipse at center,#0c1445 0%,#020617 100%)"></canvas>
+      <div class="flex" style="gap:8px;margin-top:10px;justify-content:center">
+        <button class="btn btn-outline" onclick="toggleSim()" id="simBtn" style="padding:7px 14px;font-size:12px">▶ Start Orbit Sim</button>
+        <button class="btn btn-outline" onclick="resetSim()" style="padding:7px 14px;font-size:12px">↺ Reset</button>
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="color:#38bdf8;margin-bottom:12px">Fun Space Facts</h3>
+      <div id="spaceFact" style="font-size:14px;color:#94a3b8;line-height:1.7;padding:12px;background:rgba(56,189,248,.05);border-radius:8px;border-left:3px solid #38bdf8"></div>
+      <button class="btn btn-outline" onclick="nextFact()" style="width:100%;margin-top:10px;padding:8px;font-size:13px">Next Fact →</button>
+    </div>
+  </div>
+</div>
+</div><script>
+const objects=[
+  {id:1,name:'Sun',type:'star',emoji:'☀️',color:'#f59e0b',desc:'Our star at the center of the solar system. It contains 99.86% of all mass in the solar system.',specs:{Mass:'1.99 × 10³⁰ kg',Diameter:'1.39 million km',Surface_Temp:'5,500°C',Age:'4.6 billion years',Rotation:'25 days (equator)',Distance:'0 AU from Earth'},moons:0,fact:'The Sun is so large that about 1.3 million Earths could fit inside it.'},
+  {id:2,name:'Mercury',type:'planet',emoji:'⚫',color:'#94a3b8',desc:'The smallest planet and closest to the Sun. Despite being closest to the Sun, it is not the hottest planet.',specs:{Mass:'3.3 × 10²³ kg',Diameter:'4,879 km',Surface_Temp:'-180°C to 430°C',Day:'59 Earth days',Year:'88 Earth days',Distance:'0.39 AU'},moons:0,fact:'A year on Mercury is shorter than a day on Mercury due to its slow rotation.'},
+  {id:3,name:'Venus',type:'planet',emoji:'🟡',color:'#f59e0b',desc:'The hottest planet due to its thick CO₂ atmosphere. Often called Earth\'s twin due to similar size.',specs:{Mass:'4.87 × 10²⁴ kg',Diameter:'12,104 km',Surface_Temp:'465°C',Day:'243 Earth days',Year:'225 Earth days',Distance:'0.72 AU'},moons:0,fact:'Venus rotates backwards — on Venus, the Sun rises in the west and sets in the east.'},
+  {id:4,name:'Earth',type:'planet',emoji:'🌍',color:'#3b82f6',desc:'Our home — the only known planet to harbor life. Has liquid water, a protective magnetic field, and one natural moon.',specs:{Mass:'5.97 × 10²⁴ kg',Diameter:'12,742 km',Surface_Temp:'-88°C to 58°C',Day:'24 hours',Year:'365.25 days',Distance:'1 AU'},moons:1,fact:'Earth is the densest planet in the solar system and the only one not named after a god.'},
+  {id:5,name:'Mars',type:'planet',emoji:'🔴',color:'#ef4444',desc:'The Red Planet. Home to Olympus Mons, the largest volcano in the solar system at 21 km tall.',specs:{Mass:'6.42 × 10²³ kg',Diameter:'6,779 km',Surface_Temp:'-125°C to 20°C',Day:'24.6 hours',Year:'687 Earth days',Distance:'1.52 AU'},moons:2,fact:'A Martian day (sol) is 24 hours 37 minutes — almost the same as Earth\'s day.'},
+  {id:6,name:'Jupiter',type:'planet',emoji:'🟠',color:'#f97316',desc:'The largest planet. Its Great Red Spot is a storm that has lasted over 350 years.',specs:{Mass:'1.9 × 10²⁷ kg',Diameter:'139,820 km',Surface_Temp:'-110°C (clouds)',Day:'10 hours',Year:'12 Earth years',Distance:'5.2 AU'},moons:95,fact:'Jupiter is so massive that it does not actually orbit the Sun — both orbit a point slightly outside the Sun.'},
+  {id:7,name:'Saturn',type:'planet',emoji:'🪐',color:'#eab308',desc:'Famous for its stunning ring system made of ice and rock. Less dense than water — it would float!',specs:{Mass:'5.68 × 10²⁶ kg',Diameter:'116,460 km',Surface_Temp:'-140°C',Day:'10.7 hours',Year:'29 Earth years',Distance:'9.5 AU'},moons:146,fact:'Saturn\'s rings are incredibly thin — up to 282,000 km wide but only about 100m thick.'},
+  {id:8,name:'Uranus',type:'planet',emoji:'🔵',color:'#7dd3fc',desc:'An ice giant that rotates on its side with an axial tilt of 98°. Has 13 known rings.',specs:{Mass:'8.68 × 10²⁵ kg',Diameter:'50,724 km',Surface_Temp:'-195°C',Day:'17 hours',Year:'84 Earth years',Distance:'19.2 AU'},moons:28,fact:'Uranus is the coldest planetary atmosphere in the solar system at -224°C.'},
+  {id:9,name:'Neptune',type:'planet',emoji:'🫐',color:'#3b82f6',desc:'The windiest planet with speeds up to 2,100 km/h. Its moon Triton orbits backwards.',specs:{Mass:'1.02 × 10²⁶ kg',Diameter:'49,244 km',Surface_Temp:'-200°C',Day:'16 hours',Year:'165 Earth years',Distance:'30.1 AU'},moons:16,fact:'It took Voyager 2 twelve years to reach Neptune, travelling at 56,000 km/h.'},
+  {id:10,name:'Moon',type:'moon',emoji:'🌕',color:'#94a3b8',desc:'Earth\'s only natural satellite. The fifth largest moon in the solar system and the only other body humans have walked on.',specs:{Mass:'7.35 × 10²² kg',Diameter:'3,474 km',Surface_Temp:'-173°C to 127°C',Orbit:'27.3 days',Distance_Earth:'384,400 km',Age:'4.5 billion years'},moons:0,fact:'The Moon is moving away from Earth at 3.8 cm per year — the same rate your fingernails grow.'},
+  {id:11,name:'Pluto',type:'dwarf',emoji:'⬜',color:'#94a3b8',desc:'A dwarf planet in the Kuiper Belt. It has 5 moons. New Horizons revealed a heart-shaped nitrogen glacier.',specs:{Mass:'1.31 × 10²² kg',Diameter:'2,377 km',Surface_Temp:'-230°C',Day:'6.4 Earth days',Year:'248 Earth years',Distance:'39.5 AU'},moons:5,fact:'Pluto is smaller than Earth\'s Moon and smaller than 7 other moons in the solar system.'},
+];
+const facts=['One million Earths could fit inside the Sun.','Light takes 8 minutes 20 seconds to travel from the Sun to Earth.','A neutron star teaspoon would weigh 10 million tons.','There are more stars in the universe than grains of sand on all Earth\'s beaches.','The Milky Way galaxy is 100,000 light-years across.','Olympus Mons on Mars is nearly 3× the height of Mount Everest.','Space is completely silent — there is no medium for sound to travel.','A day on Venus is longer than a year on Venus.'];
+let factIdx=0,simRunning=false,simTimer=null,activeId=null;
+
+function filterObjects(){
+  const q=document.getElementById('spaceSearch').value.toLowerCase();
+  const cat=document.getElementById('categoryFilter').value;
+  const list=objects.filter(o=>(!q||o.name.toLowerCase().includes(q))&&(cat==='all'||o.type===cat));
+  document.getElementById('objectList').innerHTML=list.map(o=>`
+    <div class="obj-item ${o.id===activeId?'active':''}" onclick="showObject(${o.id})">
+      <div class="obj-emoji">${o.emoji}</div>
+      <div><div class="obj-name">${o.name}</div><div class="obj-type">${o.type.charAt(0).toUpperCase()+o.type.slice(1)} · ${o.moons} moon${o.moons!==1?'s':''}</div></div>
+      <span class="badge" style="margin-left:auto;background:${o.color}22;color:${o.color};border-color:${o.color}44">${o.type}</span>
+    </div>`).join('');
+}
+
+function showObject(id){
+  activeId=id;
+  const o=objects.find(o=>o.id===id);
+  document.getElementById('objectDetail').innerHTML=`
+    <div style="text-align:center;margin-bottom:16px">
+      <div style="font-size:64px;margin-bottom:8px">${o.emoji}</div>
+      <h3 style="font-size:24px;font-weight:800;margin-bottom:4px">${o.name}</h3>
+      <span class="badge" style="background:${o.color}22;color:${o.color};border-color:${o.color}44">${o.type.charAt(0).toUpperCase()+o.type.slice(1)}</span>
+    </div>
+    <p style="font-size:14px;color:#94a3b8;line-height:1.7;margin-bottom:16px">${o.desc}</p>
+    <div class="spec-grid">
+      ${Object.entries(o.specs).map(([k,v])=>`<div class="spec-item"><div class="spec-label">${k.replace(/_/g,' ')}</div><div class="spec-val">${v}</div></div>`).join('')}
+    </div>
+    ${o.moons>0?`<div class="badge badge-green" style="font-size:13px;padding:8px 14px">${o.emoji} Has ${o.moons} moon${o.moons!==1?'s':''}</div>`:''}`;
+  filterObjects();
+  drawOrbit(o);
+}
+
+const simPlanets=[
+  {name:'Mercury',r:20,speed:4.1,angle:0,color:'#94a3b8',size:3},
+  {name:'Venus',r:35,speed:1.6,angle:1,color:'#f59e0b',size:5},
+  {name:'Earth',r:52,speed:1,angle:2,color:'#3b82f6',size:5.5},
+  {name:'Mars',r:70,speed:0.53,angle:3,color:'#ef4444',size:4},
+  {name:'Jupiter',r:100,speed:0.084,angle:0,color:'#f97316',size:10},
+];
+let animFrame=null;
+
+function drawOrbit(highlight=null){
+  const canvas=document.getElementById('simCanvas');
+  canvas.width=canvas.parentElement.offsetWidth-48;
+  canvas.height=220;
+  const ctx=canvas.getContext('2d');
+  const cx=canvas.width/2,cy=canvas.height/2;
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  // Sun
+  ctx.beginPath();ctx.arc(cx,cy,12,0,Math.PI*2);
+  const sg=ctx.createRadialGradient(cx,cy,0,cx,cy,12);
+  sg.addColorStop(0,'#fff');sg.addColorStop(1,'#f59e0b');
+  ctx.fillStyle=sg;ctx.fill();
+  ctx.shadowColor='#f59e0b';ctx.shadowBlur=20;ctx.fill();ctx.shadowBlur=0;
+  simPlanets.forEach(p=>{
+    // Orbit ring
+    ctx.beginPath();ctx.arc(cx,cy,p.r,0,Math.PI*2);
+    ctx.strokeStyle='rgba(56,189,248,.08)';ctx.lineWidth=1;ctx.stroke();
+    // Planet
+    const px=cx+p.r*Math.cos(p.angle);
+    const py=cy+p.r*Math.sin(p.angle);
+    ctx.beginPath();ctx.arc(px,py,p.size,0,Math.PI*2);
+    const hl=highlight&&highlight.name===p.name;
+    ctx.fillStyle=hl?p.color:'rgba(255,255,255,.6)';
+    if(hl){ctx.shadowColor=p.color;ctx.shadowBlur=12;}
+    ctx.fill();ctx.shadowBlur=0;
+    // Label
+    ctx.fillStyle=hl?p.color:'rgba(148,163,184,.6)';
+    ctx.font=hl?'bold 10px sans-serif':'9px sans-serif';
+    ctx.textAlign='center';ctx.fillText(p.name,px,py-p.size-4);
+  });
+}
+
+function animateOrbit(){
+  const canvas=document.getElementById('simCanvas');
+  const ctx=canvas.getContext('2d');
+  const cx=canvas.width/2,cy=canvas.height/2;
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.beginPath();ctx.arc(cx,cy,12,0,Math.PI*2);
+  const sg=ctx.createRadialGradient(cx,cy,0,cx,cy,12);
+  sg.addColorStop(0,'#fff');sg.addColorStop(1,'#f59e0b');
+  ctx.fillStyle=sg;ctx.shadowColor='#f59e0b';ctx.shadowBlur=20;ctx.fill();ctx.shadowBlur=0;
+  simPlanets.forEach(p=>{
+    p.angle+=0.003*p.speed*5;
+    ctx.beginPath();ctx.arc(cx,cy,p.r,0,Math.PI*2);
+    ctx.strokeStyle='rgba(56,189,248,.08)';ctx.lineWidth=1;ctx.stroke();
+    const px=cx+p.r*Math.cos(p.angle),py=cy+p.r*Math.sin(p.angle);
+    ctx.beginPath();ctx.arc(px,py,p.size,0,Math.PI*2);ctx.fillStyle=p.color;
+    ctx.shadowColor=p.color;ctx.shadowBlur=8;ctx.fill();ctx.shadowBlur=0;
+    ctx.fillStyle=p.color;ctx.font='9px sans-serif';ctx.textAlign='center';ctx.fillText(p.name,px,py-p.size-4);
+  });
+  if(simRunning)animFrame=requestAnimationFrame(animateOrbit);
+}
+
+function toggleSim(){
+  simRunning=!simRunning;
+  document.getElementById('simBtn').textContent=simRunning?'⏸ Pause':'▶ Start Orbit Sim';
+  if(simRunning)animateOrbit();else cancelAnimationFrame(animFrame);
+}
+function resetSim(){simRunning=false;cancelAnimationFrame(animFrame);simPlanets.forEach((p,i)=>p.angle=i);document.getElementById('simBtn').textContent='▶ Start Orbit Sim';drawOrbit();}
+function nextFact(){factIdx=(factIdx+1)%facts.length;document.getElementById('spaceFact').textContent=facts[factIdx];}
+
+filterObjects();drawOrbit();
+try{var sfEl=document.getElementById('spaceFact');if(sfEl)sfEl.textContent=facts[0]||'';}catch(ex){}
+</script><script>
+// ── UNIVERSAL UPGRADE: Theme, localStorage, Toast, Animations ──
+(function(){
+'use strict';
+
+// ── 2. TOAST SYSTEM ──────────────────────────────────────────────
+var toastContainer = null;
+function getToastContainer(){
+  if(!toastContainer || !document.body.contains(toastContainer)){
+    toastContainer = document.createElement('div');
+    toastContainer.className = 'u-toast-container';
+    document.body.appendChild(toastContainer);
+  }
+  return toastContainer;
+}
+
+window.uToast = function(msg, type, duration){
+  type = type || 'info';
+  duration = duration || 2800;
+  var icons = {success:'✅', error:'❌', info:'💡', warning:'⚠️'};
+  var c = getToastContainer();
+  var t = document.createElement('div');
+  t.className = 'u-toast ' + type;
+  t.innerHTML = '<span>' + (icons[type]||'💡') + '</span><span>' + msg + '</span>';
+  c.appendChild(t);
+  setTimeout(function(){
+    t.style.animation = 'uToastOut .3s ease forwards';
+    setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 300);
+  }, duration);
+};
+
+// ── 3. LOCALSTORAGE HELPERS ──────────────────────────────────────
+var APP_KEY = 'uapp_' + location.pathname.split('/').pop().replace('.html','');
+window.uSave = function(key, val){
+  try { localStorage.setItem(APP_KEY + '_' + key, JSON.stringify(val)); return true; }
+  catch(e){ return false; }
+};
+window.uLoad = function(key, def){
+  try {
+    var v = localStorage.getItem(APP_KEY + '_' + key);
+    return v !== null ? JSON.parse(v) : def;
+  } catch(e){ return def; }
+};
+window.uClear = function(key){
+  try { localStorage.removeItem(APP_KEY + '_' + key); } catch(e){}
+};
+
+// ── 4. ENTRANCE ANIMATIONS ───────────────────────────────────────
+function animateEntrance(){
+  var cards = document.querySelectorAll('.card, [class*="card"]');
+  cards.forEach(function(el, i){
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(18px)';
+    setTimeout(function(){
+      el.style.transition = 'opacity .4s ease, transform .4s ease';
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+    }, i * 60);
+  });
+}
+
+// ── 5. SMOOTH COUNTER ANIMATION ──────────────────────────────────
+window.uAnimCount = function(el, target, duration, prefix, suffix){
+  prefix = prefix || '';
+  suffix = suffix || '';
+  duration = duration || 1200;
+  var start = 0;
+  var step = target / (duration / 16);
+  var iv = setInterval(function(){
+    start = Math.min(start + step, target);
+    el.textContent = prefix + Math.round(start).toLocaleString() + suffix;
+    if(start >= target) clearInterval(iv);
+  }, 16);
+};
+
+// ── 6. EXPORT HELPER ─────────────────────────────────────────────
+window.uExportJSON = function(data, filename){
+  var blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.json';
+  a.click();
+  uToast('Data exported!', 'success');
+};
+window.uExportCSV = function(rows, filename){
+  var csv = rows.map(function(r){ return r.join(','); }).join('\n');
+  var blob = new Blob([csv], {type:'text/csv'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filename || 'export') + '.csv';
+  a.click();
+  uToast('CSV exported!', 'success');
+};
+
+// ── 8. INIT ──────────────────────────────────────────────────────
+function init(){
+  setTimeout(animateEntrance, 100);
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+})();
+</script>
+<script>
+(function(){
+  var favObjects = uLoad('space_favs', []);
+  var quizScore = uLoad('space_quiz_score', 0);
+  
+  // Favourites system
+  var origShow = window.showObject;
+  if(origShow){
+    window.showObject = function(id){
+      origShow.apply(this,[id]);
+      setTimeout(function(){
+        var detail = document.getElementById('objectDetail');
+        if(!detail || document.getElementById('uSpaceFavBtn')) return;
+        var favBtn = document.createElement('button');
+        favBtn.id = 'uSpaceFavBtn';
+        favBtn.style.cssText = 'display:block;width:100%;margin:10px 0 0;padding:9px;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);color:#f59e0b;border-radius:8px;cursor:pointer;font-size:13px;font-weight:700;transition:.2s';
+        var isFav = favObjects.includes(id);
+        favBtn.textContent = isFav ? '⭐ Remove from Favourites' : '☆ Add to Favourites';
+        favBtn.onclick = function(){
+          var idx = favObjects.indexOf(id);
+          if(idx>=0){ favObjects.splice(idx,1); favBtn.textContent='☆ Add to Favourites'; uToast('Removed from favourites','info'); }
+          else { favObjects.push(id); favBtn.textContent='⭐ Remove from Favourites'; uToast('Added to favourites! ⭐','success'); }
+          uSave('space_favs', favObjects);
+          renderFavsList();
+        };
+        detail.appendChild(favBtn);
+      }, 200);
+    };
+  }
+  
+  // Favourites list panel
+  function injectFavsList(){
+    if(document.getElementById('uSpaceFavsList')) return;
+    var container = document.querySelector('.grid2 > div:last-child');
+    if(!container) return;
+    var panel = document.createElement('div');
+    panel.id = 'uSpaceFavsList';
+    panel.className = 'card u-fade-up';
+    panel.style.marginTop = '16px';
+    panel.innerHTML = '<div style="font-weight:700;color:#38bdf8;margin-bottom:10px;font-size:14px">⭐ Favourite Objects</div><div id="uFavsContent"></div>';
+    container.appendChild(panel);
+  }
+  
+  function renderFavsList(){
+    var el = document.getElementById('uFavsContent');
+    if(!el) return;
+    if(!favObjects.length){el.innerHTML='<p style="color:#64748b;font-size:13px">No favourites yet.</p>';return;}
+    var objects = window.objects||[];
+    el.innerHTML = favObjects.map(function(id){
+      var obj = objects.find(function(o){return o.id===id;});
+      if(!obj) return '';
+      return '<div style="display:flex;align-items:center;gap:8px;padding:8px;background:rgba(56,189,248,.04);border:1px solid rgba(56,189,248,.1);border-radius:8px;margin-bottom:6px;cursor:pointer" onclick="showObject('+id+')">' +
+        '<span style="font-size:20px">'+obj.emoji+'</span><span style="font-weight:700;font-size:13px;flex:1">'+obj.name+'</span><span class="badge" style="font-size:10px">'+obj.type+'</span></div>';
+    }).filter(Boolean).join('');
+  }
+  
+  // Quick space quiz
+  function injectQuiz(){
+    if(document.getElementById('uSpaceQuiz')) return;
+    var quizQuestions = [
+      {q:'Which planet has the most moons?',a:'Saturn',opts:['Jupiter','Saturn','Uranus','Neptune']},
+      {q:'How long does light take to reach Earth from the Sun?',a:'8 minutes',opts:['2 minutes','8 minutes','1 hour','1 day']},
+      {q:'What is the largest planet in our solar system?',a:'Jupiter',opts:['Saturn','Neptune','Jupiter','Uranus']},
+      {q:'Which planet rotates on its side?',a:'Uranus',opts:['Venus','Mars','Uranus','Neptune']},
+    ];
+    var curQ = 0, score = 0;
+    
+    var panel = document.createElement('div');
+    panel.id = 'uSpaceQuiz';
+    panel.className = 'card u-fade-up';
+    panel.style.marginTop = '16px';
+    panel.innerHTML = '<div style="font-weight:700;color:#38bdf8;margin-bottom:12px;font-size:14px">🧠 Space Quiz <span style="color:#64748b;font-size:12px;font-weight:400">All-time score: '+quizScore+'</span></div>' +
+      '<div id="uQuizContent"></div>';
+    document.querySelector('.grid2 > div:first-child')?.appendChild(panel);
+    
+    function showQuestion(){
+      var el = document.getElementById('uQuizContent');
+      if(!el) return;
+      if(curQ >= quizQuestions.length){
+        quizScore += score;
+        uSave('space_quiz_score', quizScore);
+        el.innerHTML = '<div style="text-align:center;padding:16px"><div style="font-size:36px;margin-bottom:8px">🏆</div>' +
+          '<div style="font-size:18px;font-weight:700;color:#22c55e">'+score+'/'+quizQuestions.length+' correct!</div>' +
+          '<div style="font-size:13px;color:#64748b;margin:8px 0">Total score: '+quizScore+'</div>' +
+          '<button onclick="curQ=0;score=0;showQuestion()" style="margin-top:10px;padding:8px 18px;background:linear-gradient(90deg,#38bdf8,#22c55e);border:none;color:#000;border-radius:8px;cursor:pointer;font-weight:700;font-size:13px">Play Again</button></div>';
+        return;
+      }
+      var q = quizQuestions[curQ];
+      el.innerHTML = '<div style="font-size:13px;font-weight:600;margin-bottom:12px;color:#e2e8f0">Q'+(curQ+1)+'/'+quizQuestions.length+': '+q.q+'</div>' +
+        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">' +
+        q.opts.map(function(opt){
+          return '<button onclick="answerQuiz(\''+opt+'\',\''+q.a+'\')" style="padding:9px 12px;background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.2);color:#e2e8f0;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;transition:.2s;text-align:left" onmouseover="this.style.borderColor=\'#38bdf8\'" onmouseout="this.style.borderColor=\'rgba(56,189,248,.2)\'">'+opt+'</button>';
+        }).join('') + '</div>' +
+        '<div style="text-align:right;font-size:12px;color:#64748b;margin-top:8px">Score: '+score+'/'+curQ+'</div>';
+    }
+    
+    window.answerQuiz = function(chosen, correct){
+      var btns = document.querySelectorAll('#uQuizContent button');
+      btns.forEach(function(btn){
+        btn.disabled = true;
+        if(btn.textContent === correct) btn.style.background = 'rgba(34,197,94,.25)';
+        else if(btn.textContent === chosen && chosen !== correct) btn.style.background = 'rgba(239,68,68,.25)';
+      });
+      if(chosen === correct){ score++; uToast('✅ Correct!', 'success', 1000); }
+      else { uToast('❌ Correct: ' + correct, 'error', 1500); }
+      curQ++;
+      setTimeout(showQuestion, 1500);
+    };
+    
+    showQuestion();
+  }
+  
+  injectFavsList();
+  injectQuiz();
+  renderFavsList();
+})();
+</script>
+</body></html>

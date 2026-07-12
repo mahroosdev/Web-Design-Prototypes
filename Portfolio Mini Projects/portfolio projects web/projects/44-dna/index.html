@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <html lang="en">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <title>DNA Visualizer | DevOS</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+</head>
+<body>
+<div id="topbar">
+  <div class="topbar-left">
+    <a class="back-btn" href="index.html">← BACK</a>
+    <span class="topbar-logo">DNA_OS</span>
+  </div>
+  <div class="topbar-right">
+    <button class="theme-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle theme">🌙</button>
+  </div>
+</div>
+<div id="toast"></div>
+<div class="wrap">
+<div class="page-header animate-in">
+  <div class="row align" style="gap:10px;margin-bottom:8px"><span style="font-size:28px">🧬</span><h1>DNA Visualizer</h1></div>
+  <p>Animated DNA double helix with base pair info and genetics facts.</p>
+</div>
+
+
+<h1>🧬 DNA Visualizer</h1>
+<p>3D DNA helix animation with base pair information.</p>
+<div style="margin-top:16px"><canvas id="dna-canvas" style="width:100%;height:420px;border-radius:14px;border:1px solid var(--border);display:block;touch-action:none"></canvas>
+<div id="dna-info" class="card" style="margin-top:12px">
+  <h2 style="font-size:14px;margin-bottom:8px">DNA Double Helix</h2>
+  <p style="font-size:12px;color:var(--muted)">DNA (Deoxyribonucleic acid) stores genetic information in base pairs: Adenine-Thymine (A-T) and Cytosine-Guanine (C-G). The double helix structure was discovered by Watson and Crick in 1953.</p>
+  <div class="row" style="gap:8px;margin-top:10px;flex-wrap:wrap">
+    <span class="chip" style="color:#e74c3c;border-color:#e74c3c44">Adenine</span>
+    <span class="chip" style="color:#3498db;border-color:#3498db44">Thymine</span>
+    <span class="chip" style="color:#2ecc71;border-color:#2ecc7144">Guanine</span>
+    <span class="chip" style="color:#f39c12;border-color:#f39c1244">Cytosine</span>
+  </div>
+</div></div>
+<script>const canvas=document.getElementById('dna-canvas');const ctx=canvas.getContext('2d');canvas.width=canvas.offsetWidth;canvas.height=420;
+const W=canvas.width,H=canvas.height,cx=W/2;const colors=['#e74c3c','#3498db','#2ecc71','#f39c12'];let t=0;
+function draw(){
+  ctx.fillStyle='#060a10';ctx.fillRect(0,0,W,H);
+  const step=18,pairs=Math.floor(H/step)+2;
+  for(let i=0;i<pairs;i++){
+    const y=((i*step-t*step)%H+H)%H;const ang=i*.5;
+    const x1=cx+Math.cos(ang)*70;const x2=cx+Math.cos(ang+Math.PI)*70;
+    // Backbone
+    if(i<pairs-1){
+      const ny=((((i+1)*step-t*step)%H+H)%H);const na=((i+1)*.5);
+      const nx1=cx+Math.cos(na)*70;const nx2=cx+Math.cos(na+Math.PI)*70;
+      ctx.beginPath();ctx.moveTo(x1,y);ctx.lineTo(nx1,ny);ctx.strokeStyle='rgba(0,224,255,.5)';ctx.lineWidth=2;ctx.stroke();
+      ctx.beginPath();ctx.moveTo(x2,y);ctx.lineTo(nx2,ny);ctx.strokeStyle='rgba(244,114,182,.5)';ctx.lineWidth=2;ctx.stroke();
+    }
+    // Base pair connector
+    ctx.beginPath();ctx.moveTo(x1,y);ctx.lineTo(x2,y);ctx.strokeStyle=`${colors[i%4]}66`;ctx.lineWidth=1.5;ctx.stroke();
+    // Nodes
+    [x1,x2].forEach((x,j)=>{ctx.beginPath();ctx.arc(x,y,5,0,Math.PI*2);ctx.fillStyle=j===0?'#00e0ff':'#f472b6';ctx.fill();});
+    // Base pair dot
+    ctx.beginPath();ctx.arc(cx,y,3,0,Math.PI*2);ctx.fillStyle=colors[i%4];ctx.fill();
+  }
+  t+=0.015;requestAnimationFrame(draw);
+}
+draw();</script>
+
+
+</div>
+  <script src="../shared-back.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

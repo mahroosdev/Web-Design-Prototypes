@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <html lang="en">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <title>Meme Generator | DevOS</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+</head>
+<body>
+<div id="topbar">
+  <div class="topbar-left">
+    <a class="back-btn" href="index.html">← BACK</a>
+    <span class="topbar-logo">MEME_OS</span>
+  </div>
+  <div class="topbar-right">
+    <button class="theme-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle theme">🌙</button>
+  </div>
+</div>
+<div id="toast"></div>
+<div class="wrap">
+<div class="page-header animate-in">
+  <div class="row align" style="gap:10px;margin-bottom:8px"><span style="font-size:28px">😂</span><h1>Meme Generator</h1></div>
+  <p>Create viral memes with custom text, filters and downloadable output.</p>
+</div>
+
+
+<h1>😂 Meme Generator</h1>
+<p>Create memes with custom top/bottom text on preset templates.</p>
+<div style="margin-top:16px"><div class="card" style="margin-bottom:12px">
+  <div class="form-group"><label>Top Text</label><input id="meme-top" value="When the code works" oninput="drawMeme()"></div>
+  <div class="form-group"><label>Bottom Text</label><input id="meme-bot" value="On the first try" oninput="drawMeme()"></div>
+  <div class="row" style="gap:8px;overflow-x:auto;flex-wrap:nowrap;margin-bottom:10px;padding-bottom:4px">
+    <button class="btn btn-outline" style="font-size:20px;width:52px;height:52px;flex-shrink:0;border-radius:10px" onclick="setTemplate(this,'😂')">😂</button>
+    <button class="btn btn-outline" style="font-size:20px;width:52px;height:52px;flex-shrink:0;border-radius:10px" onclick="setTemplate(this,'🤦')">🤦</button>
+    <button class="btn btn-outline" style="font-size:20px;width:52px;height:52px;flex-shrink:0;border-radius:10px" onclick="setTemplate(this,'🧠')">🧠</button>
+    <button class="btn btn-outline" style="font-size:20px;width:52px;height:52px;flex-shrink:0;border-radius:10px" onclick="setTemplate(this,'💀')">💀</button>
+    <button class="btn btn-outline" style="font-size:20px;width:52px;height:52px;flex-shrink:0;border-radius:10px" onclick="setTemplate(this,'🔥')">🔥</button>
+  </div>
+  <button class="btn btn-primary" onclick="saveMeme()" style="width:100%">Save Meme</button>
+</div>
+<canvas id="meme-canvas" style="width:100%;border-radius:12px;border:1px solid var(--border);display:block;touch-action:none"></canvas></div>
+<script>const canvas=document.getElementById('meme-canvas');const ctx=canvas.getContext('2d');canvas.width=500;canvas.height=500;
+let bg='😂';
+function drawMeme(){
+  ctx.fillStyle='#111827';ctx.fillRect(0,0,500,500);
+  ctx.font='120px serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(bg,250,250);
+  ctx.font='bold 44px Impact,Arial';ctx.fillStyle='#fff';ctx.strokeStyle='#000';ctx.lineWidth=3;ctx.textAlign='center';
+  const top=document.getElementById('meme-top').value.toUpperCase();
+  const bot=document.getElementById('meme-bot').value.toUpperCase();
+  ctx.textBaseline='top';ctx.strokeText(top,250,20);ctx.fillText(top,250,20);
+  ctx.textBaseline='bottom';ctx.strokeText(bot,250,480);ctx.fillText(bot,250,480);
+}
+function setTemplate(btn,t){bg=t;drawMeme();}
+function saveMeme(){const a=document.createElement('a');a.download='meme.png';a.href=canvas.toDataURL();a.click();toast('Meme saved!');}
+drawMeme();</script>
+
+
+</div>
+  <script src="../shared-back.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
