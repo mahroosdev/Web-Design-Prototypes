@@ -147,6 +147,7 @@ A browser-based memory game with audio synthesis and score tracking.
 A two-player dice rolling game with animated CSS grid dice.
 
 **🔗 Live Demo:** [https://wb-dice-game.netlify.app/]
+
 ---
 
 ## 🛠️ Tech Stack
