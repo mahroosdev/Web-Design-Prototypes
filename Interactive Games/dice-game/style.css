@@ -1,0 +1,191 @@
+:root {
+  --midnight: #11183e;
+  --blue: #263b8d;
+  --violet: #7638b9;
+  --gold: #f7c85b;
+  --white: #ffffff;
+  --muted: #dce3ff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  color: var(--white);
+  font-family: "Nunito", sans-serif;
+  background:
+    radial-gradient(circle at 20% 15%, rgba(118, 56, 185, 0.65), transparent 32%),
+    radial-gradient(circle at 85% 80%, rgba(38, 59, 141, 0.95), transparent 36%),
+    var(--midnight);
+}
+
+.game-card {
+  width: min(760px, 100%);
+  padding: clamp(28px, 6vw, 58px);
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 28px;
+  background: rgba(10, 17, 53, 0.72);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(12px);
+}
+
+.eyebrow {
+  margin: 0;
+  color: var(--gold);
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 0.15em;
+}
+
+h1 {
+  margin: 8px 0;
+  font-family: "Playfair Display", serif;
+  font-size: clamp(2.8rem, 9vw, 5.2rem);
+  line-height: 1;
+}
+
+.game-message {
+  min-height: 28px;
+  margin: 0 auto 35px;
+  color: var(--muted);
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+.players {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: clamp(16px, 4vw, 44px);
+  align-items: center;
+}
+
+.player {
+  padding: 24px 12px;
+  border-radius: 20px;
+  transition: background 180ms ease, transform 180ms ease;
+}
+
+.player.winner {
+  background: rgba(247, 200, 91, 0.16);
+  transform: translateY(-5px);
+}
+
+.player-label,
+.score {
+  margin: 0;
+  font-weight: 900;
+}
+
+.player-label {
+  margin-bottom: 16px;
+  color: var(--muted);
+  font-size: clamp(0.9rem, 2vw, 1.05rem);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.score {
+  margin-top: 16px;
+  color: var(--gold);
+}
+
+.versus {
+  color: var(--gold);
+  font-size: 1rem;
+  font-weight: 900;
+  font-style: italic;
+}
+
+.dice {
+  width: clamp(112px, 20vw, 145px);
+  aspect-ratio: 1;
+  display: grid;
+  grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+  gap: 7%;
+  padding: 16%;
+  margin: auto;
+  border-radius: 20%;
+  background: var(--white);
+  box-shadow: 0 10px 0 #b7c1e3, 0 19px 25px rgba(0, 0, 0, 0.28);
+}
+
+.dot {
+  width: 100%;
+  aspect-ratio: 1;
+  align-self: center;
+  justify-self: center;
+  border-radius: 50%;
+  background: #172254;
+  opacity: 0;
+}
+
+.dot-1 { grid-area: 1 / 1; }
+.dot-2 { grid-area: 1 / 3; }
+.dot-3 { grid-area: 2 / 1; }
+.dot-4 { grid-area: 2 / 2; }
+.dot-5 { grid-area: 2 / 3; }
+.dot-6 { grid-area: 3 / 1; }
+.dot-7 { grid-area: 3 / 3; }
+
+.dice[data-value="1"] .dot-4,
+.dice[data-value="2"] .dot-1,
+.dice[data-value="2"] .dot-7,
+.dice[data-value="3"] .dot-1,
+.dice[data-value="3"] .dot-4,
+.dice[data-value="3"] .dot-7,
+.dice[data-value="4"] .dot-1,
+.dice[data-value="4"] .dot-2,
+.dice[data-value="4"] .dot-6,
+.dice[data-value="4"] .dot-7,
+.dice[data-value="5"] .dot-1,
+.dice[data-value="5"] .dot-2,
+.dice[data-value="5"] .dot-4,
+.dice[data-value="5"] .dot-6,
+.dice[data-value="5"] .dot-7,
+.dice[data-value="6"] .dot-1,
+.dice[data-value="6"] .dot-2,
+.dice[data-value="6"] .dot-3,
+.dice[data-value="6"] .dot-5,
+.dice[data-value="6"] .dot-6,
+.dice[data-value="6"] .dot-7 {
+  opacity: 1;
+}
+
+button {
+  width: min(260px, 100%);
+  margin-top: 30px;
+  padding: 15px 28px;
+  border: 0;
+  border-radius: 999px;
+  color: #172254;
+  font: inherit;
+  font-weight: 900;
+  font-size: 1.05rem;
+  cursor: pointer;
+  background: var(--gold);
+  box-shadow: 0 7px 0 #c79324;
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+
+button:hover { transform: translateY(-2px); }
+button:active { transform: translateY(5px); box-shadow: 0 2px 0 #c79324; }
+button:focus-visible { outline: 3px solid var(--white); outline-offset: 4px; }
+
+.hint {
+  margin: 22px 0 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 460px) {
+  .players { gap: 10px; }
+  .player { padding-inline: 2px; }
+  .versus { font-size: 0.75rem; }
+}

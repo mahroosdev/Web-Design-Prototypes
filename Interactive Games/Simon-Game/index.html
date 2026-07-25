@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="A fun, responsive Simon memory game." />
+    <title>Simon Says | Memory Game</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="game-shell">
+      <section class="game-card" aria-labelledby="game-title">
+        <div class="top-row">
+          <p class="eyebrow"><span class="status-dot"></span> MEMORY CHALLENGE</p>
+          <button class="sound-button" id="soundButton" type="button" aria-label="Mute game sounds" title="Mute game sounds">♪</button>
+        </div>
+
+        <header>
+          <h1 id="game-title">Simon <span>Says</span></h1>
+          <p class="instruction" id="instruction" aria-live="polite">Watch the pattern, then repeat it.</p>
+        </header>
+
+        <div class="scoreboard" aria-label="Game score">
+          <div class="score-item"><span>LEVEL</span><strong id="level">00</strong></div>
+          <div class="score-divider"></div>
+          <div class="score-item"><span>BEST</span><strong id="best">00</strong></div>
+        </div>
+
+        <div class="game-board" id="gameBoard" aria-label="Simon game buttons">
+          <button class="pad green" data-color="green" aria-label="Green pad"></button>
+          <button class="pad red" data-color="red" aria-label="Red pad"></button>
+          <button class="pad yellow" data-color="yellow" aria-label="Yellow pad"></button>
+          <button class="pad blue" data-color="blue" aria-label="Blue pad"></button>
+          <div class="board-center" aria-hidden="true"><span>SIMON</span><small>MEMORY</small></div>
+        </div>
+
+        <button class="start-button" id="startButton" type="button"><span class="play-icon">▶</span> Start Game</button>
+        <p class="hint" id="hint">Use your eyes, ears, and memory.</p>
+      </section>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>

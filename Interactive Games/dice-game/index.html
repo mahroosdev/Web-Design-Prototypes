@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="A simple two-player dice game built with HTML, CSS and JavaScript."
+    />
+    <title>Dice Duel | Dice Game</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Playfair+Display:wght@700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="game-card" aria-labelledby="game-title">
+      <h1 id="game-title">Dice Duel</h1>
+      <p class="game-message" id="gameMessage" aria-live="polite">
+        Roll the dice to find the winner!
+      </p>
+
+      <section class="players" aria-label="Dice game players">
+        <article class="player" id="playerOne">
+          <p class="player-label">Player 1</p>
+          <div class="dice" id="diceOne" aria-label="Player 1 rolled 1">
+            <span class="dot dot-1"></span>
+            <span class="dot dot-2"></span>
+            <span class="dot dot-3"></span>
+            <span class="dot dot-4"></span>
+            <span class="dot dot-5"></span>
+            <span class="dot dot-6"></span>
+            <span class="dot dot-7"></span>
+          </div>
+          <p class="score">Roll: <span id="scoreOne">1</span></p>
+        </article>
+
+        <span class="versus" aria-hidden="true">VS</span>
+
+        <article class="player" id="playerTwo">
+          <p class="player-label">Player 2</p>
+          <div class="dice" id="diceTwo" aria-label="Player 2 rolled 1">
+            <span class="dot dot-1"></span>
+            <span class="dot dot-2"></span>
+            <span class="dot dot-3"></span>
+            <span class="dot dot-4"></span>
+            <span class="dot dot-5"></span>
+            <span class="dot dot-6"></span>
+            <span class="dot dot-7"></span>
+          </div>
+          <p class="score">Roll: <span id="scoreTwo">1</span></p>
+        </article>
+      </section>
+
+      <button id="rollButton" type="button">Roll Dice</button>
+      <p class="hint">The higher number wins. Same number means a draw.</p>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>

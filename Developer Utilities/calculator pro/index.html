@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculator Pro — Scientific Calculator</title>
+  <meta name="description" content="A fast, keyboard-friendly scientific calculator with history, memory, and light/dark themes. Runs entirely in your browser.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A7%AE%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .page-header-row {
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+  </style>
+  <main class="wrap">
+
+    <div class="page-header animate-in">
+      <div class="row align page-header-row">
+        <span class="header-icon" aria-hidden="true">🧮</span>
+        <h1>Calculator Pro</h1>
+        <span class="badge badge-accent">Scientific</span>
+      </div>
+      <p>Standard and scientific modes, calculation history, memory keys, and full keyboard support &mdash; no install, no tracking, works offline once loaded.</p>
+    </div>
+
+    <section class="card calc-card animate-in" aria-label="Calculator">
+
+      <div class="calc-screen">
+        <div class="calc-screen-row">
+          <div id="calc-mode-label" class="calc-mode-label">STANDARD MODE</div>
+          <button id="angle-toggle" class="angle-toggle" onclick="toggleAngleMode()" title="Toggle degrees / radians" aria-label="Toggle angle unit">DEG</button>
+        </div>
+        <div id="calc-hist" class="calc-hist" aria-hidden="true"></div>
+        <button id="calc-disp" class="calc-disp" onclick="copyResult()" title="Click to copy">0</button>
+        <div id="calc-mem" class="calc-mem"></div>
+      </div>
+
+      <div class="calc-modeswitch" role="tablist" aria-label="Calculator mode">
+        <button onclick="setMode('std')" id="mode-std" class="mode-btn mode-btn-active" role="tab" aria-selected="true">STD</button>
+        <button onclick="setMode('sci')" id="mode-sci" class="mode-btn" role="tab" aria-selected="false">SCI</button>
+      </div>
+
+      <div id="calc-std-pad" class="calc-pad calc-pad-std"></div>
+      <div id="calc-sci-pad" class="calc-pad calc-pad-sci" hidden></div>
+
+    </section>
+
+    <section>
+      <div class="section-title">
+        History
+        <button class="btn-clear-history" onclick="clearHistory()" title="Clear history" aria-label="Clear history">clear</button>
+      </div>
+      <div id="calc-history-list">
+        <div class="empty"><div class="empty-icon">📋</div><p>No calculations yet</p></div>
+      </div>
+    </section>
+
+     
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
