@@ -52,6 +52,12 @@ A luxury watch landing page with an elegant product presentation.
 
 **🔗 Live Demo:** [https://zenith-s.netlify.app/]
 
+### 💻 Vertex IT Solutions
+
+A responsive corporate IT agency landing page built with Bootstrap 5.
+
+**🔗 Live Demo:** [https://web-vertex-it-solutions.netlify.app/]
+
 ---
 
 ## 🤖 Business Automation Tools
@@ -118,6 +124,29 @@ An advanced password generation tool with additional features.
 
 **🔗 Live Demo:** [https://nexa-vault-2.netlify.app/]
 
+### 🧮 Calculator Pro
+
+A scientific calculator with calculation history and memory storage.
+
+**🔗 Live Demo:** [https://tools-calculator-pro.netlify.app/]
+
+---
+
+## 🎮 Interactive Games
+
+Engaging browser-based mini-games built with dynamic JavaScript and responsive UI elements.
+
+### 🟢 Simon Says
+
+A browser-based memory game with audio synthesis and score tracking.
+
+**🔗 Live Demo:** [https://web-simon-game.netlify.app/]
+
+### 🎲 Dice Duel
+
+A two-player dice rolling game with animated CSS grid dice.
+
+**🔗 Live Demo:** [https://wb-dice-game.netlify.app/]
 ---
 
 ## 🛠️ Tech Stack
